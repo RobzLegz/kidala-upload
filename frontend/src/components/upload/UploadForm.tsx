@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 function UploadForm() {
@@ -15,7 +16,9 @@ function UploadForm() {
         setFile(e.target.files[0]);
     };
 
-    const uploadFile = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const uploadFile = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
         e.preventDefault();
 
         if (!file) {
@@ -27,9 +30,18 @@ function UploadForm() {
 
         const headers = {
             headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        }
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+
+        await axios
+            .post('http://localhost:5000/upload', formData, headers)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            });
     };
 
     return (
