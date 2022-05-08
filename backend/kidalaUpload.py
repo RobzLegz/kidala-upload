@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 UPLOAD_FOLDER = app.root_path + '\\files'
 
