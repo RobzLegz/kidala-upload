@@ -17,6 +17,19 @@ function UploadForm() {
 
     const uploadFile = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+
+        if (!file) {
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append('file', file);
+
+        const headers = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }
     };
 
     return (
