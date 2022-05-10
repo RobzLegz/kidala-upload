@@ -15,7 +15,7 @@ def hello_world():
 
 @app.route("/<filename>")
 def downloadFile(filename):
-    return send_file(os.path.join(UPLOAD_FOLDER, filename), as_attachment=True)
+    return send_file(os.path.join(UPLOAD_FOLDER, filename))
 
 @app.route('/upload', methods=['POST'])
 def upload():
