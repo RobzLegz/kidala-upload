@@ -1,39 +1,66 @@
-from flask import Flask, request, flash, redirect, send_file
+from flask import Flask, request, redirect, send_file, send_from_directory, make_response
 from flask_cors import CORS
+from pymongo import MongoClient
+from werkzeug.utils import secure_filename
+import hashlib
 import os
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
 UPLOAD_FOLDER = app.root_path + '\\files'
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World</p>"
+mongodblink = os.getenv('MONGODBLINK')
 
-@app.route("/<filename>")
-def downloadFile(filename):
-    return send_file(os.path.join(UPLOAD_FOLDER, filename))
+dbclient = MongoClient(mongodblink)
+db = dbclient.kidala
+dbfiles = db.files
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_file(app.root_path + '\\favicon.ico')
+
+@app.route("/<filehash>")
+def downloadFile(filehash):
+    if filehash != "":
+        query = dbfiles.find_one({'hash': filehash})
+        if query == None:
+            return make_response("file not found", 404)
+        else:
+            return send_from_directory(os.path.join(f'{UPLOAD_FOLDER}\\{filehash}'), query["name"])
 
 @app.route('/upload', methods=['POST'])
 def upload():
 
     if 'file' not in request.files:
-            flash('No file part')
-            return {'msg': "failed"}
+        return make_response({'msg': "No file part"}, 400)
 
     file = request.files['file']
-    print(file.filename)
     if file.filename == '':
-            flash('No selected file')
-            return {'msg': "failed"}
-    if file:
-        file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-        return {'msg': "success", 'url': f"http://localhost:5000/{file.filename}"}
+        return make_response({'msg': "No selected file"}, 400)
 
-    return {'msg': "failed"}
+    if file:
+
+        md5 = hashlib.md5()
+        md5.update(file.read())
+        md5hash = md5.hexdigest()
+
+        if dbfiles.find_one({'hash': md5hash}) != None:
+            return make_response({'msg': "file exists", 'url': f"http://localhost:5000/{md5hash}"}, 200)
+
+        os.makedirs(f'{UPLOAD_FOLDER}\\{md5hash}', exist_ok=True)
+        file.stream.seek(0)
+        file.save(os.path.join(f'{UPLOAD_FOLDER}\\{md5hash}', secure_filename(file.filename)))
+        fileentry = {
+            'name': secure_filename(file.filename),
+            'hash': md5hash  
+        }
+        result = dbfiles.insert_one(fileentry)
+        return make_response({'msg': "success", 'url': f"http://localhost:5000/{md5hash}"}, 201)
+
+    return make_response({'msg': "failed"}, 500)
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000, debug=False)
