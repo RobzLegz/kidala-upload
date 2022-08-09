@@ -43,11 +43,19 @@ function UploadForm() {
         };
 
         await axios
-            .post('http://localhost:5000/upload', formData, headers)
+            .post('http://46.109.36.103:8000/upload', formData, headers)
             .then((res) => {
                 console.log(res.data);
             })
             .catch((err) => {
+                if(!err.response){
+                    return console.log(err);
+                }
+
+                if(!err.response.data){
+                    return console.log(err);
+                }
+                
                 console.log(err.response.data);
             });
     };
