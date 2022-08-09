@@ -43,7 +43,7 @@ function UploadForm() {
         };
 
         await axios
-            .post('http://46.109.36.103:8000/upload', formData, headers)
+            .post('https://46.109.36.103:8000/upload', formData, headers)
             .then((res) => {
                 console.log(res.data);
             })

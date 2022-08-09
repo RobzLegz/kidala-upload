@@ -49,7 +49,7 @@ def upload():
         md5hash = md5.hexdigest()
 
         if dbfiles.find_one({'hash': md5hash}) != None:
-            return make_response({'msg': "file exists", 'url': f"http://{SERVER_IP}:8000/{md5hash}"}, 200)
+            return make_response({'msg': "file exists", 'url': f"https://{SERVER_IP}:8000/{md5hash}"}, 200)
 
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
@@ -59,7 +59,7 @@ def upload():
             'hash': md5hash  
         }
         result = dbfiles.insert_one(fileentry)
-        return make_response({'msg': "success", 'url': f"http://{SERVER_IP}:8000/{md5hash}"}, 201)
+        return make_response({'msg': "success", 'url': f"https://{SERVER_IP}:8000/{md5hash}"}, 201)
 
     return make_response({'msg': "failed"}, 500)
 
