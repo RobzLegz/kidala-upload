@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import {DocumentIcon} from "@heroicons/react/solid"
+import { DocumentIcon } from '@heroicons/react/solid';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -9,6 +9,7 @@ function isFileImage(file: File) {
 function UploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
+    const [url, setUrl] = useState('');
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) {
@@ -45,23 +46,29 @@ function UploadForm() {
         await axios
             .post('https://46.109.36.103:8000/upload', formData, headers)
             .then((res) => {
-                console.log(res.data);
+                setUrl(res.data.url);
             })
             .catch((err) => {
-                if(!err.response){
+                if (!err.response) {
                     return console.log(err);
                 }
 
-                if(!err.response.data){
+                if (!err.response.data) {
                     return console.log(err);
                 }
-                
+
                 console.log(err.response.data);
             });
     };
 
+    const openUrl = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+
+        window.open(url);
+    };
+
     return (
-        <form className="w-80">
+        <form className="w-80 flex flex-col items-center justify-center">
             <div className="flex w-full items-center justify-center">
                 <input
                     type="file"
@@ -75,7 +82,7 @@ function UploadForm() {
                     htmlFor="selectFile"
                     className="cursor-pointer w-28 h-10 flex items-center justify-center text-center bg-white text-gray-900"
                 >
-                    {file ? "Change" : "Select"} file
+                    {file && !url ? 'Change' : 'Select'} file
                 </label>
 
                 <button
@@ -87,18 +94,25 @@ function UploadForm() {
                 </button>
             </div>
 
-            {filePreview && file ? (
+            {!url && filePreview && file ? (
                 <img
                     src={filePreview}
                     alt="file preview"
                     className="w-full mt-2"
                 />
-            ) : file ? (
+            ) : !url && file ? (
                 <div className="flex mt-2">
-                    <DocumentIcon className='text-white mr-1 h-6' />
+                    <DocumentIcon className="text-white mr-1 h-6" />
 
-                    <p className='text-white'>File is ready for upload</p>
+                    <p className="text-white">File is ready for upload</p>
                 </div>
+            ) : url ? (
+                <button
+                    className="w-40 h-10 bg-orange-200 mt-4"
+                    onClick={openUrl}
+                >
+                    Atvērt
+                </button>
             ) : null}
         </form>
     );
