@@ -1,5 +1,10 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import {DocumentIcon} from "@heroicons/react/solid"
+
+function isFileImage(file: File) {
+    return file && file['type'].split('/')[0] === 'image';
+}
 
 function UploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -10,9 +15,12 @@ function UploadForm() {
             return;
         }
 
-        const preview = URL.createObjectURL(e.target.files[0]);
+        if (isFileImage(e.target.files[0])) {
+            const preview = URL.createObjectURL(e.target.files[0]);
 
-        setFilePreview(preview);
+            setFilePreview(preview);
+        }
+
         setFile(e.target.files[0]);
     };
 
@@ -59,7 +67,7 @@ function UploadForm() {
                     htmlFor="selectFile"
                     className="cursor-pointer w-28 h-10 flex items-center justify-center text-center bg-white text-gray-900"
                 >
-                    Select file
+                    {file ? "Change" : "Select"} file
                 </label>
 
                 <button
@@ -71,12 +79,18 @@ function UploadForm() {
                 </button>
             </div>
 
-            {filePreview ? (
+            {filePreview && file ? (
                 <img
                     src={filePreview}
                     alt="file preview"
                     className="w-full mt-2"
                 />
+            ) : file ? (
+                <div className="flex mt-2">
+                    <DocumentIcon className='text-white mr-1 h-6' />
+
+                    <p className='text-white'>File is ready for upload</p>
+                </div>
             ) : null}
         </form>
     );
