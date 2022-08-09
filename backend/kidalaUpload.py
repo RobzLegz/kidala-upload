@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, send_file, send_from_directory, make
 from flask_cors import CORS
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
-from pathlib import Path, PurePath
+from pathlib import Path
 import hashlib
 import os
 
@@ -53,7 +53,7 @@ def upload():
 
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
-        file.save(UPLOAD_FOLDER / md5hash, secure_filename(file.filename))
+        file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
         fileentry = {
             'name': secure_filename(file.filename),
             'hash': md5hash  
