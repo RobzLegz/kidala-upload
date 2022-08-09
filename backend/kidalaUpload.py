@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, send_file, send_from_directory, make
 from flask_cors import CORS
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
+from pathlib import Path, PurePath
 import hashlib
 import os
 
@@ -10,7 +11,8 @@ CORS(app)
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
-UPLOAD_FOLDER = app.root_path + '\\files'
+
+UPLOAD_FOLDER = Path(app.root_path) / "files"
 
 mongodblink = os.getenv('MONGODBLINK')
 
@@ -20,7 +22,7 @@ dbfiles = db.files
 
 @app.route("/favicon.ico")
 def favicon():
-    return send_file(app.root_path + '\\favicon.ico')
+    return send_file(Path(app.root_path) / 'favicon.ico')
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
@@ -29,8 +31,7 @@ def downloadFile(filehash):
         if query == None:
             return make_response("file not found", 404)
         else:
-            return send_from_directory(os.path.join(f'{UPLOAD_FOLDER}\\{filehash}'), query["name"])
-
+            return send_from_directory(UPLOAD_FOLDER / filehash, query["name"])
 @app.route('/upload', methods=['POST'])
 def upload():
 
@@ -50,9 +51,9 @@ def upload():
         if dbfiles.find_one({'hash': md5hash}) != None:
             return make_response({'msg': "file exists", 'url': f"http://localhost:5000/{md5hash}"}, 200)
 
-        os.makedirs(f'{UPLOAD_FOLDER}\\{md5hash}', exist_ok=True)
+        os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
-        file.save(os.path.join(f'{UPLOAD_FOLDER}\\{md5hash}', secure_filename(file.filename)))
+        file.save(UPLOAD_FOLDER / md5hash, secure_filename(file.filename))
         fileentry = {
             'name': secure_filename(file.filename),
             'hash': md5hash  
