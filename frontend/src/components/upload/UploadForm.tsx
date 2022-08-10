@@ -107,12 +107,16 @@ function UploadForm() {
                     <p className="text-white">File is ready for upload</p>
                 </div>
             ) : url ? (
-                <button
-                    className="w-40 h-10 bg-orange-200 mt-4"
-                    onClick={openUrl}
-                >
-                    Atvērt
-                </button>
+                <>
+                    <button
+                        className="w-40 h-10 bg-orange-200 mt-4"
+                        onClick={openUrl}
+                    >
+                        Atvērt
+                    </button>
+
+                    <p className='text-white border-2 border-white text-center mt-4 p-2'>{url}</p>
+                </>
             ) : null}
         </form>
     );
