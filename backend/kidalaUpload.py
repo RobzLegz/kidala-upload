@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, send_file, send_from_directory, make_response
 from flask_cors import CORS
-from pymongo import MongoClient
+from pymongo import MongoClient, ObjectId
 from werkzeug.utils import secure_filename
 from pathlib import Path
 import hashlib
@@ -47,7 +47,7 @@ def delete_file_locally():
     if not objectid:
         return make_response({'message': 'no objectid'})
 
-    query = dbfiles.find_one({'_id': objectid})
+    query = dbfiles.find_one({'_id': ObjectId(objectid)})
     if query == None:
         return make_response({'msg': 'file not found'}, 404)
     else:
