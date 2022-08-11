@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, send_file, send_from_directory, make_response
 from flask_cors import CORS
-from pymongo import MongoClient, ObjectId
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 from werkzeug.utils import secure_filename
 from pathlib import Path
 import hashlib
