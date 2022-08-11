@@ -15,6 +15,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 UPLOAD_FOLDER = Path(app.root_path) / "files"
 SERVER_IP = os.getenv('SERVER_IP')
 MONGO_DB_LINK = os.getenv('MONGODBLINK')
+app.config['ADMIN_TOKEN'] = os.getenv('ADMIN_TOKEN')
 
 dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
@@ -24,6 +25,36 @@ dbfiles = db.files
 def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
 
+def token_required(f):
+   def decorator(*args, **kwargs):
+       token = None
+       if 'x-access-tokens' in request.headers:
+           token = request.headers['x-access-tokens']
+ 
+       if not token:
+           return make_response({'message': 'a valid token is missing'}, 401)
+       if token != app.config['ADMIN_TOKEN']:
+           return make_response({'message': 'token is invalid'}, 401)
+ 
+       return f(*args, **kwargs)
+   return decorator
+
+@app.route("/admin/delete", methods=['DELETE'])
+@token_required
+def delete_file_locally():
+    if 'objectid' in request.body:
+        objectid =  request.body['objectid']
+    if not objectid:
+        return make_response({'message': 'no objectid'})
+
+    query = dbfiles.find_one({'_id': objectid})
+    if query == None:
+        return make_response({'msg': 'file not found'}, 404)
+    else:
+        Path(UPLOAD_FOLDER / query['hash'] / query['name']).unlink()
+        Path(UPLOAD_FOLDER / query['hash']).rmdir()
+        return make_response({'msg': 'file removed'}, 200)
+
 @app.route("/<filehash>")
 def downloadFile(filehash):
     if filehash != "":
@@ -32,6 +63,8 @@ def downloadFile(filehash):
             return make_response("file not found", 404)
         else:
             return send_from_directory(UPLOAD_FOLDER / filehash, query["name"])
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
 
