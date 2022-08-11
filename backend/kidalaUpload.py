@@ -29,8 +29,8 @@ def favicon():
 def token_required(f):
    def decorator(*args, **kwargs):
        token = None
-       if 'x-access-tokens' in request.headers:
-           token = request.headers['x-access-tokens']
+       if 'x-access-token' in request.headers:
+           token = request.headers['x-access-token']
  
        if not token:
            return make_response({'message': 'a valid token is missing'}, 401)
@@ -40,11 +40,11 @@ def token_required(f):
        return f(*args, **kwargs)
    return decorator
 
-@app.route("/admin/delete", methods=['DELETE'])
+@app.route("/admin/delete", methods=['POST'])
 @token_required
-def delete_file_locally():
-    if 'objectid' in request.body:
-        objectid =  request.body['objectid']
+def deleteFile():
+    if 'objectid' in request.json:
+        objectid =  request.json['objectid']
     if not objectid:
         return make_response({'message': 'no objectid'})
 
@@ -54,7 +54,15 @@ def delete_file_locally():
     else:
         Path(UPLOAD_FOLDER / query['hash'] / query['name']).unlink()
         Path(UPLOAD_FOLDER / query['hash']).rmdir()
-        return make_response({'msg': 'file removed'}, 200)
+
+    deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
+    return make_response({'msg': 'file removed'}, 200)
+
+@app.route("/admin/allfiles", methods=['GET'])
+@token_required
+def getAllFiles():
+    query = dbfiles.find()
+    return query
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
