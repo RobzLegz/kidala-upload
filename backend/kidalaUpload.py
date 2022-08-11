@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, request, redirect, send_file, send_from_directory, make_response
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -28,21 +29,22 @@ def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
 
 def token_required(f):
-   def decorator(*args, **kwargs):
-       token = None
-       if 'x-access-token' in request.headers:
-           token = request.headers['x-access-token']
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = None
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
  
-       if not token:
-           return make_response({'message': 'a valid token is missing'}, 401)
-       if token != app.config['ADMIN_TOKEN']:
-           return make_response({'message': 'token is invalid'}, 401)
+        if not token:
+            return make_response({'message': 'a valid token is missing'}, 401)
+        if token != app.config['ADMIN_TOKEN']:
+            return make_response({'message': 'token is invalid'}, 401)
  
-       return f(*args, **kwargs)
-   return decorator
+        return f(*args, **kwargs)
+    return decorator
 
-@token_required
 @app.route("/admin/delete", methods=['POST'])
+@token_required
 def deleteFile():
     if 'objectid' in request.json:
         objectid =  request.json['objectid']
@@ -59,8 +61,8 @@ def deleteFile():
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
-@token_required
 @app.route("/admin/allfiles", methods=['GET'])
+@token_required
 def getAllFiles():
     query = dbfiles.find()
     return dumps(query)
