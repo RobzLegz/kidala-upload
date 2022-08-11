@@ -41,8 +41,8 @@ def token_required(f):
        return f(*args, **kwargs)
    return decorator
 
-@app.route("/admin/delete", methods=['POST'])
 @token_required
+@app.route("/admin/delete", methods=['POST'])
 def deleteFile():
     if 'objectid' in request.json:
         objectid =  request.json['objectid']
@@ -59,8 +59,8 @@ def deleteFile():
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
-@app.route("/admin/allfiles", methods=['GET'])
 @token_required
+@app.route("/admin/allfiles", methods=['GET'])
 def getAllFiles():
     query = dbfiles.find()
     return dumps(query)
