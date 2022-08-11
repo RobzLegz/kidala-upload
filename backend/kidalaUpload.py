@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, send_file, send_from_directory, make
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from bson.json_util import dumps
 from werkzeug.utils import secure_filename
 from pathlib import Path
 import hashlib
@@ -62,7 +63,7 @@ def deleteFile():
 @token_required
 def getAllFiles():
     query = dbfiles.find()
-    return query
+    return dumps(query)
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
