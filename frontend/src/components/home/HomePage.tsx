@@ -1,6 +1,6 @@
 import React from 'react';
 // import Ads from '../myads/ads';
-import UploadForm from '../upload/UploadForm';
+import UploadForm from './upload/UploadForm';
 
 function HomePage() {
     return (
