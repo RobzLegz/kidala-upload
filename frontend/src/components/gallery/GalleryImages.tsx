@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +19,7 @@ function GalleryImages() {
     }, []);
 
     return (
-        <div className="mt-10 grid grid-cols-3 place-content-center w-full overflow-hidden sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-2">
+        <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-2">
             {appInfo.files &&
                 appInfo.files.map((file) => {
                     if (
@@ -34,8 +35,9 @@ function GalleryImages() {
 
                     return (
                         <div
-                            className="w-full h-full flex items-center justify-center group relative"
+                            className="w-full h-full flex items-center justify-center group relative cursor-pointer"
                             key={file.name}
+                            onClick={() => router.push(`/files/${file.hash}`)}
                         >
                             <img
                                 src={`${BASE_URL}/${file.hash}`}
@@ -46,16 +48,11 @@ function GalleryImages() {
 
                             <div className="absolute left-0 top-0 w-full h-full z-20" />
 
-                            <div
-                                className="hidden group-hover:flex absolute left-0 top-0 lg:w-[600px] z-10 cursor-pointer"
-                                onClick={() =>
-                                    router.push(`/files/${file.hash}`)
-                                }
-                            >
-                                <div className="w-full">
+                            <div className="hidden sm:group-hover:flex absolute left-0 top-0 lg:w-[600px] z-10">
+                                <div className="w-full h-full relative">
                                     <img
-                                        src={file.hash}
-                                        className="object-cover w-full"
+                                        src={`${BASE_URL}/${file.hash}`}
+                                        className="object-cover w-full h-full"
                                         alt={file.name}
                                         draggable={false}
                                     />
