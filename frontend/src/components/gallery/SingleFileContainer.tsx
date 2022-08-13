@@ -1,8 +1,14 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { BASE_URL } from '../../requests/routes';
 import GalleryImages from './GalleryImages';
 
-function GalleryContainet() {
+function SingleFileContainer() {
+    const router = useRouter();
+
+    const { hash } = router.query;
+
     return (
         <div className="w-full bg-orange-500 min-h-screen pt-10">
             <Link href="/">
@@ -11,9 +17,13 @@ function GalleryContainet() {
                 </p>
             </Link>
 
+            <section className="w-full p-4">
+                <img src={`${BASE_URL}/${hash}`} alt={String(hash)} className="w-full h-full object-cover" />
+            </section>
+
             <GalleryImages />
         </div>
     );
 }
 
-export default GalleryContainet;
+export default SingleFileContainer;
