@@ -28,6 +28,7 @@ function UploadForm() {
 
         setFile(e.target.files[0]);
         setSavedToClipboard(false);
+        setUrl('');
     };
 
     const saveToClipboard = (
@@ -96,18 +97,18 @@ function UploadForm() {
                         Atvērt
                     </button>
 
-                    <div className="flex w-full pl-2 border-2 border-white items-center justify-center mt-4">
+                    <button
+                        className="flex w-full pl-2 border-2 border-white items-center justify-center mt-4"
+                        onClick={saveToClipboard}
+                    >
                         <p className="text-white text-center truncate flex-1 my-2">
                             {url}
                         </p>
 
-                        <button
-                            className="h-full flex items-center justify-center w-10 bg-black"
-                            onClick={saveToClipboard}
-                        >
+                        <div className="h-full flex items-center justify-center w-10 bg-black">
                             <ClipboardCopyIcon className="text-white h-6" />
-                        </button>
-                    </div>
+                        </div>
+                    </button>
 
                     {savedToClipboard ? (
                         <small className="text-black text-center mt-2">
