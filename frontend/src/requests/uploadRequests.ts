@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
+import { clearNotification } from '../redux/slices/notificationSlice';
 import { UPLOAD_BASE } from './routes';
 
 export const uploadFile = async (
@@ -30,6 +31,7 @@ export const uploadFile = async (
         .then((res) => {
             setUrl(res.data.url);
             dispatch(addNewFile(res.data.url));
+            dispatch(clearNotification());
         })
         .catch((err) => {
             if (!err.response) {

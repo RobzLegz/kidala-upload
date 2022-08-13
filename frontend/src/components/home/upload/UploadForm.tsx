@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
 import { uploadFile } from '../../../requests/uploadRequests';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    NotificationInfo,
+    selectNotification,
+    setNotification,
+} from '../../../redux/slices/notificationSlice';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -9,6 +14,8 @@ function isFileImage(file: File) {
 
 function UploadForm() {
     const dispatch = useDispatch();
+
+    const notificationInfo: NotificationInfo = useSelector(selectNotification);
 
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
@@ -20,13 +27,24 @@ function UploadForm() {
             return;
         }
 
-        if (isFileImage(e.target.files[0])) {
-            const preview = URL.createObjectURL(e.target.files[0]);
+        const electedFile = e.target.files[0];
+
+        if (electedFile.size > 1024 * 1024) {
+            return dispatch(
+                setNotification({
+                    type: 'error',
+                    message: 'File size too large',
+                })
+            );
+        }
+
+        if (isFileImage(electedFile)) {
+            const preview = URL.createObjectURL(electedFile);
 
             setFilePreview(preview);
         }
 
-        setFile(e.target.files[0]);
+        setFile(electedFile);
         setSavedToClipboard(false);
         setUrl('');
     };
@@ -51,6 +69,10 @@ function UploadForm() {
 
     return (
         <form className="w-80 flex flex-col items-center justify-center">
+            {notificationInfo.message ? (
+                <p className="bg-red-600 py-1 px-4 rounded-lg text-white mb-4">{notificationInfo.message}</p>
+            ) : null}
+
             <div className="flex w-full items-center justify-center">
                 <input
                     type="file"

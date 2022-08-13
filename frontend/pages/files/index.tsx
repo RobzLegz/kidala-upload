@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import GalleryContainer from '../src/components/gallery/GalleryContainer';
+import GalleryContainer from '../../src/components/gallery/GalleryContainer';
 
 export default function Home() {
     return (
