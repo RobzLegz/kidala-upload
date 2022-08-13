@@ -1,34 +1,69 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FileInterface } from "../../interfaces/file";
 
-export interface Product{
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-    sold: number;
-    category: string;
-    images: string[];
+export interface AppInfo {
+    files: FileInterface[] | null;
 }
 
-interface State{
-    products: Product[] | null;
-}
-
-const initialState: State = {
-    products: null
-}
+const initialState: AppInfo = {
+    files: null,
+};
 
 export const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
-        
+        setFiles: (state, action) => {
+            state = {
+                ...state,
+                files: action.payload,
+            };
+
+            return state;
+        },
+        addNewFile: (state, action) => {
+            let prods: FileInterface[] = [];
+
+            if (state.files) {
+                prods = state.files;
+            }
+
+            state = {
+                ...state,
+                files: [...prods, action.payload],
+            };
+
+            return state;
+        },
+        updateFileRdx: (state, action) => {
+            const updatedFile: FileInterface = action.payload;
+
+            if (!state.files) {
+                return state;
+            }
+
+            const newfiles: FileInterface[] = state.files.map((prod) => {
+                if (prod._id === updatedFile._id) {
+                    prod = updatedFile;
+                }
+
+                return prod;
+            });
+
+            state = {
+                ...state,
+                files: newfiles,
+            };
+
+            return state;
+        },
     },
 });
 
 export const {
-
+    setFiles,
+    addNewFile,
+    updateFileRdx,
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

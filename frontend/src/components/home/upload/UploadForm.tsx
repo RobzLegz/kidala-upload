@@ -1,15 +1,19 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import { DocumentIcon } from '@heroicons/react/solid';
+import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
+import { uploadFile } from '../../../requests/uploadRequests';
+import { useDispatch } from 'react-redux';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
 }
 
 function UploadForm() {
+    const dispatch = useDispatch();
+
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
     const [url, setUrl] = useState('');
+    const [savedToClipboard, setSavedToClipboard] = useState(false);
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) {
@@ -23,46 +27,23 @@ function UploadForm() {
         }
 
         setFile(e.target.files[0]);
+        setSavedToClipboard(false);
     };
 
-    const uploadFile = async (
+    const saveToClipboard = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
 
-        if (!file) {
-            return;
-        }
+        navigator.clipboard.writeText(url);
 
-        let formData = new FormData();
-        formData.append('file', file);
-
-        const headers = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        };
-
-        await axios
-            .post('https://46.109.36.103:8000/upload', formData, headers)
-            .then((res) => {
-                setUrl(res.data.url);
-            })
-            .catch((err) => {
-                if (!err.response) {
-                    return console.log(err);
-                }
-
-                if (!err.response.data) {
-                    return console.log(err);
-                }
-
-                console.log(err.response.data);
-            });
+        setSavedToClipboard(true);
     };
 
     const openUrl = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+
+        setSavedToClipboard(false);
 
         window.open(url);
     };
@@ -87,7 +68,7 @@ function UploadForm() {
 
                 <button
                     type="submit"
-                    onClick={(e) => uploadFile(e)}
+                    onClick={(e) => uploadFile(e, setUrl, dispatch, file)}
                     className="bg-gray-900 text-white px-10 h-10 ml-2 flex-1"
                 >
                     Upload
@@ -115,7 +96,24 @@ function UploadForm() {
                         Atvērt
                     </button>
 
-                    <p className='text-white border-2 border-white text-center mt-4 p-2'>{url}</p>
+                    <div className="flex w-full pl-2 border-2 border-white items-center justify-center mt-4">
+                        <p className="text-white text-center truncate flex-1 my-2">
+                            {url}
+                        </p>
+
+                        <button
+                            className="h-full flex items-center justify-center w-10 bg-black"
+                            onClick={saveToClipboard}
+                        >
+                            <ClipboardCopyIcon className="text-white h-6" />
+                        </button>
+                    </div>
+
+                    {savedToClipboard ? (
+                        <small className="text-black text-center mt-2">
+                            Copied
+                        </small>
+                    ) : null}
                 </>
             ) : null}
         </form>
