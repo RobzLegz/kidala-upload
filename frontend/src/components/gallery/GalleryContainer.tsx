@@ -39,12 +39,14 @@ function GalleryContainet() {
                         }
 
                         return (
-                            <img
-                                src={`${BASE_URL}/${file.hash}`}
-                                key={file.name}
-                                className="object-cover m-1 w-full h-full"
-                                alt={file.name}
-                            />
+                            <div className="w-full h-full flex items-center justify-center">
+                                <img
+                                    src={`${BASE_URL}/${file.hash}`}
+                                    key={file.name}
+                                    className="object-cover w-full h-full"
+                                    alt={file.name}
+                                />
+                            </div>
                         );
                     })}
             </div>
