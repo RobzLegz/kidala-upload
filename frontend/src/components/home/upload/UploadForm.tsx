@@ -68,9 +68,9 @@ function UploadForm() {
     };
 
     return (
-        <form className="w-80 flex flex-col items-center justify-center">
+        <form className="w-96 flex flex-col items-center justify-center">
             {notificationInfo.message ? (
-                <p className="bg-red-600 py-1 px-4 rounded-lg text-white mb-4">{notificationInfo.message}</p>
+                <p className="bg-red-600 py-1 px-4 text-white font-mono mb-4">{notificationInfo.message}</p>
             ) : null}
 
             <div className="flex w-full items-center justify-center">
@@ -84,17 +84,17 @@ function UploadForm() {
 
                 <label
                     htmlFor="selectFile"
-                    className="cursor-pointer w-28 h-10 flex items-center justify-center text-center bg-white text-gray-900"
+                    className="cursor-pointer w-32 h-10 flex items-center justify-center text-center bg-white text-black font-mono"
                 >
-                    {file && !url ? 'Change' : 'Select'} file
+                    {file && !url ? 'change' : 'select'} file
                 </label>
 
                 <button
                     type="submit"
                     onClick={(e) => uploadFile(e, setUrl, dispatch, file)}
-                    className="bg-gray-900 text-white px-10 h-10 ml-2 flex-1"
+                    className="bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono"
                 >
-                    Upload
+                    upload
                 </button>
             </div>
 
@@ -102,39 +102,39 @@ function UploadForm() {
                 <img
                     src={filePreview}
                     alt="file preview"
-                    className="w-full mt-2"
+                    className="w-full mt-12"
                 />
             ) : !url && file ? (
-                <div className="flex mt-2">
+                <div className="flex mt-5 bg-green-700 p-2">
                     <DocumentIcon className="text-white mr-1 h-6" />
 
-                    <p className="text-white">File is ready for upload</p>
+                    <p className="text-white">file is ready for upload</p>
                 </div>
             ) : url ? (
                 <>
                     <button
-                        className="w-40 h-10 bg-orange-200 mt-4"
+                        className="w-10/12 h-12 mt-12 text-xl bg-white font-mono "
                         onClick={openUrl}
                     >
-                        Atvērt
+                        open
                     </button>
 
                     <button
-                        className="flex w-full pl-2 border-2 border-white items-center justify-center mt-4"
+                        className="flex w-full pl-4 bg-emerald-600 items-center justify-center mt-4"
                         onClick={saveToClipboard}
                     >
-                        <p className="text-white text-center truncate flex-1 my-2">
+                        <p className="text-white text-center truncate flex-1 my-2 font-mono">
                             {url}
                         </p>
 
-                        <div className="h-full flex items-center justify-center w-10 bg-black">
+                        <div className="h-full flex items-center justify-center w-11 border-blue-300 bg-black">
                             <ClipboardCopyIcon className="text-white h-6" />
                         </div>
                     </button>
 
                     {savedToClipboard ? (
-                        <small className="text-black text-center mt-2">
-                            Copied
+                        <small className="text-emerald-500 text-center mt-2 font-mono">
+                            copied to clipboard
                         </small>
                     ) : null}
                 </>
