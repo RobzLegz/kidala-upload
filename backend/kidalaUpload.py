@@ -1,9 +1,8 @@
 from functools import wraps
-from flask import Flask, request, redirect, send_file, send_from_directory, make_response
+from flask import Flask, request, redirect, send_file, make_response
 from flask_cors import CORS
 from pymongo import MongoClient
-from bson.objectid import ObjectId
-from bson.json_util import dumps
+from bson import ObjectId, dumps
 from werkzeug.utils import secure_filename
 from pathlib import Path
 import hashlib
@@ -99,11 +98,14 @@ def upload():
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
+        
         fileentry = {
             'name': secure_filename(file.filename),
-            'hash': md5hash  
+            'hash': md5hash ,
+            'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size
         }
         result = dbfiles.insert_one(fileentry)
+        
         return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash}, 201)
 
     return make_response({'msg': "failed"}, 500)
