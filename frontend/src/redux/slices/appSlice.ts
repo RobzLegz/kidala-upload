@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FileInterface } from "../../interfaces/file";
+import { shuffle } from "../../utils/shuffleArray";
 
 export interface AppInfo {
     files: FileInterface[] | null;
@@ -16,7 +17,7 @@ export const appSlice = createSlice({
         setFiles: (state, action) => {
             state = {
                 ...state,
-                files: action.payload,
+                files: shuffle(action.payload),
             };
 
             return state;
