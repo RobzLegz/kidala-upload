@@ -74,7 +74,7 @@ function UploadForm() {
     };
 
     return (
-        <form className="w-96 flex flex-col items-center justify-center">
+        <form className="w-full max-w-[400px] flex flex-col items-center justify-center px-2 sm:px-0">
             {notificationInfo.message ? (
                 <p className="bg-red-600 py-1 px-4 text-white font-mono mb-4">
                     {notificationInfo.message}
@@ -99,8 +99,9 @@ function UploadForm() {
 
                 <button
                     type="submit"
-                    onClick={(e) => uploadFile(e, setUrl, dispatch, file)}
-                    className="bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono"
+                    onClick={(e) => uploadFile(e, setUrl, dispatch, setFile, file)}
+                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${!file ? "opacity-75" : ""}`}
+                    disabled={!file}
                 >
                     upload
                 </button>
@@ -121,7 +122,7 @@ function UploadForm() {
             ) : url ? (
                 <>
                     <button
-                        className="w-10/12 h-12 mt-12 text-xl bg-white font-mono "
+                        className="w-[250px] h-12 mt-12 text-xl bg-white font-mono "
                         onClick={openUrl}
                     >
                         open
