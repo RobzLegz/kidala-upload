@@ -3,7 +3,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className='absolute w-full py-8 flex items-center justify-center bottom-0 left-0'>
+    <footer className='w-full py-8 flex items-center justify-center'>
         <Link href="/gallery"><p className='link'>Gallery</p></Link>
     </footer>
   )

@@ -5,10 +5,12 @@ import UploadForm from './upload/UploadForm';
 
 function HomePage() {
     return (
-        <div className="page flex items-center justify-center flex-col bg-sky-900">
-            <h1 className="mb-5 text-white font-mono">kidala upload</h1>
+        <div className="w-full min-h-screen flex items-center justify-between flex-col bg-sky-900">
+            <div className="flex flex-col h-full items-center justify-center w-full pt-20">
+                <h1 className="mb-5 text-white font-mono">kidala upload</h1>
 
-            <UploadForm />
+                <UploadForm />
+            </div>
 
             <Footer />
             {/* <Ads /> */}
