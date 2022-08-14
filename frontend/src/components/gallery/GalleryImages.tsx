@@ -52,7 +52,7 @@ function GalleryImages() {
                             <div className="absolute left-0 top-0 w-full h-full z-20" />
 
                             <div className="hidden sm:group-hover:flex absolute left-0 top-0 lg:w-[600px] z-10">
-                                <div className="max-w-full max-h-full w-[600px] relative h-[600px]">
+                                <div className="max-w-full max-h-full w-96 h-96 2xl:w-[600px] 2xl:h-[600px] relative ">
                                     <Image
                                         src={`${BASE_URL}/${file.hash}`}
                                         alt={file.name}
