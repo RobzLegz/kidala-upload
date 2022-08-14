@@ -57,7 +57,8 @@ function UploadForm() {
     ) => {
         e.preventDefault();
 
-        navigator.clipboard.writeText(url);
+        const kidala_url = url.replace(BASE_URL, `${window.location.href}gallery/`);
+        navigator.clipboard.writeText(kidala_url);
 
         setSavedToClipboard(true);
     };
