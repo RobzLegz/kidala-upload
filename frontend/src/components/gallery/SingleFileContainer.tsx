@@ -19,7 +19,7 @@ function SingleFileContainer() {
             </Link>
 
             <section className="w-full flex items-center justify-center mt-2">
-                <div className="relative w-full max-w-[600px] h-[600px]">
+                <div className="relative w-full max-w-[800px] h-[600px]">
                     <Image
                         src={`${BASE_URL}/${hash}`}
                         alt={String(hash)}
