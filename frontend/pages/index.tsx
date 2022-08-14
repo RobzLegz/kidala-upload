@@ -5,10 +5,10 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>Kidala upload</title>
+                <title>kidala upload</title>
                 <meta
                     name="description"
-                    content="Kidala file hosting services"
+                    content="kidala file hosting services"
                 />
                 <script
                     async
