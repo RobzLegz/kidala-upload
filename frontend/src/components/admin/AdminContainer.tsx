@@ -1,4 +1,4 @@
-import { TrashIcon } from '@heroicons/react/solid';
+import { DocumentIcon, TrashIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,34 +18,35 @@ function AdminContainer() {
     }, []);
 
     return (
-        <div className="page flex items-start justify-start">
+        <div className="w-full min-h-screen flex items-start justify-start">
             <div className="w-full max-w-[700px] flex items-start justify-start flex-col">
                 {appInfo.files &&
                     appInfo.files.map((file) => {
-                        if (
-                            !file.name.includes('.png') &&
-                            !file.name.includes('.jpg') &&
-                            !file.name.includes('.gif') &&
-                            !file.name.includes('.jpeg') &&
-                            !file.name.includes('.svg') &&
-                            !file.name.includes('.webp')
-                        ) {
-                            return null;
-                        }
-
                         return (
                             <div
                                 className="flex items-start justify-start w-full mb-2"
                                 key={file.name}
                             >
-                                <Image
-                                    src={`${BASE_URL}/${file.hash}`}
-                                    alt={file.name}
-                                    draggable={false}
-                                    objectFit="cover"
-                                    width={40}
-                                    height={40}
-                                />
+                                {!file.name.includes('.png') &&
+                                !file.name.includes('.jpg') &&
+                                !file.name.includes('.gif') &&
+                                !file.name.includes('.jpeg') &&
+                                !file.name.includes('.svg') &&
+                                !file.name.includes('.jfif') &&
+                                !file.name.includes('.webp') ? (
+                                    <div className="flex h-full items-center justify-center w-10">
+                                        <DocumentIcon className="text-white h-8" />
+                                    </div>
+                                ) : (
+                                    <Image
+                                        src={`${BASE_URL}/${file.hash}`}
+                                        alt={file.name}
+                                        draggable={false}
+                                        objectFit="cover"
+                                        width={40}
+                                        height={40}
+                                    />
+                                )}
 
                                 <div className="flex-1 flex items-start justify-start h-full ml-2">
                                     <div className="flex flex-col justify-between items-start h-full w-full max-w-[300px]">

@@ -20,6 +20,8 @@ export default function Home() {
             </Head>
 
             <AdminContainer />
+
+            <Footer />
         </div>
     );
 }
