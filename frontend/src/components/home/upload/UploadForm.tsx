@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
 import { uploadFile } from '../../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    clearNotification,
     NotificationInfo,
     selectNotification,
     setNotification,
@@ -45,6 +46,7 @@ function UploadForm() {
             setFilePreview(preview);
         }
 
+        dispatch(clearNotification());
         setFile(electedFile);
         setSavedToClipboard(false);
         setUrl('');
@@ -65,15 +67,18 @@ function UploadForm() {
 
         setSavedToClipboard(false);
 
-        const kidala_url = url.replace(BASE_URL, "/gallery/");
+        const kidala_url = url.replace(BASE_URL, '/gallery/');
 
         window.open(kidala_url);
+        dispatch(clearNotification());
     };
 
     return (
         <form className="w-96 flex flex-col items-center justify-center">
             {notificationInfo.message ? (
-                <p className="bg-red-600 py-1 px-4 text-white font-mono mb-4">{notificationInfo.message}</p>
+                <p className="bg-red-600 py-1 px-4 text-white font-mono mb-4">
+                    {notificationInfo.message}
+                </p>
             ) : null}
 
             <div className="flex w-full items-center justify-center">
