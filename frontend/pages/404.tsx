@@ -1,14 +1,14 @@
 import Head from 'next/head';
-import HomePage from '../src/components/home/HomePage';
+import FourOhFourContainer from '../src/components/fourohfour/FourOhFourContainer';
 
-export default function Home() {
+export default function FourOhFour() {
     return (
         <div className="page">
             <Head>
                 <title>kidala upload</title>
                 <meta
                     name="description"
-                    content="kidala file hosting services"
+                    content="Keep calm and be kidala 👑"
                 />
                 <script
                     async
@@ -18,7 +18,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <HomePage />
+            <FourOhFourContainer />
         </div>
     );
 }

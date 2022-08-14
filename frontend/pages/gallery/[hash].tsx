@@ -1,14 +1,19 @@
 import Head from 'next/head';
-import HomePage from '../src/components/home/HomePage';
+import { useRouter } from 'next/router';
+import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
 
 export default function Home() {
+    const router = useRouter();
+
+    const { hash } = router.query;
+
     return (
         <div className="page">
             <Head>
-                <title>kidala upload</title>
+                <title>Kidala upload | {hash}</title>
                 <meta
                     name="description"
-                    content="kidala file hosting services"
+                    content="Kidala life. Max kidala. Safe pacans 🔥 stafaars. Max safe pacani utt. Only at kidala-upload.vercel.app. Kidala hosting services. 🌐🤙🏿🅿😱"
                 />
                 <script
                     async
@@ -18,7 +23,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <HomePage />
+            <SingleFileContainer />
         </div>
     );
 }

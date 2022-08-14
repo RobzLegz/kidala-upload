@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 @layer components {
+    body{
+        @apply bg-sky-900;
+    }
+
     h1{
         @apply text-4xl font-extrabold;
     }
+    
     .page {
-        @apply h-screen w-full;
+        @apply h-screen w-full bg-sky-900;
+    }
+
+    .link{
+        @apply text-white hover:underline focus:underline;
     }
 }
