@@ -13,20 +13,16 @@ function SingleFileContainer() {
     return (
         <div className="w-full min-h-screen pt-10 px-2">
             <Link href="/">
-                <p className="link">
-                    Upload more
-                </p>
+                <p className="link">Upload more</p>
             </Link>
 
             <section className="w-full flex items-center justify-center mt-2">
-                <div className="relative w-full max-w-[800px] h-[600px]">
-                    <Image
-                        src={`${BASE_URL}/${hash}`}
-                        alt={String(hash)}
-                        layout="fill"
-                        objectFit="cover"
-                    />
-                </div>
+                <img
+                    src={`${BASE_URL}/${hash}`}
+                    alt={String(hash)}
+                    className="relative object-cover max-h-[600px]"
+                    draggable={false}
+                />
             </section>
 
             <GalleryImages />
