@@ -18,7 +18,7 @@ function AdminContainer() {
     }, []);
 
     return (
-        <div className="page flex items-start justify-center">
+        <div className="page flex items-start justify-start">
             <div className="w-full max-w-[700px] flex items-start justify-start flex-col">
                 {appInfo.files &&
                     appInfo.files.map((file) => {
@@ -35,7 +35,7 @@ function AdminContainer() {
 
                         return (
                             <div
-                                className="flex items-center justify-center w-full mb-2"
+                                className="flex items-start justify-start w-full mb-2"
                                 key={file.name}
                             >
                                 <Image
@@ -48,7 +48,7 @@ function AdminContainer() {
                                 />
 
                                 <div className="flex-1 flex items-start justify-start h-full ml-2">
-                                    <div className="flex flex-col justify-between items-start h-full w-[300px]">
+                                    <div className="flex flex-col justify-between items-start h-full w-full max-w-[300px]">
                                         <p className="text-white">
                                             {file.name}
                                         </p>
