@@ -1,4 +1,4 @@
-import { DocumentIcon, TrashIcon } from '@heroicons/react/solid';
+import { DocumentIcon, FolderOpenIcon, TrashIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,7 +58,13 @@ function AdminContainer() {
                                             {file.hash}
                                         </small>
                                     </div>
-
+                                    
+                                    <button className="bg-green-500 h-8 w-12 flex items-center justify-center"
+                                        onClick={() =>
+                                            open(`https://46.109.36.103/${file.hash}`)
+                                        }>
+                                        <FolderOpenIcon className='text-white h-5'/>
+                                    </button>
                                     <button
                                         className="bg-red-500 h-8 w-8 flex items-center justify-center"
                                         onClick={() =>
