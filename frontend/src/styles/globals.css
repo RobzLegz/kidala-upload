@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+    body{
+        @apply bg-sky-900;
+    }
+
     h1{
         @apply text-4xl font-extrabold;
     }

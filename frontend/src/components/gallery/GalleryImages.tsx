@@ -39,22 +39,26 @@ function GalleryImages() {
                             key={file.name}
                             onClick={() => router.push(`/files/${file.hash}`)}
                         >
-                            <img
-                                src={`${BASE_URL}/${file.hash}`}
-                                className="object-cover w-full h-full"
-                                alt={file.name}
-                                draggable={false}
-                            />
+                            <div className="w-[200px] h-[200px] max-w-full max-h-full relative">
+                                <Image
+                                    src={`${BASE_URL}/${file.hash}`}
+                                    alt={file.name}
+                                    draggable={false}
+                                    objectFit="cover"
+                                    layout="fill"
+                                />
+                            </div>
 
                             <div className="absolute left-0 top-0 w-full h-full z-20" />
 
                             <div className="hidden sm:group-hover:flex absolute left-0 top-0 lg:w-[600px] z-10">
-                                <div className="w-full h-full relative">
-                                    <img
+                                <div className="max-w-full max-h-full w-[600px] relative h-[600px]">
+                                    <Image
                                         src={`${BASE_URL}/${file.hash}`}
-                                        className="object-cover w-full h-full"
                                         alt={file.name}
                                         draggable={false}
+                                        objectFit="cover"
+                                        layout="fill"
                                     />
                                 </div>
                             </div>
