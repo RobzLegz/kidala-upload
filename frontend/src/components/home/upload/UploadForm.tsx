@@ -7,6 +7,7 @@ import {
     selectNotification,
     setNotification,
 } from '../../../redux/slices/notificationSlice';
+import { BASE_URL } from '../../../requests/routes';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -64,7 +65,9 @@ function UploadForm() {
 
         setSavedToClipboard(false);
 
-        window.open(url);
+        const kidala_url = url.replace(BASE_URL, "/gallery/");
+
+        window.open(kidala_url);
     };
 
     return (
