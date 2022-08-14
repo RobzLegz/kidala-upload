@@ -4,7 +4,7 @@ import GalleryImages from './GalleryImages';
 
 function GalleryContainer() {
     return (
-        <div className="w-full min-h-screen pt-10 px-2 bg-sky-900">
+        <div className="w-full min-h-screen pt-10 px-2">
             <Link href="/">
                 <p className="text-white hover:underline focus:underline">
                     Upload more
