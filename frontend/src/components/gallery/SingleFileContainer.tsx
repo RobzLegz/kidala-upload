@@ -13,7 +13,7 @@ function SingleFileContainer() {
     return (
         <div className="w-full min-h-screen pt-10 px-2">
             <Link href="/">
-                <p className="text-white hover:underline focus:underline">
+                <p className="link">
                     Upload more
                 </p>
             </Link>
