@@ -9,6 +9,7 @@ export const uploadFile = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
+    setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file?: File | null
 ) => {
     e.preventDefault();
@@ -29,10 +30,11 @@ export const uploadFile = async (
     await axios
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
-            console.log(res.data)
+            console.log(res.data);
             setUrl(res.data.url);
             dispatch(addNewFile(res.data.url));
             dispatch(clearNotification());
+            setFile(null);
         })
         .catch((err) => {
             if (!err.response) {
