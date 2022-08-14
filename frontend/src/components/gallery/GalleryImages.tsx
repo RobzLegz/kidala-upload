@@ -37,7 +37,7 @@ function GalleryImages() {
                         <div
                             className="w-full h-full flex items-center justify-center group relative cursor-pointer"
                             key={file.name}
-                            onClick={() => router.push(`/files/${file.hash}`)}
+                            onClick={() => router.push(`/gallery/${file.hash}`)}
                         >
                             <div className="w-[200px] h-[200px] max-w-full max-h-full relative">
                                 <Image
