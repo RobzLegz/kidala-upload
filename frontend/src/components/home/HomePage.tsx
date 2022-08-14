@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../navigation/Footer';
 // import Ads from '../myads/ads';
 import UploadForm from './upload/UploadForm';
 
@@ -9,6 +10,7 @@ function HomePage() {
 
             <UploadForm />
 
+            <Footer />
             {/* <Ads /> */}
         </div>
     );
