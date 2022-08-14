@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import HomePage from '../src/components/home/HomePage';
+import AdminContainer from '../src/components/admin/AdminContainer';
 import Footer from '../src/components/navigation/Footer';
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <HomePage />
+            <AdminContainer />
         </div>
     );
 }

@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { FileInterface } from "../../interfaces/file";
-import { shuffle } from "../../utils/shuffleArray";
+import { createSlice } from '@reduxjs/toolkit';
+import { FileInterface } from '../../interfaces/file';
+import { shuffle } from '../../utils/shuffleArray';
 
 export interface AppInfo {
     files: FileInterface[] | null;
@@ -11,13 +11,29 @@ const initialState: AppInfo = {
 };
 
 export const appSlice = createSlice({
-    name: "app",
+    name: 'app',
     initialState,
     reducers: {
         setFiles: (state, action) => {
             state = {
                 ...state,
                 files: shuffle(action.payload),
+            };
+
+            return state;
+        },
+        deleteFileRdx: (state, action) => {
+            let files: FileInterface[] = [];
+
+            if (state.files) {
+                files = state.files;
+            }
+
+            files = [...files].filter((f) => f._id.$oid !== action.payload);
+
+            state = {
+                ...state,
+                files: files,
             };
 
             return state;
@@ -61,11 +77,7 @@ export const appSlice = createSlice({
     },
 });
 
-export const {
-    setFiles,
-    addNewFile,
-    updateFileRdx,
-} = appSlice.actions;
+export const { setFiles, addNewFile, updateFileRdx, deleteFileRdx } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;
 

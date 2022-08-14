@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { setFiles } from '../redux/slices/appSlice';
+import { deleteFileRdx, setFiles } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
 import { ADMIN_DELETE, ADMIN_LIST_FILES } from './routes';
 
@@ -48,7 +48,9 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
 
     await axios
         .post(ADMIN_DELETE, data, headers)
-        .then((res) => {})
+        .then((res) => {
+            dispatch(deleteFileRdx(id));
+        })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
