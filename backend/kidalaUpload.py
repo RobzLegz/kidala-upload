@@ -128,13 +128,13 @@ def upload(**kwargs):
 
         if kwargs['access_token'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_ip']})
-            token = jwt.encode({'user_id': user.inserted_id}, app.config['SECRET_KEY'])
+            token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
 
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': user.inserted_id
+                'author': str(user.inserted_id)
             }
 
             result = dbfiles.insert_one(fileentry)
