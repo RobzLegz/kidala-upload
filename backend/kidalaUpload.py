@@ -51,10 +51,7 @@ def favicon():
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-        if 'auth_token' in request.cookies:
-            kwargs['access_token'] = request.cookies.get('access_token')
-        else:
-            kwargs['access_token'] = None
+        kwargs['access_token'] = request.headers['Authorization']
 
         kwargs['user_ip'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
         return f(*args, **kwargs)
@@ -140,10 +137,7 @@ def upload(**kwargs):
 
             result = dbfiles.insert_one(fileentry)
 
-            resp = make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash}, 201)
-            resp.set_cookie('access_token', token)
-
-            return resp
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token}, 201)
 
         else:
             user_id = jwt.decode(kwargs['access_token'], app.config['SECRET_KEY'])['user_id']
