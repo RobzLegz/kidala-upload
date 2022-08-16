@@ -30,7 +30,6 @@ export const uploadFile = async (
     await axios
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
-            console.log(res.data);
             setUrl(res.data.hash);
             dispatch(addNewFile(res.data.hash));
             dispatch(clearNotification());
