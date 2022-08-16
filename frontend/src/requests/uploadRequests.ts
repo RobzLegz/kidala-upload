@@ -22,6 +22,7 @@ export const uploadFile = async (
     formData.append('file', file);
 
     const headers = {
+        withCredentials: true,
         headers: {
             'Content-Type': 'multipart/form-data',
         },

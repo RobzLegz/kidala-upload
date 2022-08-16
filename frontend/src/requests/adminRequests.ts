@@ -8,6 +8,7 @@ export const getAllFiles = async (dispatch: Dispatch) => {
     const { NEXT_PUBLIC_ACCESS_TOKEN } = process.env;
 
     const headers = {
+        withCredentials: true,
         headers: {
             'x-access-token': String(NEXT_PUBLIC_ACCESS_TOKEN),
         },
@@ -41,6 +42,7 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
     const { NEXT_PUBLIC_ACCESS_TOKEN } = process.env;
 
     const headers = {
+        withCredentials: true,
         headers: {
             'x-access-token': String(NEXT_PUBLIC_ACCESS_TOKEN),
         },
