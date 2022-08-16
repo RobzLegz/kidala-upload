@@ -52,14 +52,32 @@ function SingleFileContainer() {
                             <p className="text-white text-center">
                                 {file.name}
                             </p>
+
+                            {file.size ? (
+                                <small className="text-gray-400">
+                                    {file.size / 1000000} mb
+                                </small>
+                            ) : null}
                         </div>
                     ) : (
-                        <img
-                            src={`${BASE_URL}/${hash}`}
-                            alt={String(hash)}
-                            className="relative object-cover max-h-[600px]"
-                            draggable={false}
-                        />
+                        <div className="flex items-center justify-center flex-col">
+                            <img
+                                src={`${BASE_URL}/${hash}`}
+                                alt={String(hash)}
+                                className="relative object-cover max-h-[600px]"
+                                draggable={false}
+                            />
+
+                            <p className="text-white text-center mt-2">
+                                {file.name}
+                            </p>
+
+                            {file.size ? (
+                                <small className="text-gray-400">
+                                    {file.size / 1000000} mb
+                                </small>
+                            ) : null}
+                        </div>
                     )}
 
                     <div className="flex items-center justify-center w-48">
