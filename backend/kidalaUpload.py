@@ -51,7 +51,8 @@ def favicon():
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-        kwargs['access_token'] = request.headers['Authorization']
+        if 'Authorization' in request.headers:
+            kwargs['access_token'] = request.headers['Authorization']
 
         kwargs['user_ip'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
         return f(*args, **kwargs)
