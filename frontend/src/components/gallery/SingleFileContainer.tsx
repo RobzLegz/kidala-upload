@@ -1,4 +1,4 @@
-import { DocumentIcon, DownloadIcon } from '@heroicons/react/solid';
+import { DocumentIcon, DownloadIcon, LinkIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -18,12 +18,14 @@ function SingleFileContainer() {
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [file, setFile] = useState<FileInterface | undefined>(undefined);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         if (appInfo.files && typeof hash === 'string') {
             const foundFile = getFileFromHash(hash, appInfo.files);
 
             setFile(foundFile);
+            setCopied(false);
         }
     }, [hash, appInfo.files]);
 
@@ -31,6 +33,15 @@ function SingleFileContainer() {
         if (typeof hash === 'string') {
             window.open(`${BASE_URL}/${hash}`);
         }
+    };
+
+    const saveToClipboard = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+
+        navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
     };
 
     return (
@@ -80,14 +91,25 @@ function SingleFileContainer() {
                         </div>
                     )}
 
-                    <div className="flex items-center justify-center w-48">
+                    <div className="flex items-center justify-center w-full max-w-[400px]">
                         <button
-                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8"
+                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2"
                             onClick={download}
                         >
                             <DownloadIcon className="text-white h-4 mr-1" />
 
                             <p className="text-white">Download</p>
+                        </button>
+
+                        <button
+                            className={`flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2 ${
+                                copied ? 'border-2 border-white' : ''
+                            }`}
+                            onClick={saveToClipboard}
+                        >
+                            <LinkIcon className="text-white h-4 mr-1" />
+
+                            <p className="text-white">Copy link</p>
                         </button>
                     </div>
                 </section>
