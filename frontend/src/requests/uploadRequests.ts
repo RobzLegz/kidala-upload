@@ -31,8 +31,8 @@ export const uploadFile = async (
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
             console.log(res.data);
-            setUrl(res.data.url);
-            dispatch(addNewFile(res.data.url));
+            setUrl(res.data.hash);
+            dispatch(addNewFile(res.data.hash));
             dispatch(clearNotification());
             setFile(null);
         })
