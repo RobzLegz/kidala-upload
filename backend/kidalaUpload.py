@@ -4,6 +4,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
+import jwt
 from werkzeug.utils import secure_filename
 from pathlib import Path
 import hashlib
@@ -19,35 +20,55 @@ UPLOAD_FOLDER = Path(app.root_path) / "files"
 SERVER_IP = os.getenv('SERVER_IP')
 MONGO_DB_LINK = os.getenv('MONGODBLINK')
 app.config['ADMIN_TOKEN'] = os.getenv('ADMIN_TOKEN')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
 dbfiles = db.files
+dbusers = db.users
+
 
 @app.route("/favicon.ico")
 def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
 
+# def token_required(f):
+#     @wraps(f)
+#     def decorator(*args, **kwargs):
+#         token = None
+#         if 'x-access-token' in request.headers:
+#             token = request.headers['x-access-token']
+
+#         if not token:
+#             return make_response({'message': 'a valid token is missing'}, 401)
+#         if token != app.config['ADMIN_TOKEN']:
+#             return make_response({'message': 'token is invalid'}, 401)
+
+#         return f(*args, **kwargs)
+#     return decorator
+
+
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-        token = None
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
- 
-        if not token:
-            return make_response({'message': 'a valid token is missing'}, 401)
-        if token != app.config['ADMIN_TOKEN']:
-            return make_response({'message': 'token is invalid'}, 401)
- 
+        if 'auth_token' in request.cookies:
+            kwargs['access_token'] = request.cookies.get('access_token')
+        else:
+            kwargs['access_token'] = None
+
+        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+            kwargs['user_ip'] = request.environ['REMOTE_ADDR']
+        else:
+            kwargs['user_ip'] = request.environ['HTTP_X_FORWARDED_FOR']
         return f(*args, **kwargs)
     return decorator
+
 
 @app.route("/admin/delete", methods=['POST'])
 @token_required
 def deleteFile():
     if 'objectid' in request.json:
-        objectid =  request.json['objectid']
+        objectid = request.json['objectid']
     if not objectid:
         return make_response({'message': 'no objectid'})
 
@@ -60,6 +81,13 @@ def deleteFile():
 
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
+
+
+@app.route("/testing")
+@token_required
+def test(*args, **kwargs):
+    return f"{kwargs['access_token']}, {kwargs['user_ip']}"
+
 
 @app.route("/admin/allfiles", methods=['GET'])
 @token_required
@@ -78,7 +106,8 @@ def downloadFile(filehash):
 
 
 @app.route('/upload', methods=['POST'])
-def upload():
+@token_required
+def upload(**kwargs):
 
     if 'file' not in request.files:
         return make_response({'msg': "No file part"}, 400)
@@ -99,17 +128,41 @@ def upload():
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
-        
-        fileentry = {
-            'name': secure_filename(file.filename),
-            'hash': md5hash,
-            'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size
-        }
-        result = dbfiles.insert_one(fileentry)
 
-        return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash}, 201)
+        if kwargs['access_token'] == None:
+            user = dbusers.insert_one({'ip': kwargs['user_ip']})
+            token = jwt.encode({'user_id': user['_id']}, app.config['SECRET_KEY'])
+
+            fileentry = {
+                'name': secure_filename(file.filename),
+                'hash': md5hash,
+                'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
+                'author': user['_id']
+            }
+
+            result = dbfiles.insert_one(fileentry)
+
+            resp = make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash}, 201)
+            resp.set_cookie('access_token', token)
+
+            return resp
+
+        else:
+            user_id = jwt.decode(kwargs['access_token'], app.config['SECRET_KEY'])['user_id']
+
+            fileentry = {
+                'name': secure_filename(file.filename),
+                'hash': md5hash,
+                'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
+                'author': user_id
+            }
+
+            result = dbfiles.insert_one(fileentry)
+
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash}, 201)
 
     return make_response({'msg': "failed"}, 500)
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000, debug=False)
