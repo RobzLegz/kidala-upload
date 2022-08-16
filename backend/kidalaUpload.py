@@ -63,7 +63,7 @@ def token_required(f):
 
 @app.route("/admin/delete", methods=['POST'])
 @token_required
-def deleteFile(**kwargs):
+def deleteFile():
     if 'objectid' in request.json:
         objectid = request.json['objectid']
     if not objectid:
@@ -88,7 +88,7 @@ def test(*args, **kwargs):
 
 @app.route("/admin/allfiles", methods=['GET'])
 @token_required
-def getAllFiles(**kwargs):
+def getAllFiles():
     query = dbfiles.find()
     return dumps(query)
 

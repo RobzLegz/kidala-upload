@@ -5,7 +5,7 @@ import { setNotification } from '../redux/slices/notificationSlice';
 import { ADMIN_DELETE, ADMIN_LIST_FILES } from './routes';
 
 export const getAllFiles = async (dispatch: Dispatch) => {
-    const NEXT_PUBLIC_ACCESS_TOKEN = `TrakaParole123`;
+    const { NEXT_PUBLIC_ACCESS_TOKEN } = process.env;
 
     const headers = {
         headers: {
