@@ -44,6 +44,8 @@ function UploadForm() {
             const preview = URL.createObjectURL(electedFile);
 
             setFilePreview(preview);
+        } else {
+            setFilePreview('');
         }
 
         dispatch(clearNotification());
@@ -57,7 +59,10 @@ function UploadForm() {
     ) => {
         e.preventDefault();
 
-        const kidala_url = url.replace(BASE_URL, `${window.location.href}gallery/`);
+        const kidala_url = url.replace(
+            BASE_URL,
+            `${window.location.href}gallery/`
+        );
         navigator.clipboard.writeText(kidala_url);
 
         setSavedToClipboard(true);
@@ -100,8 +105,12 @@ function UploadForm() {
 
                 <button
                     type="submit"
-                    onClick={(e) => uploadFile(e, setUrl, dispatch, setFile, file)}
-                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${!file ? "opacity-75" : ""}`}
+                    onClick={(e) =>
+                        uploadFile(e, setUrl, dispatch, setFile, file)
+                    }
+                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${
+                        !file ? 'opacity-75' : ''
+                    }`}
                     disabled={!file}
                 >
                     upload
