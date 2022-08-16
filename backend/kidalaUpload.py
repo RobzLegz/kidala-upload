@@ -129,6 +129,7 @@ def upload(**kwargs):
         if kwargs['access_token'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_ip']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
+            dbusers.update_one({'_id': user.inserted_id}, {'$set': {'access_token': token}})
 
             fileentry = {
                 'name': secure_filename(file.filename),
