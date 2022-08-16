@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { BASE_URL } from '../../requests/routes';
+import Navigation from '../navigation/Navigation';
 import GalleryImages from './GalleryImages';
 
 function SingleFileContainer() {
@@ -11,9 +12,7 @@ function SingleFileContainer() {
 
     return (
         <div className="w-full min-h-screen pt-10 px-2">
-            <Link href="/">
-                <p className="link">Upload more</p>
-            </Link>
+            <Navigation />
 
             <section className="w-full flex items-center justify-center mt-2">
                 <img
