@@ -56,10 +56,7 @@ def token_required(f):
         else:
             kwargs['access_token'] = None
 
-        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-            kwargs['user_ip'] = request.environ['REMOTE_ADDR']
-        else:
-            kwargs['user_ip'] = request.environ['HTTP_X_FORWARDED_FOR']
+        kwargs['user_ip'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
         return f(*args, **kwargs)
     return decorator
 
@@ -131,13 +128,13 @@ def upload(**kwargs):
 
         if kwargs['access_token'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_ip']})
-            token = jwt.encode({'user_id': user['_id']}, app.config['SECRET_KEY'])
+            token = jwt.encode({'user_id': user.inserted_id}, app.config['SECRET_KEY'])
 
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': user['_id']
+                'author': user.inserted_id
             }
 
             result = dbfiles.insert_one(fileentry)
