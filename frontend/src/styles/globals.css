@@ -16,6 +16,6 @@
     }
 
     .link{
-        @apply text-white hover:underline focus:underline;
+        @apply text-white hover:underline focus:underline cursor-pointer;
     }
 }
