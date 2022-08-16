@@ -52,9 +52,12 @@ def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         if 'Authorization' in request.headers:
-            kwargs['access_token'] = request.headers['Authorization']
+            access_token = request.headers['Authorization']
+            kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'])['user_id']
+        else:
+            kwargs['user_ID'] = None
 
-        kwargs['user_ip'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
+        kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
         return f(*args, **kwargs)
     return decorator
 
@@ -81,7 +84,7 @@ def deleteFile(**kwargs):
 @app.route("/testing")
 @token_required
 def test(*args, **kwargs):
-    return f"{kwargs['access_token']}, {kwargs['user_ip']}"
+    return f"{kwargs['user_ID']}, {kwargs['user_IP']}"
 
 
 @app.route("/admin/allfiles", methods=['GET'])
@@ -124,8 +127,8 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
-        if kwargs['access_token'] == None:
-            user = dbusers.insert_one({'ip': kwargs['user_ip']})
+        if kwargs['user_ID'] == None:
+            user = dbusers.insert_one({'ip': kwargs['user_IP']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
             dbusers.update_one({'_id': user.inserted_id}, {'$set': {'access_token': token}})
 
@@ -141,13 +144,12 @@ def upload(**kwargs):
             return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token}, 201)
 
         else:
-            user_id = jwt.decode(kwargs['access_token'], app.config['SECRET_KEY'])['user_id']
 
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': user_id
+                'author': kwargs['user_ID']
             }
 
             result = dbfiles.insert_one(fileentry)
