@@ -1,3 +1,4 @@
+import { DocumentIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -29,7 +30,7 @@ const GalleryImage: React.FC<{ file: FileInterface }> = ({ file }) => {
                     imgHeight = 384;
                 }
 
-                if(e.clientY + imgHeight > height){
+                if (e.clientY + imgHeight > height) {
                     setIsTop(false);
                 }
             }
@@ -42,9 +43,30 @@ const GalleryImage: React.FC<{ file: FileInterface }> = ({ file }) => {
         !file.name.includes('.gif') &&
         !file.name.includes('.jpeg') &&
         !file.name.includes('.svg') &&
+        !file.name.includes('.jfif') &&
         !file.name.includes('.webp')
     ) {
-        return null;
+        return (
+            <div
+                className="w-full h-full flex items-center justify-center group relative cursor-pointer"
+                onClick={() => router.push(`/gallery/${file.hash}`)}
+                onMouseOver={checkPosition}
+            >
+                <div className="w-[200px] h-[200px] max-w-full max-h-full relative flex flex-col items-center justify-center">
+                    <DocumentIcon className="text-white h-16" />
+
+                    <p className="text-white w-full truncate text-center">
+                        {file.name}
+                    </p>
+                </div>
+
+                <div
+                    className={`absolute top-0 w-full h-full z-20 ${
+                        isLeft ? 'left-0' : 'right-0'
+                    }`}
+                />
+            </div>
+        );
     }
 
     return (
@@ -72,7 +94,7 @@ const GalleryImage: React.FC<{ file: FileInterface }> = ({ file }) => {
             <div
                 className={`hidden sm:group-hover:flex absolute lg:w-[600px] z-10 ${
                     isLeft ? 'left-0 justify-start' : 'right-0 justify-end'
-                } ${isTop ? "top-0" : "bottom-0"}`}
+                } ${isTop ? 'top-0' : 'bottom-0'}`}
             >
                 <div className="max-w-full max-h-full w-96 h-96 2xl:w-[600px] 2xl:h-[600px] relative ">
                     <Image
