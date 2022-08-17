@@ -97,7 +97,7 @@ def test(*args, **kwargs):
 
 
 @app.route("/admin/allfiles", methods=['GET'])
-@token_check('admin')
+@token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
