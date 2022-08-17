@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from bson.json_util import dumps
 import jwt
 from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
 from pathlib import Path
 import hashlib
 import os
@@ -32,38 +33,45 @@ dbusers = db.users
 def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
 
-# def token_required(f):
-#     @wraps(f)
-#     def decorator(*args, **kwargs):
-#         token = None
-#         if 'x-access-token' in request.headers:
-#             token = request.headers['x-access-token']
+def token_check(role):
+    def token_required(f):
+        @wraps(f)
+        def decorator(*args, **kwargs):
+            if 'Authorization' in request.headers:
+                access_token = request.headers['Authorization']
+                if role == 'default':
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'])['user_id']
+                elif role == 'admin':
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['ADMIN_TOKEN'])['user_id']
+            elif role == 'default':
+                kwargs['user_ID'] = None
+            elif role == 'admin':
+                return make_response({'msg': 'authorization required'}, 401)
 
-#         if not token:
-#             return make_response({'message': 'a valid token is missing'}, 401)
-#         if token != app.config['ADMIN_TOKEN']:
-#             return make_response({'message': 'token is invalid'}, 401)
+            kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
+            return f(*args, **kwargs)
+        return decorator
+    return token_required
 
-#         return f(*args, **kwargs)
-#     return decorator
-
-
-def token_required(f):
-    @wraps(f)
-    def decorator(*args, **kwargs):
-        if 'Authorization' in request.headers:
-            access_token = request.headers['Authorization']
-            kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'])['user_id']
-        else:
-            kwargs['user_ID'] = None
-
-        kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
-        return f(*args, **kwargs)
-    return decorator
+@app.route("/admin/login", methods=['POST'])
+def login():
+    if 'username' and 'password' in request.json:
+        username = request.json['username']
+        password = request.json['password']
+    else:
+        make_response({'msg': 'missing username or password'}, 400)
+    query  = dbusers.find_one({'username': username})
+    if query == None:
+        make_response({'msg': 'user not found'}, 400)
+    if check_password_hash(query['password'], password):
+        token = jwt.encode({'user_id': str(query['_id'])}, app.config['ADMIN_TOKEN'])
+        return make_response({'access_token': token}, 200)
+    else:
+        return make_response({'msg': 'incorrect password'}, 400)
 
 
 @app.route("/admin/delete", methods=['POST'])
-@token_required
+@token_check('admin')
 def deleteFile(**kwargs):
     if 'objectid' in request.json:
         objectid = request.json['objectid']
@@ -82,13 +90,13 @@ def deleteFile(**kwargs):
 
 
 @app.route("/testing")
-@token_required
+@token_check('default')
 def test(*args, **kwargs):
     return f"{kwargs['user_ID']}, {kwargs['user_IP']}"
 
 
 @app.route("/admin/allfiles", methods=['GET'])
-@token_required
+@token_check('admin')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
@@ -104,7 +112,7 @@ def downloadFile(filehash):
 
 
 @app.route('/upload', methods=['POST'])
-@token_required
+@token_check('default')
 def upload(**kwargs):
 
     if 'file' not in request.files:
@@ -130,7 +138,6 @@ def upload(**kwargs):
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
-            dbusers.update_one({'_id': user.inserted_id}, {'$set': {'access_token': token}})
 
             fileentry = {
                 'name': secure_filename(file.filename),
