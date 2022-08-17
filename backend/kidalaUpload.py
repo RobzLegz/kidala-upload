@@ -4,6 +4,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
+from datetime import datetime
 import jwt
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
@@ -64,7 +65,7 @@ def login():
     if query == None:
         make_response({'msg': 'user not found'}, 400)
     if check_password_hash(query['password'], password):
-        token = jwt.encode({'user_id': str(query['_id'])}, app.config['ADMIN_TOKEN'])
+        token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow().isoformat()}, app.config['ADMIN_TOKEN'])
         return make_response({'access_token': token}, 200)
     else:
         return make_response({'msg': 'incorrect password'}, 400)
