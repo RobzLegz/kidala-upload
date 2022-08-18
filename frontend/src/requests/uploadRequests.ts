@@ -50,7 +50,7 @@ export const uploadFile = async (
                 dispatch(setToken(access_token));
             }
 
-            setUrl(res.data.url);
+            setUrl(res.data.hash);
             dispatch(addNewFile(res.data.url));
             dispatch(clearNotification());
             setFile(null);
