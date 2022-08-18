@@ -52,8 +52,8 @@ function AdminContainer() {
 
                 <input
                     type="password"
-                    name="username"
-                    id="username"
+                    name="password"
+                    id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="mt-2 w-48 h-6 outline px-2 text-sm"
