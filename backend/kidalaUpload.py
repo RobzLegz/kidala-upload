@@ -135,6 +135,7 @@ def upload(**kwargs):
         filequery = dbfiles.find_one({'hash': md5hash})
 
         if filequery != None:
+            filequery['_id'] = str(filequery['_id'])
             return make_response({'msg': "file exists", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': jsonify(filequery)}, 200)
 
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
@@ -153,8 +154,10 @@ def upload(**kwargs):
             }
 
             result = dbfiles.insert_one(fileentry)
+            
+            fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': jsonify(fileentry.update({'_id': str(result.inserted_id)}))}, 201)
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': jsonify(fileentry)}, 201)
 
         else:
 
@@ -167,7 +170,9 @@ def upload(**kwargs):
 
             result = dbfiles.insert_one(fileentry)
 
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': jsonify(fileentry.update({'_id': str(result.inserted_id)}))}, 201)
+            fileentry.update({'_id': str(result.inserted_id)})
+
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': jsonify(fileentry)}, 201)
 
     return make_response({'msg': "failed"}, 500)
 
