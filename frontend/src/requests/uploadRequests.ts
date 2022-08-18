@@ -44,8 +44,6 @@ export const uploadFile = async (
         .then((res) => {
             const { access_token, hash, url, file } = res.data;
 
-            console.log(file)
-
             if (access_token) {
                 localStorage.setItem('access_token', access_token);
 
@@ -53,7 +51,7 @@ export const uploadFile = async (
             }
 
             setUrl(hash);
-            dispatch(addNewFile(url));
+            dispatch(addNewFile(file));
             dispatch(clearNotification());
             setFile(null);
         })

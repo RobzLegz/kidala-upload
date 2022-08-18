@@ -43,16 +43,14 @@ export const appSlice = createSlice({
 
             if (state.files) {
                 files = state.files;
+
+                const newFiles = [...files, action.payload];
+
+                state = {
+                    ...state,
+                    files: newFiles,
+                };
             }
-
-            const newFiles = [...files, action.payload]
-
-            console.log(newFiles)
-
-            // state = {
-            //     ...state,
-            //     files: [...files, action.payload],
-            // };
 
             return state;
         },
@@ -81,7 +79,8 @@ export const appSlice = createSlice({
     },
 });
 
-export const { setFiles, addNewFile, updateFileRdx, deleteFileRdx } = appSlice.actions;
+export const { setFiles, addNewFile, updateFileRdx, deleteFileRdx } =
+    appSlice.actions;
 
 export const selectApp = (state: any) => state.app;
 
