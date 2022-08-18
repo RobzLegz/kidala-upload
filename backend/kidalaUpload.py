@@ -151,9 +151,8 @@ def upload(**kwargs):
             }
 
             result = dbfiles.insert_one(fileentry)
-            result['_id'] = str(result['_id'])
 
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': result}, 201)
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry.update({'_id': str(result.inserted_id)})}, 201)
 
         else:
 
@@ -166,9 +165,7 @@ def upload(**kwargs):
 
             result = dbfiles.insert_one(fileentry)
 
-            result['_id'] = str(result['_id'])
-
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': result}, 201)
+            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry.update({'_id': str(result.inserted_id)})}, 201)
 
     return make_response({'msg': "failed"}, 500)
 
