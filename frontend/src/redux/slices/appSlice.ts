@@ -39,16 +39,20 @@ export const appSlice = createSlice({
             return state;
         },
         addNewFile: (state, action) => {
-            let prods: FileInterface[] = [];
+            let files: FileInterface[] = [];
 
             if (state.files) {
-                prods = state.files;
+                files = state.files;
             }
 
-            state = {
-                ...state,
-                files: [...prods, action.payload],
-            };
+            const newFiles = [...files, action.payload]
+
+            console.log(newFiles)
+
+            // state = {
+            //     ...state,
+            //     files: [...files, action.payload],
+            // };
 
             return state;
         },

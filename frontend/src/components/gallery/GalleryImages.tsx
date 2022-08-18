@@ -20,7 +20,7 @@ function GalleryImages() {
             {appInfo.files &&
                 appInfo.files.map(
                     (file, i) =>
-                        file && <GalleryImage file={file} index={i} key={file._id.$oid} />
+                        file && <GalleryImage file={file} index={i} key={i} />
                 )}
         </div>
     );
