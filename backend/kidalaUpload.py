@@ -66,6 +66,7 @@ def login():
         make_response({'msg': 'user not found'}, 400)
     if check_password_hash(query['password'], password):
         token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow().isoformat()}, app.config['ADMIN_TOKEN'])
+        query['_id'] = str(query['_id'])
         return make_response({'access_token': token, 'info': query}, 200)
     else:
         return make_response({'msg': 'incorrect password'}, 400)
