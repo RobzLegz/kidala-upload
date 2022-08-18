@@ -71,6 +71,15 @@ def login():
     else:
         return make_response({'msg': 'incorrect password'}, 400)
 
+@app.route("/admin/getUser", methods=['GET'])
+@token_check('default')
+def getuser(**kwargs):
+    if kwargs['user_ID'] == None:
+        return make_response({'msg': 'nah nav tokens? kidala'}, 400)
+    user = dbusers.findone({'_id': ObjectId(kwargs['user_ID'])})
+    user['_id'] = str(user['_id'])
+    return make_response({'user': user}, 200)
+
 
 @app.route("/admin/delete", methods=['POST'])
 @token_check('admin')
