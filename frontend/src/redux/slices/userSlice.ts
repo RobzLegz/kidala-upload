@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from '../../interfaces/user';
 
 export interface UserInfo {
     loggedIn: boolean;
+    info: User | null;
+    token: string;
 }
 
 const initialState: UserInfo = {
     loggedIn: false,
+    info: null,
+    token: '',
 };
 
 export const userSlice = createSlice({
@@ -20,10 +25,26 @@ export const userSlice = createSlice({
 
             return state;
         },
+        setUserInfo: (state, action) => {
+            state = {
+                ...state,
+                info: action.payload,
+            };
+
+            return state;
+        },
+        setToken: (state, action) => {
+            state = {
+                ...state,
+                token: action.payload,
+            };
+
+            return state;
+        },
     },
 });
 
-export const { handleLogin } = userSlice.actions;
+export const { handleLogin, setUserInfo, setToken } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;
 

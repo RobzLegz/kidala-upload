@@ -1,21 +1,75 @@
-import { DocumentIcon, FolderOpenIcon, TrashIcon } from '@heroicons/react/solid';
+import {
+    DocumentIcon,
+    FolderOpenIcon,
+    TrashIcon,
+} from '@heroicons/react/solid';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { deleteFile, getAllFiles } from '../../requests/adminRequests';
 import { BASE_URL } from '../../requests/routes';
+import { loginUser } from '../../requests/userRequests';
 
 function AdminContainer() {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
         if (!appInfo.files) {
             getAllFiles(dispatch);
         }
     }, []);
+
+    const handleLogin = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+
+        await loginUser(username, password, dispatch, router);
+    };
+
+    if (!userInfo.loggedIn) {
+        return (
+            <form className="w-full flex flex-col items-start justify-start">
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    autoComplete="off"
+                    className="w-48 h-6 outline px-2 text-sm"
+                    placeholder="username"
+                />
+
+                <input
+                    type="password"
+                    name="username"
+                    id="username"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-2 w-48 h-6 outline px-2 text-sm"
+                    placeholder="password"
+                />
+
+                <button
+                    className="bg-white outline mt-2 px-2 text-sm py-1 hover:bg-slate-100"
+                    onClick={handleLogin}
+                >
+                    Login
+                </button>
+            </form>
+        );
+    }
 
     return (
         <div className="w-full min-h-screen flex items-start justify-start">
@@ -58,12 +112,16 @@ function AdminContainer() {
                                             {file.hash}
                                         </small>
                                     </div>
-                                    
-                                    <button className="bg-green-500 h-8 w-12 flex items-center justify-center"
+
+                                    <button
+                                        className="bg-green-500 h-8 w-12 flex items-center justify-center"
                                         onClick={() =>
-                                            open(`https://46.109.36.103/${file.hash}`)
-                                        }>
-                                        <FolderOpenIcon className='text-white h-5'/>
+                                            open(
+                                                `https://46.109.36.103/${file.hash}`
+                                            )
+                                        }
+                                    >
+                                        <FolderOpenIcon className="text-white h-5" />
                                     </button>
                                     <button
                                         className="bg-red-500 h-8 w-8 flex items-center justify-center"
