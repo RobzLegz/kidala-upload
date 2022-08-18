@@ -40,10 +40,10 @@ def token_check(role):
         def decorator(*args, **kwargs):
             if 'Authorization' in request.headers:
                 access_token = request.headers['Authorization']
-                if role == 'default':
-                    kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'])['user_id']
-                elif role == 'admin':
-                    kwargs['user_ID'] = jwt.decode(access_token, app.config['ADMIN_TOKEN'])['user_id']
+                try:
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'], algorithms='HS256')['user_id']
+                except:
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['ADMIN_TOKEN'], algorithms='HS256')['user_id']
             elif role == 'default':
                 kwargs['user_ID'] = None
             elif role == 'admin':
