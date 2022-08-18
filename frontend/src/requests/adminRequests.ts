@@ -5,16 +5,8 @@ import { setNotification } from '../redux/slices/notificationSlice';
 import { ADMIN_DELETE, ADMIN_LIST_FILES } from './routes';
 
 export const getAllFiles = async (dispatch: Dispatch) => {
-    const { NEXT_PUBLIC_ACCESS_TOKEN } = process.env;
-
-    const headers = {
-        headers: {
-            'x-access-token': String(NEXT_PUBLIC_ACCESS_TOKEN),
-        },
-    };
-
     await axios
-        .get(ADMIN_LIST_FILES, headers)
+        .get(ADMIN_LIST_FILES)
         .then((res) => {
             dispatch(setFiles(res.data));
         })
@@ -38,11 +30,19 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
         objectid: id,
     };
 
-    const { NEXT_PUBLIC_ACCESS_TOKEN } = process.env;
+    const access_token = localStorage.getItem('access_token');
+    if (!access_token) {
+        return dispatch(
+            setNotification({
+                type: 'error',
+                message: 'Invalid authorization',
+            })
+        );
+    }
 
     const headers = {
         headers: {
-            'x-access-token': String(NEXT_PUBLIC_ACCESS_TOKEN),
+            Authorization: access_token,
         },
     };
 

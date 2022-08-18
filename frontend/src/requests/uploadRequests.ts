@@ -3,6 +3,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
+import { setToken } from '../redux/slices/userSlice';
 import { UPLOAD_BASE } from './routes';
 
 export const uploadFile = async (
@@ -10,7 +11,7 @@ export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    file?: File | null
+    file: File | null
 ) => {
     e.preventDefault();
 
@@ -21,17 +22,36 @@ export const uploadFile = async (
     let formData = new FormData();
     formData.append('file', file);
 
-    const headers = {
+    let headers: { headers: Record<string, any> } = {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     };
 
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+        headers = {
+            ...headers,
+            headers: {
+                ...headers.headers,
+                Authorization: access_token,
+            },
+        };
+    }
+
     await axios
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
-            setUrl(res.data.hash);
-            dispatch(addNewFile(res.data.hash));
+            const { access_token } = res.data;
+
+            if (access_token) {
+                localStorage.setItem('access_token', access_token);
+
+                dispatch(setToken(access_token));
+            }
+
+            setUrl(res.data.url);
+            dispatch(addNewFile(res.data.url));
             dispatch(clearNotification());
             setFile(null);
         })
