@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { NextRouter } from 'next/router';
 import { Dispatch } from 'redux';
 import { setNotification } from '../redux/slices/notificationSlice';
+import { handleLogin, setToken, setUserInfo } from '../redux/slices/userSlice';
 import { LOGIN_ROUTE } from './routes';
 
 export const loginUser = async (
     username: string,
     password: string,
     dispatch: Dispatch,
-    router: NextRouter
 ) => {
     const data = {
         username,
@@ -16,9 +15,16 @@ export const loginUser = async (
     };
 
     await axios
-        .post(LOGIN_ROUTE)
+        .post(LOGIN_ROUTE, data)
         .then((res) => {
-            console.log(res.data);
+            const { access_token, info } = res.data;
+
+            dispatch(setUserInfo(info));
+            dispatch(setToken(access_token));
+
+            localStorage.setItem('access_token', access_token);
+
+            dispatch(handleLogin(true));
         })
         .catch((err) => {
             if (!err.response) {
