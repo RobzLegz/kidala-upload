@@ -4,4 +4,5 @@ export interface FileInterface {
     };
     name: string;
     hash: string;
+    size?: number;
 }

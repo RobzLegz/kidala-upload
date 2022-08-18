@@ -8,7 +8,6 @@ import {
     selectNotification,
     setNotification,
 } from '../../../redux/slices/notificationSlice';
-import { BASE_URL } from '../../../requests/routes';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -21,7 +20,7 @@ function UploadForm() {
 
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
-    const [url, setUrl] = useState('');
+    const [hash, setHash] = useState('');
     const [savedToClipboard, setSavedToClipboard] = useState(false);
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +43,14 @@ function UploadForm() {
             const preview = URL.createObjectURL(electedFile);
 
             setFilePreview(preview);
+        } else {
+            setFilePreview('');
         }
 
         dispatch(clearNotification());
         setFile(electedFile);
         setSavedToClipboard(false);
-        setUrl('');
+        setHash('');
     };
 
     const saveToClipboard = (
@@ -57,8 +58,7 @@ function UploadForm() {
     ) => {
         e.preventDefault();
 
-        const kidala_url = url.replace(BASE_URL, `${window.location.href}gallery/`);
-        navigator.clipboard.writeText(kidala_url);
+        navigator.clipboard.writeText(`${window.location.href}gallery/${hash}`);
 
         setSavedToClipboard(true);
     };
@@ -68,9 +68,7 @@ function UploadForm() {
 
         setSavedToClipboard(false);
 
-        const kidala_url = url.replace(BASE_URL, '/gallery/');
-
-        window.open(kidala_url);
+        window.open(`/gallery/${hash}`);
         dispatch(clearNotification());
     };
 
@@ -95,32 +93,40 @@ function UploadForm() {
                     htmlFor="selectFile"
                     className="cursor-pointer w-32 h-10 flex items-center justify-center text-center bg-white text-black font-mono"
                 >
-                    {file && !url ? 'change' : 'select'} file
+                    {file && !hash ? 'change' : 'select'} file
                 </label>
 
                 <button
                     type="submit"
-                    onClick={(e) => uploadFile(e, setUrl, dispatch, setFile, file)}
-                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${!file ? "opacity-75" : ""}`}
+                    onClick={(e) =>
+                        uploadFile(e, setHash, dispatch, setFile, file)
+                    }
+                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${
+                        !file ? 'opacity-75' : ''
+                    }`}
                     disabled={!file}
                 >
                     upload
                 </button>
             </div>
 
-            {!url && filePreview && file ? (
+            {!hash && filePreview && file ? (
                 <img
                     src={filePreview}
                     alt="file preview"
                     className="w-full mt-12"
                 />
-            ) : !url && file ? (
+            ) : !hash && file ? (
                 <div className="flex mt-5 bg-green-700 p-2">
                     <DocumentIcon className="text-white mr-1 h-6" />
 
-                    <p className="text-white">file is ready for upload</p>
+                    <div className="flex items-center justify-center">
+                        <p className="text-white mr-1">{file.name}</p>
+
+                        <p className="text-white">is ready for upload</p>
+                    </div>
                 </div>
-            ) : url ? (
+            ) : hash ? (
                 <>
                     <button
                         className="w-[250px] h-12 mt-12 text-xl bg-white font-mono "
@@ -133,11 +139,11 @@ function UploadForm() {
                         className="flex w-full pl-4 bg-emerald-600 items-center justify-center mt-4"
                         onClick={saveToClipboard}
                     >
-                        <p className="text-white text-center truncate flex-1 my-2 font-mono">
-                            {url}
+                        <p className="text-white text-center truncate flex-1 font-mono">
+                            {hash}
                         </p>
 
-                        <div className="h-full flex items-center justify-center w-11 border-blue-300 bg-black">
+                        <div className="h-10 flex items-center justify-center w-11 border-blue-300 bg-black">
                             <ClipboardCopyIcon className="text-white h-6" />
                         </div>
                     </button>
