@@ -10,7 +10,7 @@ export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    file?: File | null
+    file: File | null
 ) => {
     e.preventDefault();
 
@@ -21,11 +21,22 @@ export const uploadFile = async (
     let formData = new FormData();
     formData.append('file', file);
 
-    const headers = {
+    let headers: { headers: Record<string, any> } = {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     };
+
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+        headers = {
+            ...headers,
+            headers: {
+                ...headers.headers,
+                Authorization: access_token,
+            },
+        };
+    }
 
     await axios
         .post(UPLOAD_BASE, formData, headers)
