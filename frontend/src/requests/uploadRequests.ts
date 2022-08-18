@@ -3,6 +3,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
+import { setToken } from '../redux/slices/userSlice';
 import { UPLOAD_BASE } from './routes';
 
 export const uploadFile = async (
@@ -41,7 +42,14 @@ export const uploadFile = async (
     await axios
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
-            console.log(res.data);
+            const { access_token } = res.data;
+
+            if (access_token) {
+                localStorage.setItem('access_token', access_token);
+
+                dispatch(setToken(access_token));
+            }
+
             setUrl(res.data.url);
             dispatch(addNewFile(res.data.url));
             dispatch(clearNotification());
