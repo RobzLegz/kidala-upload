@@ -70,6 +70,16 @@ function AdminContainer() {
         );
     }
 
+    if (!userInfo.info || userInfo.info.role !== 'admin') {
+        return (
+            <div className="w-full flex flex-col items-start justify-start p-2">
+                <p className="text-white">
+                    A tu kidala neesi? Pazūd no administratora paneļa jopta
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full min-h-screen flex items-start justify-start">
             <div className="w-full max-w-[700px] flex items-start justify-start flex-col">
@@ -97,7 +107,7 @@ function AdminContainer() {
                                             alt={file.name}
                                             draggable={false}
                                             objectFit="cover"
-                                            layout='fill'
+                                            layout="fill"
                                         />
                                     )}
                                 </div>
@@ -117,7 +127,6 @@ function AdminContainer() {
                                         className="bg-green-500 h-8 w-10 flex items-center justify-center"
                                         onClick={() =>
                                             open(`${BASE_URL}/${file.hash}`)
-
                                         }
                                     >
                                         <FolderOpenIcon className="text-white h-5" />
