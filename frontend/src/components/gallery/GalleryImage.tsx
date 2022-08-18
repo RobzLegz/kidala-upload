@@ -2,13 +2,20 @@ import { DocumentIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
+import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
 
-const GalleryImage: React.FC<{ file: FileInterface }> = ({ file }) => {
+const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
+    file,
+    index,
+}) => {
     const windowSize = useWindowSize();
     const router = useRouter();
+
+    const appInfo: AppInfo = useSelector(selectApp);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState(true);
@@ -21,16 +28,23 @@ const GalleryImage: React.FC<{ file: FileInterface }> = ({ file }) => {
                 setIsLeft(false);
             }
 
-            if (height) {
-                let imgHeight = 0;
+            if (height && appInfo.files) {
+                let imgIdx = index + 1;
+                const fileLen = appInfo.files.length;
 
-                if (width >= 1536) {
-                    imgHeight = 600;
-                } else {
-                    imgHeight = 384;
+                const colSize5 = 640;
+                const colSize7 = 768;
+                const colSize10 = 1024;
+
+                if(width >= colSize10){
+                    imgIdx += 30;
+                }else if(width >= colSize7){
+                    imgIdx += 14;
+                }else if(width >= colSize5){
+                    imgIdx += 10;
                 }
 
-                if (e.clientY + imgHeight > height) {
+                if(imgIdx >= fileLen){
                     setIsTop(false);
                 }
             }
