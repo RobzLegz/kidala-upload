@@ -89,13 +89,6 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
-
-@app.route("/testing")
-@token_check('default')
-def test(*args, **kwargs):
-    return f"{kwargs['user_ID']}, {kwargs['user_IP']}"
-
-
 @app.route("/admin/allfiles", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
