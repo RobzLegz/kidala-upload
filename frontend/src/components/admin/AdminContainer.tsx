@@ -38,7 +38,7 @@ function AdminContainer() {
 
     if (!userInfo.loggedIn) {
         return (
-            <form className="w-full flex flex-col items-start justify-start">
+            <form className="w-full flex flex-col items-start justify-start p-2">
                 <input
                     type="text"
                     name="username"
