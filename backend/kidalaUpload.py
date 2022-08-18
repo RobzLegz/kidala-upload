@@ -74,6 +74,8 @@ def login():
 @app.route("/admin/getUser", methods=['GET'])
 @token_check('default')
 def getuser(**kwargs):
+    if kwargs['user_ID'] == None:
+        return make_response({'msg': 'nah nav tokens? kidala'}, 400)
     user = dbusers.findone({'_id': ObjectId(kwargs['user_ID'])})
     user['_id'] = str(user['_id'])
     return make_response({'user': user}, 200)
