@@ -6,3 +6,5 @@ export const UPLOAD_BASE = `${BASE_URL}/upload`;
 
 export const ADMIN_DELETE = `${ADMIN_BASE}/delete`;
 export const ADMIN_LIST_FILES = `${ADMIN_BASE}/allfiles`;
+
+export const LOGIN_ROUTE = `${ADMIN_BASE}/login`;
