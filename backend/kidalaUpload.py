@@ -1,4 +1,5 @@
 from functools import wraps
+import json
 from flask import Flask, request, redirect, send_file, make_response, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -136,7 +137,7 @@ def upload(**kwargs):
 
         if filequery != None:
             filequery['_id'] = str(filequery['_id'])
-            return make_response({'msg': "file exists", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': jsonify(filequery)}, 200)
+            return make_response(jsonify({'msg': "file exists", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': filequery}), 200)
 
         os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
         file.stream.seek(0)
@@ -157,7 +158,7 @@ def upload(**kwargs):
             
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': jsonify(fileentry)}, 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry}), 201)
 
         else:
 
@@ -172,7 +173,7 @@ def upload(**kwargs):
 
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': jsonify(fileentry)}, 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry}), 201)
 
     return make_response({'msg': "failed"}, 500)
 
