@@ -35,7 +35,7 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
         return dispatch(
             setNotification({
                 type: 'error',
-                message: 'Invalid access_token',
+                message: 'Invalid authorization',
             })
         );
     }
