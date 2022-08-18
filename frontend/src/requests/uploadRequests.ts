@@ -42,7 +42,9 @@ export const uploadFile = async (
     await axios
         .post(UPLOAD_BASE, formData, headers)
         .then((res) => {
-            const { access_token } = res.data;
+            const { access_token, hash, url, file } = res.data;
+
+            console.log(file)
 
             if (access_token) {
                 localStorage.setItem('access_token', access_token);
@@ -50,8 +52,8 @@ export const uploadFile = async (
                 dispatch(setToken(access_token));
             }
 
-            setUrl(res.data.hash);
-            dispatch(addNewFile(res.data.url));
+            setUrl(hash);
+            dispatch(addNewFile(url));
             dispatch(clearNotification());
             setFile(null);
         })
