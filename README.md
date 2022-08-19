@@ -2,6 +2,17 @@
 
 KEEP CALM AND BE KIDALA
 
+## Tech stack
+
+### **NVFM** stack (Next, Vercel, Flask, MongoDB)
+
+🌐 Frontend |  ⚙ Backend |  🚚 Deploy
+----------- | ----------- | -----------
+**next.js** | **flask**   | **raspberrypi**
+**redux**   | **mongodb** |  **vercel**
+tailwindcss | gunicorn    |
+typescript  | nginx       |
+
 ## Branches
 
 -   main -> production
@@ -15,3 +26,4 @@ Please read [CONTRIBUTING.md](https://github.com/RobzLegz/kidala-upload/blob/mai
 ## Code of Conduct
 
 Please read [CODE_OF_CONDUCT.md](https://github.com/RobzLegz/kidala-upload/blob/main/CODE_OF_CONDUCT.md) for details on our code of conduct.
+
