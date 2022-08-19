@@ -6,15 +6,15 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>Kidala upload | Files</title>
+                <title>Kidala upload | My files</title>
                 <meta
                     name="description"
-                    content="Kidala life. Max kidala. Safe pacans 🔥 stafaars. Max safe pacani utt. Only at kidala.life"
+                    content="My files on kidala file hosting service"
                 />
             </Head>
 
             <GalleryContainer />
-            
+
             <CheckAuth />
         </div>
     );

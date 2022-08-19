@@ -6,14 +6,14 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>Kidala upload | File</title>
+                <title>Kidala upload | View file</title>
                 <meta
                     content="/images/janisbataragsuzliso.png"
                     property="og:image"
                 />
                 <meta
                     name="description"
-                    content="View uploaded file 🔥 stafaars, max safe pacani only at kidala.life"
+                    content="View your uploaded file at kidala.life"
                 />
             </Head>
 

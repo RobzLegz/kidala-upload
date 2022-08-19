@@ -28,7 +28,15 @@ const GalleryImage: React.FC<{
         } else {
             dispatch(setPreviewIdx(index));
         }
-        router.push(`/gallery/${file.hash}`);
+
+        if (
+            router.pathname === '/my-files' ||
+            router.pathname === '/my-files/[hash]'
+        ) {
+            router.push(`/my-files/${file.hash}`);
+        } else {
+            router.push(`/gallery/${file.hash}`);
+        }
     };
 
     const checkPosition = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -96,6 +104,14 @@ const GalleryImage: React.FC<{
         !file.name.includes('.jfif') &&
         !file.name.includes('.webp')
     ) {
+        if (
+            !appInfo.sortOptions.showFiles &&
+            router.pathname !== '/my-files' &&
+            router.pathname !== '/my-files/[hash]'
+        ) {
+            return null;
+        }
+
         return (
             <div
                 className="w-full h-full flex items-center justify-center group relative cursor-pointer"
@@ -141,7 +157,9 @@ const GalleryImage: React.FC<{
                 }`}
             />
 
-            {isTop !== null ? (
+            {isTop !== null &&
+            router.pathname !== '/my-files' &&
+            router.pathname !== '/my-files/[hash]' ? (
                 <div
                     className={`hidden sm:group-hover:flex absolute lg:w-[600px] z-10 ${
                         isLeft ? 'left-0 justify-start' : 'right-0 justify-end'
