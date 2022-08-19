@@ -154,7 +154,9 @@ function UploadForm() {
                         </small>
                     ) : null}
                 </>
-            ) : null}
+            ) : (
+                <small className="text-gray-100 mt-2">(max file size 1mb)</small>
+            )}
         </form>
     );
 }
