@@ -8,6 +8,7 @@ import {
     selectNotification,
     setNotification,
 } from '../../../redux/slices/notificationSlice';
+import Spinner from '../../notifications/Loading';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -22,6 +23,23 @@ function UploadForm() {
     const [filePreview, setFilePreview] = useState('');
     const [hash, setHash] = useState('');
     const [savedToClipboard, setSavedToClipboard] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleUpload = async (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+
+        if (loading) {
+            return;
+        }
+
+        setLoading(true);
+
+        await uploadFile(setHash, dispatch, setFile, file);
+
+        setLoading(false);
+    };
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) {
@@ -58,7 +76,7 @@ function UploadForm() {
     ) => {
         e.preventDefault();
 
-        navigator.clipboard.writeText(`${window.location.href}gallery/${hash}`);
+        navigator.clipboard.writeText(`https://kidala.life/gallery/${hash}`);
 
         setSavedToClipboard(true);
     };
@@ -98,15 +116,19 @@ function UploadForm() {
 
                 <button
                     type="submit"
-                    onClick={(e) =>
-                        uploadFile(e, setHash, dispatch, setFile, file)
-                    }
-                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono ${
+                    onClick={handleUpload}
+                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono flex items-center justify-center ${
                         !file ? 'opacity-75' : ''
                     }`}
                     disabled={!file}
                 >
-                    upload
+                    {!loading ? (
+                        <p className="text-white">upload</p>
+                    ) : (
+                        <div className="w-8 h-8 flex items-center justify-center">
+                            <Spinner />
+                        </div>
+                    )}
                 </button>
             </div>
 
@@ -140,7 +162,7 @@ function UploadForm() {
                         onClick={saveToClipboard}
                     >
                         <p className="text-white text-center truncate flex-1 font-mono">
-                            {hash}
+                            {`https://kidala.life/gallery/${hash}`}
                         </p>
 
                         <div className="h-10 flex items-center justify-center w-11 border-blue-300 bg-black">
@@ -155,7 +177,9 @@ function UploadForm() {
                     ) : null}
                 </>
             ) : (
-                <small className="text-gray-100 mt-2">(max file size 1mb)</small>
+                <small className="text-gray-100 mt-2">
+                    (max file size 1mb)
+                </small>
             )}
         </form>
     );
