@@ -65,7 +65,7 @@ const GalleryImage: React.FC<{
                         fileLen -= appInfo.previewIdx;
                     }
 
-                    if (fileLen < 20) {
+                    if (fileLen < colCount) {
                         setIsTop(null);
                         return;
                     }
@@ -81,19 +81,7 @@ const GalleryImage: React.FC<{
                         setIsTop(true);
                     }
                 } else {
-
-                    if (fileLen < 20) {
-                        setIsTop(null);
-                        return;
-                    }
-
-                    console.log(imgIdx, ">", fileLen)
-
-                    if ((fileLen - imgIdx) / colCount < 1) {
-                        setIsTop(false);
-                    }else{
-                        setIsTop(true);
-                    }
+                    setIsTop(null);
                 }
             }
         }
