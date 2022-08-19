@@ -5,3 +5,5 @@ Disallow: /api/
 Noindex: /api/
 Disallow: /images/
 Noindex: /images/
+Disallow: /my-files/
+Noindex: /my-files/
