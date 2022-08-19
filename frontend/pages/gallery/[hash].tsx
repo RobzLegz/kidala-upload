@@ -5,16 +5,15 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>Kidala upload | Share file</title>
+                <title>Kidala upload | File</title>
                 <meta
                     content="/images/janisbataragsuzliso.png"
                     property="og:image"
                 />
                 <meta
                     name="description"
-                    content="Kidala life. Max kidala. Safe pacans. 🔥 stafaars. Max safe pacani utt. Only at kidala-upload.vercel.app. Kidala hosting services. 🌐🤙🏿🅿😱 KEEP CALM AND BE KIDALA"
+                    content="View uploaded file 🔥 stafaars, max safe pacani only at kidala.life"
                 />
-                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <SingleFileContainer />

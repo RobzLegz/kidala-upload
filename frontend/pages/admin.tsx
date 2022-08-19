@@ -6,17 +6,8 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>kidala upload</title>
-                <meta
-                    name="description"
-                    content="kidala file hosting services"
-                />
-                <script
-                    async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3564006936877547"
-                    crossOrigin="anonymous"
-                ></script>
-                <link rel="icon" href="/favicon.ico" />
+                <title>Kidala upload | Admin</title>
+                <meta name="description" content="Kidala admin panel" />
             </Head>
 
             <AdminContainer />

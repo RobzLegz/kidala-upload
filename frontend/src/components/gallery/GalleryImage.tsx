@@ -8,10 +8,11 @@ import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
 
-const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
-    file,
-    index,
-}) => {
+const GalleryImage: React.FC<{
+    file: FileInterface;
+    index: number;
+    isSeen: boolean;
+}> = ({ file, index, isSeen }) => {
     const windowSize = useWindowSize();
     const router = useRouter();
     const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
         if (width) {
             if (e.clientX > width / 2) {
                 setIsLeft(false);
-            }else{
+            } else {
                 setIsLeft(true);
             }
 
@@ -44,30 +45,56 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
                 let imgIdx = index + 1;
                 let fileLen = appInfo.files.length;
 
-                if (fileLen < 35) {
-                    setIsTop(null);
-                    return;
-                }
+                let colCount = 0;
 
                 const colSize5 = 640;
                 const colSize7 = 768;
                 const colSize10 = 1024;
 
                 if (width >= colSize10) {
-                    imgIdx += 20;
+                    colCount = 20;
                 } else if (width >= colSize7) {
-                    imgIdx += 14;
+                    colCount = 14;
                 } else if (width >= colSize5) {
-                    imgIdx += 10;
+                    colCount = 10;
                 }
 
-                if (imgIdx >= fileLen) {
-                    setIsTop(false);
-                }else{
-                    setIsTop(true)
-                }
+                if (!isSeen) {
+                    if (appInfo.previewIdx) {
+                        imgIdx -= appInfo.previewIdx;
+                        fileLen -= appInfo.previewIdx;
+                    }
 
-                console.log(fileLen, imgIdx);
+                    if (fileLen < 20) {
+                        setIsTop(null);
+                        return;
+                    }
+
+                    if (imgIdx <= colCount + 1) {
+                        setIsTop(true);
+                        return;
+                    }
+
+                    if (imgIdx + colCount >= fileLen) {
+                        setIsTop(false);
+                    } else {
+                        setIsTop(true);
+                    }
+                } else {
+
+                    if (fileLen < 20) {
+                        setIsTop(null);
+                        return;
+                    }
+
+                    console.log(imgIdx, ">", fileLen)
+
+                    if ((fileLen - imgIdx) / colCount < 1) {
+                        setIsTop(false);
+                    }else{
+                        setIsTop(true);
+                    }
+                }
             }
         }
     };

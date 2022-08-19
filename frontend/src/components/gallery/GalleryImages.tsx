@@ -24,7 +24,14 @@ function GalleryImages() {
                             return null;
                         }
 
-                        return <GalleryImage file={file} index={i} key={i} />;
+                        return (
+                            <GalleryImage
+                                file={file}
+                                index={i}
+                                isSeen={false}
+                                key={i}
+                            />
+                        );
                     })}
             </div>
 
@@ -44,7 +51,14 @@ function GalleryImages() {
                             return null;
                         }
 
-                        return <GalleryImage file={file} index={i} key={i} />;
+                        return (
+                            <GalleryImage
+                                file={file}
+                                index={i}
+                                isSeen={true}
+                                key={i}
+                            />
+                        );
                     })}
             </div>
         </div>
