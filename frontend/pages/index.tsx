@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import HomePage from '../src/components/home/HomePage';
-import CheckAuth from '../src/components/hooks/CheckAuth';
 
 export default function Home() {
     return (
