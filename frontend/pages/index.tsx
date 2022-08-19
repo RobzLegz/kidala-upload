@@ -14,8 +14,6 @@ export default function Home() {
             </Head>
 
             <HomePage />
-
-            <CheckAuth />
         </div>
     );
 }
