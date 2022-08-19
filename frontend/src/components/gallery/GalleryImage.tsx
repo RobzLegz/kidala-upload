@@ -5,19 +5,23 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
+import { SortOptions } from './GalleryImages';
 
 const GalleryImage: React.FC<{
     file: FileInterface;
     index: number;
     isSeen: boolean;
-}> = ({ file, index, isSeen }) => {
+    sortOptions: SortOptions;
+}> = ({ file, index, isSeen, sortOptions }) => {
     const windowSize = useWindowSize();
     const router = useRouter();
     const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState<boolean | null>(true);
@@ -88,6 +92,14 @@ const GalleryImage: React.FC<{
     };
 
     if (
+        userInfo.info &&
+        sortOptions.myFiles &&
+        (!file.author || file.author !== userInfo.info._id)
+    ) {
+        return null;
+    }
+
+    if (
         !file.name.includes('.png') &&
         !file.name.includes('.jpg') &&
         !file.name.includes('.gif') &&
@@ -96,6 +108,10 @@ const GalleryImage: React.FC<{
         !file.name.includes('.jfif') &&
         !file.name.includes('.webp')
     ) {
+        if (!sortOptions.showFiles) {
+            return null;
+        }
+
         return (
             <div
                 className="w-full h-full flex items-center justify-center group relative cursor-pointer"
@@ -141,7 +157,7 @@ const GalleryImage: React.FC<{
                 }`}
             />
 
-            {isTop !== null ? (
+            {isTop !== null && !sortOptions.myFiles ? (
                 <div
                     className={`hidden sm:group-hover:flex absolute lg:w-[600px] z-10 ${
                         isLeft ? 'left-0 justify-start' : 'right-0 justify-end'
