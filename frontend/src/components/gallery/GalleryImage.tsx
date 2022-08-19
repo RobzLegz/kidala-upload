@@ -8,14 +8,12 @@ import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
-import { SortOptions } from './GalleryImages';
 
 const GalleryImage: React.FC<{
     file: FileInterface;
     index: number;
     isSeen: boolean;
-    sortOptions: SortOptions;
-}> = ({ file, index, isSeen, sortOptions }) => {
+}> = ({ file, index, isSeen }) => {
     const windowSize = useWindowSize();
     const router = useRouter();
     const dispatch = useDispatch();
@@ -27,7 +25,10 @@ const GalleryImage: React.FC<{
     const [isTop, setIsTop] = useState<boolean | null>(true);
 
     const viewFile = () => {
-        if (appInfo.files && index + 1 >= appInfo.files.length) {
+        if (
+            (appInfo.files && index + 1 >= appInfo.files.length) ||
+            appInfo.sortOptions.myFiles
+        ) {
             dispatch(setPreviewIdx(null));
         } else {
             dispatch(setPreviewIdx(index));
@@ -93,7 +94,7 @@ const GalleryImage: React.FC<{
 
     if (
         userInfo.info &&
-        sortOptions.myFiles &&
+        appInfo.sortOptions.myFiles &&
         (!file.author || file.author !== userInfo.info._id)
     ) {
         return null;
@@ -108,7 +109,7 @@ const GalleryImage: React.FC<{
         !file.name.includes('.jfif') &&
         !file.name.includes('.webp')
     ) {
-        if (!sortOptions.showFiles) {
+        if (!appInfo.sortOptions.showFiles) {
             return null;
         }
 
@@ -157,7 +158,7 @@ const GalleryImage: React.FC<{
                 }`}
             />
 
-            {isTop !== null && !sortOptions.myFiles ? (
+            {isTop !== null && !appInfo.sortOptions.myFiles ? (
                 <div
                     className={`hidden sm:group-hover:flex absolute lg:w-[600px] z-10 ${
                         isLeft ? 'left-0 justify-start' : 'right-0 justify-end'

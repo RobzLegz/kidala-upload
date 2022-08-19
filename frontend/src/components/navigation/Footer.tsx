@@ -1,24 +1,7 @@
 import Link from 'next/link';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, UserInfo } from '../../redux/slices/userSlice';
-import { getUserInfo } from '../../requests/userRequests';
+import React from 'react';
 
 function Footer() {
-    const dispatch = useDispatch();
-
-    const userInfo: UserInfo = useSelector(selectUser);
-
-    useEffect(() => {
-        const access_token = localStorage.getItem('access_token');
-
-        if (access_token) {
-            if (!userInfo.info) {
-                getUserInfo(access_token, dispatch);
-            }
-        }
-    }, []);
-
     return (
         <footer className="w-full py-8 flex items-center justify-center">
             <Link href="/">

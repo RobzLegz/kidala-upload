@@ -2,14 +2,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
 import { shuffle } from '../../utils/shuffleArray';
 
+export interface SortOptions {
+    myFiles: boolean;
+    showFiles: boolean;
+    new: boolean;
+}
+
 export interface AppInfo {
     files: FileInterface[] | null;
     previewIdx: number | null;
+    sortOptions: SortOptions;
 }
 
 const initialState: AppInfo = {
     files: null,
     previewIdx: null,
+    sortOptions: {
+        myFiles: false,
+        showFiles: false,
+        new: false,
+    },
 };
 
 export const appSlice = createSlice({
@@ -86,6 +98,16 @@ export const appSlice = createSlice({
 
             return state;
         },
+        setSortOptions: (state, action) => {
+            state = {
+                ...state,
+                sortOptions: {
+                    ...action.payload,
+                },
+            };
+
+            return state;
+        },
     },
 });
 
@@ -95,6 +117,7 @@ export const {
     updateFileRdx,
     deleteFileRdx,
     setPreviewIdx,
+    setSortOptions
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

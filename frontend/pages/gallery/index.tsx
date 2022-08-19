@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import GalleryContainer from '../../src/components/gallery/GalleryContainer';
+import CheckAuth from '../../src/components/hooks/CheckAuth';
 
 export default function Home() {
     return (
@@ -13,6 +14,8 @@ export default function Home() {
             </Head>
 
             <GalleryContainer />
+            
+            <CheckAuth />
         </div>
     );
 }

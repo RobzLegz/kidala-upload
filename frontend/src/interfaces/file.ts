@@ -1,13 +1,7 @@
-interface FileId {
-    _id:
-        | {
-              $oid: string;
-          }
-        | string;
-}
-
 export interface FileInterface {
-    _id: FileId['_id'];
+    _id: {
+        $oid: string;
+    };
     name: string;
     hash: string;
     size?: number;
