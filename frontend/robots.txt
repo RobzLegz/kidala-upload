@@ -1,0 +1,7 @@
+User-agent: googlebot
+Disallow: /admin/
+Noindex: /admin/
+Disallow: /api/
+Noindex: /api/
+Disallow: /images/
+Noindex: /images/

@@ -8,14 +8,8 @@ export default function Home() {
                 <title>Kidala upload | Files</title>
                 <meta
                     name="description"
-                    content="Kidala life. Max kidala. Safe pacans 🔥 stafaars. Max safe pacani utt. Only at kidala-upload.vercel.app. Kidala hosting services. 🌐🤙🏿🅿😱"
+                    content="Kidala life. Max kidala. Safe pacans 🔥 stafaars. Max safe pacani utt. Only at kidala.life"
                 />
-                <script
-                    async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3564006936877547"
-                    crossOrigin="anonymous"
-                ></script>
-                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <GalleryContainer />

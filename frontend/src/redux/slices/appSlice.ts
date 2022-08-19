@@ -4,10 +4,12 @@ import { shuffle } from '../../utils/shuffleArray';
 
 export interface AppInfo {
     files: FileInterface[] | null;
+    previewIdx: number | null;
 }
 
 const initialState: AppInfo = {
     files: null,
+    previewIdx: null,
 };
 
 export const appSlice = createSlice({
@@ -76,11 +78,24 @@ export const appSlice = createSlice({
 
             return state;
         },
+        setPreviewIdx: (state, action) => {
+            state = {
+                ...state,
+                previewIdx: action.payload,
+            };
+
+            return state;
+        },
     },
 });
 
-export const { setFiles, addNewFile, updateFileRdx, deleteFileRdx } =
-    appSlice.actions;
+export const {
+    setFiles,
+    addNewFile,
+    updateFileRdx,
+    deleteFileRdx,
+    setPreviewIdx,
+} = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;
 

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import HomePage from '../src/components/home/HomePage';
-import Footer from '../src/components/navigation/Footer';
 
 export default function Home() {
     return (
@@ -11,12 +10,6 @@ export default function Home() {
                     name="description"
                     content="kidala file hosting services"
                 />
-                <script
-                    async
-                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3564006936877547"
-                    crossOrigin="anonymous"
-                ></script>
-                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <HomePage />
