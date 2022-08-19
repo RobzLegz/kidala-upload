@@ -7,14 +7,11 @@ import { setToken } from '../redux/slices/userSlice';
 import { UPLOAD_BASE } from './routes';
 
 export const uploadFile = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file: File | null
 ) => {
-    e.preventDefault();
-
     if (!file) {
         return;
     }
