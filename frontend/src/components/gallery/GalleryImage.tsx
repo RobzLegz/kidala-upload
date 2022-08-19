@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
-import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
 
@@ -19,21 +18,25 @@ const GalleryImage: React.FC<{
     const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
-    const userInfo: UserInfo = useSelector(selectUser);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState<boolean | null>(true);
 
     const viewFile = () => {
-        if (
-            (appInfo.files && index + 1 >= appInfo.files.length) ||
-            appInfo.sortOptions.myFiles
-        ) {
+        if (appInfo.files && index + 1 >= appInfo.files.length) {
             dispatch(setPreviewIdx(null));
         } else {
             dispatch(setPreviewIdx(index));
         }
-        router.push(`/gallery/${file.hash}`);
+
+        if (
+            router.pathname === '/my-files' ||
+            router.pathname === '/my-files/[hash]'
+        ) {
+            router.push(`/my-files/${file.hash}`);
+        } else {
+            router.push(`/gallery/${file.hash}`);
+        }
     };
 
     const checkPosition = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -93,14 +96,6 @@ const GalleryImage: React.FC<{
     };
 
     if (
-        userInfo.info &&
-        appInfo.sortOptions.myFiles &&
-        (!file.author || file.author !== userInfo.info._id)
-    ) {
-        return null;
-    }
-
-    if (
         !file.name.includes('.png') &&
         !file.name.includes('.jpg') &&
         !file.name.includes('.gif') &&
@@ -109,7 +104,11 @@ const GalleryImage: React.FC<{
         !file.name.includes('.jfif') &&
         !file.name.includes('.webp')
     ) {
-        if (!appInfo.sortOptions.showFiles) {
+        if (
+            !appInfo.sortOptions.showFiles &&
+            router.pathname !== '/my-files' &&
+            router.pathname !== '/my-files/[hash]'
+        ) {
             return null;
         }
 
@@ -158,7 +157,9 @@ const GalleryImage: React.FC<{
                 }`}
             />
 
-            {isTop !== null && !appInfo.sortOptions.myFiles ? (
+            {isTop !== null &&
+            router.pathname !== '/my-files' &&
+            router.pathname !== '/my-files/[hash]' ? (
                 <div
                     className={`hidden sm:group-hover:flex absolute lg:w-[600px] z-10 ${
                         isLeft ? 'left-0 justify-start' : 'right-0 justify-end'

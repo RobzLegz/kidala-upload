@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <div className="page">
             <Head>
-                <title>kidala upload</title>
+                <title>Kidala upload</title>
                 <meta
                     name="description"
                     content="kidala file hosting services"

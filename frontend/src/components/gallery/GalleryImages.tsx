@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     AppInfo,
@@ -11,6 +12,7 @@ import GalleryImage from './GalleryImage';
 
 function GalleryImages() {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
@@ -21,33 +23,35 @@ function GalleryImages() {
         }
     }, []);
 
+    if (router.pathname === '/my-files' || router.pathname === '/my-files/[hash]') {
+        return (
+            <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-2">
+                {appInfo.files &&
+                    appInfo.files.map((file, i) => {
+                        if (
+                            !file.author ||
+                            !userInfo.info ||
+                            file.author !== userInfo.info._id
+                        ) {
+                            return null;
+                        }
+
+                        return (
+                            <GalleryImage
+                                file={file}
+                                index={i}
+                                isSeen={false}
+                                key={i}
+                            />
+                        );
+                    })}
+            </div>
+        );
+    }
+
     return (
         <div className="">
             <div className="flex w-full py-2 flex-col sm:flex-row sm:px-2 sm:items-center justify-start">
-                {userInfo.info ? (
-                    <div className="flex items-center justify-start sm:mr-4">
-                        <input
-                            type="checkbox"
-                            name="my_files"
-                            id="my_files"
-                            className="h-4 w-4 border-2"
-                            checked={appInfo.sortOptions.myFiles}
-                            onChange={() =>
-                                dispatch(
-                                    setSortOptions({
-                                        ...appInfo.sortOptions,
-                                        myFiles: !appInfo.sortOptions.myFiles,
-                                    })
-                                )
-                            }
-                        />
-
-                        <label htmlFor="my_files" className="text-white ml-1">
-                            My files
-                        </label>
-                    </div>
-                ) : null}
-
                 <div className="flex items-center justify-start">
                     <input
                         type="checkbox"
