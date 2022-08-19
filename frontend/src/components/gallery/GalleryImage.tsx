@@ -2,9 +2,9 @@ import { DocumentIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
-import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../hooks/useWindowSize';
 
@@ -14,11 +14,18 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
 }) => {
     const windowSize = useWindowSize();
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState(true);
+
+    const viewFile = () => {
+        dispatch(setPreviewIdx(index));
+
+        router.push(`/gallery/${file.hash}`);
+    };
 
     const checkPosition = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const { width, height } = windowSize;
@@ -30,21 +37,26 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
 
             if (height && appInfo.files) {
                 let imgIdx = index + 1;
+
+                if(appInfo.previewIdx && appInfo.previewIdx >= index){
+                    imgIdx = appInfo.previewIdx - index;
+                }
+
                 const fileLen = appInfo.files.length;
 
                 const colSize5 = 640;
                 const colSize7 = 768;
                 const colSize10 = 1024;
 
-                if(width >= colSize10){
-                    imgIdx += 30;
-                }else if(width >= colSize7){
+                if (width >= colSize10) {
+                    imgIdx += 20;
+                } else if (width >= colSize7) {
                     imgIdx += 14;
-                }else if(width >= colSize5){
+                } else if (width >= colSize5) {
                     imgIdx += 10;
                 }
 
-                if(imgIdx >= fileLen){
+                if (imgIdx >= fileLen) {
                     setIsTop(false);
                 }
             }
@@ -86,7 +98,7 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
     return (
         <div
             className="w-full h-full flex items-center justify-center group relative cursor-pointer"
-            onClick={() => router.push(`/gallery/${file.hash}`)}
+            onClick={viewFile}
             onMouseOver={checkPosition}
         >
             <div className="w-[200px] h-[200px] max-w-full max-h-full relative">
@@ -99,7 +111,7 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
                 />
             </div>
 
-            <div
+            {/* <div
                 className={`absolute top-0 w-full h-full z-20 ${
                     isLeft ? 'left-0' : 'right-0'
                 }`}
@@ -119,7 +131,7 @@ const GalleryImage: React.FC<{ file: FileInterface; index: number }> = ({
                         layout="fill"
                     />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
