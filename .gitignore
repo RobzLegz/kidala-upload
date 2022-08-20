@@ -37,3 +37,4 @@ yarn-error.log*
 /backend/kidalaenv
 /backend/__pycache__
 /backend/files
+/backend/script.py
