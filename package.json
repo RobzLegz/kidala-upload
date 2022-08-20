@@ -3,22 +3,22 @@
     "version": "1.2.0",
     "description": "full codebase for kidala upload 🚀",
     "scripts": {
-      "frontend": "cd frontend && yarn dev",
-      "f": "cd frontend && yarn dev"
+        "frontend": "cd frontend && yarn dev",
+        "f": "cd frontend && yarn dev"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/RobzLegz/kidala-upload"
+        "type": "git",
+        "url": "https://github.com/RobzLegz/kidala-upload"
     },
     "keywords": [
-      "kidala", 
-      "kidala upload", 
-      "file hosting"
+        "kidala",
+        "kidala upload",
+        "file hosting"
     ],
     "author": "RobzLegz",
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/RobzLegz/kidala-upload/issues"
+        "url": "https://github.com/RobzLegz/kidala-upload/issues"
     },
     "homepage": "https://github.com/RobzLegz/kidala-upload#readme"
 }
