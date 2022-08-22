@@ -177,6 +177,52 @@ def upload(**kwargs):
 
     return make_response({'msg': "failed"}, 500)
 
+@app.route('/upload-ad', methods=['POST'])
+@token_check('admin')
+def upload(**kwargs):
+
+    if 'file' not in request.files:
+        return make_response({'msg': "No file part"}, 400)
+
+    file = request.files['file']
+    if file.filename == '':
+        return make_response({'msg': "No selected file"}, 400)
+
+    if file:
+        md5 = hashlib.md5()
+        md5.update(file.read())
+        md5hash = md5.hexdigest()
+
+        filequery = dbfiles.find_one({'hash': md5hash})
+
+        if filequery != None:
+            filequery['_id'] = str(filequery['_id'])
+            return make_response(jsonify({'msg': "file exists", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': filequery}), 200)
+
+        os.makedirs(UPLOAD_FOLDER / md5hash, exist_ok=True)
+        file.stream.seek(0)
+        file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
+
+        phoneNumber = request.json['phoneNumber']
+        email = request.json['email']
+
+        adentry = {
+            'name': secure_filename(file.filename),
+            'hash': md5hash,
+            'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
+            'author': kwargs['user_ID'],
+            'phoneNumber': phoneNumber,
+            'email': email,
+        }
+
+        result = dbfiles.insert_one(adentry)
+
+        adentry.update({'_id': str(result.inserted_id)})
+
+        return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'entry': adentry}), 201)
+
+    return make_response({'msg': "failed"}, 500)
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000, debug=False)
