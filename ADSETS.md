@@ -1,6 +1,6 @@
 # Adsets
 
-### "celms" folder is for admins to see and review your ads
+### "celms" folder is for your ads
 
 1. Go to https://github.com/RobzLegz/kidala-upload/tree/main/celms
 2. Click Add file > Upload files
