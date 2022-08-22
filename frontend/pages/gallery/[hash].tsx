@@ -4,6 +4,7 @@ import SingleFileContainer from '../../src/components/gallery/SingleFileContaine
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
 import { ADMIN_LIST_FILES, BASE_URL } from '../../src/requests/routes';
+import { isImage } from '../../src/utils/isImage';
 
 export default function Home(
     props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -17,7 +18,7 @@ export default function Home(
                 </title>
                 <meta
                     content={
-                        props.file?.hash
+                        props.file?.hash && isImage(props.file.name)
                             ? `${BASE_URL}/${props.file.hash}`
                             : '/images/janisbataragsuzliso.png'
                     }
