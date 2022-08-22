@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
-import useWindowSize from '../hooks/useWindowSize';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const GalleryImage: React.FC<{
     file: FileInterface;

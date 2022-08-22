@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, UserInfo } from '../../redux/slices/userSlice';
-import { getUserInfo } from '../../requests/userRequests';
+import { selectUser, UserInfo } from '../redux/slices/userSlice';
+import { getUserInfo } from '../requests/userRequests';
 
 export const CheckAuth: React.FC = () => {
     const dispatch = useDispatch();

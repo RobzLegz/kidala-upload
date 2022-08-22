@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
-import CheckAuth from '../../src/components/hooks/CheckAuth';
+import CheckAuth from '../../src/hooks/CheckAuth';
 
 export default function Home() {
     return (

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import AdminContainer from '../src/components/admin/AdminContainer';
-import CheckAuth from '../src/components/hooks/CheckAuth';
+import CheckAuth from '../src/hooks/CheckAuth';
 import Footer from '../src/components/navigation/Footer';
 
 export default function Home() {
