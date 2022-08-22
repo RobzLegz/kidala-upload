@@ -29,9 +29,18 @@ export const appSlice = createSlice({
     initialState,
     reducers: {
         setFiles: (state, action) => {
+            const files: FileInterface[] = action.payload;
+
+            const ads = files.filter((f) => f.is_ad === true);
+            const non_ads = files.filter((f) => !f.is_ad);
+            const shuffled: FileInterface[] = shuffle(non_ads);
+
+            let algo_files: FileInterface[] = [...ads];
+            algo_files = [...algo_files, ...shuffled];
+
             state = {
                 ...state,
-                files: shuffle(action.payload),
+                files: algo_files,
             };
 
             return state;
@@ -117,7 +126,7 @@ export const {
     updateFileRdx,
     deleteFileRdx,
     setPreviewIdx,
-    setSortOptions
+    setSortOptions,
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

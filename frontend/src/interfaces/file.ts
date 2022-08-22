@@ -6,4 +6,7 @@ export interface FileInterface {
     hash: string;
     size?: number;
     author?: string;
+    email?: string;
+    phoneNumber?: string;
+    is_ad?: boolean;
 }
