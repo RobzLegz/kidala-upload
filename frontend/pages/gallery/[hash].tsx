@@ -53,7 +53,6 @@ export default function Home(
 export async function getServerSideProps(context: any) {
     const { hash } = context.query;
 
-    const url = `${ADMIN_LIST_FILES}`;
     let requestOptions = {
         method: 'GET',
         headers: {
@@ -61,7 +60,7 @@ export async function getServerSideProps(context: any) {
         },
     };
 
-    const res = await fetch(url, requestOptions);
+    const res = await fetch(ADMIN_LIST_FILES, requestOptions);
     const resJson: FileInterface[] = await res.json();
 
     const file = resJson.find((f) => f.hash === hash);
