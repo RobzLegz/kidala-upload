@@ -204,10 +204,10 @@ def upload(**kwargs):
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
         if 'phoneNumber' not in request.json:
-            return make_response(jsonify({'msg': "Something went wrong"}), 500)
+            return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
         if 'email' not in request.json:
-            return make_response(jsonify({'msg': "Something went wrong"}), 500)
+            return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
         phoneNumber = request.json['phoneNumber']
         email = request.json['email']
