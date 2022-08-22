@@ -56,18 +56,14 @@ const GalleryImage: React.FC<{
 
                 let colCount = 0;
 
-                const colSize5 = 640;
-                const colSize7 = 768;
-                const colSize10 = 1024;
+                const colSize5 = 768;
+                const colSize7 = 1024;
 
-                if (width >= colSize10) {
-                    colCount = 20;
-                } else if (width >= colSize7) {
+                if (width >= colSize7) {
                     colCount = 14;
                 } else if (width >= colSize5) {
                     colCount = 10;
                 }
-
                 if (!isSeen) {
                     if (appInfo.previewIdx) {
                         imgIdx -= appInfo.previewIdx;
@@ -119,7 +115,7 @@ const GalleryImage: React.FC<{
                 onClick={viewFile}
                 onMouseOver={checkPosition}
             >
-                <div className="w-[200px] h-[200px] max-w-full max-h-full relative flex flex-col items-center justify-center">
+                <div className="w-[250px] md:w-[300px] h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative flex flex-col items-center justify-center">
                     <DocumentIcon className="text-white h-16" />
 
                     <p className="text-white w-full truncate text-center">
@@ -144,7 +140,7 @@ const GalleryImage: React.FC<{
         >
             {file.is_ad ? <AdIndicator /> : null}
 
-            <div className="w-[200px] h-[200px] max-w-full max-h-full relative">
+            <div className="w-[250px] md:w-[300px] h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/${file.hash}`}
                     alt={file.name}

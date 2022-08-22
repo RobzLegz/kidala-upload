@@ -3,19 +3,23 @@
 @tailwind utilities;
 
 @layer components {
-    body{
+    * {
+        @apply p-0 m-0 box-border;
+    }
+
+    body {
         @apply bg-sky-900;
     }
 
-    h1{
+    h1 {
         @apply text-4xl font-extrabold;
     }
-    
+
     .page {
         @apply h-screen w-full bg-sky-900;
     }
 
-    .link{
+    .link {
         @apply text-white hover:underline focus:underline cursor-pointer;
     }
 }
