@@ -177,7 +177,7 @@ def upload(**kwargs):
 
     return make_response({'msg': "failed"}, 500)
 
-@app.route('/upload-ad', methods=['POST'])
+@app.route('/admin/upload-ad', methods=['POST'])
 @token_check('admin')
 def upload(**kwargs):
 
