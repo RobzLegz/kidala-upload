@@ -213,6 +213,7 @@ def upload(**kwargs):
             'author': kwargs['user_ID'],
             'phoneNumber': phoneNumber,
             'email': email,
+            'is_ad': True
         }
 
         result = dbfiles.insert_one(adentry)
