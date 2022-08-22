@@ -106,10 +106,10 @@ function SingleFileContainer() {
                                 Contact advertiser:
                             </strong>
 
-                            <div className="flex items-center justify-center w-full max-w-[400px]">
+                            <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-[800px]">
                                 {file.email ? (
                                     <a
-                                        className="w-[400px] max-w-full items-center flex justify-center mx-2 "
+                                        className="w-[400px] max-w-full items-center flex justify-center my-2 sm:mx-2 "
                                         href={`mailto:${file.email}`}
                                     >
                                         <div className="w-full flex flex-col items-center justify-center">
@@ -124,7 +124,7 @@ function SingleFileContainer() {
 
                                 {file.phoneNumber ? (
                                     <a
-                                        className="w-[400px] max-w-full items-center flex justify-center mx-2"
+                                        className="w-[400px] max-w-full items-center flex justify-center my-2 sm:mx-2"
                                         href={`tel:${file.phoneNumber}`}
                                     >
                                         <div className="w-full flex flex-col items-center justify-center">
@@ -140,9 +140,9 @@ function SingleFileContainer() {
                         </div>
                     ) : null}
 
-                    <div className="flex items-center justify-center w-full max-w-[400px]">
+                    <div className="flex flex-col sm:flex-row items-center justify-center w-full sm:max-w-[400px]">
                         <button
-                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2"
+                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 sm:mx-2"
                             onClick={download}
                         >
                             <DownloadIcon className="text-white h-4 mr-1" />
@@ -151,7 +151,7 @@ function SingleFileContainer() {
                         </button>
 
                         <button
-                            className={`flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2 ${
+                            className={`flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 sm:mx-2 ${
                                 copied ? 'border-2 border-white' : ''
                             }`}
                             onClick={saveToClipboard}

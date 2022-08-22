@@ -50,14 +50,14 @@ function GalleryImages() {
     }
 
     return (
-        <div className="">
+        <div className="w-full">
             <div className="flex w-full py-2 flex-col sm:flex-row sm:px-2 sm:items-center justify-start">
                 <div className="flex items-center justify-start">
                     <input
                         type="checkbox"
                         name="non_image_files"
                         id="non_image_files"
-                        className="h-4 w-4 border-2"
+                        className="h-4 w-4"
                         checked={appInfo.sortOptions.showFiles}
                         onChange={() =>
                             dispatch(
