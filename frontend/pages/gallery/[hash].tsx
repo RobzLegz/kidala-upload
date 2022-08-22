@@ -1,14 +1,27 @@
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
+import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
 import { ADMIN_LIST_FILES, BASE_URL } from '../../src/requests/routes';
 import { isImage } from '../../src/utils/isImage';
 
 export default function Home(
     props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
+    const dispatch = useDispatch();
+
+    const appInfo: AppInfo = useSelector(selectApp);
+
+    useEffect(() => {
+        if (!appInfo.files) {
+            dispatch(setFiles(props.files));
+        }
+    }, []);
+
     return (
         <div className="page">
             <Head>
