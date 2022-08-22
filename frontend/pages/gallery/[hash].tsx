@@ -3,7 +3,7 @@ import Head from 'next/head';
 import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
-import { ADMIN_LIST_FILES } from '../../src/requests/routes';
+import { ADMIN_LIST_FILES, BASE_URL } from '../../src/requests/routes';
 
 export default function Home(
     props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -13,10 +13,14 @@ export default function Home(
             <Head>
                 <title>
                     Kidala upload |{' '}
-                    {props.file?.name ? props.file?.name : 'File'}
+                    {props.file?.name ? props.file.name : 'File'}
                 </title>
                 <meta
-                    content="/images/janisbataragsuzliso.png"
+                    content={
+                        props.file?.hash
+                            ? `${BASE_URL}/${props.file.hash}`
+                            : '/images/janisbataragsuzliso.png'
+                    }
                     property="og:image"
                 />
                 <meta
