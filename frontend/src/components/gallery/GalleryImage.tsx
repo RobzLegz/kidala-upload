@@ -7,6 +7,7 @@ import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../../hooks/useWindowSize';
+import { AdIndicator } from '../ads/AdIndicator';
 
 const GalleryImage: React.FC<{
     file: FileInterface;
@@ -141,6 +142,8 @@ const GalleryImage: React.FC<{
             onClick={viewFile}
             onMouseOver={checkPosition}
         >
+            {file.is_ad ? <AdIndicator /> : null}
+
             <div className="w-[200px] h-[200px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/${file.hash}`}

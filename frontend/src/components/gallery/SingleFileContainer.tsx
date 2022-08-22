@@ -1,4 +1,10 @@
-import { DocumentIcon, DownloadIcon, LinkIcon } from '@heroicons/react/solid';
+import {
+    DocumentIcon,
+    DownloadIcon,
+    LinkIcon,
+    MailIcon,
+    PhoneIcon,
+} from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -6,6 +12,7 @@ import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import { getFileFromHash } from '../../utils/getFileFromHash';
+import { AdIndicator } from '../ads/AdIndicator';
 import Navigation from '../navigation/Navigation';
 import GalleryImages from './GalleryImages';
 
@@ -70,19 +77,22 @@ function SingleFileContainer() {
                             ) : null}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center flex-col">
+                        <div className="flex items-center justify-center flex-col relative">
+                            {file.is_ad ? <AdIndicator /> : null}
+
                             <img
                                 src={`${BASE_URL}/${hash}`}
                                 alt={String(hash)}
-                                className="relative object-cover max-h-[600px]"
+                                className="relative object-cover max-h-[600px] lg:min-w-[400px]"
                                 draggable={false}
                             />
+                            {!file.is_ad ? (
+                                <p className="text-white text-center mt-2">
+                                    {file.name}
+                                </p>
+                            ) : null}
 
-                            <p className="text-white text-center mt-2">
-                                {file.name}
-                            </p>
-
-                            {file.size ? (
+                            {!file.is_ad && file.size ? (
                                 <small className="text-gray-400">
                                     {file.size / 1000000} mb
                                 </small>
@@ -90,9 +100,49 @@ function SingleFileContainer() {
                         </div>
                     )}
 
-                    <div className="flex items-center justify-center w-full max-w-[400px]">
+                    {file.is_ad ? (
+                        <div className="flex flex-col items-center justify-center">
+                            <strong className="text-white mt-2 mb-1 text-lg text-center">
+                                Contact advertiser:
+                            </strong>
+
+                            <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-[800px]">
+                                {file.email ? (
+                                    <a
+                                        className="w-[400px] max-w-full items-center flex justify-center my-2 sm:mx-2 "
+                                        href={`mailto:${file.email}`}
+                                    >
+                                        <div className="w-full flex flex-col items-center justify-center">
+                                            <MailIcon className="h-6 text-gray-100" />
+
+                                            <p className="text-gray-100">
+                                                {file.email}
+                                            </p>
+                                        </div>
+                                    </a>
+                                ) : null}
+
+                                {file.phoneNumber ? (
+                                    <a
+                                        className="w-[400px] max-w-full items-center flex justify-center my-2 sm:mx-2"
+                                        href={`tel:${file.phoneNumber}`}
+                                    >
+                                        <div className="w-full flex flex-col items-center justify-center">
+                                            <PhoneIcon className="h-6 text-gray-100" />
+
+                                            <p className="text-gray-100">
+                                                {file.phoneNumber}
+                                            </p>
+                                        </div>
+                                    </a>
+                                ) : null}
+                            </div>
+                        </div>
+                    ) : null}
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center w-full sm:max-w-[400px]">
                         <button
-                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2"
+                            className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 sm:mx-2"
                             onClick={download}
                         >
                             <DownloadIcon className="text-white h-4 mr-1" />
@@ -101,7 +151,7 @@ function SingleFileContainer() {
                         </button>
 
                         <button
-                            className={`flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 mx-2 ${
+                            className={`flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 sm:mx-2 ${
                                 copied ? 'border-2 border-white' : ''
                             }`}
                             onClick={saveToClipboard}
