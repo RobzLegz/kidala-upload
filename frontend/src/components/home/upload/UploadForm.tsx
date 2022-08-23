@@ -9,6 +9,10 @@ import {
     setNotification,
 } from '../../../redux/slices/notificationSlice';
 import Spinner from '../../notifications/Loading';
+import {
+    LanguageInfo,
+    selectLanguage,
+} from '../../../redux/slices/languageSlice';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -18,6 +22,7 @@ function UploadForm() {
     const dispatch = useDispatch();
 
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
+    const languageInfo: LanguageInfo = useSelector(selectLanguage);
 
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
@@ -145,21 +150,25 @@ function UploadForm() {
 
                 <label
                     htmlFor="selectFile"
-                    className="cursor-pointer w-32 h-10 flex items-center justify-center text-center bg-white text-black font-mono"
+                    className="cursor-pointer w-40 h-10 flex items-center justify-center text-center bg-white text-black font-mono"
                 >
-                    {file && !hash ? 'change' : 'select'} file
+                    {file && !hash
+                        ? languageInfo.text.home.changeFile
+                        : languageInfo.text.home.selectFile}
                 </label>
 
                 <button
                     type="submit"
                     onClick={handleUpload}
-                    className={`bg-gray-900 text-white px-10 h-10 ml-2 flex-1 font-mono flex items-center justify-center ${
+                    className={`bg-gray-900 text-white w-40 h-10 ml-2 flex-1 font-mono flex items-center justify-center ${
                         !file ? 'opacity-75' : ''
                     }`}
                     disabled={!file}
                 >
                     {!loading ? (
-                        <p className="text-white">upload</p>
+                        <p className="text-white">
+                            {languageInfo.text.home.upload}
+                        </p>
                     ) : (
                         <div className="w-8 h-8 flex items-center justify-center">
                             <Spinner />
@@ -181,7 +190,9 @@ function UploadForm() {
                     <div className="flex items-center justify-center">
                         <p className="text-white mr-1">{file.name}</p>
 
-                        <p className="text-white">is ready for upload</p>
+                        <p className="text-white">
+                            {languageInfo.text.home.ready}
+                        </p>
                     </div>
                 </div>
             ) : hash ? (
@@ -190,7 +201,7 @@ function UploadForm() {
                         className="w-[250px] h-12 mt-12 text-xl bg-white font-mono "
                         onClick={openUrl}
                     >
-                        open
+                        {languageInfo.text.global.open}
                     </button>
 
                     <button
@@ -208,13 +219,13 @@ function UploadForm() {
 
                     {savedToClipboard ? (
                         <small className="text-emerald-500 text-center mt-2 font-mono">
-                            copied to clipboard
+                            {languageInfo.text.home.copied}
                         </small>
                     ) : null}
                 </>
             ) : (
                 <small className="text-gray-100 mt-2">
-                    (max file size 1mb)
+                    {languageInfo.text.home.maxSize}
                 </small>
             )}
         </form>

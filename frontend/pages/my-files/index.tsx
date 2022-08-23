@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import GalleryContainer from '../../src/components/gallery/GalleryContainer';
+import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
 
 export default function Home() {
@@ -16,6 +17,8 @@ export default function Home() {
             <GalleryContainer />
 
             <CheckAuth />
+
+            <LanguageSelector />
         </div>
     );
 }

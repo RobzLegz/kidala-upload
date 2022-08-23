@@ -75,7 +75,11 @@ function LanguageSelector() {
                 />
             </button>
 
-            <div className={`w-full flex-col ${langsOpen ? 'flex' : 'hidden'}`}>
+            <div
+                className={`w-full flex-col bg-transparent_dark ${
+                    langsOpen ? 'flex' : 'hidden'
+                }`}
+            >
                 {supportedLanguages.map((lang, i) => {
                     if (lang.short === activeLang.short) {
                         return null;
@@ -83,7 +87,7 @@ function LanguageSelector() {
 
                     return (
                         <button
-                            className="flex w-full items-center justify-center"
+                            className="flex w-full items-center justify-center py-1"
                             onClick={() => handleChange(lang.lang)}
                             key={i}
                         >

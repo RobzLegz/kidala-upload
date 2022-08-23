@@ -1,7 +1,10 @@
 export interface Translation {
     home: {
         selectFile: string;
+        changeFile: string;
+        ready: string;
         upload: string;
+        copied: string;
         maxSize: string;
     };
     navigation: {
@@ -16,6 +19,10 @@ export interface Translation {
         showNonImageFiles: string;
         seen: string;
     };
+    global: {
+        open: string;
+        close: string;
+    };
 }
 
 export interface SupportedLang {
@@ -29,8 +36,11 @@ export const translatedText: Record<'LV' | 'EN', Translation> = {
     LV: {
         home: {
             selectFile: 'izvēlieties failu',
+            changeFile: 'mainīt failu',
+            ready: 'ir gatavs augšupielādei',
             upload: 'augšupielādēt',
             maxSize: '(max faila izmērs 1mb)',
+            copied: 'kopēts',
         },
         navigation: {
             gallery: 'Galerija',
@@ -44,12 +54,19 @@ export const translatedText: Record<'LV' | 'EN', Translation> = {
             showNonImageFiles: 'Rādīt failus kas nav bildes',
             seen: 'Redzēts:',
         },
+        global: {
+            open: 'Atvērt',
+            close: 'Aizvērt',
+        },
     },
     EN: {
         home: {
             selectFile: 'select file',
+            changeFile: 'change file',
+            ready: 'is ready for upload',
             upload: 'upload',
             maxSize: '(max file size 1mb)',
+            copied: 'copied to clipboard',
         },
         navigation: {
             gallery: 'Galley',
@@ -62,6 +79,10 @@ export const translatedText: Record<'LV' | 'EN', Translation> = {
             copyLink: 'Copy url',
             showNonImageFiles: 'Show non image files',
             seen: 'Seen:',
+        },
+        global: {
+            open: 'Open',
+            close: 'Close',
         },
     },
 };
