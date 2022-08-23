@@ -41,13 +41,13 @@ export default function Home(
                     name="description"
                     content={`View ${
                         props.file?.name ? props.file.name : 'uploaded file'
-                    } 🔥 stafaars, max safe pacani only at kidala.lifeView`}
+                    } 🔥 stafaars, max safe pacani only at kidala.life`}
                 />
                 <meta
                     name="twitter:description"
                     content={`View ${
                         props.file?.name ? props.file.name : 'uploaded file'
-                    } 🔥 stafaars, max safe pacani only at kidala.lifeView`}
+                    } 🔥 stafaars, max safe pacani only at kidala.life`}
                 />
                 <meta
                     name="twitter:image"
