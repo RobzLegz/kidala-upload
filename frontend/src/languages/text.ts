@@ -1,11 +1,11 @@
 export interface SupportedLang {
-    lang: 'EN' | 'LV';
+    lang: 'EN' | 'LV' | 'RU';
     language: string;
     short: string;
     flag: string;
 }
 
-export const translatedText: Record<'LV' | 'EN', Translation> = {
+export const translatedText: Record<SupportedLang["lang"], Translation> = {
     LV: {
         home: {
             selectFile: 'izvēlieties failu',
@@ -58,6 +58,32 @@ export const translatedText: Record<'LV' | 'EN', Translation> = {
             close: 'Close',
         },
     },
+    RU: {
+        home: {
+            selectFile: 'Выберите файл',
+            changeFile: 'Изменить файл',
+            ready: 'Готов к загрузке',
+            upload: 'Загрузить',
+            maxSize: '(макс. размер файла 1мб)',
+            copied: 'Скопировано',
+        },
+        navigation: {
+            gallery: 'Галерея',
+            myFiles: 'Мои файлы',
+            home: 'Домой',
+        },
+        gallery: {
+            contact: 'Связаться с рекламодателем:',
+            download: 'Загрузить',
+            copyLink: 'Копировать ссылку',
+            showNonImageFiles: 'Показывать также файлы',
+            seen: 'Просмотрено:',
+        },
+        global: {
+            open: 'Открыть',
+            close: 'Закрыть',
+        },
+    },
 };
 
 export const supportedLanguages: SupportedLang[] = [
@@ -78,6 +104,12 @@ export const supportedLanguages: SupportedLang[] = [
         short: 'EN (USA)',
         flag: 'https://www.worldometers.info/img/flags/small/tn_us-flag.gif',
         lang: 'EN',
+    },
+    {
+        language: 'Russian (RU)',
+        short: 'RU',
+        flag: 'https://www.worldometers.info/img/flags/rs-flag.gif',
+        lang: 'RU',
     },
 ];
 
