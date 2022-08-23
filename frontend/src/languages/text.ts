@@ -1,26 +1,29 @@
-export const supportedLanguages = [
-    {
-        language: 'Latvian',
-        short: 'LV',
-        flag: 'https://www.worldometers.info/img/flags/small/tn_lg-flag.gif',
-        lang: 'lv',
-    },
-    {
-        language: 'English (UK)',
-        short: 'EN (UK)',
-        flag: 'https://www.worldometers.info/img/flags/small/tn_uk-flag.gif',
-        lang: 'en',
-    },
-    {
-        language: 'English (USA)',
-        short: 'EN (USA)',
-        flag: 'https://www.worldometers.info/img/flags/small/tn_us-flag.gif',
-        lang: 'en',
-    },
-];
+export interface Translation {
+    home: {
+        selectFile: string;
+        upload: string;
+        maxSize: string;
+    };
+    navigation: {
+        gallery: string;
+        myFiles: string;
+        home: string;
+    };
+    gallery: {
+        contact: string;
+        download: string;
+        copyLink: string;
+        showNonImageFiles: string;
+        seen: string;
+    };
+}
 
-export const translatedText = {
-    lv: {
+export interface SupportedLang {
+    lang: 'EN' | 'LV';
+}
+
+export const translatedText: Record<'LV' | 'EN', Translation> = {
+    LV: {
         home: {
             selectFile: 'izvēlieties failu',
             upload: 'augšupielādēt',
@@ -39,7 +42,7 @@ export const translatedText = {
             seen: 'Redzēts:',
         },
     },
-    en: {
+    EN: {
         home: {
             selectFile: 'select file',
             upload: 'upload',
@@ -59,3 +62,24 @@ export const translatedText = {
         },
     },
 };
+
+export const supportedLanguages = [
+    {
+        language: 'Latvian',
+        short: 'LV',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_lg-flag.gif',
+        lang: 'LV',
+    },
+    {
+        language: 'English (UK)',
+        short: 'EN (UK)',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_uk-flag.gif',
+        lang: 'EN',
+    },
+    {
+        language: 'English (USA)',
+        short: 'EN (USA)',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_us-flag.gif',
+        lang: 'EN',
+    },
+];
