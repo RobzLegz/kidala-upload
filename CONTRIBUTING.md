@@ -26,7 +26,7 @@ commit messages are standardized:
 3. Stage the files you are committing with `git add [files]`.
 4. Run `yarn commit`. This will start an interactive prompt that generates your commit message:
     1. Select the type of change.
-    2. Type the scope. This is either `global` for project-wide changes or one of the packages (kibbeh, shawarma etc.).
+    2. Type the scope. This is either `global` for project-wide changes or one of the packages (frontend, backend etc.).
     3. Write a short, imperative tense description of the change.
     4. If the above was not sufficient, you may now write a longer description of your change (otherwise press enter to leave blank).
     5. y or n for whether there are any breaking changes (e.g. changing the props of a component, changing the JSON structure of an API response).
