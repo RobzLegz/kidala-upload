@@ -1,30 +1,3 @@
-export interface Translation {
-    home: {
-        selectFile: string;
-        changeFile: string;
-        ready: string;
-        upload: string;
-        copied: string;
-        maxSize: string;
-    };
-    navigation: {
-        gallery: string;
-        myFiles: string;
-        home: string;
-    };
-    gallery: {
-        contact: string;
-        download: string;
-        copyLink: string;
-        showNonImageFiles: string;
-        seen: string;
-    };
-    global: {
-        open: string;
-        close: string;
-    };
-}
-
 export interface SupportedLang {
     lang: 'EN' | 'LV';
     language: string;
@@ -107,3 +80,30 @@ export const supportedLanguages: SupportedLang[] = [
         lang: 'EN',
     },
 ];
+
+export interface Translation {
+    home: {
+        selectFile: string;
+        changeFile: string;
+        ready: string;
+        upload: string;
+        copied: string;
+        maxSize: string;
+    };
+    navigation: {
+        gallery: string;
+        myFiles: string;
+        home: string;
+    };
+    gallery: {
+        contact: string;
+        download: string;
+        copyLink: string;
+        showNonImageFiles: string;
+        seen: string;
+    };
+    global: {
+        open: string;
+        close: string;
+    };
+}
