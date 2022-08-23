@@ -106,4 +106,4 @@ export interface Translation {
         open: string;
         close: string;
     };
-}
+} // :)
