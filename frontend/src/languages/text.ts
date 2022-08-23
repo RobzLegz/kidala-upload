@@ -132,10 +132,16 @@ export const supportedLanguages: SupportedLang[] = [
         lang: 'EN',
     },
     {
-        language: 'Russian (RU)',
+        language: 'Russian',
         short: 'RU',
         flag: 'https://www.worldometers.info/img/flags/rs-flag.gif',
         lang: 'RU',
+    },
+    {
+        language: 'German',
+        short: 'DE',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_gm-flag.gif',
+        lang: 'DE',
     },
 ];
 
@@ -164,4 +170,4 @@ export interface Translation {
         open: string;
         close: string;
     };
-} // :)
+}
