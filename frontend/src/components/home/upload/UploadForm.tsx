@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
 import { uploadFile } from '../../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,42 @@ function UploadForm() {
     const [savedToClipboard, setSavedToClipboard] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const handlePasteAnywhere = (event: any) => {
+            const cb_file = event.clipboardData.files[0];
+
+            if (cb_file.size > 1024 * 1024) {
+                return dispatch(
+                    setNotification({
+                        type: 'error',
+                        message: 'File size too large',
+                    })
+                );
+            }
+
+            if (isFileImage(cb_file)) {
+                const preview = URL.createObjectURL(cb_file);
+
+                setFilePreview(preview);
+            } else {
+                setFilePreview('');
+            }
+
+            dispatch(clearNotification());
+            setFile(cb_file);
+            setSavedToClipboard(false);
+            setHash('');
+
+            event.preventDefault();
+        };
+
+        window.addEventListener('paste', handlePasteAnywhere);
+
+        return () => {
+            window.removeEventListener('paste', handlePasteAnywhere);
+        };
+    }, []);
+
     const handleUpload = async (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
@@ -46,9 +82,9 @@ function UploadForm() {
             return;
         }
 
-        const electedFile = e.target.files[0];
+        const selectedFile = e.target.files[0];
 
-        if (electedFile.size > 1024 * 1024) {
+        if (selectedFile.size > 1024 * 1024) {
             return dispatch(
                 setNotification({
                     type: 'error',
@@ -57,8 +93,8 @@ function UploadForm() {
             );
         }
 
-        if (isFileImage(electedFile)) {
-            const preview = URL.createObjectURL(electedFile);
+        if (isFileImage(selectedFile)) {
+            const preview = URL.createObjectURL(selectedFile);
 
             setFilePreview(preview);
         } else {
@@ -66,7 +102,7 @@ function UploadForm() {
         }
 
         dispatch(clearNotification());
-        setFile(electedFile);
+        setFile(selectedFile);
         setSavedToClipboard(false);
         setHash('');
     };
