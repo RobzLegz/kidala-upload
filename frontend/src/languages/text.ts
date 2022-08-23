@@ -1,5 +1,5 @@
 export interface SupportedLang {
-    lang: 'EN' | 'LV' | 'RU';
+    lang: 'EN' | 'LV' | 'RU'| 'DE';
     language: string;
     short: string;
     flag: string;
@@ -58,6 +58,32 @@ export const translatedText: Record<SupportedLang["lang"], Translation> = {
             close: 'Close',
         },
     },
+    DE: {
+        home: {
+            selectFile: 'Datei aussuchen',
+            changeFile: 'Datei ändern',
+            ready: 'bereit',
+            upload: 'uploaden',
+            maxSize: '(Max-Datei Größe 1mb)',
+            copied: 'kopiert',
+        },
+        navigation: {
+            gallery: 'Galerie',
+            myFiles: 'meine Datei',
+            home: 'zu Hause',
+        },
+        gallery: {
+            contact: 'Kontakt zu Werbetreibenden:',
+            download: 'downloaden',
+            copyLink: 'link kopieren',
+            showNonImageFiles: 'Nicht-Bilddateien anzeigen',
+            seen: 'gesehen:',
+        },
+        global: {
+            open: 'offen',
+            close: 'nah dran',
+        },
+    },
     RU: {
         home: {
             selectFile: 'Выберите файл',
@@ -106,10 +132,16 @@ export const supportedLanguages: SupportedLang[] = [
         lang: 'EN',
     },
     {
-        language: 'Russian (RU)',
+        language: 'Russian',
         short: 'RU',
         flag: 'https://www.worldometers.info/img/flags/rs-flag.gif',
         lang: 'RU',
+    },
+    {
+        language: 'German',
+        short: 'DE',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_gm-flag.gif',
+        lang: 'DE',
     },
 ];
 
@@ -138,4 +170,4 @@ export interface Translation {
         open: string;
         close: string;
     };
-} // :)
+}
