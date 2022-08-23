@@ -108,7 +108,7 @@ export const supportedLanguages: SupportedLang[] = [
     {
         language: 'Russian (RU)',
         short: 'RU',
-        flag: 'https://www.worldometers.info/img/flags/rs-flag.gif'
+        flag: 'https://www.worldometers.info/img/flags/rs-flag.gif',
         lang: 'RU',
     },
 ];
