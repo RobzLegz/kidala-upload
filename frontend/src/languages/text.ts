@@ -5,7 +5,7 @@ export interface SupportedLang {
     flag: string;
 }
 
-export const translatedText: Record<'LV' | 'EN', Translation> = {
+export const translatedText: Record<SupportedLang["lang"], Translation> = {
     LV: {
         home: {
             selectFile: 'izvēlieties failu',
