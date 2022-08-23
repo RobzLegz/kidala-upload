@@ -55,7 +55,7 @@ function LanguageSelector() {
     }
 
     return (
-        <div className="absolute top-4 right-4 flex flex-col items-start justify-start">
+        <div className="absolute top-4 right-4 flex flex-col items-start justify-start z-40">
             <button
                 className="w-20 h-8 flex items-center justify-center border-2 border-white rounded-md bg-transparent_dark"
                 onClick={() => setLangsOpen(!langsOpen)}
