@@ -6,6 +6,7 @@ import {
     selectApp,
     setSortOptions,
 } from '../../redux/slices/appSlice';
+import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { getAllFiles } from '../../requests/adminRequests';
 import GalleryImage from './GalleryImage';
@@ -16,6 +17,7 @@ function GalleryImages() {
 
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
+    const languageInfo: LanguageInfo = useSelector(selectLanguage);
 
     useEffect(() => {
         if (!appInfo.files) {
@@ -73,7 +75,7 @@ function GalleryImages() {
                         htmlFor="non_image_files"
                         className="text-white ml-1"
                     >
-                        Show non image files
+                        {languageInfo.text.gallery.showNonImageFiles}
                     </label>
                 </div>
             </div>
@@ -105,7 +107,7 @@ function GalleryImages() {
             appInfo.files &&
             appInfo.files.length !== appInfo.previewIdx + 1 ? (
                 <div className="flex w-full items-center justify-start py-2 border-b-2 border-dashed border-white">
-                    <strong className="text-white">Seen:</strong>
+                    <strong className="text-white">{languageInfo.text.gallery.seen}:</strong>
                 </div>
             ) : null}
 

@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { BASE_URL } from '../../requests/routes';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { AdIndicator } from '../ads/AdIndicator';
@@ -22,6 +23,7 @@ function SingleFileContainer() {
     const { hash } = router.query;
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const languageInfo: LanguageInfo = useSelector(selectLanguage);
 
     const [file, setFile] = useState<FileInterface | undefined>(undefined);
     const [copied, setCopied] = useState(false);
@@ -103,7 +105,7 @@ function SingleFileContainer() {
                     {file.is_ad ? (
                         <div className="flex flex-col items-center justify-center">
                             <strong className="text-white mt-2 mb-1 text-lg text-center">
-                                Contact advertiser:
+                                {languageInfo.text.gallery.contact}
                             </strong>
 
                             <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-[800px]">
@@ -147,7 +149,9 @@ function SingleFileContainer() {
                         >
                             <DownloadIcon className="text-white h-4 mr-1" />
 
-                            <p className="text-white">Download</p>
+                            <p className="text-white">
+                                {languageInfo.text.gallery.download}
+                            </p>
                         </button>
 
                         <button
@@ -158,7 +162,9 @@ function SingleFileContainer() {
                         >
                             <LinkIcon className="text-white h-4 mr-1" />
 
-                            <p className="text-white">Copy link</p>
+                            <p className="text-white">
+                                {languageInfo.text.gallery.copyLink}
+                            </p>
                         </button>
                     </div>
                 </section>

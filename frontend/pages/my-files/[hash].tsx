@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
+import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
 
 export default function Home() {
@@ -20,6 +21,8 @@ export default function Home() {
             <SingleFileContainer />
 
             <CheckAuth />
+
+            <LanguageSelector />
         </div>
     );
 }

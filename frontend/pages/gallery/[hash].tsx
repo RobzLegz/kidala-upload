@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
+import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
@@ -69,6 +70,8 @@ export default function Home(
             <SingleFileContainer />
 
             <CheckAuth />
+
+            <LanguageSelector />
         </div>
     );
 }
