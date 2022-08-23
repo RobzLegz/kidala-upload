@@ -30,6 +30,13 @@ export default function Home(
                     {props.file?.name ? props.file.name : 'File'}
                 </title>
                 <meta
+                    name="twitter:title"
+                    content={`Kidala upload | ${
+                        props.file?.name ? props.file.name : 'File'
+                    }`}
+                />
+                <meta name="twitter:site" content="www.kidala.life" />
+                <meta
                     content={
                         props.file?.hash && isImage(props.file.name)
                             ? `${BASE_URL}/${props.file.hash}`
