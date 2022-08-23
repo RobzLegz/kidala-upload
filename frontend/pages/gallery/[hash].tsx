@@ -39,7 +39,23 @@ export default function Home(
                 />
                 <meta
                     name="description"
-                    content="View uploaded file 🔥 stafaars, max safe pacani only at kidala.life"
+                    content={`View ${
+                        props.file?.name ? props.file.name : 'uploaded file'
+                    } 🔥 stafaars, max safe pacani only at kidala.lifeView`}
+                />
+                <meta
+                    name="twitter:description"
+                    content={`View ${
+                        props.file?.name ? props.file.name : 'uploaded file'
+                    } 🔥 stafaars, max safe pacani only at kidala.lifeView`}
+                />
+                <meta
+                    name="twitter:image"
+                    content={
+                        props.file?.hash && isImage(props.file.name)
+                            ? `${BASE_URL}/${props.file.hash}`
+                            : '/images/janisbataragsuzliso.png'
+                    }
                 />
             </Head>
 
