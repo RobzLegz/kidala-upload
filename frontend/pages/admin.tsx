@@ -13,7 +13,7 @@ export default function Home() {
                 <meta name="twitter:site" content="www.kidala.life" />
                 <meta
                     name="twitter:description"
-                    content="Keep calm and be kidala 👑"
+                    content="Kidala admin panel"
                 />
                 <meta
                     content="/images/janisbataragsuzliso.png"
