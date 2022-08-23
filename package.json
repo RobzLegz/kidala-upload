@@ -4,7 +4,8 @@
     "description": "full codebase for kidala upload 🚀",
     "scripts": {
         "frontend": "cd frontend && yarn dev",
-        "f": "cd frontend && yarn dev"
+        "f": "cd frontend && yarn dev",
+        "dev": "cd frontend && yarn dev"
     },
     "repository": {
         "type": "git",
