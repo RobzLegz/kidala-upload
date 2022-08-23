@@ -1,5 +1,5 @@
 export interface SupportedLang {
-    lang: 'EN' | 'LV' | 'RU';
+    lang: 'EN' | 'LV' | 'RU'| 'DE';
     language: string;
     short: string;
     flag: string;
@@ -56,6 +56,32 @@ export const translatedText: Record<SupportedLang["lang"], Translation> = {
         global: {
             open: 'Open',
             close: 'Close',
+        },
+    },
+        DE: {
+        home: {
+            selectFile: 'translation',
+            changeFile: 'translation',
+            ready: 'translation',
+            upload: 'translation',
+            maxSize: '(translation)',
+            copied: 'translation',
+        },
+        navigation: {
+            gallery: 'translation',
+            myFiles: 'translation',
+            home: 'translation',
+        },
+        gallery: {
+            contact: 'translation:',
+            download: 'downloaden',
+            copyLink: 'link kopieren',
+            showNonImageFiles: 'translation',
+            seen: 'gesehen:',
+        },
+        global: {
+            open: 'translation',
+            close: 'translation',
         },
     },
     RU: {
