@@ -9,7 +9,21 @@ export default function Home() {
                 <title>Kidala upload</title>
                 <meta
                     name="description"
-                    content="kidala file hosting services"
+                    content="Kidala file upload. Free file hosting services, unlimited uploads"
+                />
+                <meta name="twitter:title" content="Kidala upload" />
+                <meta name="twitter:site" content="www.kidala.life" />
+                <meta
+                    name="twitter:description"
+                    content="Kidala file upload. Free file hosting services, unlimited uploads"
+                />
+                <meta
+                    content="/images/janisbataragsuzliso.png"
+                    property="og:image"
+                />
+                <meta
+                    name="twitter:image"
+                    content="/images/janisbataragsuzliso.png"
                 />
             </Head>
 
