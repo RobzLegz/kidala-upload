@@ -9,7 +9,7 @@ const store = configureStore({
         user: userReducer,
         app: appReducer,
         notification: notificationReducer,
-        lanugage: languageReducer,
+        language: languageReducer,
     },
 });
 

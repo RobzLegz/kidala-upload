@@ -20,6 +20,9 @@ export interface Translation {
 
 export interface SupportedLang {
     lang: 'EN' | 'LV';
+    language: string;
+    short: string;
+    flag: string;
 }
 
 export const translatedText: Record<'LV' | 'EN', Translation> = {
@@ -63,7 +66,7 @@ export const translatedText: Record<'LV' | 'EN', Translation> = {
     },
 };
 
-export const supportedLanguages = [
+export const supportedLanguages: SupportedLang[] = [
     {
         language: 'Latvian',
         short: 'LV',
