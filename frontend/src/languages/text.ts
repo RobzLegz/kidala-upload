@@ -1,11 +1,11 @@
 export interface SupportedLang {
-    lang: 'EN' | 'LV' | 'RU'| 'DE';
+    lang: 'EN' | 'LV' | 'RU' | 'DE';
     language: string;
     short: string;
     flag: string;
 }
 
-export const translatedText: Record<SupportedLang["lang"], Translation> = {
+export const translatedText: Record<SupportedLang['lang'], Translation> = {
     LV: {
         home: {
             selectFile: 'izvēlieties failu',
@@ -90,7 +90,7 @@ export const translatedText: Record<SupportedLang["lang"], Translation> = {
             changeFile: 'Изменить файл',
             ready: 'Готов к загрузке',
             upload: 'Загрузить',
-            maxSize: '(макс. размер файла 1мб)',
+            maxSize: '(макс. размер файла 1м6)',
             copied: 'Скопировано',
         },
         navigation: {
@@ -99,7 +99,7 @@ export const translatedText: Record<SupportedLang["lang"], Translation> = {
             home: 'Домой',
         },
         gallery: {
-            contact: 'Связаться с рекламодателем:',
+            contact: 'Связаться c рекламодателем:',
             download: 'Загрузить',
             copyLink: 'Копировать ссылку',
             showNonImageFiles: 'Показывать также файлы',
