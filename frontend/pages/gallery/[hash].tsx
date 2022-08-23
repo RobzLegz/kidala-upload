@@ -30,6 +30,13 @@ export default function Home(
                     {props.file?.name ? props.file.name : 'File'}
                 </title>
                 <meta
+                    name="twitter:title"
+                    content={`Kidala upload | ${
+                        props.file?.name ? props.file.name : 'File'
+                    }`}
+                />
+                <meta name="twitter:site" content="www.kidala.life" />
+                <meta
                     content={
                         props.file?.hash && isImage(props.file.name)
                             ? `${BASE_URL}/${props.file.hash}`
@@ -39,7 +46,23 @@ export default function Home(
                 />
                 <meta
                     name="description"
-                    content="View uploaded file 🔥 stafaars, max safe pacani only at kidala.life"
+                    content={`View ${
+                        props.file?.name ? props.file.name : 'uploaded file'
+                    } 🔥 stafaars, max safe pacani only at kidala.life`}
+                />
+                <meta
+                    name="twitter:description"
+                    content={`View ${
+                        props.file?.name ? props.file.name : 'uploaded file'
+                    } 🔥 stafaars, max safe pacani only at kidala.life`}
+                />
+                <meta
+                    name="twitter:image"
+                    content={
+                        props.file?.hash && isImage(props.file.name)
+                            ? `${BASE_URL}/${props.file.hash}`
+                            : '/images/janisbataragsuzliso.png'
+                    }
                 />
             </Head>
 
