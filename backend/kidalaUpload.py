@@ -100,6 +100,28 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
+@app.route("/make-private", methods=['POST'])
+@token_check('default')
+def make_private(**kwargs):
+    if 'objectid' in request.json:
+        objectid = request.json['objectid']
+    if not objectid:
+        return make_response({'message': 'no objectid'})
+
+    query = dbfiles.find_one({'_id': ObjectId(objectid)})
+    if query == None:
+        return make_response({'msg': 'file not found'}, 404)
+    else:
+        private = query.private
+        if private:
+            newvalues = { '$set': { 'private': False } }
+            dbfiles.update_one(query, newvalues)
+        else:
+            newvalues = { '$set': { 'private': True } }
+            dbfiles.update_one(query, newvalues)
+
+    return make_response({'msg': 'file privated'}, 200)
+
 @app.route("/admin/allfiles", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
