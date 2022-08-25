@@ -42,7 +42,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             copied: 'copied to clipboard',
         },
         navigation: {
-            gallery: 'Galley',
+            gallery: 'Gallery',
             myFiles: 'My files',
             home: 'Home',
         },
