@@ -143,6 +143,11 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
+        description = ''
+
+        if 'description' in request.json:
+            description = request.json['description']
+
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
@@ -151,7 +156,9 @@ def upload(**kwargs):
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': str(user.inserted_id)
+                'author': str(user.inserted_id),
+                'private': False,
+                'description': description
             }
 
             result = dbfiles.insert_one(fileentry)
@@ -166,7 +173,9 @@ def upload(**kwargs):
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': kwargs['user_ID']
+                'author': kwargs['user_ID'],
+                'private': False,
+                'description': description
             }
 
             result = dbfiles.insert_one(fileentry)
@@ -209,6 +218,11 @@ def upload(**kwargs):
         if 'email' not in request.json:
             return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
+        description = ''
+
+        if 'description' in request.json:
+            description = request.json['description']
+
         phoneNumber = request.json['phoneNumber']
         email = request.json['email']
 
@@ -219,7 +233,9 @@ def upload(**kwargs):
             'author': kwargs['user_ID'],
             'phoneNumber': phoneNumber,
             'email': email,
-            'is_ad': True
+            'is_ad': True,
+            'private': False,
+            'description': description
         }
 
         result = dbfiles.insert_one(adentry)
