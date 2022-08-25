@@ -8,5 +8,7 @@ export interface FileInterface {
     author?: string;
     email?: string;
     phoneNumber?: string;
+    private?: boolean;
     is_ad?: boolean;
+    description?: string;
 }
