@@ -116,11 +116,14 @@ def make_private(**kwargs):
         if private:
             newvalues = { '$set': { 'private': False } }
             dbfiles.update_one(query, newvalues)
+
+            return make_response({'msg': 'file published'}, 200)
+
         else:
             newvalues = { '$set': { 'private': True } }
             dbfiles.update_one(query, newvalues)
 
-    return make_response({'msg': 'file privated'}, 200)
+        return make_response({'msg': 'file privated'}, 200)
 
 @app.route("/admin/allfiles", methods=['GET'])
 @token_check('default')
