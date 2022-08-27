@@ -3,6 +3,7 @@
 /frontend/.pnp
 /frontend.pnp.js
 /backend/kidalaenv
+/kebab/env
 
 # testing
 /frontend/coverage
@@ -35,7 +36,7 @@ yarn-error.log*
 
 # cache
 /backend/__pycache__
+/kebab/__pycache__
 
 #files
 /backend/files
-/kebab/env
