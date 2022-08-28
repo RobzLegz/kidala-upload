@@ -259,8 +259,8 @@ function UploadForm() {
                     }`}
                 >
                     <button
-                        className={`text-white transition-all duration-300 h-full ${
-                            addingTag ? 'hidden' : 'w-full'
+                        className={`text-white transition-all duration-300 h-full absolute w-full top-0 left-0 ${
+                            addingTag ? 'opacity-0' : 'z-10'
                         }`}
                         disabled={addingTag}
                         onClick={(e) => {
@@ -272,8 +272,8 @@ function UploadForm() {
                     </button>
 
                     <div
-                        className={`flex rounded-full items-center justify-center px-4 ${
-                            addingTag ? 'flex-1' : 'hidden'
+                        className={`flex rounded-full items-center justify-center px-4 transition-all absolute top-0 left-0 h-full duration-500 ${
+                            addingTag ? 'z-10' : 'opacity-0'
                         }`}
                     >
                         <p className="text-white">#</p>
