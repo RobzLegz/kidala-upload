@@ -29,6 +29,7 @@ dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
 dbfiles = db.files
 dbusers = db.users
+dbtags = db.tags
 
 
 @app.route("/favicon.ico")
@@ -142,10 +143,18 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
+        created_tag = None
         tag = ''
         
         if 'tag' in request.json:
             tag = request.json['tag']
+
+            tagentry = {
+                'tag': tag
+            }
+
+            created_tag = dbtags.insert_one(tagentry)
+            tagentry.update({'_id': str(created_tag.inserted_id)})
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
@@ -163,7 +172,7 @@ def upload(**kwargs):
             
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry, 'tag': tagentry}), 201)
 
         else:
             fileentry = {
@@ -178,7 +187,7 @@ def upload(**kwargs):
 
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry, 'tag': tagentry}), 201)
 
     return make_response({'msg': "failed"}, 500)
 
