@@ -101,7 +101,7 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
-@app.route("/admin/allfiles", methods=['GET'])
+@app.route("/api/files", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
