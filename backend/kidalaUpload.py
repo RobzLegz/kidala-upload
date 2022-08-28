@@ -128,7 +128,6 @@ def upload(**kwargs):
         return make_response({'msg': "No selected file"}, 400)
 
     if file:
-
         md5 = hashlib.md5()
         md5.update(file.read())
         md5hash = md5.hexdigest()
@@ -143,6 +142,11 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
+        tag = ''
+        
+        if 'tag' in request.json:
+            tag = request.json['tag']
+
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
@@ -151,7 +155,8 @@ def upload(**kwargs):
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': str(user.inserted_id)
+                'author': str(user.inserted_id),
+                'tag': tag
             }
 
             result = dbfiles.insert_one(fileentry)
@@ -161,12 +166,12 @@ def upload(**kwargs):
             return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry}), 201)
 
         else:
-
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': kwargs['user_ID']
+                'author': kwargs['user_ID'],
+                'tag': tag
             }
 
             result = dbfiles.insert_one(fileentry)
