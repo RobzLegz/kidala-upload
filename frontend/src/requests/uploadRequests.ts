@@ -19,7 +19,7 @@ export const uploadFile = async (
 
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('tag', tag)
+    formData.append('tag', tag);
 
     let headers: { headers: Record<string, any> } = {
         headers: {

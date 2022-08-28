@@ -158,8 +158,8 @@ def upload(**kwargs):
         created_tag = None
         tag = ''
         
-        if 'tag' in request.json:
-            tag = request.json['tag']
+        if 'tag' in request.form:
+            tag = request.form['tag']
 
             tagquery = dbtags.find_one({'tag': tag})
 
