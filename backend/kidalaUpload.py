@@ -156,7 +156,7 @@ def upload(**kwargs):
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
         created_tag = None
-        tag = ''
+        tag = None
 
         tagentry = {
             'tag': tag
