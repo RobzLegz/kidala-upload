@@ -4,8 +4,10 @@ import "../css/app.css"
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
-import "./user_socket.js"
+import socket from "./user_socket.js"
+import Upload from './upload'
 
+Upload.init(socket)
 // You can include dependencies in two ways.
 //
 // The simplest option is to put them in assets/vendor and

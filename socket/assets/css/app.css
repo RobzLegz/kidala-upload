@@ -1,7 +1,28 @@
 /* This file is for your main application CSS */
-@import "./phoenix.css";
+#upload-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-/* Alerts and form errors used by phx.new */
+#msg{
+  width: 95%;
+  max-width: 300px;
+  height: 20px;
+}
+
+#submit-btn{
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4px;
+}
+
+#msg-box{
+
+}
+
 .alert {
   padding: 15px;
   margin-bottom: 20px;
