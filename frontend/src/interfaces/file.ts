@@ -9,4 +9,5 @@ export interface FileInterface {
     email?: string;
     phoneNumber?: string;
     is_ad?: boolean;
+    tag?: string;
 }
