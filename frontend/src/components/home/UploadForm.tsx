@@ -57,7 +57,8 @@ function UploadForm() {
             setHash('');
             setSelectedTag('');
             setTag('');
-            
+            setAddingTag(false);
+
             event.preventDefault();
         };
 
@@ -93,11 +94,12 @@ function UploadForm() {
 
         setLoading(true);
 
-        await uploadFile(setHash, dispatch, setFile, file, selectedTag);
+        await uploadFile(setHash, dispatch, setFile, file, tag.toLowerCase());
 
         setLoading(false);
         setSelectedTag('');
         setTag('');
+        setAddingTag(false);
     };
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +132,7 @@ function UploadForm() {
         setHash('');
         setSelectedTag('');
         setTag('');
+        setAddingTag(false);
     };
 
     const saveToClipboard = (
@@ -269,8 +272,8 @@ function UploadForm() {
                     </button>
 
                     <div
-                        className={`flex w-full rounded-full items-center justify-center px-4 ${
-                            addingTag ? 'w-full' : 'hidden'
+                        className={`flex rounded-full items-center justify-center px-4 ${
+                            addingTag ? 'flex-1' : 'hidden'
                         }`}
                     >
                         <p className="text-white">#</p>
