@@ -35,6 +35,7 @@ dbusers = db.users
 def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
 
+
 def token_check(role):
     def token_required(f):
         @wraps(f)
@@ -42,18 +43,21 @@ def token_check(role):
             if 'Authorization' in request.headers:
                 access_token = request.headers['Authorization']
                 try:
-                    kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'], algorithms='HS256')['user_id']
+                    kwargs['user_ID'] = jwt.decode(
+                        access_token, app.config['SECRET_KEY'], algorithms='HS256')['user_id']
                 except:
-                    kwargs['user_ID'] = jwt.decode(access_token, app.config['ADMIN_TOKEN'], algorithms='HS256')['user_id']
+                    kwargs['user_ID'] = jwt.decode(
+                        access_token, app.config['ADMIN_TOKEN'], algorithms='HS256')['user_id']
             elif role == 'default':
                 kwargs['user_ID'] = None
             elif role == 'admin':
                 return make_response({'msg': 'authorization required'}, 401)
 
-            kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
+            kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR')
             return f(*args, **kwargs)
         return decorator
     return token_required
+
 
 @app.route("/admin/login", methods=['POST'])
 def login():
@@ -62,15 +66,17 @@ def login():
         password = request.json['password']
     else:
         make_response({'msg': 'missing username or password'}, 400)
-    query  = dbusers.find_one({'username': username})
+    query = dbusers.find_one({'username': username})
     if query == None:
         make_response({'msg': 'user not found'}, 400)
     if check_password_hash(query['password'], password):
-        token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow().isoformat()}, app.config['ADMIN_TOKEN'])
+        token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow(
+        ).isoformat()}, app.config['ADMIN_TOKEN'])
         query['_id'] = str(query['_id'])
         return make_response({'access_token': token, 'info': query}, 200)
     else:
         return make_response({'msg': 'incorrect password'}, 400)
+
 
 @app.route("/admin/getUser", methods=['GET'])
 @token_check('default')
@@ -100,6 +106,7 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
+
 @app.route("/make-private", methods=['POST'])
 @token_check('default')
 def make_private(**kwargs):
@@ -112,24 +119,26 @@ def make_private(**kwargs):
     if query == None:
         return make_response({'msg': 'file not found'}, 404)
     else:
-        private = query.private
+        private = query['private']
         if private:
-            newvalues = { '$set': { 'private': False } }
+            newvalues = {'$set': {'private': False}}
             dbfiles.update_one(query, newvalues)
 
             return make_response({'msg': 'file published'}, 200)
 
         else:
-            newvalues = { '$set': { 'private': True } }
+            newvalues = {'$set': {'private': True}}
             dbfiles.update_one(query, newvalues)
 
         return make_response({'msg': 'file privated'}, 200)
+
 
 @app.route("/admin/allfiles", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
+
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
@@ -153,7 +162,6 @@ def upload(**kwargs):
         return make_response({'msg': "No selected file"}, 400)
 
     if file:
-
         md5 = hashlib.md5()
         md5.update(file.read())
         md5hash = md5.hexdigest()
@@ -173,33 +181,38 @@ def upload(**kwargs):
         if 'description' in request.json:
             description = request.json['description']
 
+        private = False
+
+        if 'private' in request.json:
+            private = request.json['private']
+
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
-            token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
+            token = jwt.encode(
+                {'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
 
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': str(user.inserted_id),
-                'private': False,
+                'private': private,
                 'description': description
             }
 
             result = dbfiles.insert_one(fileentry)
-            
+
             fileentry.update({'_id': str(result.inserted_id)})
 
             return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry}), 201)
 
         else:
-
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': kwargs['user_ID'],
-                'private': False,
+                'private': private,
                 'description': description
             }
 
@@ -210,6 +223,7 @@ def upload(**kwargs):
             return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry}), 201)
 
     return make_response({'msg': "failed"}, 500)
+
 
 @app.route('/admin/upload-ad', methods=['POST'])
 @token_check('admin')
