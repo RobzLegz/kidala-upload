@@ -3,6 +3,9 @@
 /frontend/.pnp
 /frontend.pnp.js
 /backend/kidalaenv
+/kebab/env
+/socket/assets/node_modules/
+/socket/deps/
 
 # testing
 /frontend/coverage
@@ -14,6 +17,7 @@
 
 # production
 /frontend/build
+/socket/_build/
 
 # misc
 /frontend.DS_Store
@@ -23,6 +27,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/socket/npm-debug.log
 
 # local env files
 .env.local
@@ -35,6 +40,25 @@ yarn-error.log*
 
 # cache
 /backend/__pycache__
+/kebab/__pycache__
 
 #files
 /backend/files
+
+# socket
+
+/socket/cover/
+
+/socket/doc/
+
+/socket/.fetch
+
+/socket/erl_crash.dump
+
+/socket/*.ez
+
+/socket/socket-*.tar
+
+/socket/priv/static/assets/
+
+/socket/priv/static/cache_manifest.json

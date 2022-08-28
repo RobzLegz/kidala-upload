@@ -5,7 +5,8 @@
     "scripts": {
         "frontend": "cd frontend && yarn dev",
         "f": "cd frontend && yarn dev",
-        "dev": "cd frontend && yarn dev"
+        "dev": "cd frontend && yarn dev",
+        "socket": "cd socket && mix phx.server"
     },
     "repository": {
         "type": "git",
