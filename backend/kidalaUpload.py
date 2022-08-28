@@ -159,7 +159,7 @@ def upload(**kwargs):
         tagobject = None
 
         if 'tag' in request.form:
-            tag_text = request.form['tag']
+            tag_text = request.form['tag'].lower()
 
             if tag_text != '':
                 tagquery = dbtags.find_one({'tag': tag_text})
