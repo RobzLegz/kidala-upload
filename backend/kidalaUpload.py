@@ -107,6 +107,12 @@ def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
 
+@app.route("/api/tags", methods=['GET'])
+@token_check('default')
+def getAllFiles(**kwargs):
+    query = dbtags.find()
+    return dumps(query)
+
 @app.route("/<filehash>")
 def downloadFile(filehash):
     if filehash != "":
