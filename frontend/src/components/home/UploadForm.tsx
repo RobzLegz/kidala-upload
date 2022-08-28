@@ -55,6 +55,9 @@ function UploadForm() {
             setFile(cb_file);
             setSavedToClipboard(false);
             setHash('');
+            setSelectedTag('');
+            setTag('');
+            setAddingTag(false);
 
             event.preventDefault();
         };
@@ -87,14 +90,16 @@ function UploadForm() {
 
             setSelectedTag(tag.toLowerCase());
             setAddingTag(false);
-            return;
         }
 
         setLoading(true);
 
-        await uploadFile(setHash, dispatch, setFile, file, selectedTag);
+        await uploadFile(setHash, dispatch, setFile, file, tag.toLowerCase());
 
         setLoading(false);
+        setSelectedTag('');
+        setTag('');
+        setAddingTag(false);
     };
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +130,9 @@ function UploadForm() {
         setFile(selectedFile);
         setSavedToClipboard(false);
         setHash('');
+        setSelectedTag('');
+        setTag('');
+        setAddingTag(false);
     };
 
     const saveToClipboard = (
@@ -251,8 +259,8 @@ function UploadForm() {
                     }`}
                 >
                     <button
-                        className={`text-white transition-all duration-300 h-full ${
-                            addingTag ? 'hidden' : 'w-full'
+                        className={`text-white transition-all duration-300 h-full absolute w-full top-0 left-0 ${
+                            addingTag ? 'opacity-0' : 'z-10'
                         }`}
                         disabled={addingTag}
                         onClick={(e) => {
@@ -264,8 +272,8 @@ function UploadForm() {
                     </button>
 
                     <div
-                        className={`flex w-full rounded-full items-center justify-center px-4 ${
-                            addingTag ? 'w-full' : 'hidden'
+                        className={`flex rounded-full items-center justify-center px-4 transition-all absolute top-0 left-0 h-full duration-500 ${
+                            addingTag ? 'z-10' : 'opacity-0'
                         }`}
                     >
                         <p className="text-white">#</p>

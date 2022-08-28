@@ -7,7 +7,7 @@ import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
-import { ADMIN_LIST_FILES, BASE_URL } from '../../src/requests/routes';
+import { BASE_URL, LIST_FILES } from '../../src/requests/routes';
 import { isImage } from '../../src/utils/isImage';
 
 export default function Home(
@@ -86,7 +86,7 @@ export async function getServerSideProps(context: any) {
         },
     };
 
-    const res = await fetch(ADMIN_LIST_FILES, requestOptions);
+    const res = await fetch(LIST_FILES, requestOptions);
     const resJson: FileInterface[] = await res.json();
 
     const file = resJson.find((f) => f.hash === hash);
