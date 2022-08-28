@@ -165,14 +165,15 @@ def upload(**kwargs):
         if 'tag' in request.form:
             tag = request.form['tag']
 
-            tagquery = dbtags.find_one({'tag': tag})
+            if tag != '':
+                tagquery = dbtags.find_one({'tag': tag})
 
-            if tagquery == None:
-                created_tag = dbtags.insert_one(tagentry)
-                tagentry.update({'_id': str(created_tag.inserted_id)})
-                tag = tagentry['_id']
-            else:
-                tag = str(tagquery['_id'])
+                if tagquery == None:
+                    created_tag = dbtags.insert_one(tagentry)
+                    tagentry.update({'_id': str(created_tag.inserted_id)})
+                    tag = tagentry['_id']
+                else:
+                    tag = str(tagquery['_id'])
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
