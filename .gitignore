@@ -35,6 +35,10 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+#backend env files
+/backend/flask.env
+/backend/mongo.env
+
 # vercel
 .vercel
 
