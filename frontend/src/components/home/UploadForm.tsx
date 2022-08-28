@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
-import { uploadFile } from '../../../requests/uploadRequests';
+import { uploadFile } from '../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     clearNotification,
     NotificationInfo,
     selectNotification,
     setNotification,
-} from '../../../redux/slices/notificationSlice';
-import Spinner from '../../notifications/Loading';
-import {
-    LanguageInfo,
-    selectLanguage,
-} from '../../../redux/slices/languageSlice';
+} from '../../redux/slices/notificationSlice';
+import Spinner from '../notifications/Loading';
+import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 
 function isFileImage(file: File) {
     return file && file['type'].split('/')[0] === 'image';
@@ -27,6 +24,9 @@ function UploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
     const [hash, setHash] = useState('');
+    const [tag, setTag] = useState('');
+    const [selectedTag, setSelectedTag] = useState('');
+    const [addingTag, setAddingTag] = useState(false);
     const [savedToClipboard, setSavedToClipboard] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -72,6 +72,12 @@ function UploadForm() {
         e.preventDefault();
 
         if (loading) {
+            return;
+        }
+
+        if (addingTag) {
+            setSelectedTag(tag);
+            setAddingTag(false);
             return;
         }
 
@@ -228,6 +234,45 @@ function UploadForm() {
                     {languageInfo.text.home.maxSize}
                 </small>
             )}
+
+            {!hash && file && !selectedTag ? (
+                <div
+                    className={`max-w-[280px] bg-black h-8 mt-4 rounded-full transition-all duration-500 relative flex items-center justify-center ${
+                        addingTag ? 'w-[95%]' : 'w-24'
+                    }`}
+                >
+                    <button
+                        className={`text-white transition-all duration-300 h-full ${
+                            addingTag ? 'hidden' : 'w-full'
+                        }`}
+                        disabled={addingTag}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setAddingTag(true);
+                        }}
+                    >
+                        # Add tag
+                    </button>
+
+                    <div
+                        className={`flex w-full rounded-full items-center justify-center px-4 ${
+                            addingTag ? 'w-full' : 'hidden'
+                        }`}
+                    >
+                        <p className="text-white">#</p>
+
+                        <input
+                            type="text"
+                            name="file_tag"
+                            id="file_tag"
+                            className="bg-transparent flex-1 ml-1 px-1 outline-none focus:placeholder:text-gray-300 text-white"
+                            placeholder="Enter tag"
+                            value={tag}
+                            onChange={(e) => setTag(e.target.value)}
+                        />
+                    </div>
+                </div>
+            ) : null}
         </form>
     );
 }

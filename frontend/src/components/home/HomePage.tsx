@@ -1,6 +1,6 @@
 import React from 'react';
 import Footer from '../navigation/Footer';
-import UploadForm from './upload/UploadForm';
+import UploadForm from './UploadForm'
 
 function HomePage() {
     return (
