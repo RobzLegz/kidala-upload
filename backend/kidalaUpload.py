@@ -155,21 +155,25 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
-        created_tag = None
-        tag = ''
-        
+        tag_id = None
+        tagobject = None
+
         if 'tag' in request.form:
-            tag = request.form['tag']
+            tag_text = request.form['tag']
 
-            tagquery = dbtags.find_one({'tag': tag})
+            if tag_text != '':
+                tagquery = dbtags.find_one({'tag': tag_text})
 
-            if tagquery == None:
-                tagentry = {
-                    'tag': tag
-                }
-
-                created_tag = dbtags.insert_one(tagentry)
-                tagentry.update({'_id': str(created_tag.inserted_id)})
+                if tagquery == None:
+                    tagobject = {
+                        'tag': tag_text
+                    }
+                    
+                    created_tag = dbtags.insert_one(tagobject)
+                    tagobject.update({'_id': str(created_tag.inserted_id)})
+                    tag_id = str(created_tag.inserted_id)
+                else:
+                    tag_id = str(tagquery['_id'])
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
@@ -180,14 +184,14 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': str(user.inserted_id),
-                'tag': tagentry['_id']
+                'tag': tag_id
             }
 
             result = dbfiles.insert_one(fileentry)
             
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry, 'tag': tagentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry, 'tag': tagobject}), 201)
 
         else:
             fileentry = {
@@ -195,14 +199,14 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': kwargs['user_ID'],
-                'tag': tagentry['_id']
+                'tag': tag_id
             }
 
             result = dbfiles.insert_one(fileentry)
 
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry, 'tag': tagentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry, 'tag': tagobject}), 201)
 
     return make_response({'msg': "failed"}, 500)
 
