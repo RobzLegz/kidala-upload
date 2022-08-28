@@ -55,7 +55,9 @@ function UploadForm() {
             setFile(cb_file);
             setSavedToClipboard(false);
             setHash('');
-
+            setSelectedTag('');
+            setTag('');
+            
             event.preventDefault();
         };
 
@@ -87,7 +89,6 @@ function UploadForm() {
 
             setSelectedTag(tag);
             setAddingTag(false);
-            return;
         }
 
         setLoading(true);
@@ -95,6 +96,8 @@ function UploadForm() {
         await uploadFile(setHash, dispatch, setFile, file, selectedTag);
 
         setLoading(false);
+        setSelectedTag('');
+        setTag('');
     };
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +128,8 @@ function UploadForm() {
         setFile(selectedFile);
         setSavedToClipboard(false);
         setHash('');
+        setSelectedTag('');
+        setTag('');
     };
 
     const saveToClipboard = (
