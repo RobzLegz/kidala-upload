@@ -265,7 +265,7 @@ function UploadForm() {
                             type="text"
                             name="file_tag"
                             id="file_tag"
-                            className="bg-transparent flex-1 ml-1 px-1 outline-none focus:placeholder:text-gray-300 text-white"
+                            className="bg-transparent flex-1 ml-1 outline-none focus:placeholder:text-gray-300 text-white"
                             placeholder="Enter tag"
                             value={tag}
                             onChange={(e) => setTag(e.target.value)}
