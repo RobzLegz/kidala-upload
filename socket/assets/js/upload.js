@@ -17,13 +17,21 @@ let Upload = {
                 document.getElementById('msg').value = '';
 
                 channel.on('shout', (payload) => {
-                    let msgBox = document.querySelector('#msg-box');
-                    let msgBlock = document.createElement('p');
+                    const { msg } = payload;
 
-                    msgBlock.insertAdjacentHTML('beforeend', `${payload.msg}`);
-                    msgBlock.className = 'msg';
+                    const lastMsg = Array.from(
+                        document.querySelectorAll('.msg')
+                    ).pop();
 
-                    msgBox.appendChild(msgBlock);
+                    if (!lastMsg || lastMsg.textContent !== msg) {
+                        let msgBox = document.querySelector('#msg-box');
+                        let msgBlock = document.createElement('p');
+
+                        msgBlock.insertAdjacentHTML('beforeend', `${msg}`);
+                        msgBlock.className = 'msg';
+
+                        msgBox.appendChild(msgBlock);
+                    }
                 });
             });
     },
