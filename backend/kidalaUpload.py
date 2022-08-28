@@ -157,6 +157,10 @@ def upload(**kwargs):
 
         created_tag = None
         tag = ''
+
+        tagentry = {
+            'tag': tag
+        }
         
         if 'tag' in request.form:
             tag = request.form['tag']
@@ -164,12 +168,11 @@ def upload(**kwargs):
             tagquery = dbtags.find_one({'tag': tag})
 
             if tagquery == None:
-                tagentry = {
-                    'tag': tag
-                }
-
                 created_tag = dbtags.insert_one(tagentry)
                 tagentry.update({'_id': str(created_tag.inserted_id)})
+                tag = tagentry['_id']
+            else:
+                tag = str(tagquery['_id'])
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
@@ -180,7 +183,7 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': str(user.inserted_id),
-                'tag': tagentry['_id']
+                'tag': tag
             }
 
             result = dbfiles.insert_one(fileentry)
@@ -195,7 +198,7 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': kwargs['user_ID'],
-                'tag': tagentry['_id']
+                'tag': tag
             }
 
             result = dbfiles.insert_one(fileentry)
