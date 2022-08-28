@@ -1,14 +1,5 @@
 import Config
 
-# Configure your database
-config :socket, Socket.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "socket_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -22,7 +13,7 @@ config :socket, SocketWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "+zCfVOVr5k4VF02xlzA+B5OfhWCYluwX/vMM2Fi/RwSQJ+6Y1/UDkBOqgMTpRSmd",
+  secret_key_base: "ThvsHsWA/18K2NWrX3lBosV4v/ARwgxzUF0xo5JuDQ9hGMN87jS5AQG8RyZUFXHN",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}

@@ -7,15 +7,12 @@
 # General application configuration
 import Config
 
-config :socket,
-  ecto_repos: [Socket.Repo]
-
 # Configures the endpoint
 config :socket, SocketWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: SocketWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Socket.PubSub,
-  live_view: [signing_salt: "NIVdIgpK"]
+  live_view: [signing_salt: "YM4sZ12p"]
 
 # Configures the mailer
 #

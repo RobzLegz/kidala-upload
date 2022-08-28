@@ -4,6 +4,8 @@
 /frontend.pnp.js
 /backend/kidalaenv
 /kebab/env
+/socket/assets/node_modules/
+/socket/deps/
 
 # testing
 /frontend/coverage
@@ -15,6 +17,7 @@
 
 # production
 /frontend/build
+/socket/_build/
 
 # misc
 /frontend.DS_Store
@@ -24,6 +27,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/socket/npm-debug.log
 
 # local env files
 .env.local
@@ -43,37 +47,18 @@ yarn-error.log*
 
 # socket
 
-# The directory Mix will write compiled artifacts to.
-/socket/_build/
-
-# If you run "mix test --cover", coverage assets end up here.
 /socket/cover/
 
-# The directory Mix downloads your dependencies sources to.
-/socket/deps/
-
-# Where 3rd-party dependencies like ExDoc output generated docs.
 /socket/doc/
 
-# Ignore .fetch files in case you like to edit your project deps locally.
 /socket/.fetch
 
-# If the VM crashes, it generates a dump, let's ignore it too.
 /socket/erl_crash.dump
 
-# Also ignore archive artifacts (built via "mix archive.build").
 /socket/*.ez
 
-# Ignore package tarball (built via "mix hex.build").
 /socket/socket-*.tar
 
-# Ignore assets that are produced by build tools.
 /socket/priv/static/assets/
 
-# Ignore digested assets cache.
 /socket/priv/static/cache_manifest.json
-
-# In case you use Node.js/npm, you want to ignore these.
-/socket/npm-debug.log
-/socket/assets/node_modules/
-
