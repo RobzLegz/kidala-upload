@@ -85,7 +85,7 @@ function UploadForm() {
                 );
             }
 
-            setSelectedTag(tag);
+            setSelectedTag(tag.toLowerCase());
             setAddingTag(false);
             return;
         }
