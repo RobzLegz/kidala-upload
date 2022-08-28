@@ -7,9 +7,9 @@ KEEP CALM AND BE KIDALA
 ### **NVFM** stack (Next, Vercel, Flask, MongoDB)
 
 🌐 Frontend |  ⚙ Backend |  🚚 Deploy     | 🚀 Socket
------------ | ----------- | -----------     |
-**next.js** | **flask**   | **raspberrypi** | 
-**redux**   | **mongodb** |  **vercel**     |
+----------- | ----------- | -----------     |-------------
+**next.js** | **flask**   | **raspberrypi** | **elixir**
+**redux**   | **mongodb** |  **vercel**     | phoenix
 tailwindcss | gunicorn    |                 | 
 typescript  | nginx       |                 |
 
