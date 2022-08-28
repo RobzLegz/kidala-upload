@@ -10,5 +10,6 @@ export interface FileInterface {
     phoneNumber?: string;
     private?: boolean;
     is_ad?: boolean;
+    tag?: string;
     description?: string;
 }
