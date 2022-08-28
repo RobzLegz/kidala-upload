@@ -109,8 +109,14 @@ def getAllFiles(**kwargs):
 
 @app.route("/api/tags", methods=['GET'])
 @token_check('default')
-def getAllFiles(**kwargs):
+def getAllTags(**kwargs):
     query = dbtags.find()
+    return dumps(query)
+
+@app.route("/admin/all_users", methods=['GET'])
+@token_check('admin')
+def getAllUsers(**kwargs):
+    query = dbusers.find()
     return dumps(query)
 
 @app.route("/<filehash>")
@@ -202,7 +208,7 @@ def upload(**kwargs):
 
 @app.route('/admin/upload-ad', methods=['POST'])
 @token_check('admin')
-def upload(**kwargs):
+def upload_ad(**kwargs):
 
     if 'file' not in request.files:
         return make_response({'msg': "No file part"}, 400)
