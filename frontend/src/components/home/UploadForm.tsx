@@ -76,6 +76,15 @@ function UploadForm() {
         }
 
         if (addingTag) {
+            if (tag.length > 25) {
+                return dispatch(
+                    setNotification({
+                        type: 'error',
+                        message: "Tags can't be that long!",
+                    })
+                );
+            }
+
             setSelectedTag(tag);
             setAddingTag(false);
             return;
@@ -272,6 +281,8 @@ function UploadForm() {
                         />
                     </div>
                 </div>
+            ) : selectedTag ? (
+                <p className="text-white text-center mt-2">#{selectedTag}</p>
             ) : null}
         </form>
     );
