@@ -10,7 +10,9 @@ defmodule SocketWeb.Endpoint do
     signing_salt: "XB63eo8k"
   ]
 
-  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
+  socket "/socket", SocketWeb.UserSocket,
+    websocket: [connect_info: [:peer_data]],
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #
