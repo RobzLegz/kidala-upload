@@ -92,7 +92,7 @@ function UploadForm() {
 
         setLoading(true);
 
-        await uploadFile(setHash, dispatch, setFile, file);
+        await uploadFile(setHash, dispatch, setFile, file, selectedTag);
 
         setLoading(false);
     };
