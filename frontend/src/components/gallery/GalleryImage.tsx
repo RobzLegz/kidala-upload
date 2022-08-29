@@ -159,6 +159,7 @@ const GalleryImage: React.FC<{
                     draggable={false}
                     objectFit="cover"
                     layout="fill"
+                    quality={70}
                 />
             </div>
 
@@ -183,6 +184,7 @@ const GalleryImage: React.FC<{
                             draggable={false}
                             objectFit="cover"
                             layout="fill"
+                            quality={80}
                         />
                     </div>
                 </div>
