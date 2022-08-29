@@ -110,6 +110,11 @@ def deleteFile(**kwargs):
 @app.route("/make-private", methods=['POST'])
 @token_check('default')
 def make_private(**kwargs):
+    user_id = kwargs['user_ID']
+
+    if not user_id:
+        return make_response({'msg': 'Invalid authorization'}, 400)
+
     objectid = None
 
     if 'objectid' in request.json:
@@ -118,19 +123,27 @@ def make_private(**kwargs):
     if not objectid:
         return make_response({'message': 'no objectid'})
 
-    query = dbfiles.find_one({'_id': ObjectId(objectid)})
-    if query == None:
+    file_query = dbfiles.find_one({'_id': ObjectId(objectid)})
+    if file_query == None:
         return make_response({'msg': 'file not found'}, 404)
     else:
-        private = query['private']
+        user_query = dbusers.find_one({'_id': user_id})
+
+        if file_query['author'] != user_id:
+            if not user_query['role']:
+                return make_response({'msg': 'Invalid authorization'}, 400)
+            elif user_query['role'] != 'admin':
+                return make_response({'msg': 'Invalid authorization'}, 400)
+
+        private = file_query['private']
         if private:
             newvalues = {'$set': {'private': False}}
-            dbfiles.update_one(query, newvalues)
+            dbfiles.update_one(file_query, newvalues)
 
-            return make_response({'msg': 'file published'}, 200)
+            return make_response({'msg': 'file is now public'}, 200)
         else:
             newvalues = {'$set': {'private': True}}
-            dbfiles.update_one(query, newvalues)
+            dbfiles.update_one(file_query, newvalues)
 
         return make_response({'msg': 'file privated'}, 200)
 
@@ -220,7 +233,10 @@ def upload(**kwargs):
         private = False
 
         if 'private' in request.form:
-            private = request.form['private']
+            private_str = request.form['private']
+
+            if private_str == 'true':
+                private = True
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
