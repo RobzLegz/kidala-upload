@@ -18,12 +18,11 @@ CORS(app)
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
-
 UPLOAD_FOLDER = Path(app.root_path) / "files"
-SERVER_IP = os.getenv('SERVER_IP')
-MONGO_DB_LINK = os.getenv('MONGODBLINK')
-app.config['ADMIN_TOKEN'] = os.getenv('ADMIN_TOKEN')
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+SERVER_IP = os.getenv(' ')
+MONGO_DB_LINK = os.environ['MONGODBLINK']
+app.config['ADMIN_TOKEN'] = os.environ['ADMIN_TOKEN']
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
@@ -107,11 +106,15 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
+
 @app.route("/make-private", methods=['POST'])
 @token_check('default')
 def make_private(**kwargs):
+    objectid = None
+
     if 'objectid' in request.json:
         objectid = request.json['objectid']
+
     if not objectid:
         return make_response({'message': 'no objectid'})
 
@@ -125,12 +128,12 @@ def make_private(**kwargs):
             dbfiles.update_one(query, newvalues)
 
             return make_response({'msg': 'file published'}, 200)
-
         else:
             newvalues = {'$set': {'private': True}}
             dbfiles.update_one(query, newvalues)
 
         return make_response({'msg': 'file privated'}, 200)
+
 
 @app.route("/api/files", methods=['GET'])
 @token_check('default')
@@ -138,17 +141,20 @@ def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
 
+
 @app.route("/api/tags", methods=['GET'])
 @token_check('default')
 def getAllTags(**kwargs):
     query = dbtags.find()
     return dumps(query)
 
+
 @app.route("/admin/all_users", methods=['GET'])
 @token_check('admin')
 def getAllUsers(**kwargs):
     query = dbusers.find()
     return dumps(query)
+
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
@@ -199,21 +205,22 @@ def upload(**kwargs):
                     tagobject = {
                         'tag': tag_text
                     }
-                    
+
                     created_tag = dbtags.insert_one(tagobject)
                     tagobject.update({'_id': str(created_tag.inserted_id)})
                     tag_id = str(created_tag.inserted_id)
                 else:
                     tag_id = str(tagquery['_id'])
+
         description = ''
 
-        if 'description' in request.json:
-            description = request.json['description']
+        if 'description' in request.form:
+            description = request.form['description']
 
         private = False
 
-        if 'private' in request.json:
-            private = request.json['private']
+        if 'private' in request.form:
+            private = request.form['private']
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
@@ -225,7 +232,7 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': str(user.inserted_id),
-                'tag': tag_id
+                'tag': tag_id,
                 'private': private,
                 'description': description
             }
@@ -242,7 +249,7 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': kwargs['user_ID'],
-                'tag': tag_id
+                'tag': tag_id,
                 'private': private,
                 'description': description
             }
@@ -282,19 +289,19 @@ def upload_ad(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
-        if 'phoneNumber' not in request.json:
+        if 'phoneNumber' not in request.form:
             return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
-        if 'email' not in request.json:
+        if 'email' not in request.form:
             return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
         description = ''
 
-        if 'description' in request.json:
-            description = request.json['description']
+        if 'description' in request.form:
+            description = request.form['description']
 
-        phoneNumber = request.json['phoneNumber']
-        email = request.json['email']
+        phoneNumber = request.form['phoneNumber']
+        email = request.form['email']
 
         adentry = {
             'name': secure_filename(file.filename),
@@ -318,4 +325,4 @@ def upload_ad(**kwargs):
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=5000, debug=False)
+    app.run(host="localhost", port=5000, debug=True)
