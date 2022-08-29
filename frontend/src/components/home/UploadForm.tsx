@@ -29,6 +29,8 @@ function UploadForm() {
     const [addingTag, setAddingTag] = useState(false);
     const [savedToClipboard, setSavedToClipboard] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isPrivate, setIsPrivate] = useState(false);
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         const handlePasteAnywhere = (event: any) => {
@@ -94,7 +96,7 @@ function UploadForm() {
 
         setLoading(true);
 
-        await uploadFile(setHash, dispatch, setFile, file, tag.toLowerCase());
+        await uploadFile(setHash, dispatch, setFile, file, tag.toLowerCase(), description, isPrivate);
 
         setLoading(false);
         setSelectedTag('');
