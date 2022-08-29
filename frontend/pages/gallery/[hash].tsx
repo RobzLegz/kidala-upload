@@ -77,7 +77,7 @@ export default function Home(
                             : '/images/janisbataragsuzliso.png'
                     }
                 />
-                <meta property="twitter:card" content="summary_large_image" />
+                <meta property="twitter:card" content="summary" />
                 {/* <meta property="og:image:width" content="4608" /> */}
                 {/* <meta property="og:image:height" content="3456" /> */}
                 <meta property="og:site_name" content="kidala.life" />
