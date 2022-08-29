@@ -8,6 +8,8 @@ export interface FileInterface {
     author?: string;
     email?: string;
     phoneNumber?: string;
+    private?: boolean;
     is_ad?: boolean;
     tag?: string;
+    description?: string;
 }
