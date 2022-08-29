@@ -23,3 +23,8 @@
         @apply text-white hover:underline focus:underline cursor-pointer;
     }
 }
+
+label {
+    user-select: none;
+    -webkit-user-select: none;
+}
