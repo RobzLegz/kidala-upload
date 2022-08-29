@@ -8,8 +8,6 @@ services:
     restart: unless-stopped
     volumes:
       - /home/pi/kidala-upload/backend/files:/app/files
-    depends_on:
-      - mongodb
     env_file:
       - flask.env
       
