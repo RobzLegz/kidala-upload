@@ -121,7 +121,7 @@ def make_private(**kwargs):
         objectid = request.json['objectid']
 
     if not objectid:
-        return make_response({'message': 'no objectid'})
+        return make_response({'message': 'no objectid'}, 400)
 
     file_query = dbfiles.find_one({'_id': ObjectId(objectid)})
     if file_query == None:
