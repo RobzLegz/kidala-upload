@@ -112,31 +112,30 @@ def deleteFile(**kwargs):
 def make_private(**kwargs):
     user_id = kwargs['user_ID']
 
-    if not user_id:
+    if user_id == None:
         return make_response({'msg': 'Invalid authorization'}, 400)
-
-    objectid = None
 
     if 'objectid' in request.json:
         objectid = request.json['objectid']
-
-    if not objectid:
-        return make_response({'message': 'no objectid'}, 400)
+    else:
+        return make_response({'message': 'no object id'}, 400)
 
     file_query = dbfiles.find_one({'_id': ObjectId(objectid)})
     if file_query == None:
         return make_response({'msg': 'file not found'}, 404)
     else:
-        user_query = dbusers.find_one({'_id': user_id})
+        if 'author' not in file_query:
+            return make_response({'msg': 'Author not found'}, 400)
 
         if file_query['author'] != user_id:
-            if not user_query['role']:
+            user_query = dbusers.find_one({'_id': ObjectId(user_id)})
+
+            if 'role' not in user_query:
                 return make_response({'msg': 'Invalid authorization'}, 400)
             elif user_query['role'] != 'admin':
                 return make_response({'msg': 'Invalid authorization'}, 400)
 
-        private = file_query['private']
-        if private:
+        if file_query['private']:
             newvalues = {'$set': {'private': False}}
             dbfiles.update_one(file_query, newvalues)
 
@@ -145,7 +144,7 @@ def make_private(**kwargs):
             newvalues = {'$set': {'private': True}}
             dbfiles.update_one(file_query, newvalues)
 
-        return make_response({'msg': 'file privated'}, 200)
+            return make_response({'msg': 'file privated'}, 200)
 
 
 @app.route("/api/files", methods=['GET'])
