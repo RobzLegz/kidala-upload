@@ -29,6 +29,7 @@ dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
 dbfiles = db.files
 dbusers = db.users
+dbtags = db.tags
 
 
 @app.route("/favicon.ico")
@@ -100,10 +101,22 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
-@app.route("/admin/allfiles", methods=['GET'])
+@app.route("/api/files", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
+    return dumps(query)
+
+@app.route("/api/tags", methods=['GET'])
+@token_check('default')
+def getAllTags(**kwargs):
+    query = dbtags.find()
+    return dumps(query)
+
+@app.route("/admin/all_users", methods=['GET'])
+@token_check('admin')
+def getAllUsers(**kwargs):
+    query = dbusers.find()
     return dumps(query)
 
 @app.route("/<filehash>")
@@ -128,7 +141,6 @@ def upload(**kwargs):
         return make_response({'msg': "No selected file"}, 400)
 
     if file:
-
         md5 = hashlib.md5()
         md5.update(file.read())
         md5hash = md5.hexdigest()
@@ -143,6 +155,26 @@ def upload(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
+        tag_id = None
+        tagobject = None
+
+        if 'tag' in request.form:
+            tag_text = request.form['tag'].lower()
+
+            if tag_text != '':
+                tagquery = dbtags.find_one({'tag': tag_text})
+
+                if tagquery == None:
+                    tagobject = {
+                        'tag': tag_text
+                    }
+                    
+                    created_tag = dbtags.insert_one(tagobject)
+                    tagobject.update({'_id': str(created_tag.inserted_id)})
+                    tag_id = str(created_tag.inserted_id)
+                else:
+                    tag_id = str(tagquery['_id'])
+
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
             token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
@@ -151,35 +183,36 @@ def upload(**kwargs):
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': str(user.inserted_id)
+                'author': str(user.inserted_id),
+                'tag': tag_id
             }
 
             result = dbfiles.insert_one(fileentry)
             
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry, 'tag': tagobject}), 201)
 
         else:
-
             fileentry = {
                 'name': secure_filename(file.filename),
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
-                'author': kwargs['user_ID']
+                'author': kwargs['user_ID'],
+                'tag': tag_id
             }
 
             result = dbfiles.insert_one(fileentry)
 
             fileentry.update({'_id': str(result.inserted_id)})
 
-            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry}), 201)
+            return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry, 'tag': tagobject}), 201)
 
     return make_response({'msg': "failed"}, 500)
 
 @app.route('/admin/upload-ad', methods=['POST'])
 @token_check('admin')
-def upload(**kwargs):
+def upload_ad(**kwargs):
 
     if 'file' not in request.files:
         return make_response({'msg': "No file part"}, 400)

@@ -9,7 +9,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
-import { deleteFile, getAllFiles } from '../../requests/adminRequests';
+import { deleteFile } from '../../requests/adminRequests';
+import { getAllFiles } from '../../requests/fileRequests';
 import { BASE_URL } from '../../requests/routes';
 import { loginUser } from '../../requests/userRequests';
 

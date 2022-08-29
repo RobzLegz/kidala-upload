@@ -6,12 +6,12 @@ KEEP CALM AND BE KIDALA
 
 ### **NVFM** stack (Next, Vercel, Flask, MongoDB)
 
-🌐 Frontend |  ⚙ Backend |  🚚 Deploy
------------ | ----------- | -----------
-**next.js** | **flask**   | **raspberrypi**
-**redux**   | **mongodb** |  **vercel**
-tailwindcss | gunicorn    |
-typescript  | nginx       |
+🌐 Frontend |  ⚙ Backend |  🚀 Socket     |  🚚 Deploy
+----------- | ----------- | --------------- |-------------
+**next.js** | **flask**   |  **elixir**     | **raspberrypi**
+**redux**   | **mongodb** |   phoenix       | **vercel**
+tailwindcss | gunicorn    |                 | **heroku** 
+typescript  | nginx       |                 |
 
 ## Branches
 

@@ -8,7 +8,7 @@ import {
 } from '../../redux/slices/appSlice';
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
-import { getAllFiles } from '../../requests/adminRequests';
+import { getAllFiles } from '../../requests/fileRequests';
 import GalleryImage from './GalleryImage';
 
 function GalleryImages() {
@@ -25,7 +25,10 @@ function GalleryImages() {
         }
     }, []);
 
-    if (router.pathname === '/my-files' || router.pathname === '/my-files/[hash]') {
+    if (
+        router.pathname === '/my-files' ||
+        router.pathname === '/my-files/[hash]'
+    ) {
         return (
             <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden md:grid-cols-5 2xl:grid-cols-7 gap-2">
                 {appInfo.files &&
@@ -107,7 +110,9 @@ function GalleryImages() {
             appInfo.files &&
             appInfo.files.length !== appInfo.previewIdx + 1 ? (
                 <div className="flex w-full items-center justify-start py-2 border-b-2 border-dashed border-white">
-                    <strong className="text-white">{languageInfo.text.gallery.seen}:</strong>
+                    <strong className="text-white">
+                        {languageInfo.text.gallery.seen}:
+                    </strong>
                 </div>
             ) : null}
 

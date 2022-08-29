@@ -10,7 +10,8 @@ export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
-    file: File | null
+    file: File | null,
+    tag: string
 ) => {
     if (!file) {
         return;
@@ -18,6 +19,7 @@ export const uploadFile = async (
 
     let formData = new FormData();
     formData.append('file', file);
+    formData.append('tag', tag);
 
     let headers: { headers: Record<string, any> } = {
         headers: {
