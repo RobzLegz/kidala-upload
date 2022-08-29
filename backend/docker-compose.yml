@@ -7,20 +7,11 @@ services:
       dockerfile: ./Dockerfile
     restart: unless-stopped
     volumes:
-      - userfiles:/app/files
+      - /home/pi/kidala-upload/backend/files:/app/files
     depends_on:
       - mongodb
     env_file:
       - flask.env
-
-  # mongodb:
-  #   image: mongo:4.2.22
-  #   restart: unless-stopped
-  #   command: mongod --auth
-  #   env_file:
-  #     - mongo.env
-  #   volumes:
-  #     - mongodbdata:/data/db
       
   nginx:
     image: nginx:latest
@@ -28,13 +19,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /data/conf:/etc/nginx/sites-enabled
+      - /data/conf:/etc/nginx/conf.d
       - /data/cert:/app/cert
     depends_on:
       - flask
-
-volumes:
-  # mongodbdata:
-  #   driver: local
-  userfiles:
-    driver: local
