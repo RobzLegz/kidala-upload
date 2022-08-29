@@ -13,14 +13,14 @@ services:
     env_file:
       - flask.env
 
-  mongodb:
-    image: mongo:4.2.22
-    restart: unless-stopped
-    command: mongod --auth
-    env_file:
-      - mongo.env
-    volumes:
-      - mongodbdata:/data/db
+  # mongodb:
+  #   image: mongo:4.2.22
+  #   restart: unless-stopped
+  #   command: mongod --auth
+  #   env_file:
+  #     - mongo.env
+  #   volumes:
+  #     - mongodbdata:/data/db
       
   nginx:
     image: nginx:latest
@@ -34,7 +34,7 @@ services:
       - flask
 
 volumes:
-  mongodbdata:
-    driver: local
+  # mongodbdata:
+  #   driver: local
   userfiles:
     driver: local

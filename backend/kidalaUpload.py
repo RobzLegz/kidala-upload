@@ -21,9 +21,10 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
 UPLOAD_FOLDER = Path(app.root_path) / "files"
 SERVER_IP = os.getenv('SERVER_IP')
-MONGO_USERNAME = os.getenv('MONGO_INITDB_ROOT_USERNAME')
-MONGO_PASSWORD = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
-MONGO_DB_LINK = f'mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@mongodb'
+#MONGO_USERNAME = os.getenv('MONGO_INITDB_ROOT_USERNAME')
+#MONGO_PASSWORD = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
+#MONGO_DB_LINK = f'mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@mongodb'
+MONGO_DB_LINK = os.getenv('MONGO_DB_LINK')
 app.config['ADMIN_TOKEN'] = os.getenv('ADMIN_TOKEN')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
