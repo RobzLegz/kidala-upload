@@ -215,6 +215,7 @@ function UploadForm() {
                     src={filePreview}
                     alt="file preview"
                     className="w-full mt-12"
+                    draggable={false}
                 />
             ) : !hash && file ? (
                 <div className="flex mt-5 bg-green-700 p-2">
