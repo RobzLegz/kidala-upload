@@ -42,7 +42,7 @@ export default function Home(
                         props.file?.name ? props.file.name : 'File'
                     }`}
                 />
-                <meta name="twitter:site" content="www.kidala.life" />
+                <meta name="twitter:site" content="kidala.life" />
                 <meta
                     property="og:image"
                     content={
@@ -78,8 +78,8 @@ export default function Home(
                     }
                 />
                 <meta property="twitter:card" content="summary_large_image" />
-                <meta property="og:image:width" content="4608" />
-                <meta property="og:image:height" content="3456" />
+                {/* <meta property="og:image:width" content="4608" /> */}
+                {/* <meta property="og:image:height" content="3456" /> */}
                 <meta property="og:site_name" content="kidala.life" />
                 <meta property="og:type" content="website" />
             </Head>
