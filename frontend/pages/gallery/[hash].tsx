@@ -78,7 +78,6 @@ export default function Home(
                     }
                 />
                 <meta property="twitter:card" content="summary_large_image" />
-                <meta property="og:image:width" content="4608" />
                 <meta property="og:site_name" content="kidala.life" />
                 <meta property="og:type" content="website" />
             </Head>
