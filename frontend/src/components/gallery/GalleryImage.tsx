@@ -8,6 +8,7 @@ import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { AdIndicator } from '../ads/AdIndicator';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 
 const GalleryImage: React.FC<{
     file: FileInterface;
@@ -19,6 +20,7 @@ const GalleryImage: React.FC<{
     const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState<boolean | null>(true);
@@ -91,6 +93,16 @@ const GalleryImage: React.FC<{
             }
         }
     };
+
+    if (
+        file.author &&
+        file.private &&
+        (file.author !== userInfo.info?._id ||
+            (router.pathname !== '/my-files' &&
+                router.pathname !== '/my-files/[hash]'))
+    ) {
+        return null;
+    }
 
     if (
         !file.name.includes('.png') &&
