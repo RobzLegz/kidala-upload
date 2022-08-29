@@ -315,6 +315,9 @@ function UploadForm() {
                                 placeholder="Enter tag"
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
+                                autoComplete="off"
+                                autoCapitalize='off'
+                                autoCorrect='off'
                             />
                         </div>
                     </div>
