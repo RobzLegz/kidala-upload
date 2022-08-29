@@ -43,11 +43,9 @@ def token_check(role):
             if 'Authorization' in request.headers:
                 access_token = request.headers['Authorization']
                 try:
-                    kwargs['user_ID'] = jwt.decode(
-                        access_token, app.config['SECRET_KEY'], algorithms='HS256')['user_id']
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['SECRET_KEY'], algorithms='HS256')['user_id']
                 except:
-                    kwargs['user_ID'] = jwt.decode(
-                        access_token, app.config['ADMIN_TOKEN'], algorithms='HS256')['user_id']
+                    kwargs['user_ID'] = jwt.decode(access_token, app.config['ADMIN_TOKEN'], algorithms='HS256')['user_id']
             elif role == 'default':
                 kwargs['user_ID'] = None
             elif role == 'admin':
@@ -70,8 +68,7 @@ def login():
     if query == None:
         make_response({'msg': 'user not found'}, 400)
     if check_password_hash(query['password'], password):
-        token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow(
-        ).isoformat()}, app.config['ADMIN_TOKEN'])
+        token = jwt.encode({'user_id': str(query['_id']), 'createdAt': datetime.utcnow().isoformat()}, app.config['ADMIN_TOKEN'])
         query['_id'] = str(query['_id'])
         return make_response({'access_token': token, 'info': query}, 200)
     else:
@@ -239,8 +236,7 @@ def upload(**kwargs):
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
-            token = jwt.encode(
-                {'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
+            token = jwt.encode({'user_id': str(user.inserted_id)}, app.config['SECRET_KEY'])
 
             fileentry = {
                 'name': secure_filename(file.filename),
