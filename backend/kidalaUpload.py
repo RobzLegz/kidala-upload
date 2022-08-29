@@ -19,7 +19,7 @@ CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
 UPLOAD_FOLDER = Path(app.root_path) / "files"
-SERVER_IP = os.getenv(' ')
+SERVER_IP = os.environ['SERVER_IP']
 MONGO_DB_LINK = os.environ['MONGODBLINK']
 app.config['ADMIN_TOKEN'] = os.environ['ADMIN_TOKEN']
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
