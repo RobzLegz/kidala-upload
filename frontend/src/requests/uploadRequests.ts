@@ -11,7 +11,9 @@ export const uploadFile = async (
     dispatch: Dispatch,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file: File | null,
-    tag: string
+    tag: string,
+    description: string,
+    isPrivate: boolean,
 ) => {
     if (!file) {
         return;
@@ -20,6 +22,8 @@ export const uploadFile = async (
     let formData = new FormData();
     formData.append('file', file);
     formData.append('tag', tag);
+    formData.append('description', description);
+    formData.append('private', isPrivate.toString());
 
     let headers: { headers: Record<string, any> } = {
         headers: {

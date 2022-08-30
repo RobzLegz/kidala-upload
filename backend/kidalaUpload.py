@@ -18,12 +18,13 @@ CORS(app)
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
 
-
 UPLOAD_FOLDER = Path(app.root_path) / "files"
-SERVER_IP = os.getenv('SERVER_IP')
-MONGO_DB_LINK = os.getenv('MONGO_DB_LINK')
-app.config['ADMIN_TOKEN'] = os.getenv('ADMIN_TOKEN')
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+SERVER_IP = os.environ['SERVER_IP']
+MONGO_DB_LINK = os.environ['MONGO_DB_LINK']
+app.config['ADMIN_TOKEN'] = os.environ['ADMIN_TOKEN']
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
 
 dbclient = MongoClient(MONGO_DB_LINK)
 db = dbclient.kidala
@@ -35,6 +36,7 @@ dbtags = db.tags
 @app.route("/favicon.ico")
 def favicon():
     return send_file(Path(app.root_path) / 'favicon.ico')
+
 
 def token_check(role):
     def token_required(f):
@@ -51,10 +53,11 @@ def token_check(role):
             elif role == 'admin':
                 return make_response({'msg': 'authorization required'}, 401)
 
-            kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR') 
+            kwargs['user_IP'] = request.environ.get('HTTP_X_FORWARDED_FOR')
             return f(*args, **kwargs)
         return decorator
     return token_required
+
 
 @app.route("/admin/login", methods=['POST'])
 def login():
@@ -63,7 +66,7 @@ def login():
         password = request.json['password']
     else:
         make_response({'msg': 'missing username or password'}, 400)
-    query  = dbusers.find_one({'username': username})
+    query = dbusers.find_one({'username': username})
     if query == None:
         make_response({'msg': 'user not found'}, 400)
     if check_password_hash(query['password'], password):
@@ -72,6 +75,7 @@ def login():
         return make_response({'access_token': token, 'info': query}, 200)
     else:
         return make_response({'msg': 'incorrect password'}, 400)
+
 
 @app.route("/admin/getUser", methods=['GET'])
 @token_check('default')
@@ -101,11 +105,53 @@ def deleteFile(**kwargs):
     deletequery = dbfiles.delete_one({'_id': ObjectId(objectid)})
     return make_response({'msg': 'file removed'}, 200)
 
+
+@app.route("/make-private", methods=['POST'])
+@token_check('default')
+def make_private(**kwargs):
+    user_id = kwargs['user_ID']
+
+    if user_id == None:
+        return make_response({'msg': 'Invalid authorization'}, 400)
+
+    if 'objectid' in request.json:
+        objectid = request.json['objectid']
+    else:
+        return make_response({'message': 'no object id'}, 400)
+
+    file_query = dbfiles.find_one({'_id': ObjectId(objectid)})
+    if file_query == None:
+        return make_response({'msg': 'file not found'}, 404)
+    else:
+        if 'author' not in file_query:
+            return make_response({'msg': 'Author not found'}, 400)
+
+        if file_query['author'] != user_id:
+            user_query = dbusers.find_one({'_id': ObjectId(user_id)})
+
+            if 'role' not in user_query:
+                return make_response({'msg': 'Invalid authorization'}, 400)
+            elif user_query['role'] != 'admin':
+                return make_response({'msg': 'Invalid authorization'}, 400)
+
+        if file_query['private']:
+            newvalues = {'$set': {'private': False}}
+            dbfiles.update_one(file_query, newvalues)
+
+            return make_response({'msg': 'file is now public'}, 200)
+        else:
+            newvalues = {'$set': {'private': True}}
+            dbfiles.update_one(file_query, newvalues)
+
+            return make_response({'msg': 'file privated'}, 200)
+
+
 @app.route("/api/files", methods=['GET'])
 @token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
     return dumps(query)
+
 
 @app.route("/api/tags", methods=['GET'])
 @token_check('default')
@@ -113,11 +159,13 @@ def getAllTags(**kwargs):
     query = dbtags.find()
     return dumps(query)
 
+
 @app.route("/admin/all_users", methods=['GET'])
 @token_check('admin')
 def getAllUsers(**kwargs):
     query = dbusers.find()
     return dumps(query)
+
 
 @app.route("/<filehash>")
 def downloadFile(filehash):
@@ -168,12 +216,25 @@ def upload(**kwargs):
                     tagobject = {
                         'tag': tag_text
                     }
-                    
+
                     created_tag = dbtags.insert_one(tagobject)
                     tagobject.update({'_id': str(created_tag.inserted_id)})
                     tag_id = str(created_tag.inserted_id)
                 else:
                     tag_id = str(tagquery['_id'])
+
+        description = ''
+
+        if 'description' in request.form:
+            description = request.form['description']
+
+        private = False
+
+        if 'private' in request.form:
+            private_str = request.form['private']
+
+            if private_str == 'true':
+                private = True
 
         if kwargs['user_ID'] == None:
             user = dbusers.insert_one({'ip': kwargs['user_IP']})
@@ -184,11 +245,13 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': str(user.inserted_id),
-                'tag': tag_id
+                'tag': tag_id,
+                'private': private,
+                'description': description
             }
 
             result = dbfiles.insert_one(fileentry)
-            
+
             fileentry.update({'_id': str(result.inserted_id)})
 
             return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'access_token': token, 'file': fileentry, 'tag': tagobject}), 201)
@@ -199,7 +262,9 @@ def upload(**kwargs):
                 'hash': md5hash,
                 'size': Path(UPLOAD_FOLDER / md5hash / secure_filename(file.filename)).stat().st_size,
                 'author': kwargs['user_ID'],
-                'tag': tag_id
+                'tag': tag_id,
+                'private': private,
+                'description': description
             }
 
             result = dbfiles.insert_one(fileentry)
@@ -209,6 +274,7 @@ def upload(**kwargs):
             return make_response(jsonify({'msg': "success", 'url': f"https://{SERVER_IP}/{md5hash}", 'hash': md5hash, 'file': fileentry, 'tag': tagobject}), 201)
 
     return make_response({'msg': "failed"}, 500)
+
 
 @app.route('/admin/upload-ad', methods=['POST'])
 @token_check('admin')
@@ -236,14 +302,19 @@ def upload_ad(**kwargs):
         file.stream.seek(0)
         file.save(UPLOAD_FOLDER / md5hash / secure_filename(file.filename))
 
-        if 'phoneNumber' not in request.json:
+        if 'phoneNumber' not in request.form:
             return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
-        if 'email' not in request.json:
+        if 'email' not in request.form:
             return make_response(jsonify({'msg': "Something went wrong"}), 400)
 
-        phoneNumber = request.json['phoneNumber']
-        email = request.json['email']
+        description = ''
+
+        if 'description' in request.form:
+            description = request.form['description']
+
+        phoneNumber = request.form['phoneNumber']
+        email = request.form['email']
 
         adentry = {
             'name': secure_filename(file.filename),
@@ -252,7 +323,9 @@ def upload_ad(**kwargs):
             'author': kwargs['user_ID'],
             'phoneNumber': phoneNumber,
             'email': email,
-            'is_ad': True
+            'is_ad': True,
+            'private': False,
+            'description': description
         }
 
         result = dbfiles.insert_one(adentry)

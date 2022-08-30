@@ -29,6 +29,8 @@ function UploadForm() {
     const [addingTag, setAddingTag] = useState(false);
     const [savedToClipboard, setSavedToClipboard] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isPrivate, setIsPrivate] = useState(false);
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         const handlePasteAnywhere = (event: any) => {
@@ -55,6 +57,9 @@ function UploadForm() {
             setFile(cb_file);
             setSavedToClipboard(false);
             setHash('');
+            setSelectedTag('');
+            setTag('');
+            setAddingTag(false);
 
             event.preventDefault();
         };
@@ -87,14 +92,24 @@ function UploadForm() {
 
             setSelectedTag(tag.toLowerCase());
             setAddingTag(false);
-            return;
         }
 
         setLoading(true);
 
-        await uploadFile(setHash, dispatch, setFile, file, selectedTag);
+        await uploadFile(
+            setHash,
+            dispatch,
+            setFile,
+            file,
+            tag.toLowerCase(),
+            description,
+            isPrivate
+        );
 
         setLoading(false);
+        setSelectedTag('');
+        setTag('');
+        setAddingTag(false);
     };
 
     const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +140,9 @@ function UploadForm() {
         setFile(selectedFile);
         setSavedToClipboard(false);
         setHash('');
+        setSelectedTag('');
+        setTag('');
+        setAddingTag(false);
     };
 
     const saveToClipboard = (
@@ -197,6 +215,7 @@ function UploadForm() {
                     src={filePreview}
                     alt="file preview"
                     className="w-full mt-12"
+                    draggable={false}
                 />
             ) : !hash && file ? (
                 <div className="flex mt-5 bg-green-700 p-2">
@@ -245,42 +264,65 @@ function UploadForm() {
             )}
 
             {!hash && file && !selectedTag ? (
-                <div
-                    className={`max-w-[280px] bg-black h-8 mt-4 rounded-full transition-all duration-500 relative flex items-center justify-center ${
-                        addingTag ? 'w-[95%]' : 'w-24'
-                    }`}
-                >
-                    <button
-                        className={`text-white transition-all duration-300 h-full ${
-                            addingTag ? 'hidden' : 'w-full'
-                        }`}
-                        disabled={addingTag}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setAddingTag(true);
-                        }}
-                    >
-                        # Add tag
-                    </button>
+                <>
+                    <div className="flex mt-4 items-center justify-center">
+                        <input
+                            type="checkbox"
+                            name="file_private"
+                            id="file_private"
+                            className="h-4 w-4"
+                            checked={isPrivate}
+                            onChange={() => setIsPrivate(!isPrivate)}
+                        />
+
+                        <label
+                            htmlFor="file_private"
+                            className="text-white ml-1 cursor-default"
+                        >
+                            Private
+                        </label>
+                    </div>
 
                     <div
-                        className={`flex w-full rounded-full items-center justify-center px-4 ${
-                            addingTag ? 'w-full' : 'hidden'
+                        className={`max-w-[280px] bg-black h-8 mt-4 rounded-full transition-all duration-500 relative flex items-center justify-center ${
+                            addingTag ? 'w-[95%]' : 'w-24'
                         }`}
                     >
-                        <p className="text-white">#</p>
+                        <button
+                            className={`text-white transition-all duration-300 h-full absolute w-full top-0 left-0 ${
+                                addingTag ? 'opacity-0' : 'z-10'
+                            }`}
+                            disabled={addingTag}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setAddingTag(true);
+                            }}
+                        >
+                            # Add tag
+                        </button>
 
-                        <input
-                            type="text"
-                            name="file_tag"
-                            id="file_tag"
-                            className="bg-transparent flex-1 ml-1 outline-none focus:placeholder:text-gray-300 text-white"
-                            placeholder="Enter tag"
-                            value={tag}
-                            onChange={(e) => setTag(e.target.value)}
-                        />
+                        <div
+                            className={`flex rounded-full items-center justify-center px-4 transition-all absolute top-0 left-0 h-full duration-500 ${
+                                addingTag ? 'z-10' : 'opacity-0'
+                            }`}
+                        >
+                            <p className="text-white">#</p>
+
+                            <input
+                                type="text"
+                                name="file_tag"
+                                id="file_tag"
+                                className="bg-transparent flex-1 ml-1 outline-none focus:placeholder:text-gray-300 text-white"
+                                placeholder="Enter tag"
+                                value={tag}
+                                onChange={(e) => setTag(e.target.value)}
+                                autoComplete="off"
+                                autoCapitalize='off'
+                                autoCorrect='off'
+                            />
+                        </div>
                     </div>
-                </div>
+                </>
             ) : selectedTag ? (
                 <p className="text-white text-center mt-2">#{selectedTag}</p>
             ) : null}

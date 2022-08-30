@@ -6,19 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp, setPreviewIdx } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
-import useWindowSize from '../../hooks/useWindowSize';
 import { AdIndicator } from '../ads/AdIndicator';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { windwSizes } from '../../constants/windowSizes';
 
 const GalleryImage: React.FC<{
     file: FileInterface;
     index: number;
     isSeen: boolean;
-}> = ({ file, index, isSeen }) => {
-    const windowSize = useWindowSize();
+    windowSize: {
+        width: number | undefined;
+        height: number | undefined;
+    };
+}> = ({ file, index, isSeen, windowSize }) => {
     const router = useRouter();
     const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
 
     const [isLeft, setIsLeft] = useState(true);
     const [isTop, setIsTop] = useState<boolean | null>(true);
@@ -56,14 +61,18 @@ const GalleryImage: React.FC<{
 
                 let colCount = 0;
 
-                const colSize5 = 768;
-                const colSize7 = 1024;
+                const colSize5 = windwSizes.lg;
+                const colSize7 = windwSizes['2xl'];
 
                 if (width >= colSize7) {
-                    colCount = 14;
-                } else if (width >= colSize5) {
                     colCount = 10;
+                } else if (width >= colSize5) {
+                    colCount = 8;
+                } else {
+                    setIsTop(null);
+                    return;
                 }
+
                 if (!isSeen) {
                     if (appInfo.previewIdx) {
                         imgIdx -= appInfo.previewIdx;
@@ -93,6 +102,16 @@ const GalleryImage: React.FC<{
     };
 
     if (
+        file.author &&
+        file.private &&
+        (file.author !== userInfo.info?._id ||
+            (router.pathname !== '/my-files' &&
+                router.pathname !== '/my-files/[hash]'))
+    ) {
+        return null;
+    }
+
+    if (
         !file.name.includes('.png') &&
         !file.name.includes('.jpg') &&
         !file.name.includes('.gif') &&
@@ -115,7 +134,7 @@ const GalleryImage: React.FC<{
                 onClick={viewFile}
                 onMouseOver={checkPosition}
             >
-                <div className="w-[250px] md:w-[300px] h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative flex flex-col items-center justify-center">
+                <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative flex flex-col items-center justify-center">
                     <DocumentIcon className="text-white h-16" />
 
                     <p className="text-white w-full truncate text-center">
@@ -140,23 +159,26 @@ const GalleryImage: React.FC<{
         >
             {file.is_ad ? <AdIndicator /> : null}
 
-            <div className="w-[250px] md:w-[300px] h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
+            <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/${file.hash}`}
                     alt={file.name}
                     draggable={false}
                     objectFit="cover"
                     layout="fill"
+                    quality={65}
+                    blurDataURL={`${BASE_URL}/${file.hash}`}
+                    placeholder="blur"
                 />
             </div>
 
-            <div
+            {/* <div
                 className={`absolute top-0 w-full h-full z-20 ${
                     isLeft ? 'left-0' : 'right-0'
                 }`}
-            />
+            /> */}
 
-            {isTop !== null &&
+            {/* {isTop !== null &&
             router.pathname !== '/my-files' &&
             router.pathname !== '/my-files/[hash]' ? (
                 <div
@@ -171,10 +193,13 @@ const GalleryImage: React.FC<{
                             draggable={false}
                             objectFit="cover"
                             layout="fill"
+                            quality={80}
+                            blurDataURL={`${BASE_URL}/${file.hash}`}
+                            placeholder="blur"
                         />
                     </div>
                 </div>
-            ) : null}
+            ) : null} */}
         </div>
     );
 };

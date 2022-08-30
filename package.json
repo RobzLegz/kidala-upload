@@ -5,6 +5,7 @@
     "scripts": {
         "frontend": "cd frontend && yarn dev",
         "f": "cd frontend && yarn dev",
+        "s": "cd socket && mix phx.server",
         "dev": "cd frontend && yarn dev",
         "socket": "cd socket && mix phx.server"
     },

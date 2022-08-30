@@ -15,7 +15,11 @@ import { BASE_URL } from '../../requests/routes';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { AdIndicator } from '../ads/AdIndicator';
 import Navigation from '../navigation/Navigation';
-import GalleryImages from './GalleryImages';
+import dynamic from 'next/dynamic';
+import { default as OptImage } from 'next/image';
+import { isImage } from '../../utils/isImage';
+
+const GalleryImages = dynamic(() => import('./GalleryImages'));
 
 function SingleFileContainer() {
     const router = useRouter();
@@ -27,13 +31,40 @@ function SingleFileContainer() {
 
     const [file, setFile] = useState<FileInterface | undefined>(undefined);
     const [copied, setCopied] = useState(false);
+    const [imageDimensions, setImageDimensions] = useState({
+        width: 0,
+        height: 0,
+    });
 
     useEffect(() => {
         if (appInfo.files && typeof hash === 'string') {
+            setFile(undefined);
             const foundFile = getFileFromHash(hash, appInfo.files);
 
             setFile(foundFile);
             setCopied(false);
+
+            if (foundFile && isImage(foundFile.name)) {
+                const img = new Image();
+                img.src = `${BASE_URL}/${hash}`;
+                img.onload = () => {
+                    const { width, height } = img;
+
+                    let nH = 0;
+
+                    const nW = 600;
+                    const w_c_p = ((nW - width) / width) * 100;
+                    const f_w_c_p = Math.floor(w_c_p) / 100;
+                    const hDiff = height * f_w_c_p;
+
+                    nH = height + hDiff;
+
+                    setImageDimensions({
+                        width: nW,
+                        height: nH,
+                    });
+                };
+            }
         }
     }, [hash, appInfo.files]);
 
@@ -82,12 +113,20 @@ function SingleFileContainer() {
                         <div className="flex items-center justify-center flex-col relative">
                             {file.is_ad ? <AdIndicator /> : null}
 
-                            <img
-                                src={`${BASE_URL}/${hash}`}
-                                alt={String(hash)}
-                                className="relative object-cover max-h-[600px] lg:min-w-[400px]"
-                                draggable={false}
-                            />
+                            {file ? (
+                                <OptImage
+                                    src={`${BASE_URL}/${file.hash}`}
+                                    alt={String(file.hash)}
+                                    draggable={false}
+                                    width={imageDimensions.width}
+                                    height={imageDimensions.height}
+                                    quality={95}
+                                    blurDataURL={`${BASE_URL}/${file.hash}`}
+                                    placeholder="blur"
+                                    objectFit="cover"
+                                />
+                            ) : null}
+
                             {!file.is_ad ? (
                                 <p className="text-white text-center mt-2">
                                     {file.name}
