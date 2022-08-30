@@ -36,6 +36,9 @@ yarn-error.log*
 .env.production.local
 /backend/.env
 
+#backend env files
+/backend/flask.env
+
 # vercel
 .vercel
 
