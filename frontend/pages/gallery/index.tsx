@@ -1,7 +1,13 @@
 import Head from 'next/head';
-import GalleryContainer from '../../src/components/gallery/GalleryContainer';
-import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
+import dynamic from 'next/dynamic';
+
+const GalleryContainer = dynamic(
+    () => import('../../src/components/gallery/GalleryContainer')
+);
+const LanguageSelector = dynamic(
+    () => import('../../src/components/language/LanguageSelector')
+);
 
 export default function Gallery() {
     return (

@@ -2,13 +2,19 @@ import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
-import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
 import { BASE_URL, LIST_FILES } from '../../src/requests/routes';
 import { isImage } from '../../src/utils/isImage';
+import dynamic from 'next/dynamic';
+
+const SingleFileContainer = dynamic(
+    () => import('../../src/components/gallery/SingleFileContainer')
+);
+const LanguageSelector = dynamic(
+    () => import('../../src/components/language/LanguageSelector')
+);
 
 export default function Home(
     props: InferGetServerSidePropsType<typeof getServerSideProps>

@@ -9,11 +9,17 @@ import {
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { getAllFiles } from '../../requests/fileRequests';
-import GalleryImage from './GalleryImage';
+import useWindowSize from '../../hooks/useWindowSize';
+import dynamic from 'next/dynamic';
+
+const GalleryImage = dynamic(() => import('./GalleryImage'));
+
+const gridStyle = 'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 gap-2'
 
 function GalleryImages() {
     const dispatch = useDispatch();
     const router = useRouter();
+    const windowSize = useWindowSize();
 
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
@@ -30,7 +36,7 @@ function GalleryImages() {
         router.pathname === '/my-files/[hash]'
     ) {
         return (
-            <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden md:grid-cols-5 2xl:grid-cols-7 gap-2">
+            <div className={gridStyle}>
                 {appInfo.files &&
                     appInfo.files.map((file, i) => {
                         if (
@@ -43,10 +49,11 @@ function GalleryImages() {
 
                         return (
                             <GalleryImage
+                                key={i}
                                 file={file}
                                 index={i}
                                 isSeen={false}
-                                key={i}
+                                windowSize={windowSize}
                             />
                         );
                     })}
@@ -83,7 +90,7 @@ function GalleryImages() {
                 </div>
             </div>
 
-            <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden md:grid-cols-5 2xl:grid-cols-7 gap-2">
+            <div className={gridStyle}>
                 {appInfo.files &&
                     appInfo.files.map((file, i) => {
                         if (
@@ -96,10 +103,11 @@ function GalleryImages() {
 
                         return (
                             <GalleryImage
+                                key={i}
                                 file={file}
                                 index={i}
                                 isSeen={false}
-                                key={i}
+                                windowSize={windowSize}
                             />
                         );
                     })}
@@ -117,7 +125,7 @@ function GalleryImages() {
             ) : null}
 
             {!appInfo.sortOptions.myFiles ? (
-                <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden md:grid-cols-5 2xl:grid-cols-7 gap-2">
+                <div className={gridStyle}>
                     {appInfo.files &&
                         appInfo.previewIdx &&
                         appInfo.files.map((file, i) => {
@@ -127,10 +135,11 @@ function GalleryImages() {
 
                             return (
                                 <GalleryImage
+                                    key={i}
                                     file={file}
                                     index={i}
                                     isSeen={true}
-                                    key={i}
+                                    windowSize={windowSize}
                                 />
                             );
                         })}

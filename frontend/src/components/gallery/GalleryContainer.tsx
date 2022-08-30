@@ -1,6 +1,8 @@
 import React from 'react';
 import Navigation from '../navigation/Navigation';
-import GalleryImages from './GalleryImages';
+import dynamic from 'next/dynamic';
+
+const GalleryImages = dynamic(() => import('./GalleryImages'));
 
 function GalleryContainer() {
     return (
