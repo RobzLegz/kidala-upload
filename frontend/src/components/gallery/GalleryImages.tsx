@@ -14,7 +14,7 @@ import dynamic from 'next/dynamic';
 
 const GalleryImage = dynamic(() => import('./GalleryImage'));
 
-const gridStyle = 'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden lg:grid-cols-4 2xl:grid-cols-5 gap-2'
+const gridStyle = 'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 gap-2'
 
 function GalleryImages() {
     const dispatch = useDispatch();

@@ -134,7 +134,7 @@ const GalleryImage: React.FC<{
                 onClick={viewFile}
                 onMouseOver={checkPosition}
             >
-                <div className="w-[250px] md:w-[300px] h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative flex flex-col items-center justify-center">
+                <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative flex flex-col items-center justify-center">
                     <DocumentIcon className="text-white h-16" />
 
                     <p className="text-white w-full truncate text-center">
@@ -159,7 +159,7 @@ const GalleryImage: React.FC<{
         >
             {file.is_ad ? <AdIndicator /> : null}
 
-            <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px]  max-w-full max-h-full relative">
+            <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/${file.hash}`}
                     alt={file.name}

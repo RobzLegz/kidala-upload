@@ -18,7 +18,6 @@ import Navigation from '../navigation/Navigation';
 import dynamic from 'next/dynamic';
 import { default as OptImage } from 'next/image';
 import { isImage } from '../../utils/isImage';
-import { useImageSize } from '../../hooks/useImageSize';
 
 const GalleryImages = dynamic(() => import('./GalleryImages'));
 
@@ -39,6 +38,7 @@ function SingleFileContainer() {
 
     useEffect(() => {
         if (appInfo.files && typeof hash === 'string') {
+            setFile(undefined);
             const foundFile = getFileFromHash(hash, appInfo.files);
 
             setFile(foundFile);
@@ -48,9 +48,20 @@ function SingleFileContainer() {
                 const img = new Image();
                 img.src = `${BASE_URL}/${hash}`;
                 img.onload = () => {
+                    const { width, height } = img;
+
+                    let nH = 0;
+
+                    const nW = 600;
+                    const w_c_p = ((nW - width) / width) * 100;
+                    const f_w_c_p = Math.floor(w_c_p) / 100;
+                    const hDiff = height * f_w_c_p;
+
+                    nH = height + hDiff;
+
                     setImageDimensions({
-                        width: img.width,
-                        height: img.height,
+                        width: nW,
+                        height: nH,
                     });
                 };
             }
@@ -102,17 +113,19 @@ function SingleFileContainer() {
                         <div className="flex items-center justify-center flex-col relative">
                             {file.is_ad ? <AdIndicator /> : null}
 
-                            <OptImage
-                                src={`${BASE_URL}/${hash}`}
-                                alt={String(hash)}
-                                draggable={false}
-                                width={imageDimensions.width}
-                                height={imageDimensions.height}
-                                quality={95}
-                                blurDataURL={`${BASE_URL}/${file.hash}`}
-                                placeholder="blur"
-                                objectFit="cover"
-                            />
+                            {file ? (
+                                <OptImage
+                                    src={`${BASE_URL}/${file.hash}`}
+                                    alt={String(file.hash)}
+                                    draggable={false}
+                                    width={imageDimensions.width}
+                                    height={imageDimensions.height}
+                                    quality={95}
+                                    blurDataURL={`${BASE_URL}/${file.hash}`}
+                                    placeholder="blur"
+                                    objectFit="cover"
+                                />
+                            ) : null}
 
                             {!file.is_ad ? (
                                 <p className="text-white text-center mt-2">
