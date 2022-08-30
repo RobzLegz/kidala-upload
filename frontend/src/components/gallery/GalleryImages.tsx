@@ -49,10 +49,10 @@ function GalleryImages() {
 
                         return (
                             <GalleryImage
+                                key={i}
                                 file={file}
                                 index={i}
                                 isSeen={false}
-                                key={i}
                                 windowSize={windowSize}
                             />
                         );
@@ -103,10 +103,10 @@ function GalleryImages() {
 
                         return (
                             <GalleryImage
+                                key={i}
                                 file={file}
                                 index={i}
                                 isSeen={false}
-                                key={i}
                                 windowSize={windowSize}
                             />
                         );
@@ -135,10 +135,10 @@ function GalleryImages() {
 
                             return (
                                 <GalleryImage
+                                    key={i}
                                     file={file}
                                     index={i}
                                     isSeen={true}
-                                    key={i}
                                     windowSize={windowSize}
                                 />
                             );

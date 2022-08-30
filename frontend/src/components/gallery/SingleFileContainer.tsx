@@ -16,6 +16,9 @@ import { getFileFromHash } from '../../utils/getFileFromHash';
 import { AdIndicator } from '../ads/AdIndicator';
 import Navigation from '../navigation/Navigation';
 import dynamic from 'next/dynamic';
+import { default as OptImage } from 'next/image';
+import { isImage } from '../../utils/isImage';
+import { useImageSize } from '../../hooks/useImageSize';
 
 const GalleryImages = dynamic(() => import('./GalleryImages'));
 
@@ -29,6 +32,10 @@ function SingleFileContainer() {
 
     const [file, setFile] = useState<FileInterface | undefined>(undefined);
     const [copied, setCopied] = useState(false);
+    const [imageDimensions, setImageDimensions] = useState({
+        width: 0,
+        height: 0,
+    });
 
     useEffect(() => {
         if (appInfo.files && typeof hash === 'string') {
@@ -36,6 +43,17 @@ function SingleFileContainer() {
 
             setFile(foundFile);
             setCopied(false);
+
+            if (foundFile && isImage(foundFile.name)) {
+                const img = new Image();
+                img.src = `${BASE_URL}/${hash}`;
+                img.onload = () => {
+                    setImageDimensions({
+                        width: img.width,
+                        height: img.height,
+                    });
+                };
+            }
         }
     }, [hash, appInfo.files]);
 
@@ -84,12 +102,18 @@ function SingleFileContainer() {
                         <div className="flex items-center justify-center flex-col relative">
                             {file.is_ad ? <AdIndicator /> : null}
 
-                            <img
+                            <OptImage
                                 src={`${BASE_URL}/${hash}`}
                                 alt={String(hash)}
-                                className="relative object-cover max-h-[600px] lg:min-w-[400px]"
                                 draggable={false}
+                                width={imageDimensions.width}
+                                height={imageDimensions.height}
+                                quality={95}
+                                blurDataURL={`${BASE_URL}/${file.hash}`}
+                                placeholder="blur"
+                                objectFit="cover"
                             />
+
                             {!file.is_ad ? (
                                 <p className="text-white text-center mt-2">
                                     {file.name}
