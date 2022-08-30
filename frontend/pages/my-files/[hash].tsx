@@ -1,7 +1,13 @@
 import Head from 'next/head';
-import SingleFileContainer from '../../src/components/gallery/SingleFileContainer';
-import LanguageSelector from '../../src/components/language/LanguageSelector';
 import CheckAuth from '../../src/hooks/CheckAuth';
+import dynamic from 'next/dynamic';
+
+const SingleFileContainer = dynamic(
+    () => import('../../src/components/gallery/SingleFileContainer')
+);
+const LanguageSelector = dynamic(
+    () => import('../../src/components/language/LanguageSelector')
+);
 
 export default function Home() {
     return (

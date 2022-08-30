@@ -159,7 +159,7 @@ const GalleryImage: React.FC<{
                     draggable={false}
                     objectFit="cover"
                     layout="fill"
-                    quality={70}
+                    quality={65}
                     blurDataURL={`${BASE_URL}/${file.hash}`}
                     placeholder="blur"
                 />

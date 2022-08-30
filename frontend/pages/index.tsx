@@ -1,7 +1,11 @@
 import Head from 'next/head';
-import HomePage from '../src/components/home/HomePage';
-import LanguageSelector from '../src/components/language/LanguageSelector';
 import CheckAuth from '../src/hooks/CheckAuth';
+import dynamic from 'next/dynamic';
+
+const HomePage = dynamic(() => import('../src/components/home/HomePage'));
+const LanguageSelector = dynamic(
+    () => import('../src/components/language/LanguageSelector')
+);
 
 export default function Home() {
     return (

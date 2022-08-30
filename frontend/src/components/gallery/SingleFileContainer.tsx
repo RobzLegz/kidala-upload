@@ -15,7 +15,9 @@ import { BASE_URL } from '../../requests/routes';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { AdIndicator } from '../ads/AdIndicator';
 import Navigation from '../navigation/Navigation';
-import GalleryImages from './GalleryImages';
+import dynamic from 'next/dynamic';
+
+const GalleryImages = dynamic(() => import('./GalleryImages'));
 
 function SingleFileContainer() {
     const router = useRouter();
