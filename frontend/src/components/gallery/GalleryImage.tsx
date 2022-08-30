@@ -160,6 +160,8 @@ const GalleryImage: React.FC<{
                     objectFit="cover"
                     layout="fill"
                     quality={70}
+                    blurDataURL={`${BASE_URL}/${file.hash}`}
+                    placeholder="blur"
                 />
             </div>
 
@@ -185,6 +187,8 @@ const GalleryImage: React.FC<{
                             objectFit="cover"
                             layout="fill"
                             quality={80}
+                            blurDataURL={`${BASE_URL}/${file.hash}`}
+                            placeholder="blur"
                         />
                     </div>
                 </div>

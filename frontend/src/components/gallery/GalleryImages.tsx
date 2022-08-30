@@ -9,7 +9,9 @@ import {
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { getAllFiles } from '../../requests/fileRequests';
-import GalleryImage from './GalleryImage';
+import dynamic from 'next/dynamic';
+
+const GalleryImage = dynamic(() => import('./GalleryImage'));
 
 function GalleryImages() {
     const dispatch = useDispatch();
