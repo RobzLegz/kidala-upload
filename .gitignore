@@ -4,6 +4,7 @@
 /frontend.pnp.js
 /backend/kidalaenv
 /kebab/env
+/kebab/venv
 /socket/assets/node_modules/
 /socket/deps/
 
