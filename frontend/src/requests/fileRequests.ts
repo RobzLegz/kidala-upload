@@ -8,7 +8,7 @@ export const getAllFiles = async (dispatch: Dispatch) => {
     await axios
         .get(LIST_FILES)
         .then((res) => {
-            dispatch(setFiles(res.data));
+            dispatch(setFiles(res.data.files));
         })
         .catch((err) => {
             if (!err.response) {
