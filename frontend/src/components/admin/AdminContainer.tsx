@@ -89,7 +89,7 @@ function AdminContainer() {
                         return (
                             <div
                                 className="flex items-start justify-start w-full mb-2"
-                                key={file.name}
+                                key={file.hash}
                             >
                                 <div className="w-10 h-10 relative flex items-center justify-center mr-2">
                                     {!file.name.includes('.png') &&
