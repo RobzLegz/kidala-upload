@@ -149,8 +149,15 @@ def make_private(**kwargs):
 @token_check('default')
 def getAllFiles(**kwargs):
     query = dbfiles.find()
-    return dumps(query)
 
+    rtrn_files = []
+
+    for file in query:
+        file["_id"] = str(ObjectId(file["_id"]))
+
+        rtrn_files.append(file)
+
+    return make_response({'files': rtrn_files})
 
 @app.route("/api/tags", methods=['GET'])
 @token_check('default')
@@ -337,4 +344,4 @@ def upload_ad(**kwargs):
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=5000, debug=False)
+    app.run(host="localhost", port=5000, debug=True)
