@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
 import { uploadFile } from '../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,22 @@ function UploadForm() {
     const [loading, setLoading] = useState(false);
     const [isPrivate, setIsPrivate] = useState(false);
     const [description, setDescription] = useState('');
+
+    const handleKeyPress = useCallback((event) => {
+        if (event.key === 'Enter') {
+            handleUpload();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (file && !loading) {
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [handleKeyPress, file, loading]);
 
     useEffect(() => {
         const handlePasteAnywhere = (event: any) => {
@@ -71,10 +87,10 @@ function UploadForm() {
         };
     }, []);
 
-    const handleUpload = async (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-        e.preventDefault();
+    const handleUpload = async (e?: any) => {
+        if (e) {
+            e.preventDefault();
+        }
 
         if (loading) {
             return;
@@ -165,7 +181,10 @@ function UploadForm() {
     };
 
     return (
-        <form className="w-full max-w-[400px] flex flex-col items-center justify-center px-2 sm:px-0">
+        <form
+            className="w-full max-w-[400px] flex flex-col items-center justify-center px-2 sm:px-0"
+            onSubmit={handleUpload}
+        >
             {notificationInfo.message ? (
                 <p className="bg-red-600 py-1 px-4 text-white font-mono mb-4">
                     {notificationInfo.message}
@@ -317,8 +336,8 @@ function UploadForm() {
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                                 autoComplete="off"
-                                autoCapitalize='off'
-                                autoCorrect='off'
+                                autoCapitalize="off"
+                                autoCorrect="off"
                             />
                         </div>
                     </div>
