@@ -9,7 +9,7 @@ const LanguageSelector = dynamic(
 
 export default function Home() {
     return (
-        <div className="page">
+        <main className="page">
             <Head>
                 <title>Kidala upload</title>
                 <meta
@@ -37,6 +37,6 @@ export default function Home() {
             <CheckAuth />
 
             <LanguageSelector />
-        </div>
+        </main>
     );
 }
