@@ -46,6 +46,7 @@ yarn-error.log*
 # cache
 /backend/__pycache__
 /kebab/__pycache__
+/kebab/endpoints/__pycache__
 
 #files
 /backend/files

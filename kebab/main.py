@@ -1,46 +1,29 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-from pydantic import BaseModel
-from bson import ObjectId
-import motor
+import uvicorn
+import os
+from .endpoints import admin, files, tags, users
+
+from . import database
 
 app = FastAPI()
 
-#client = motor.mot
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+app.include_router(admin.router)
+app.include_router(tags.router)
+app.include_router(files.router)
+app.include_router(users.router)
 
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(type="string")
-
-class User(BaseModel):
-    id: ObjectId
-    ip:
-
-class Tag(BaseModel):
-    id: ObjectId
-    tag_text: str
-
-class File(BaseModel):
-    id: ObjectId
-    name: str
-    hash: str
-    size: int
-    author: User
-    tag: Tag
-    private: bool
-    description: str
+SERVER_URL = os.environ["SERVER_URL"]
 
 @app.get("/favicon.ico")
 async def favicon():
@@ -49,3 +32,21 @@ async def favicon():
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.get("/{filehash}")
+async def redirectFile(filehash: str):
+    if (query := await db['files'].find_one({'hash': filehash})) == None:
+            return "File not found"
+    else:
+            return RedirectResponse(f"https://{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
+
+
+@app.get("/test")
+async def get_user(db, id: database.PyObjectId):
+    if (query := db['users'].find_one({'id'})) != None:
+        user_dict = db[query]
+        return database.User(**user_dict)
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
+
