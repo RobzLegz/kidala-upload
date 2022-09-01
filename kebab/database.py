@@ -60,3 +60,7 @@ class File(BaseModel):
         json_encoders = {ObjectId: str}
         arbitrary_types_allowed = True
         allow_population_by_field_name = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

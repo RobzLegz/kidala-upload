@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import uvicorn
 import os
-from .endpoints import admin, files, tags, users
 
-from . import database
+from .endpoints import admin, files, tags, users
+from .database import db, User
 
 app = FastAPI()
 
@@ -35,17 +35,12 @@ async def root():
 
 @app.get("/{filehash}")
 async def redirectFile(filehash: str):
-    if (query := await db['files'].find_one({'hash': filehash})) == None:
-            return "File not found"
+    if (query := db.files.find_one({'hash': filehash})) == None:
+        return "File not found"
     else:
-            return RedirectResponse(f"https://{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
+        return RedirectResponse(f"https://{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
 
 
-@app.get("/test")
-async def get_user(db, id: database.PyObjectId):
-    if (query := db['users'].find_one({'id'})) != None:
-        user_dict = db[query]
-        return database.User(**user_dict)
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
