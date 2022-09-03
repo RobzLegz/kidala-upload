@@ -1,8 +1,9 @@
 from cgitb import reset
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from ..database import File, db
 from json import JSONEncoder, dumps
+
+from ..database import File, db
 
 router = APIRouter(
     prefix="/files",

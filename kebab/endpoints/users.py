@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from kebab.database import User, File
-from kebab.auth import get_current_user
+from ..database import User, File
+from ..auth import get_current_user
 
 router = APIRouter(
     prefix="/users",

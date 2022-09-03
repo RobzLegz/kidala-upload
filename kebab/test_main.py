@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
 import os
+import requests
 
-from kebab.main import app
+from .main import app
 
 client = TestClient(app)
 
