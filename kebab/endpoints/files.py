@@ -15,3 +15,8 @@ router = APIRouter(
 async def all_files():
     files = list(db.files.find())
     return files
+
+@router.get('/file', response_model=File)
+async def get_file(file_hash: str):
+    file = db.files.find_one({'hash': file_hash})
+    return File(**file)
