@@ -1,4 +1,3 @@
-from socket import PACKET_BROADCAST
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
