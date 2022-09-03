@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm 
-from kebab.database import Token, db, AdminUser, User
-from kebab.auth import authenticate_user, create_access_token, get_current_admin_user
+
+
+from ..database import Token, db, AdminUser, User
+from ..auth import authenticate_user, create_access_token, get_current_admin_user
 
 router = APIRouter(
     prefix="/admin",
@@ -21,7 +23,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     access_token = create_access_token(data={"user_id": str(user.id)})
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return Token(access_token=access_token, token_type='bearer')
 
 
 @router.get("/me", response_model=AdminUser)

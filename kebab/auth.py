@@ -1,5 +1,4 @@
-from urllib.request import Request
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status, Header
 import os
 from passlib.context import CryptContext
@@ -56,9 +55,9 @@ credentials_exception = HTTPException(
 async def get_current_admin_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, ADMIN_TOKEN, algorithms=[ALGORITHM])
-        user_id: str = payload.get("user_id")
+        user_id: str = payload["user_id"]
             
-    except JWTError:
+    except:
         raise credentials_exception
 
     user = db.users.find_one({'_id': PyObjectId(user_id)})
@@ -73,7 +72,7 @@ async def get_current_admin_user(token: str = Depends(oauth2_scheme)):
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("user_id")
+        user_id: str = payload["user_id"]
 
     except JWTError:
         raise credentials_exception
@@ -85,9 +84,27 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
     return User(**user)
 
-async def get_potential_user(request: Request):
-    request.headers.get('Authorization')
-    # if  token in headers get user, else give none
+async def get_potential_user(authorization: str | None = Header(default=None)): #authorization: str | None = Header(None)
+
+    if authorization == None:
+        return User()
+
+    authorization.replace('Bearer ', '')
+
+    try:
+        payload = jwt.decode(authorization, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload["user_id"]
+    except:
+        payload = jwt.decode(authorization, ADMIN_TOKEN, algorithms=[ALGORITHM])
+        user_id: str = payload["user_id"]
+    
+    user = db.users.find_one({'_id': PyObjectId(user_id)})
+
+    if user == None:
+        raise credentials_exception
+
+    return User(**user)
+
 
 
 

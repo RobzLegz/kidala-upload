@@ -25,7 +25,7 @@ class PyObjectId(ObjectId):
 
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
-    ip: str
+    ip: str | None = None
 
     class Config:
         json_encoders = {ObjectId: str}
