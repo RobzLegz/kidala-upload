@@ -1,3 +1,4 @@
+from socket import PACKET_BROADCAST
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +10,8 @@ from .endpoints import admin, files, tags, users
 from .database import db, User
 
 app = FastAPI()
+
+APP_ROOT = Path('kebab')
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,7 +30,7 @@ SERVER_URL = os.environ["SERVER_URL"]
 
 @app.get("/favicon.ico")
 async def favicon():
-    return FileResponse(Path(app.root_path) / 'favicon.ico')
+    return FileResponse(APP_ROOT / 'favicon.ico')
 
 @app.get("/")
 async def root():
