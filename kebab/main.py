@@ -11,6 +11,7 @@ from .database import db, User
 app = FastAPI()
 
 APP_ROOT = Path('kebab')
+SERVER_URL = os.environ["SERVER_URL"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,7 +26,7 @@ app.include_router(tags.router)
 app.include_router(files.router)
 app.include_router(users.router)
 
-SERVER_URL = os.environ["SERVER_URL"]
+
 
 @app.get("/favicon.ico")
 async def favicon():
@@ -40,7 +41,7 @@ async def redirectFile(filehash: str):
     if (query := db.files.find_one({'hash': filehash})) == None:
         return "File not found"
     else:
-        return RedirectResponse(f"https://{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
+        return RedirectResponse(f"{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
 
 
 
