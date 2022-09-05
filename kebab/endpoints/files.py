@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, Form, Depends
+from fastapi import APIRouter, UploadFile, Form, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 import hashlib
@@ -9,9 +9,10 @@ from pathlib import Path
 
 from ..auth import get_potential_user, create_access_token
 from ..database import File, User, db, Tag
-from ..main import SERVER_URL, APP_ROOT
 
-UPLOAD_FOLDER = APP_ROOT / 'files'
+APP_ROOT = Path('kebab')
+SERVER_URL = os.environ["SERVER_URL"]
+UPLOAD_FOLDER =  APP_ROOT / 'files'
 
 class Page(BaseModel):
     files: list[File]
@@ -62,18 +63,27 @@ def secure_filename(filename: str) -> str:
 
     return filename
 
-@router.get("/allfiles", response_model=Page)
-def all_files(page: int = 0, limit: int = 20):
+@router.get("/allfiles")
+def all_files(cursor: int = 0, limit: int = 20):
     if page >= 0 and limit >= 0:
-        files = list(db.files.find().skip(page * limit).limit(limit)) 
-        return Page(files=files, page=page, limit=limit, total=db.files.count_documents({}), total_page=files.count({}))
+        returnlist = []
+        cursor = db.files.find().skip(cursor).limit(limit)
+        for file in cursor:
+            returnlist.append(File(**file))
+
+        return {'files': returnlist, 'cursor':limit+cursor, 'count':returnlist.count(), 'total_db':db.files.count_documents({})}
+        #this doesnt work due to fastapi bug
+        #return Page(files=returnlist, page=page, limit=limit, total=db.files.count_documents({}), total_page=returnlist.count({}))
     else:
-        return []
+        raise HTTPException(400)
 
 @router.get('/file', response_model=File)
 def get_file(file_hash: str):
     file = db.files.find_one({'hash': file_hash})
-    return File(**file)
+    if file != None:
+        return File(**file)
+    else:
+        raise HTTPException(404)
 
 @router.post('/upload', response_model=UploadResponse)
 def upload_file(file: UploadFile, tag: str | None= Form(), description: str = Form(), private: str = Form(), user: User = Depends(get_potential_user)):
