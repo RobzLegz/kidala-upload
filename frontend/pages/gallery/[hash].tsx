@@ -175,27 +175,4 @@ GalleryImagePage.getInitialProps = async ({ query }) => {
     };
 };
 
-export async function getInitialProps(context: any) {
-    const { hash } = context.query;
-
-    let requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
-    const res = await fetch(LIST_FILES, requestOptions);
-    const resJson: FileInterface[] = await res.json();
-
-    const file = resJson.find((f) => f.hash === hash);
-
-    return {
-        props: {
-            files: resJson,
-            file: file,
-        },
-    };
-}
-
 export default GalleryImagePage;
