@@ -124,6 +124,7 @@ function SingleFileContainer() {
                                     blurDataURL={`${BASE_URL}/${file.hash}`}
                                     placeholder="blur"
                                     objectFit="cover"
+                                    priority
                                 />
                             ) : null}
 
