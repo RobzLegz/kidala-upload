@@ -65,13 +65,13 @@ def secure_filename(filename: str) -> str:
 
 @router.get("/allfiles")
 def all_files(cursor: int = 0, limit: int = 20):
-    if page >= 0 and limit >= 0:
+    if cursor >= 0 and limit >= 0:
         returnlist = []
-        cursor = db.files.find().skip(cursor).limit(limit)
-        for file in cursor:
+        db_cursor = db.files.find().skip(cursor).limit(limit)
+        for file in db_cursor:
             returnlist.append(File(**file))
 
-        return {'files': returnlist, 'cursor':limit+cursor, 'count':returnlist.count(), 'total_db':db.files.count_documents({})}
+        return {'files': returnlist, 'cursor':limit+cursor, 'count':len(returnlist), 'total_db':db.files.count_documents({})}
         #this doesnt work due to fastapi bug
         #return Page(files=returnlist, page=page, limit=limit, total=db.files.count_documents({}), total_page=returnlist.count({}))
     else:
