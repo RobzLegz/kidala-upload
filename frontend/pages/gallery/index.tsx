@@ -3,7 +3,6 @@ import CheckAuth from '../../src/hooks/CheckAuth';
 import dynamic from 'next/dynamic';
 import { PageComponent } from '../../src/types/PageComponent';
 import { FileInterface } from '../../src/interfaces/file';
-import { sortFiles } from '../../src/utils/sortFiles';
 import { LIST_FILES } from '../../src/requests/routes';
 import { useEffect } from 'react';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
