@@ -33,11 +33,9 @@ export const appSlice = createSlice({
 
             const ads = files.filter((f) => f.is_ad === true);
             const non_ads = files.filter((f) => !f.is_ad);
-            const shuffled_files: FileInterface[] = shuffle(non_ads);
             const shuffled_ads: FileInterface[] = shuffle(ads);
 
-            let algo_files: FileInterface[] = [...shuffled_ads];
-            algo_files = [...algo_files, ...shuffled_files];
+            const algo_files: FileInterface[] = [...shuffled_ads, ...non_ads.reverse()];
 
             state = {
                 ...state,
