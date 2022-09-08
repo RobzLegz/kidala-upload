@@ -22,6 +22,7 @@ const LanguageSelector = dynamic(
     () => import('../../src/components/language/LanguageSelector')
 );
 import { useRouter } from 'next/router';
+import { sortFiles } from '../../src/utils/sortFiles';
 
 const GalleryImagePage: PageComponent<RoomPageProps> = ({ file, files }) => {
     const dispatch = useDispatch();
@@ -162,8 +163,10 @@ GalleryImagePage.getInitialProps = async ({ query }) => {
 
             const file = resJson.find((f) => f.hash === hash);
 
+            const sortedFiles = sortFiles(resJson);
+
             return {
-                files: resJson,
+                files: sortedFiles,
                 file: file,
             };
         } catch {}
