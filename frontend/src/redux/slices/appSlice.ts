@@ -63,7 +63,7 @@ export const appSlice = createSlice({
             if (state.files) {
                 files = state.files;
 
-                const newFiles = [...files, action.payload];
+                const newFiles = [action.payload, ...files];
 
                 state = {
                     ...state,
