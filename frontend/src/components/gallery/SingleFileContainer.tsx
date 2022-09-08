@@ -79,7 +79,9 @@ function SingleFileContainer() {
     ) => {
         e.preventDefault();
 
-        navigator.clipboard.writeText(window.location.href);
+        const imgUrl = `${window.location.host}/gallery/${hash}`;
+
+        navigator.clipboard.writeText(imgUrl);
         setCopied(true);
     };
 
