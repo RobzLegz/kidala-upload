@@ -14,6 +14,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'augšupielādēt',
             maxSize: '(max faila izmērs 1mb)',
             copied: 'kopēts',
+            addTag: 'Tags',
         },
         navigation: {
             gallery: 'Galerija',
@@ -30,6 +31,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Atvērt',
             close: 'Aizvērt',
+            private: 'Privāts',
         },
     },
     EN: {
@@ -40,6 +42,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'upload',
             maxSize: '(max file size 1mb)',
             copied: 'copied to clipboard',
+            addTag: 'Add tag',
         },
         navigation: {
             gallery: 'Gallery',
@@ -56,6 +59,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Open',
             close: 'Close',
+            private: 'Private',
         },
     },
     DE: {
@@ -66,6 +70,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'uploaden',
             maxSize: '(Max-Datei Größe 1mb)',
             copied: 'kopiert',
+            addTag: 'Add tag',
         },
         navigation: {
             gallery: 'Galerie',
@@ -82,6 +87,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'offen',
             close: 'nah dran',
+            private: 'Private',
         },
     },
     RU: {
@@ -92,6 +98,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'Загрузить',
             maxSize: '(макс. размер файла 1м6)',
             copied: 'Скопировано',
+            addTag: 'Add tag',
         },
         navigation: {
             gallery: 'Галерея',
@@ -108,6 +115,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Открыть',
             close: 'Закрыть',
+            private: 'Private',
         },
     },
 };
@@ -153,6 +161,7 @@ export interface Translation {
         upload: string;
         copied: string;
         maxSize: string;
+        addTag: string;
     };
     navigation: {
         gallery: string;
@@ -169,5 +178,6 @@ export interface Translation {
     global: {
         open: string;
         close: string;
+        private: string;
     };
 }
