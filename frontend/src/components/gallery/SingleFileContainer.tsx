@@ -77,9 +77,9 @@ function SingleFileContainer() {
     const saveToClipboard = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        e.preventDefault();
+        e.preventDefault();        
 
-        const imgUrl = `${window.location.host}/gallery/${hash}`;
+        const imgUrl = `${window.location.origin}/gallery/${hash}`;
 
         navigator.clipboard.writeText(imgUrl);
         setCopied(true);
