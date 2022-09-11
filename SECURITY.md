@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-DM me on https://discord.gg/582574326230941697
+DM me on [discord](https://discord.com/users/582574326230941697)
