@@ -15,6 +15,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             maxSize: '(max faila izmērs 1mb)',
             copied: 'kopēts',
             addTag: 'Tags',
+            enterTag: 'Ievadi tagu',
         },
         navigation: {
             gallery: 'Galerija',
@@ -43,6 +44,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             maxSize: '(max file size 1mb)',
             copied: 'copied to clipboard',
             addTag: 'Add tag',
+            enterTag: 'Enter tag',
         },
         navigation: {
             gallery: 'Gallery',
@@ -71,6 +73,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             maxSize: '(Max-Datei Größe 1mb)',
             copied: 'kopiert',
             addTag: 'Add tag',
+            enterTag: 'Enter tag',
         },
         navigation: {
             gallery: 'Galerie',
@@ -99,6 +102,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             maxSize: '(макс. размер файла 1м6)',
             copied: 'Скопировано',
             addTag: 'Add tag',
+            enterTag: 'Enter tag',
         },
         navigation: {
             gallery: 'Галерея',
@@ -162,6 +166,7 @@ export interface Translation {
         copied: string;
         maxSize: string;
         addTag: string;
+        enterTag: string;
     };
     navigation: {
         gallery: string;
