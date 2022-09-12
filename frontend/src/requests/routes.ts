@@ -11,7 +11,6 @@ export const USERS_BASE = `${API_BASE}/users`;
 export const ADMIN_DELETE_ROUTE = `${ADMIN_BASE}/delete`;
 
 export const LOGIN_ROUTE = `${ADMIN_BASE}/login`;
-export const GET_INFO_ROUTE = `${ADMIN_BASE}/getUser`;
 
 export const UPLOAD_ROUTE = `${FILE_BASE}/upload`;
 export const LIST_FILES_ROUTE = `${FILE_BASE}/allfiles`;
