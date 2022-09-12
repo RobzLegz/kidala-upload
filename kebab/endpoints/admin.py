@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 
 from ..database import Token, db, User
-from ..auth import authenticate_user, create_access_token, get_current_admin_user
+from ..auth import authenticate_user, create_access_token
 
 router = APIRouter(
     prefix="/api/v1/admin",
