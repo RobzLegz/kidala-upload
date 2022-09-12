@@ -28,7 +28,7 @@ class UploadResponse(BaseModel):
     token: str | None = None
 
 router = APIRouter(
-    prefix="/files",
+    prefix="/api/v1/files",
     tags=["files"],
     responses={404: {"description": "Not found"}},
 )

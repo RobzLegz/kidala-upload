@@ -6,7 +6,7 @@ from ..database import Token, db, AdminUser, User
 from ..auth import authenticate_user, create_access_token, get_current_admin_user
 
 router = APIRouter(
-    prefix="/admin",
+    prefix="/api/v1/admin",
     tags=["admin"],
     responses={404: {"description": "Not found"}},
 )
