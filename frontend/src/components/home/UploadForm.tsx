@@ -279,7 +279,7 @@ function UploadForm() {
                             htmlFor="file_private"
                             className="text-white ml-1 cursor-default"
                         >
-                            Private
+                            {languageInfo.text.global.private}
                         </label>
                     </div>
 
@@ -298,7 +298,7 @@ function UploadForm() {
                                 setAddingTag(true);
                             }}
                         >
-                            # Add tag
+                            {`# ${languageInfo.text.home.addTag}`}
                         </button>
 
                         <div
@@ -313,7 +313,7 @@ function UploadForm() {
                                 name="file_tag"
                                 id="file_tag"
                                 className="bg-transparent flex-1 ml-1 outline-none focus:placeholder:text-gray-300 text-white"
-                                placeholder="Enter tag"
+                                placeholder={languageInfo.text.home.enterTag}
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                                 autoComplete="off"

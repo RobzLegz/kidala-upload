@@ -14,6 +14,8 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'augšupielādēt',
             maxSize: '(max faila izmērs 1mb)',
             copied: 'kopēts',
+            addTag: 'Tags',
+            enterTag: 'Ievadi tagu',
         },
         navigation: {
             gallery: 'Galerija',
@@ -30,6 +32,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Atvērt',
             close: 'Aizvērt',
+            private: 'Privāts',
         },
     },
     EN: {
@@ -40,6 +43,8 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'upload',
             maxSize: '(max file size 1mb)',
             copied: 'copied to clipboard',
+            addTag: 'Add tag',
+            enterTag: 'Enter tag',
         },
         navigation: {
             gallery: 'Gallery',
@@ -56,32 +61,36 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Open',
             close: 'Close',
+            private: 'Private',
         },
     },
     DE: {
         home: {
             selectFile: 'Datei aussuchen',
             changeFile: 'Datei ändern',
-            ready: 'bereit',
-            upload: 'uploaden',
+            ready: 'Bereit',
+            upload: 'Uploaden',
             maxSize: '(Max-Datei Größe 1mb)',
-            copied: 'kopiert',
+            copied: 'Kopiert',
+            addTag: 'Tag',
+            enterTag: 'Tag eingeben',
         },
         navigation: {
             gallery: 'Galerie',
-            myFiles: 'meine Datei',
-            home: 'zu Hause',
+            myFiles: 'Meine Datei',
+            home: 'Zu Hause',
         },
         gallery: {
             contact: 'Kontakt zu Werbetreibenden:',
-            download: 'downloaden',
-            copyLink: 'link kopieren',
+            download: 'Downloaden',
+            copyLink: 'Link kopieren',
             showNonImageFiles: 'Nicht-Bilddateien anzeigen',
-            seen: 'gesehen:',
+            seen: 'Gesehen:',
         },
         global: {
-            open: 'offen',
-            close: 'nah dran',
+            open: 'Offen',
+            close: 'Nah dran',
+            private: 'Privatgelände',
         },
     },
     RU: {
@@ -92,6 +101,8 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             upload: 'Загрузить',
             maxSize: '(макс. размер файла 1м6)',
             copied: 'Скопировано',
+            addTag: 'тег',
+            enterTag: 'Введите тег',
         },
         navigation: {
             gallery: 'Галерея',
@@ -108,6 +119,7 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
         global: {
             open: 'Открыть',
             close: 'Закрыть',
+            private: 'Частный',
         },
     },
 };
@@ -153,6 +165,8 @@ export interface Translation {
         upload: string;
         copied: string;
         maxSize: string;
+        addTag: string;
+        enterTag: string;
     };
     navigation: {
         gallery: string;
@@ -169,5 +183,6 @@ export interface Translation {
     global: {
         open: string;
         close: string;
+        private: string;
     };
 }
