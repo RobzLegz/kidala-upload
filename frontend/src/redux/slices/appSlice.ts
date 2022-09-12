@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
 import { shuffle } from '../../utils/shuffleArray';
+import { sortFiles } from '../../utils/sortFiles';
 
 export interface SortOptions {
     myFiles: boolean;
@@ -31,17 +32,11 @@ export const appSlice = createSlice({
         setFiles: (state, action) => {
             const files: FileInterface[] = action.payload;
 
-            const ads = files.filter((f) => f.is_ad === true);
-            const non_ads = files.filter((f) => !f.is_ad);
-            const shuffled_files: FileInterface[] = shuffle(non_ads);
-            const shuffled_ads: FileInterface[] = shuffle(ads);
-
-            let algo_files: FileInterface[] = [...shuffled_ads];
-            algo_files = [...algo_files, ...shuffled_files];
+            const sortedFiles = sortFiles(files);
 
             state = {
                 ...state,
-                files: algo_files,
+                files: sortedFiles,
             };
 
             return state;
@@ -68,7 +63,7 @@ export const appSlice = createSlice({
             if (state.files) {
                 files = state.files;
 
-                const newFiles = [...files, action.payload];
+                const newFiles = [action.payload, ...files];
 
                 state = {
                     ...state,

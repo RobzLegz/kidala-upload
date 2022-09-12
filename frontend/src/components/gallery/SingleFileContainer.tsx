@@ -77,9 +77,11 @@ function SingleFileContainer() {
     const saveToClipboard = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        e.preventDefault();
+        e.preventDefault();        
 
-        navigator.clipboard.writeText(window.location.href);
+        const imgUrl = `${window.location.origin}/gallery/${hash}`;
+
+        navigator.clipboard.writeText(imgUrl);
         setCopied(true);
     };
 
@@ -124,6 +126,7 @@ function SingleFileContainer() {
                                     blurDataURL={`${BASE_URL}/${file.hash}`}
                                     placeholder="blur"
                                     objectFit="cover"
+                                    priority
                                 />
                             ) : null}
 

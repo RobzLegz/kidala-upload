@@ -10,7 +10,7 @@ KEEP CALM AND BE KIDALA
 ----------- | ----------- | --------------- |-------------
 **next.js** | **flask**   |  **elixir**     | **raspberrypi**
 **redux**   | **mongodb** |   phoenix       | **vercel**
-tailwindcss | gunicorn    |                 | **heroku** 
+tailwindcss | gunicorn    |                 |
 typescript  | nginx       |                 |
 
 ## Branches
