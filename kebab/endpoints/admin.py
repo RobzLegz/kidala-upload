@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm 
 
 
-from ..database import Token, db, AdminUser, User
+from ..database import Token, db, User
 from ..auth import authenticate_user, create_access_token, get_current_admin_user
 
 router = APIRouter(
@@ -26,6 +26,3 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return Token(access_token=access_token, token_type='bearer')
 
 
-@router.get("/me", response_model=AdminUser)
-async def read_users_me(current_user: AdminUser = Depends(get_current_admin_user)):
-    return current_user

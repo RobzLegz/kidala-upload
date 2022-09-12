@@ -26,16 +26,15 @@ class PyObjectId(ObjectId):
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
     ip: str | None = None
+    username: str | None = None
+    password: str | None = None
+    role: str | None = None
 
     class Config:
         json_encoders = {ObjectId: str}
         arbitrary_types_allowed = True
         allow_population_by_field_name = True
-    
-class AdminUser(User):
-    username: str | None = None
-    password: str | None = None
-    role: str | None = None
+
 
 class Tag(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")

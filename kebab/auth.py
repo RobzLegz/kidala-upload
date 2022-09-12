@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status, Header
 import os
 from passlib.context import CryptContext
-from kebab.database import db, PyObjectId, User, AdminUser
+from kebab.database import db, PyObjectId, User
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 
@@ -27,7 +27,7 @@ def authenticate_user(provided_db, username: str, plain_password: str):
         return False
     if not verify_password(plain_password, user['password']):
         return False
-    return AdminUser(**user)
+    return User(**user)
 
 
 def create_access_token(data: dict, admin: bool, expires_delta: timedelta | None = None):
@@ -51,29 +51,14 @@ credentials_exception = HTTPException(
     detail="Could not validate credentials",
     headers={"WWW-Authenticate": "Bearer"},
     )
-
-async def get_current_admin_user(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, ADMIN_TOKEN, algorithms=[ALGORITHM])
-        user_id: str = payload["user_id"]
-            
-    except:
-        raise credentials_exception
-
-    user = db.users.find_one({'_id': PyObjectId(user_id)})
-
-    if user == None:
-        raise credentials_exception
-
-    if 'role' in user:
-        if 'role' == 'admin':
-            return AdminUser(**user)
         
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        except:
+            payload = jwt.decode(token, ADMIN_TOKEN, algorithms=[ALGORITHM])
         user_id: str = payload["user_id"]
-
     except JWTError:
         raise credentials_exception
 
