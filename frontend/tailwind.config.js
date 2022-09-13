@@ -12,7 +12,7 @@ module.exports = {
                 },
             },
             animation: {
-                'spin-slow': 'spin 7s linear infinite',
+                'spin-slow': 'spin 15s linear forwards infinite',
             },
         },
     },

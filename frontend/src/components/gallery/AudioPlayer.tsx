@@ -2,13 +2,18 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
+import { windowSizes } from '../../constants/windowSizes';
+import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import { detectFileType } from '../../utils/detectFileType';
 import { generateRandomBetween } from '../../utils/generateRandomIntBetween';
+import Spinner from '../notifications/Loading';
 
 const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
+    const windowSize = useWindowSize();
+
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [playing, setPlaying] = useState(false);
@@ -19,6 +24,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     const [muted, setMuted] = useState<boolean>(false);
     const [looping, setLooping] = useState<boolean>(false);
     const [playedPercentage, setPlayedPercentage] = useState<number>(0);
+    const [prevFileName, setPrevFileName] = useState<string>(file.name);
 
     const playerRef = useRef<any>(null);
 
@@ -28,6 +34,14 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
 
     const volTrackAnim = {
         transform: `translateX(${volume * 100}%)`,
+    };
+
+    const getTime = (time: number) => {
+        return (
+            Math.floor(time / 60) +
+            ':' +
+            ('0' + Math.floor(time % 60)).slice(-2)
+        );
     };
 
     const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,24 +54,30 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
         }
     };
 
-    useEffect(() => {
+    const handlePlay = () => {
         if (!duration) {
-            const au = document.createElement('audio');
-
-            au.src = `${BASE_URL}/${file.hash}`;
-
-            au.addEventListener(
-                'loadedmetadata',
-                () => {
-                    setDuration(au.duration);
-                },
-                false
-            );
+            return;
         }
-    }, [file]);
+
+        setPlaying(!playing);
+    };
 
     useEffect(() => {
-        if (duration) {
+        if (windowSize.width && windowSize.width < windowSizes.sm) {
+            setVolume(1);
+        }
+    }, [windowSize.width]);
+
+    useEffect(() => {
+        if (file.name !== prevFileName) {
+            setPrevFileName(file.name);
+            setDuration(null);
+            setPlayedTime(0);
+        }
+    }, [file.name]);
+
+    useEffect(() => {
+        if (file && duration) {
             const percentage = Math.floor((playedTime / duration) * 100);
 
             setPlayedPercentage(percentage);
@@ -66,7 +86,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 setPlaying(false);
             }
         }
-    }, [duration, playedTime]);
+    }, [duration, playedTime, file]);
 
     useEffect(() => {
         if (appInfo.files) {
@@ -89,7 +109,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     return (
         <div className="flex flex-col items-center justify-center overflow-hidden">
             <div
-                className={`flex relative w-[280px] sm:w-[300px] h-[280px] sm:h-[300px] ${
+                className={`flex relative w-[260px] sm:w-[300px] h-[260px] sm:h-[300px] mb-4 ${
                     playing ? 'animate-spin-slow' : ''
                 }`}
             >
@@ -133,27 +153,44 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             </div>
 
             {duration ? (
-                <div className="w-[270px] sm:w-[300px]">
-                    <div className="flex track my-4">
-                        <input
-                            type="range"
-                            name="audio_range"
-                            id="audio_range"
-                            min={0}
-                            max={duration}
-                            step="any"
-                            value={playedTime}
-                            onChange={handleSeekChange}
-                            className="playerRange"
-                            onMouseUp={handleSeekMouseUp}
-                        />
+                <div className="flex items-center justify-center">
+                    <p className="text-white w-10 flex items-center justify-center">
+                        {getTime(playedTime)}
+                    </p>
 
-                        <div style={trackAnim} className="animate-track"></div>
+                    <div className="w-[260px] sm:w-[300px] flex items-center justify-center">
+                        <div className="flex track">
+                            <input
+                                type="range"
+                                name="audio_range"
+                                id="audio_range"
+                                min={0}
+                                max={duration}
+                                step="any"
+                                value={playedTime}
+                                onChange={handleSeekChange}
+                                className="playerRange"
+                                onMouseUp={handleSeekMouseUp}
+                            />
+
+                            <div
+                                style={trackAnim}
+                                className="animate-track"
+                            ></div>
+                        </div>
                     </div>
-                </div>
-            ) : null}
 
-            <div className="flex items-center justify-center">
+                    <p className="text-white w-10 flex items-center justify-center">
+                        {getTime(duration)}
+                    </p>
+                </div>
+            ) : (
+                <div className="w-8 h-8 flex items-center justify-center">
+                    <Spinner />
+                </div>
+            )}
+
+            <div className="flex items-center justify-center mt-4">
                 <div className="w-24 flex items-center justify-end">
                     <button
                         className="flex items-center justify-center"
@@ -173,7 +210,8 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
 
                 <button
                     className="flex items-center justify-center mx-4"
-                    onClick={() => setPlaying(!playing)}
+                    onClick={handlePlay}
+                    disabled={!duration}
                 >
                     <Image
                         src={playing ? '/svg/pause.svg' : '/svg/play.svg'}
@@ -198,7 +236,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                         />
                     </button>
 
-                    <div className="flex-1">
+                    <div className="flex-1 hidden sm:flex">
                         <div className="flex vol_track">
                             <input
                                 type="range"
@@ -231,6 +269,9 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     volume={volume}
                     muted={muted}
                     loop={looping}
+                    onDuration={(dur) => {
+                        setDuration(dur);
+                    }}
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
