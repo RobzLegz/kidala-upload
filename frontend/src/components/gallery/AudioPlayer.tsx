@@ -227,7 +227,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     playing={playing}
                     volume={volume}
                     muted={muted}
-                    loop
+                    loop={looping}
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
