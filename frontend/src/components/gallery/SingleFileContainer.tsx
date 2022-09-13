@@ -3,6 +3,7 @@ import {
     DownloadIcon,
     LinkIcon,
     MailIcon,
+    MusicNoteIcon,
     PhoneIcon,
 } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
@@ -18,6 +19,8 @@ import Navigation from '../navigation/Navigation';
 import dynamic from 'next/dynamic';
 import { default as OptImage } from 'next/image';
 import { isImage } from '../../utils/isImage';
+import { detectFileType } from '../../utils/detectFileType';
+import AudioPlayer from './AudioPlayer';
 
 const GalleryImages = dynamic(() => import('./GalleryImages'));
 
@@ -77,7 +80,7 @@ function SingleFileContainer() {
     const saveToClipboard = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        e.preventDefault();        
+        e.preventDefault();
 
         const imgUrl = `${window.location.origin}/gallery/${hash}`;
 
@@ -91,27 +94,7 @@ function SingleFileContainer() {
 
             {file ? (
                 <section className="w-full flex flex-col items-center justify-center mt-2 pb-2">
-                    {!file.name.includes('.png') &&
-                    !file.name.includes('.jpg') &&
-                    !file.name.includes('.gif') &&
-                    !file.name.includes('.jpeg') &&
-                    !file.name.includes('.svg') &&
-                    !file.name.includes('.jfif') &&
-                    !file.name.includes('.webp') ? (
-                        <div className="flex h-40 w-40 items-center justify-center flex-col">
-                            <DocumentIcon className="text-white h-24" />
-
-                            <p className="text-white text-center">
-                                {file.name}
-                            </p>
-
-                            {file.size ? (
-                                <small className="text-gray-400">
-                                    {file.size / 1000000} mb
-                                </small>
-                            ) : null}
-                        </div>
-                    ) : (
+                    {detectFileType(file.name) === 'image' ? (
                         <div className="flex items-center justify-center flex-col relative">
                             {file.is_ad ? <AdIndicator /> : null}
 
@@ -135,14 +118,24 @@ function SingleFileContainer() {
                                     {file.name}
                                 </p>
                             ) : null}
+                        </div>
+                    ) : detectFileType(file.name) === 'audio' ? (
+                        <AudioPlayer file={file}/>
+                    ) : (
+                        <div className="flex h-40 w-40 items-center justify-center flex-col">
+                            <DocumentIcon className="text-white h-24" />
 
-                            {!file.is_ad && file.size ? (
-                                <small className="text-gray-400">
-                                    {file.size / 1000000} mb
-                                </small>
-                            ) : null}
+                            <p className="text-white text-center">
+                                {file.name}
+                            </p>
                         </div>
                     )}
+
+                    {!file.is_ad && file.size ? (
+                        <small className="text-gray-400">
+                            {file.size / 1000000} mb
+                        </small>
+                    ) : null}
 
                     {file.is_ad ? (
                         <div className="flex flex-col items-center justify-center">
