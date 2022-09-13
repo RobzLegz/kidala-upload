@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  flask:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    volumes:
+      - /home/pi/kidala-upload/backend/files:/app/files
+    env_file:
+      - flask.env
+      
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /data/conf:/etc/nginx/conf.d
+      - /data/cert:/app/cert
+    depends_on:
+      - flask
