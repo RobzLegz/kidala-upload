@@ -11,6 +11,9 @@ module.exports = {
                     DEFAULT: 'rgba(0, 0, 0, 0.4)',
                 },
             },
+            animation: {
+                'spin-slow': 'spin 7s linear infinite',
+            },
         },
     },
     plugins: [],
