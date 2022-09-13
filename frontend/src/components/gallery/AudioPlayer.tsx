@@ -2,6 +2,8 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
+import { windowSizes } from '../../constants/windowSizes';
+import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
@@ -9,6 +11,8 @@ import { detectFileType } from '../../utils/detectFileType';
 import { generateRandomBetween } from '../../utils/generateRandomIntBetween';
 
 const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
+    const windowSize = useWindowSize();
+
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [playing, setPlaying] = useState(false);
@@ -41,7 +45,13 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     };
 
     useEffect(() => {
-        if (!duration) {
+        if (windowSize.width && windowSize.width < windowSizes.sm) {
+            setVolume(1);
+        }
+    }, [windowSize.width]);
+
+    useEffect(() => {
+        if (!duration && file) {
             const au = document.createElement('audio');
 
             au.src = `${BASE_URL}/${file.hash}`;
@@ -57,7 +67,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     }, [file]);
 
     useEffect(() => {
-        if (duration) {
+        if (file && duration) {
             const percentage = Math.floor((playedTime / duration) * 100);
 
             setPlayedPercentage(percentage);
@@ -66,7 +76,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 setPlaying(false);
             }
         }
-    }, [duration, playedTime]);
+    }, [duration, playedTime, file]);
 
     useEffect(() => {
         if (appInfo.files) {
@@ -198,7 +208,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                         />
                     </button>
 
-                    <div className="flex-1">
+                    <div className="flex-1 hidden sm:flex">
                         <div className="flex vol_track">
                             <input
                                 type="range"

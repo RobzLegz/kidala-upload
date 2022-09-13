@@ -3,7 +3,6 @@ import {
     DownloadIcon,
     LinkIcon,
     MailIcon,
-    MusicNoteIcon,
     PhoneIcon,
 } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
@@ -20,9 +19,9 @@ import dynamic from 'next/dynamic';
 import { default as OptImage } from 'next/image';
 import { isImage } from '../../utils/isImage';
 import { detectFileType } from '../../utils/detectFileType';
-import AudioPlayer from './AudioPlayer';
 
 const GalleryImages = dynamic(() => import('./GalleryImages'));
+const AudioPlayer = dynamic(() => import('./AudioPlayer'));
 
 function SingleFileContainer() {
     const router = useRouter();
