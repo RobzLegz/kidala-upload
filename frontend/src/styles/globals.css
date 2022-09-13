@@ -24,11 +24,11 @@
     }
 
     .track {
-        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-rose-400 to-pink-600;
+        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
     }
 
     .vol_track {
-        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-rose-400 to-pink-600;
+        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
     }
 
     .animate-track {

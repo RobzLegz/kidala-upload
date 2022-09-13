@@ -1,4 +1,3 @@
-import { SpeakerphoneIcon, VolumeUpIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
@@ -18,6 +17,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     const [playedTime, setPlayedTime] = useState<number>(0);
     const [volume, setVolume] = useState<number>(0.8);
     const [muted, setMuted] = useState<boolean>(false);
+    const [looping, setLooping] = useState<boolean>(false);
     const [playedPercentage, setPlayedPercentage] = useState<number>(0);
 
     const playerRef = useRef<any>(null);
@@ -151,7 +151,22 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             ) : null}
 
             <div className="flex items-center justify-center">
-                <div className="w-24"></div>
+                <div className="w-24 flex items-center justify-end">
+                    <button
+                        className="flex items-center justify-center"
+                        onClick={() => setLooping(!looping)}
+                    >
+                        <Image
+                            src={
+                                looping
+                                    ? '/svg/loop-song-active.svg'
+                                    : '/svg/loop-song.svg'
+                            }
+                            width={23}
+                            height={23}
+                        />
+                    </button>
+                </div>
 
                 <button
                     className="flex items-center justify-center mx-4"
@@ -175,8 +190,8 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                                     ? '/svg/speaker-wave.svg'
                                     : '/svg/speaker-x-mark.svg'
                             }
-                            width={20}
-                            height={20}
+                            width={18}
+                            height={18}
                         />
                     </button>
 
@@ -212,6 +227,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     playing={playing}
                     volume={volume}
                     muted={muted}
+                    loop
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
