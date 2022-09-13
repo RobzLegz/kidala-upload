@@ -2,14 +2,14 @@
 /frontend/node_modules
 /frontend/.pnp
 /frontend.pnp.js
-/backend/kidalaenv
+/borsch/kidalaenv
 /kebab/env
 /socket/assets/node_modules/
 /socket/deps/
 
 # testing
 /frontend/coverage
-/backend/script.py
+/borsch/script.py
 
 # next.js
 /frontend/.next/
@@ -34,20 +34,20 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
-/backend/.env
+/borsch/.env
 
-#backend env files
-/backend/flask.env
+#borsch env files
+/borsch/flask.env
 
 # vercel
 .vercel
 
 # cache
-/backend/__pycache__
+/borsch/__pycache__
 /kebab/__pycache__
 
 #files
-/backend/files
+/borsch/files
 
 # socket
 
