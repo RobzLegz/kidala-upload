@@ -87,9 +87,9 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center overflow-hidden">
             <div
-                className={`flex relative w-[300px] h-[300px] ${
+                className={`flex relative w-[280px] sm:w-[300px] h-[280px] sm:h-[300px] ${
                     playing ? 'animate-spin-slow' : ''
                 }`}
             >
@@ -102,18 +102,19 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 />
 
                 <div className="absolute w-full h-full flex items-center justify-center">
-                    <div className="absolute w-[125px] h-[125px] bg-slate-600 rounded-full"></div>
+                    <div className="absolute w-[100px] sm:w-[125px] h-[100px] sm:h-[125px] bg-slate-600 rounded-full"></div>
 
-                    <Image
-                        src={randImage}
-                        draggable={false}
-                        width={125}
-                        height={125}
-                        objectFit="cover"
-                        className="rounded-full"
-                        placeholder="blur"
-                        blurDataURL={randImage}
-                    />
+                    <div className="relative w-[100px] sm:w-[125px] h-[100px] sm:h-[125px] rounded-full overflow-hidden">
+                        <Image
+                            src={randImage}
+                            draggable={false}
+                            objectFit="cover"
+                            className="rounded-full"
+                            placeholder="blur"
+                            blurDataURL={randImage}
+                            layout="fill"
+                        />
+                    </div>
 
                     <div className="flex flex-col items-center justify-center absolute w-28 h-28 rounded-full overflow-hidden">
                         <small className="text-white italic text-xs font-bold">
@@ -132,21 +133,23 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             </div>
 
             {duration ? (
-                <div className="flex track my-4">
-                    <input
-                        type="range"
-                        name="audio_range"
-                        id="audio_range"
-                        min={0}
-                        max={duration}
-                        step="any"
-                        value={playedTime}
-                        onChange={handleSeekChange}
-                        className="playerRange"
-                        onMouseUp={handleSeekMouseUp}
-                    />
+                <div className="w-[270px] sm:w-[300px]">
+                    <div className="flex track my-4">
+                        <input
+                            type="range"
+                            name="audio_range"
+                            id="audio_range"
+                            min={0}
+                            max={duration}
+                            step="any"
+                            value={playedTime}
+                            onChange={handleSeekChange}
+                            className="playerRange"
+                            onMouseUp={handleSeekMouseUp}
+                        />
 
-                    <div style={trackAnim} className="animate-track"></div>
+                        <div style={trackAnim} className="animate-track"></div>
+                    </div>
                 </div>
             ) : null}
 
