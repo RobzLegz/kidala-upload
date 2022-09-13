@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { setNotification } from '../redux/slices/notificationSlice';
 import { handleLogin, setToken, setUserInfo } from '../redux/slices/userSlice';
-import { GET_INFO_ROUTE, LOGIN_ROUTE } from './routes';
+import { GET_USER_INFO_ROUTE, LOGIN_ROUTE } from './routes';
 
 export const loginUser = async (
     username: string,
@@ -49,7 +49,7 @@ export const getUserInfo = async (token: string, dispatch: Dispatch) => {
     };
 
     await axios
-        .get(GET_INFO_ROUTE, headers)
+        .get(GET_USER_INFO_ROUTE, headers)
         .then((res) => {
             const { user } = res.data;
 
