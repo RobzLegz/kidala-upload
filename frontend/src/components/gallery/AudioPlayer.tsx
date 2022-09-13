@@ -1,3 +1,4 @@
+import { SpeakerphoneIcon, VolumeUpIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
@@ -15,13 +16,18 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     const [randImage, setRandImage] = useState<string>('');
     const [duration, setDuration] = useState<number | null>(null);
     const [playedTime, setPlayedTime] = useState<number>(0);
-    const [volume, setVolume] = useState<number>(0.5);
-    const [seeking, setSeeking] = useState<boolean>(false);
+    const [volume, setVolume] = useState<number>(0.8);
+    const [muted, setMuted] = useState<boolean>(false);
+    const [playedPercentage, setPlayedPercentage] = useState<number>(0);
 
     const playerRef = useRef<any>(null);
 
-    const handleSeekMouseDown = () => {
-        setSeeking(false);
+    const trackAnim = {
+        transform: `translateX(${playedPercentage}%)`,
+    };
+
+    const volTrackAnim = {
+        transform: `translateX(${volume * 100}%)`,
     };
 
     const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +35,9 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     };
 
     const handleSeekMouseUp = () => {
-        setSeeking(false);
-        playerRef.current?.seekTo(playedTime);
+        if (playerRef.current) {
+            playerRef.current.seekTo(playedTime);
+        }
     };
 
     useEffect(() => {
@@ -47,7 +54,19 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 false
             );
         }
-    }, []);
+    }, [file]);
+
+    useEffect(() => {
+        if (duration) {
+            const percentage = Math.floor((playedTime / duration) * 100);
+
+            setPlayedPercentage(percentage);
+
+            if (duration === playedTime) {
+                setPlaying(false);
+            }
+        }
+    }, [duration, playedTime]);
 
     useEffect(() => {
         if (appInfo.files) {
@@ -113,7 +132,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             </div>
 
             {duration ? (
-                <div className="flex">
+                <div className="flex track my-4">
                     <input
                         type="range"
                         name="audio_range"
@@ -123,14 +142,17 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                         step="any"
                         value={playedTime}
                         onChange={handleSeekChange}
-                        className="w-96"
-                        onMouseDown={handleSeekMouseDown}
+                        className="playerRange"
                         onMouseUp={handleSeekMouseUp}
                     />
+
+                    <div style={trackAnim} className="animate-track"></div>
                 </div>
             ) : null}
 
             <div className="flex items-center justify-center">
+                <div className="w-24"></div>
+
                 <button
                     className="flex items-center justify-center mx-4"
                     onClick={() => setPlaying(!playing)}
@@ -142,17 +164,45 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     />
                 </button>
 
-                <input
-                    type="range"
-                    name="audio_range"
-                    id="audio_range"
-                    min={0}
-                    max={1}
-                    step="any"
-                    value={volume}
-                    onChange={(e) => setVolume(Number(e.target.value))}
-                    className="w-20"
-                />
+                <div className="flex items-center w-24">
+                    <button
+                        className="flex items-center justify-center mr-1"
+                        onClick={() => setMuted(!muted)}
+                    >
+                        <Image
+                            src={
+                                !muted
+                                    ? '/svg/speaker-wave.svg'
+                                    : '/svg/speaker-x-mark.svg'
+                            }
+                            width={20}
+                            height={20}
+                        />
+                    </button>
+
+                    <div className="flex-1">
+                        <div className="flex vol_track">
+                            <input
+                                type="range"
+                                name="audio_range"
+                                id="audio_range"
+                                min={0}
+                                max={1}
+                                step="any"
+                                value={volume}
+                                onChange={(e) =>
+                                    setVolume(Number(e.target.value))
+                                }
+                                className="w-full"
+                            />
+
+                            <div
+                                style={volTrackAnim}
+                                className="animate-track"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="hidden">
@@ -161,6 +211,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     url={`${BASE_URL}/${file.hash}`}
                     playing={playing}
                     volume={volume}
+                    muted={muted}
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
