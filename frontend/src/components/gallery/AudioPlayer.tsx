@@ -1,6 +1,5 @@
-import { PlayIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
@@ -14,6 +13,41 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
 
     const [playing, setPlaying] = useState(false);
     const [randImage, setRandImage] = useState<string>('');
+    const [duration, setDuration] = useState<number | null>(null);
+    const [playedTime, setPlayedTime] = useState<number>(0);
+    const [volume, setVolume] = useState<number>(0.5);
+    const [seeking, setSeeking] = useState<boolean>(false);
+
+    const playerRef = useRef<any>(null);
+
+    const handleSeekMouseDown = () => {
+        setSeeking(false);
+    };
+
+    const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPlayedTime(Number(e.target.value));
+    };
+
+    const handleSeekMouseUp = () => {
+        setSeeking(false);
+        playerRef.current?.seekTo(playedTime);
+    };
+
+    useEffect(() => {
+        if (!duration) {
+            const au = document.createElement('audio');
+
+            au.src = `${BASE_URL}/${file.hash}`;
+
+            au.addEventListener(
+                'loadedmetadata',
+                () => {
+                    setDuration(au.duration);
+                },
+                false
+            );
+        }
+    }, []);
 
     useEffect(() => {
         if (appInfo.files) {
@@ -45,6 +79,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     draggable={false}
                     layout="fill"
                     objectFit="cover"
+                    priority
                 />
 
                 <div className="absolute w-full h-full flex items-center justify-center">
@@ -77,9 +112,27 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 </div>
             </div>
 
+            {duration ? (
+                <div className="flex">
+                    <input
+                        type="range"
+                        name="audio_range"
+                        id="audio_range"
+                        min={0}
+                        max={duration}
+                        step="any"
+                        value={playedTime}
+                        onChange={handleSeekChange}
+                        className="w-96"
+                        onMouseDown={handleSeekMouseDown}
+                        onMouseUp={handleSeekMouseUp}
+                    />
+                </div>
+            ) : null}
+
             <div className="flex items-center justify-center">
                 <button
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center mx-4"
                     onClick={() => setPlaying(!playing)}
                 >
                     <Image
@@ -88,12 +141,29 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                         height={30}
                     />
                 </button>
+
+                <input
+                    type="range"
+                    name="audio_range"
+                    id="audio_range"
+                    min={0}
+                    max={1}
+                    step="any"
+                    value={volume}
+                    onChange={(e) => setVolume(Number(e.target.value))}
+                    className="w-20"
+                />
             </div>
 
             <div className="hidden">
                 <ReactPlayer
+                    ref={playerRef}
                     url={`${BASE_URL}/${file.hash}`}
                     playing={playing}
+                    volume={volume}
+                    onProgress={(progress) => {
+                        setPlayedTime(progress.playedSeconds);
+                    }}
                 />
             </div>
         </div>
