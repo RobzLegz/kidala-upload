@@ -87,7 +87,8 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
         if (
             detectFileType(file.name) === 'video' &&
             (!videoDimensions.width || !videoDimensions.height) &&
-            windowSize.height
+            windowSize.height &&
+            windowSize.width
         ) {
             const videoSizeLoader = document.createElement('video');
 
@@ -99,6 +100,11 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 let nH = 0;
 
                 let nW = 600;
+
+                if (Number(windowSize.width) < windowSizes.sm) {
+                    nW = Number(windowSize.width) - 20;
+                }
+
                 let w_c_p = ((nW - videoWidth) / videoWidth) * 100;
                 let f_w_c_p = Math.floor(w_c_p) / 100;
                 let hDiff = videoHeight * f_w_c_p;
@@ -106,7 +112,12 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 nH = videoHeight + hDiff;
 
                 while (nH > Number(windowSize.height) - 200) {
-                    nW -= 50;
+                    if (Number(windowSize.width) < windowSizes.sm) {
+                        nW -= 20;
+                    } else {
+                        nW -= 50;
+                    }
+
                     w_c_p = ((nW - videoWidth) / videoWidth) * 100;
                     f_w_c_p = Math.floor(w_c_p) / 100;
                     hDiff = videoHeight * f_w_c_p;

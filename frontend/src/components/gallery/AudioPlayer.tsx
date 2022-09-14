@@ -82,12 +82,15 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     }, [windowSize.width]);
 
     useEffect(() => {
-        if (file.name !== prevFileName) {
+        if (file.name !== prevFileName && appInfo.files) {
+            setPlaying(false);
             setPrevFileName(file.name);
             setDuration(null);
             setPlayedTime(0);
+
+            getRandImage();
         }
-    }, [file.name]);
+    }, [file.name, appInfo.files]);
 
     useEffect(() => {
         if (file && duration) {
@@ -101,7 +104,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
         }
     }, [duration, playedTime, file]);
 
-    useEffect(() => {
+    const getRandImage = () => {
         if (appInfo.files) {
             const imageFiles = appInfo.files.filter(
                 (file) => detectFileType(file.name) === 'image'
@@ -112,6 +115,12 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             const imgFile = imageFiles[imgIndex];
 
             setRandImage(`${BASE_URL}/${imgFile.hash}`);
+        }
+    };
+
+    useEffect(() => {
+        if (appInfo.files) {
+            getRandImage();
         }
     }, [appInfo.files]);
 
