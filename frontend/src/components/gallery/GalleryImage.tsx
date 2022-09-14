@@ -1,4 +1,4 @@
-import { DocumentIcon, MusicNoteIcon } from '@heroicons/react/solid';
+import { DocumentIcon, MusicNoteIcon, VideoCameraIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -69,6 +69,8 @@ const GalleryImage: React.FC<{
                 <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative flex flex-col items-center justify-center">
                     {detectFileType(file.name) === 'audio' ? (
                         <MusicNoteIcon className="text-white h-16" />
+                    ) : detectFileType(file.name) === 'video' ? (
+                        <VideoCameraIcon className="text-white h-16" />
                     ) : (
                         <DocumentIcon className="text-white h-16" />
                     )}
