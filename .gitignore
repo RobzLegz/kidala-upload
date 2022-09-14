@@ -4,6 +4,7 @@
 /frontend.pnp.js
 /borsch/kidalaenv
 /kebab/env
+/kebab/venv
 /socket/assets/node_modules/
 /socket/deps/
 
@@ -45,6 +46,7 @@ yarn-error.log*
 # cache
 /borsch/__pycache__
 /kebab/__pycache__
+**/__pycache__
 
 #files
 /borsch/files
