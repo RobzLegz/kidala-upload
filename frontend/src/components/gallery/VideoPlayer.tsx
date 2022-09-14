@@ -1,26 +1,28 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
-import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import {
+    AppInfo,
+    selectApp,
+    setAudioVolume,
+} from '../../redux/slices/appSlice';
 import { BASE_URL } from '../../requests/routes';
 import { detectFileType } from '../../utils/detectFileType';
-import { generateRandomBetween } from '../../utils/generateRandomIntBetween';
 import Spinner from '../notifications/Loading';
 
 const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     const windowSize = useWindowSize();
+    const dispatch = useDispatch();
 
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [playing, setPlaying] = useState(false);
-    const [randImage, setRandImage] = useState<string>('');
     const [duration, setDuration] = useState<number | null>(null);
     const [playedTime, setPlayedTime] = useState<number>(0);
-    const [volume, setVolume] = useState<number>(0.8);
     const [muted, setMuted] = useState<boolean>(false);
     const [looping, setLooping] = useState<boolean>(false);
     const [playedPercentage, setPlayedPercentage] = useState<number>(0);
@@ -36,7 +38,7 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     };
 
     const volTrackAnim = {
-        transform: `translateX(${volume * 100}%)`,
+        transform: `translateX(${appInfo.audioVolume * 100}%)`,
     };
 
     const getTime = (time: number) => {
@@ -45,6 +47,10 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
             ':' +
             ('0' + Math.floor(time % 60)).slice(-2)
         );
+    };
+
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setAudioVolume(e.target.value));
     };
 
     const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +73,13 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
 
     useEffect(() => {
         if (windowSize.width && windowSize.width < windowSizes.sm) {
-            setVolume(1);
+            dispatch(setAudioVolume(1));
+        } else {
+            const savedVolume = localStorage.getItem('audioVolume');
+
+            if (savedVolume) {
+                dispatch(setAudioVolume(savedVolume));
+            }
         }
     }, [windowSize.width]);
 
@@ -145,7 +157,7 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     <ReactPlayer
                         url={`${BASE_URL}/${file.hash}`}
                         playing={playing}
-                        volume={volume}
+                        volume={appInfo.audioVolume}
                         muted={muted}
                         loop={looping}
                         onDuration={(dur) => {
@@ -201,7 +213,7 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 </div>
             )}
 
-            <div className="flex items-center justify-center mt-4">
+            <div className="flex items-center justify-center my-4">
                 <div className="w-24 flex items-center justify-end">
                     <button
                         className="flex items-center justify-center"
@@ -256,11 +268,15 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                                 min={0}
                                 max={1}
                                 step="any"
-                                value={volume}
-                                onChange={(e) =>
-                                    setVolume(Number(e.target.value))
-                                }
+                                value={appInfo.audioVolume}
+                                onChange={handleVolumeChange}
                                 className="w-full"
+                                onMouseUp={() => {
+                                    localStorage.setItem(
+                                        'audioVolume',
+                                        String(appInfo.audioVolume)
+                                    );
+                                }}
                             />
 
                             <div
