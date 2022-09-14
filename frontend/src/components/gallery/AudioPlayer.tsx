@@ -25,8 +25,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     const [looping, setLooping] = useState<boolean>(false);
     const [playedPercentage, setPlayedPercentage] = useState<number>(0);
     const [prevFileName, setPrevFileName] = useState<string>(file.name);
-
-    const playerRef = useRef<any>(null);
+    const [playerRef, setPlayerRef] = useState<ReactPlayer | null>(null);
 
     const trackAnim = {
         transform: `translateX(${playedPercentage}%)`,
@@ -49,8 +48,8 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
     };
 
     const handleSeekMouseUp = () => {
-        if (playerRef.current) {
-            playerRef.current.seekTo(playedTime);
+        if (playerRef) {
+            playerRef.seekTo(playedTime);
         }
     };
 
@@ -152,7 +151,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                 </div>
             </div>
 
-            {duration ? (
+            {duration && playerRef ? (
                 <div className="flex items-center justify-center">
                     <p className="text-white w-10 flex items-center justify-center">
                         {getTime(playedTime)}
@@ -263,7 +262,6 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
 
             <div className="hidden">
                 <ReactPlayer
-                    ref={playerRef}
                     url={`${BASE_URL}/${file.hash}`}
                     playing={playing}
                     volume={volume}
@@ -275,6 +273,7 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
+                    onReady={(player) => setPlayerRef(player)}
                 />
             </div>
         </div>

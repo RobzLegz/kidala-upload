@@ -13,7 +13,7 @@ export const detectFileType: (
         return 'image';
     } else if (name.includes('.mp3') || name.includes('.wav')) {
         return 'audio';
-    } else if (name.includes('.mp4')) {
+    } else if (name.includes('.mp4') || name.includes('.mov')) {
         return 'video';
     }
 
