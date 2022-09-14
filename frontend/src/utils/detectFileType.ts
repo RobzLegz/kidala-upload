@@ -1,6 +1,6 @@
-export const detectFileType: (name: string) => 'image' | 'audio' | null = (
+export const detectFileType: (
     name: string
-) => {
+) => 'image' | 'audio' | 'video' | null = (name: string) => {
     if (
         name.includes('.png') ||
         name.includes('.jpg') ||
@@ -13,6 +13,8 @@ export const detectFileType: (name: string) => 'image' | 'audio' | null = (
         return 'image';
     } else if (name.includes('.mp3') || name.includes('.wav')) {
         return 'audio';
+    } else if (name.includes('.mp4')) {
+        return 'video';
     }
 
     return null;
