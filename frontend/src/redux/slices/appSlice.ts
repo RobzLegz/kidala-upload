@@ -13,6 +13,7 @@ export interface AppInfo {
     files: FileInterface[] | null;
     previewIdx: number | null;
     sortOptions: SortOptions;
+    audioVolume: number;
 }
 
 const initialState: AppInfo = {
@@ -23,6 +24,7 @@ const initialState: AppInfo = {
         showFiles: false,
         new: false,
     },
+    audioVolume: 1,
 };
 
 export const appSlice = createSlice({
@@ -113,6 +115,14 @@ export const appSlice = createSlice({
 
             return state;
         },
+        setAudioVolume: (state, action) => {
+            state = {
+                ...state,
+                audioVolume: Number(action.payload),
+            };
+
+            return state;
+        },
     },
 });
 
@@ -123,6 +133,7 @@ export const {
     deleteFileRdx,
     setPreviewIdx,
     setSortOptions,
+    setAudioVolume,
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

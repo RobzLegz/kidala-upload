@@ -22,6 +22,7 @@ import { detectFileType } from '../../utils/detectFileType';
 
 const GalleryImages = dynamic(() => import('./GalleryImages'));
 const AudioPlayer = dynamic(() => import('./AudioPlayer'));
+const VideoPlayer = dynamic(() => import('./VideoPlayer'));
 
 function SingleFileContainer() {
     const router = useRouter();
@@ -46,7 +47,7 @@ function SingleFileContainer() {
             setFile(foundFile);
             setCopied(false);
 
-            if (foundFile && isImage(foundFile.name)) {
+            if (foundFile && detectFileType(foundFile.name) === 'image') {
                 const img = new Image();
                 img.src = `${BASE_URL}/${hash}`;
                 img.onload = () => {
@@ -119,7 +120,9 @@ function SingleFileContainer() {
                             ) : null}
                         </div>
                     ) : detectFileType(file.name) === 'audio' ? (
-                        <AudioPlayer file={file}/>
+                        <AudioPlayer file={file} />
+                    ) : detectFileType(file.name) === 'video' ? (
+                        <VideoPlayer file={file} />
                     ) : (
                         <div className="flex h-40 w-40 items-center justify-center flex-col">
                             <DocumentIcon className="text-white h-24" />
