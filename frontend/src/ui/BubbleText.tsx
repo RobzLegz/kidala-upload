@@ -12,10 +12,11 @@ const BubbleText: React.FC<BubbleTextProps> = ({ live, children }) => {
             data-testid="bubble-text"
         >
             <div
-                className={`inline-block mr-2 w-2 h-2 rounded-full ${
+                className={`inline-block mr-1 w-2 h-2 rounded-full ${
                     live ? 'bg-accent' : 'bg-primary-300'
                 }`}
-            ></div>
+            />
+
             {children}
         </div>
     );

@@ -317,8 +317,8 @@ function UploadForm() {
                                 value={tag}
                                 onChange={(e) => setTag(e.target.value)}
                                 autoComplete="off"
-                                autoCapitalize='off'
-                                autoCorrect='off'
+                                autoCapitalize="off"
+                                autoCorrect="off"
                             />
                         </div>
                     </div>
