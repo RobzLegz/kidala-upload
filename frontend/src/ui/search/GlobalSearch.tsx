@@ -25,7 +25,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
     return (
         <div className="flex w-full relative">
-            <div className="flex relative z-10 w-full p-2">
+            <div className="flex relative z-10 w-full">
                 <SearchBar
                     className="mb-2"
                     onFocus={focusHandler}

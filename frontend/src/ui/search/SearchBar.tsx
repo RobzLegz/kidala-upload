@@ -23,6 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 placeholder={props.placeholder}
                 className={inputClassName}
                 transparent
+                {...props}
             />
         </div>
     );

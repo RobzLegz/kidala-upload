@@ -7,7 +7,7 @@ export interface SearchResultProps {
 
 const Result: React.FC<SearchResultProps> = ({ items }) => {
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full px-2">
             {items.map((result, i) => (
                 <SearchResult file={result} key={i} />
             ))}

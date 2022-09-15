@@ -1,10 +1,9 @@
-import SearchHistory from "./SearchHistory";
+import SearchHistory from './SearchHistory';
 
 export type HistoryItem = {
     id: string;
     term: string;
 };
-
 
 export interface HistoryProps {
     history: HistoryItem[];
@@ -16,7 +15,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
     };
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full px-2">
             {history.map((h) => (
                 <SearchHistory
                     onClickToDeleteSearchHistory={() =>

@@ -12,7 +12,7 @@ const SearchOverlay = forwardRef<
     return (
         <div
             ref={ref}
-            className={`absolute flex flex-col py-2 rounded-8 bg-primary-800 border-primary-700 border ${className}`}
+            className={`absolute flex flex-col pt-16 pb-2 rounded-8 bg-primary-800 border-primary-700 border w-full ${className}`}
             style={{
                 minHeight: '198px',
                 maxHeight: '50vh',
@@ -30,4 +30,4 @@ const SearchOverlay = forwardRef<
     );
 });
 
-export default SearchOverlay
+export default SearchOverlay;

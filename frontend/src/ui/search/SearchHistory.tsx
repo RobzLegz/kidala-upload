@@ -15,7 +15,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({
             <div className={'flex flex-1 items-center group cursor-pointer'}>
                 <SearchIcon
                     className={
-                        'mr-4 group-hover:text-primary-100 text-primary-300'
+                        'mr-4 group-hover:text-primary-100 text-primary-300 h-6'
                     }
                 />
                 <span
