@@ -4,6 +4,7 @@ import React from 'react';
 import { getFileExtension } from '../utils/getFileExtension';
 import BubbleText from './BubbleText';
 import { Input } from './Input';
+import { SwitchWrapper } from './SwitchWrapper';
 
 export interface FileInfoProps {
     source?: string;
@@ -56,6 +57,16 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     textarea
                     rows={4}
                 />
+
+                {typeof isPrivate === 'boolean' && (
+                    <SwitchWrapper
+                        checked={isPrivate}
+                        setChecked={setIsPrivate}
+                        action="Make private"
+                        actionDescription="Other users won't be able to view your file"
+                        className='mt-2'
+                    />
+                )}
 
                 {/* <div className="flex items-center bg-primary-800">
                     <HashtagIcon className="text-white h-6" />
