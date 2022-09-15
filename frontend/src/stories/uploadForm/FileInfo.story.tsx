@@ -1,13 +1,13 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import FileInfo, { FileInfoProps } from '../ui/FileInfo';
+import FileInfo, { FileInfoProps } from '../../ui/FileInfo';
 import { Provider } from 'react-redux';
-import store from '../redux/app/store';
-import { toStr } from './utils/toStr';
-import { toBoolean } from './utils/toBoolean';
+import store from '../../redux/app/store';
+import { toStr } from '../utils/toStr';
+import { toBoolean } from '../utils/toBoolean';
 
 export default {
-    title: 'FileInfo',
+    title: 'UploadForm/FileInfo',
     component: FileInfo,
     decorators: [
         (Story: Story) => (

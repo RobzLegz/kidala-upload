@@ -1,11 +1,11 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { AddTag, AddTagProps } from '../ui/AddTag';
-import { toStr } from './utils/toStr';
-import { toBoolean } from './utils/toBoolean';
+import { AddTag, AddTagProps } from '../../ui/AddTag';
+import { toStr } from '../utils/toStr';
+import { toBoolean } from '../utils/toBoolean';
 
 export default {
-    title: 'AddTag',
+    title: 'UploadForm/AddTag',
     comoponent: AddTag,
 };
 

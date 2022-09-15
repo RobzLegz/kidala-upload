@@ -1,14 +1,14 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { toEnum } from './utils/toEnum';
-import { toBoolean } from './utils/toBoolean';
+import { toEnum } from '../utils/toEnum';
+import { toBoolean } from '../utils/toBoolean';
 import { SearchIcon } from '@heroicons/react/solid';
 import SelectFileButton, {
     SelectFileButtonProps,
-} from '../ui/SelectFileButton';
+} from '../../ui/SelectFileButton';
 
 export default {
-    title: 'SelectFileButton',
+    title: 'UploadForm/SelectFileButton',
     argTypes: { onClick: { action: 'clicked' } },
     component: SelectFileButton,
 };

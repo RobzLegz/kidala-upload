@@ -1,12 +1,12 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { TagWrapper, TagWrapperProps } from '../ui/TagWrapper';
-import { toStr } from './utils/toStr';
-import { toBoolean } from './utils/toBoolean';
-import { toEnum } from './utils/toEnum';
+import { TagWrapper, TagWrapperProps } from '../../ui/TagWrapper';
+import { toStr } from '../utils/toStr';
+import { toBoolean } from '../utils/toBoolean';
+import { toEnum } from '../utils/toEnum';
 
 export default {
-    title: 'TagWrapper',
+    title: 'UploadForm/TagWrapper',
     comoponent: TagWrapper,
 };
 
