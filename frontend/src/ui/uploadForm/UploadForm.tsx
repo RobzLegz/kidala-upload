@@ -9,12 +9,9 @@ import {
 } from '../../redux/slices/notificationSlice';
 import { uploadFile } from '../../requests/uploadRequests';
 import { detectFileType } from '../../utils/detectFileType';
-import Button from '../Button';
 import FileInfo from './FileInfo';
-import { Input } from '../Input';
-import SelectFileButton from './SelectFileButton';
-import SquareButton from '../SquareButton';
 import { DropBox } from './DropBox';
+import { UploadResponse } from './UploadResponse';
 
 const UploadForm: React.FC = () => {
     const dispatch = useDispatch();
@@ -29,7 +26,6 @@ const UploadForm: React.FC = () => {
     const [hash, setHash] = useState('');
     const [tag, setTag] = useState('');
     const [tags, setTags] = useState<string[]>([]);
-    const [selectedTag, setSelectedTag] = useState('');
     const [addingTag, setAddingTag] = useState(false);
     const [savedToClipboard, setSavedToClipboard] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -61,7 +57,6 @@ const UploadForm: React.FC = () => {
             setFile(cb_file);
             setSavedToClipboard(false);
             setHash('');
-            setSelectedTag('');
             setTag('');
             setAddingTag(false);
 
@@ -105,7 +100,6 @@ const UploadForm: React.FC = () => {
                 return;
             }
 
-            setSelectedTag(tag.toLowerCase());
             setAddingTag(false);
         }
 
@@ -122,7 +116,6 @@ const UploadForm: React.FC = () => {
         );
 
         setLoading(false);
-        setSelectedTag('');
         setTag('');
         setAddingTag(false);
     };
@@ -156,28 +149,8 @@ const UploadForm: React.FC = () => {
         setFile(selectedFile);
         setSavedToClipboard(false);
         setHash('');
-        setSelectedTag('');
         setTag('');
         setAddingTag(false);
-    };
-
-    const saveToClipboard = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-        e.preventDefault();
-
-        navigator.clipboard.writeText(`https://kidala.life/gallery/${hash}`);
-
-        setSavedToClipboard(true);
-    };
-
-    const openUrl = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-
-        setSavedToClipboard(false);
-
-        window.open(`/gallery/${hash}`);
-        dispatch(clearNotification());
     };
 
     const addTag = (e?: React.MouseEvent) => {
@@ -194,7 +167,13 @@ const UploadForm: React.FC = () => {
             className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center"
             ref={formRef}
         >
-            {file ? (
+            {hash ? (
+                <UploadResponse
+                    hash={hash}
+                    savedToClipboard={savedToClipboard}
+                    setSavedToClipboard={setSavedToClipboard}
+                />
+            ) : file ? (
                 <FileInfo
                     source={filePreview}
                     fileName={file.name}
