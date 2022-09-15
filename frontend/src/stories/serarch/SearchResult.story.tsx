@@ -4,7 +4,7 @@ import SearchResult, { SearchResultProps } from '../../ui/search/SearchResult';
 import { FileInterface } from '../../interfaces/file';
 
 export default {
-    title: 'search/components/SearchResult',
+    title: 'search/SearchResult',
     component: SearchResult,
 };
 

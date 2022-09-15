@@ -32,8 +32,15 @@ module.exports = {
                     800: '#151A21',
                     900: '#0B0E11',
                 },
+                button: '#FFFFFF',
+                secondary: {
+                    DEFAULT: '#DEE3EA',
+                    'washed-out': '#F5BFBF',
+                },
                 accent: {
                     DEFAULT: '#FD4D4D',
+                    hover: '#FD6868',
+                    disabled: '#F5BFBF',
                 },
                 transparent_dark: {
                     DEFAULT: 'rgba(0, 0, 0, 0.4)',

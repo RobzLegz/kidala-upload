@@ -6,7 +6,7 @@ import { Input, InputProps } from '../ui/Input';
 import { toNumber } from './utils/toNumber';
 
 export default {
-    title: 'input/Input',
+    title: 'Input',
     argTypes: {
         onChange: { action: 'changed' },
     },

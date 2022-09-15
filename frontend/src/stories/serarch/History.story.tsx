@@ -3,7 +3,7 @@ import { Story } from '@storybook/react';
 import History, { HistoryItem, HistoryProps } from '../../ui/search/History';
 
 export default {
-    title: 'search/components/History',
+    title: 'search/History',
     component: History,
 };
 
