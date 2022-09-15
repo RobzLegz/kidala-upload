@@ -21,6 +21,12 @@ export const AddTag: React.FC<AddTagProps> = ({
     const handleOpen = (e: React.MouseEvent) => {
         e.preventDefault();
 
+        if (tag && addTag) {
+            addTag();
+            
+            return;
+        }
+
         setOpened && setOpened(!opened);
     };
 

@@ -22,6 +22,9 @@ export interface FileInfoProps {
     setIsPrivate?: React.Dispatch<React.SetStateAction<boolean>>;
     setTag?: React.Dispatch<React.SetStateAction<string>>;
     setTags?: React.Dispatch<React.SetStateAction<string[]>>;
+    handleUpload?: (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => Promise<void>;
 }
 
 const FileInfo: React.FC<FileInfoProps> = ({
@@ -37,6 +40,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
     addTag,
     formWidth,
     selectFile,
+    handleUpload,
 }) => {
     const [tagOpened, setTagOpened] = useState(false);
 
@@ -134,7 +138,9 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         Change file
                     </Button>
 
-                    <Button size="small">Upload</Button>
+                    <Button size="small" onClick={handleUpload} type="submit">
+                        Upload
+                    </Button>
                 </div>
             </div>
         </div>

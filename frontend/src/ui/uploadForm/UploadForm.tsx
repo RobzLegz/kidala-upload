@@ -85,6 +85,8 @@ const UploadForm: React.FC = () => {
 
             setAddingTag(false);
             setTag('');
+
+            return;
         }
 
         if (loading) {
@@ -93,12 +95,14 @@ const UploadForm: React.FC = () => {
 
         if (addingTag) {
             if (tag.length > 25) {
-                return dispatch(
+                dispatch(
                     setNotification({
                         type: 'error',
                         message: "Tags can't be that long!",
                     })
                 );
+
+                return;
             }
 
             setSelectedTag(tag.toLowerCase());
@@ -207,6 +211,7 @@ const UploadForm: React.FC = () => {
                             ? formRef.current.offsetWidth
                             : undefined
                     }
+                    handleUpload={handleUpload}
                 />
             ) : (
                 <DropBox selectFile={selectFile} />
