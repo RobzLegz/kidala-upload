@@ -1,4 +1,3 @@
-import { XCircleIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { Tag } from './Tag';
 

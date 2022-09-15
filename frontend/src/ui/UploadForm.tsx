@@ -25,6 +25,7 @@ const UploadForm: React.FC = () => {
     const [filePreview, setFilePreview] = useState('');
     const [hash, setHash] = useState('');
     const [tag, setTag] = useState('');
+    const [tags, setTags] = useState<string[]>([]);
     const [selectedTag, setSelectedTag] = useState('');
     const [addingTag, setAddingTag] = useState(false);
     const [savedToClipboard, setSavedToClipboard] = useState(false);
@@ -75,6 +76,13 @@ const UploadForm: React.FC = () => {
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
+
+        if (addingTag) {
+            addTag();
+
+            setAddingTag(false);
+            setTag('');
+        }
 
         if (loading) {
             return;
@@ -164,6 +172,10 @@ const UploadForm: React.FC = () => {
         dispatch(clearNotification());
     };
 
+    const addTag = () => {
+        setTags([...tags, tag.toLowerCase()]);
+    };
+
     return (
         <form className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center">
             <input
@@ -182,7 +194,12 @@ const UploadForm: React.FC = () => {
                     Select file
                 </SelectFileButton>
 
-                <SquareButton className="flex-1 ml-1 h-8" color="secondary">
+                <SquareButton
+                    className="flex-1 ml-1 h-8"
+                    color="secondary"
+                    type="submit"
+                    onClick={handleUpload}
+                >
                     Upload
                 </SquareButton>
             </div>
@@ -195,6 +212,9 @@ const UploadForm: React.FC = () => {
                     setTag={setTag}
                     isPrivate={isPrivate}
                     setIsPrivate={setIsPrivate}
+                    tags={tags}
+                    setTags={setTags}
+                    addTag={addTag}
                 />
             )}
         </form>

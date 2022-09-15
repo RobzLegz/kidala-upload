@@ -5,6 +5,7 @@ export interface AddTagProps {
     tag?: string;
     opened?: boolean;
     className?: string;
+    addTag?: () => void;
     setOpened?: React.Dispatch<React.SetStateAction<boolean>>;
     setTag?: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -15,6 +16,7 @@ export const AddTag: React.FC<AddTagProps> = ({
     opened,
     setOpened,
     className,
+    addTag
 }) => {
     return (
         <div
@@ -35,7 +37,7 @@ export const AddTag: React.FC<AddTagProps> = ({
 
             <div
                 className={`items-center justify-start flex transition-all duration-300 h-full ${
-                    !opened ? 'w-0.5' : 'w-full mr-2'
+                    !opened ? 'w-0.5' : 'w-full'
                 }`}
             >
                 <input
@@ -52,6 +54,16 @@ export const AddTag: React.FC<AddTagProps> = ({
                     value={tag}
                     onChange={(e) => setTag && setTag(e.target.value)}
                 />
+
+                <button
+                    className={`bg-accent rounded-full flex items-center justify-center font-bold ${
+                        opened ? 'px-2 h-full' : 'hidden'
+                    }`}
+                    type="button"
+                    onClick={addTag}
+                >
+                    +
+                </button>
             </div>
         </div>
     );

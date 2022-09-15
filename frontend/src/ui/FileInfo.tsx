@@ -6,15 +6,19 @@ import { AddTag } from './AddTag';
 import BubbleText from './BubbleText';
 import { Input } from './Input';
 import { SwitchWrapper } from './SwitchWrapper';
+import { TagWrapper } from './TagWrapper';
 
 export interface FileInfoProps {
     source?: string;
     file?: File;
     fileName?: string;
     tag?: string;
+    tags: string[];
     isPrivate?: boolean;
+    addTag?: () => void;
     setIsPrivate?: React.Dispatch<React.SetStateAction<boolean>>;
     setTag?: React.Dispatch<React.SetStateAction<string>>;
+    setTags?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const FileInfo: React.FC<FileInfoProps> = ({
@@ -25,6 +29,9 @@ const FileInfo: React.FC<FileInfoProps> = ({
     setTag,
     isPrivate,
     setIsPrivate,
+    tags,
+    setTags,
+    addTag,
 }) => {
     const [tagOpened, setTagOpened] = useState(false);
 
@@ -58,9 +65,12 @@ const FileInfo: React.FC<FileInfoProps> = ({
                             opened={tagOpened}
                             setOpened={setTagOpened}
                             className="ml-2"
+                            addTag={addTag}
                         />
                     </div>
                 )}
+
+                <TagWrapper tags={tags} setTags={setTags} />
 
                 <Input
                     className="bg-primary-800 w-full mt-2"

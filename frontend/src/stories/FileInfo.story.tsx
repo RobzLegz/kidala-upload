@@ -16,6 +16,7 @@ export default {
             </Provider>
         ),
     ],
+    argTypes: { onClick: { action: 'clicked' } },
 };
 
 export const Main: Story<FileInfoProps> = ({ ...props }) => {
