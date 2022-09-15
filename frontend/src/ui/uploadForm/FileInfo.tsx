@@ -1,11 +1,11 @@
 import { HashtagIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { getFileExtension } from '../utils/getFileExtension';
+import { getFileExtension } from '../../utils/getFileExtension';
 import { AddTag } from './AddTag';
-import BubbleText from './BubbleText';
-import { Input } from './Input';
-import { SwitchWrapper } from './SwitchWrapper';
+import BubbleText from '../BubbleText';
+import { Input } from '../Input';
+import { SwitchWrapper } from '../SwitchWrapper';
 import { TagWrapper } from './TagWrapper';
 
 export interface FileInfoProps {

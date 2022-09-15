@@ -3,7 +3,7 @@ import React, {
     LabelHTMLAttributes,
     ReactNode,
 } from 'react';
-import Spinner from './Spinner';
+import Spinner from '../Spinner';
 
 const sizeClassnames = {
     big: 'text-sm',

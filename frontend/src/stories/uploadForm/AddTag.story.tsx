@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { AddTag, AddTagProps } from '../../ui/AddTag';
+import { AddTag, AddTagProps } from '../../ui/uploadForm/AddTag';
 import { toStr } from '../utils/toStr';
 import { toBoolean } from '../utils/toBoolean';
 

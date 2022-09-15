@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import UploadForm from '../../ui/UploadForm';
+import UploadForm from '../../ui/uploadForm/UploadForm';
 import { Provider } from 'react-redux';
 import store from '../../redux/app/store';
 import { toStr } from '../utils/toStr';

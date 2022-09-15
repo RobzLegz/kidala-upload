@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import FileInfo, { FileInfoProps } from '../../ui/FileInfo';
+import FileInfo, { FileInfoProps } from '../../ui/uploadForm/FileInfo';
 import { Provider } from 'react-redux';
 import store from '../../redux/app/store';
 import { toStr } from '../utils/toStr';

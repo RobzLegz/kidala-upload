@@ -5,7 +5,7 @@ import { toBoolean } from '../utils/toBoolean';
 import { SearchIcon } from '@heroicons/react/solid';
 import SelectFileButton, {
     SelectFileButtonProps,
-} from '../../ui/SelectFileButton';
+} from '../../ui/uploadForm/SelectFileButton';
 
 export default {
     title: 'UploadForm/SelectFileButton',

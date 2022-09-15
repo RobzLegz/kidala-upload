@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LanguageInfo, selectLanguage } from '../redux/slices/languageSlice';
+import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import {
     clearNotification,
     NotificationInfo,
     selectNotification,
     setNotification,
-} from '../redux/slices/notificationSlice';
-import { uploadFile } from '../requests/uploadRequests';
-import { detectFileType } from '../utils/detectFileType';
-import Button from './Button';
+} from '../../redux/slices/notificationSlice';
+import { uploadFile } from '../../requests/uploadRequests';
+import { detectFileType } from '../../utils/detectFileType';
+import Button from '../Button';
 import FileInfo from './FileInfo';
-import { Input } from './Input';
+import { Input } from '../Input';
 import SelectFileButton from './SelectFileButton';
-import SquareButton from './SquareButton';
-import { DropBox } from './uploadForm/DropBox';
+import SquareButton from '../SquareButton';
+import { DropBox } from './DropBox';
 
 const UploadForm: React.FC = () => {
     const dispatch = useDispatch();
