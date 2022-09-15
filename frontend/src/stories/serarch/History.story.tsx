@@ -1,8 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { FileInterface } from '../../interfaces/file';
 import History, { HistoryItem, HistoryProps } from '../../ui/search/History';
-import SearchHistory from '../../ui/search/SearchHistory';
 
 export default {
     title: 'search/History',
