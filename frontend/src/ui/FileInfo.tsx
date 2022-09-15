@@ -1,7 +1,8 @@
 import { HashtagIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { getFileExtension } from '../utils/getFileExtension';
+import { AddTag } from './AddTag';
 import BubbleText from './BubbleText';
 import { Input } from './Input';
 import { SwitchWrapper } from './SwitchWrapper';
@@ -25,8 +26,10 @@ const FileInfo: React.FC<FileInfoProps> = ({
     isPrivate,
     setIsPrivate,
 }) => {
+    const [tagOpened, setTagOpened] = useState(false);
+
     return (
-        <div className="flex bg-primary-700 w-full p-4 mt-2">
+        <div className="flex bg-primary-700 w-full p-4 mt-2 rounded-lg">
             <div className="w-32 h-48 relative mr-2">
                 {source ? (
                     <Image
@@ -48,6 +51,14 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 {getFileExtension(fileName)}
                             </span>
                         </BubbleText>
+
+                        <AddTag
+                            tag={tag}
+                            setTag={setTag}
+                            opened={tagOpened}
+                            setOpened={setTagOpened}
+                            className="ml-2"
+                        />
                     </div>
                 )}
 
@@ -64,7 +75,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         setChecked={setIsPrivate}
                         action="Make private"
                         actionDescription="Other users won't be able to view your file"
-                        className='mt-2'
+                        className="mt-2"
                     />
                 )}
 

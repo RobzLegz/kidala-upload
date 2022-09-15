@@ -78,3 +78,20 @@ input[type='range']::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     background: transparent;
 }
+
+.tag_wrapper::-webkit-scrollbar {
+    height: 7px;
+}
+
+.tag_wrapper::-webkit-scrollbar-track {
+    background: #0b0e11;
+}
+
+.tag_wrapper::-webkit-scrollbar-thumb {
+    background: #242c37;
+    border-radius: 4px;
+}
+
+.tag_wrapper::-webkit-scrollbar-thumb:hover {
+    background: #fd4d4d;
+}
