@@ -8,7 +8,7 @@
     }
 
     body {
-        @apply bg-sky-900;
+        @apply bg-primary-900;
     }
 
     h1 {
@@ -16,7 +16,7 @@
     }
 
     .page {
-        @apply h-screen w-full bg-sky-900;
+        @apply h-screen w-full bg-primary-900;
     }
 
     .link {

@@ -21,9 +21,35 @@ module.exports = {
                 '7xl': '5rem',
             },
             colors: {
+                primary: {
+                    100: '#DEE3EA',
+                    200: '#B2BDCD',
+                    300: '#5D7290',
+                    400: '#4F617A',
+                    500: '#404F64',
+                    600: '#323D4D',
+                    700: '#242C37',
+                    800: '#151A21',
+                    900: '#0B0E11',
+                },
+                accent: {
+                    DEFAULT: '#FD4D4D',
+                },
                 transparent_dark: {
                     DEFAULT: 'rgba(0, 0, 0, 0.4)',
                 },
+            },
+            borderWidth: {
+                DEFAULT: '1px',
+                0: '0px',
+                4: '4px',
+                2: '2px',
+            },
+            borderRadius: {
+                5: '5px',
+                8: '8px',
+                20: '20px',
+                40: '40px',
             },
             animation: {
                 'spin-slow': 'spin 15s linear forwards infinite',

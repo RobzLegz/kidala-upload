@@ -15,7 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <div
             className={`items-center flex w-full bg-primary-700 text-primary-300 transition duration-200 ease-in-out focus-within:text-primary-100 rounded-lg ${props.className}`}
         >
-            asdasd
+            burh
         </div>
     );
 };

@@ -23,5 +23,6 @@
     "bugs": {
         "url": "https://github.com/RobzLegz/kidala-upload/issues"
     },
-    "homepage": "https://github.com/RobzLegz/kidala-upload#readme"
+    "homepage": "https://github.com/RobzLegz/kidala-upload#readme",
+    "devDependencies": {}
 }
