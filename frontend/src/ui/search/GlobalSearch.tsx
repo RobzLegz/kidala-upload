@@ -27,10 +27,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         <div className="flex w-full relative">
             <div className="flex relative z-10 w-full">
                 <SearchBar
-                    className="mb-2"
                     onFocus={focusHandler}
                     onBlur={blurHandler}
                     onChange={setSearchTerm}
+                    placeholder="Search for files..."
                 />
             </div>
             {focused && (
