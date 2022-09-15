@@ -25,6 +25,10 @@ export interface FileInfoProps {
     handleUpload?: (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => Promise<void>;
+    imageDimensions?: {
+        width: number;
+        height: number;
+    };
 }
 
 const FileInfo: React.FC<FileInfoProps> = ({
@@ -41,6 +45,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
     formWidth,
     selectFile,
     handleUpload,
+    imageDimensions,
 }) => {
     const [tagOpened, setTagOpened] = useState(false);
 
@@ -60,13 +65,27 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 onChange={handleFileSelect}
             />
 
-            <div className="w-32 h-48 relative mr-2">
+            <div className="w-32 relative mr-2">
                 {source ? (
                     <Image
                         src={source}
                         layout="fill"
                         objectFit="cover"
                         draggable={false}
+                        width={
+                            imageDimensions
+                                ? imageDimensions.width
+                                    ? imageDimensions.width
+                                    : 128
+                                : 128
+                        }
+                        height={
+                            imageDimensions
+                                ? imageDimensions.height
+                                    ? imageDimensions.height
+                                    : 164
+                                : 164
+                        }
                     />
                 ) : null}
             </div>

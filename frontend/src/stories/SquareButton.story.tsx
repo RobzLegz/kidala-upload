@@ -7,7 +7,7 @@ import { SearchIcon } from '@heroicons/react/solid';
 import SquareButton from '../ui/SquareButton';
 
 export default {
-    title: 'SquareButton',
+    title: 'Button/SquareButton',
     argTypes: { onClick: { action: 'clicked' } },
     component: SquareButton,
 };

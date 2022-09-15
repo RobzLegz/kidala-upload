@@ -28,6 +28,7 @@ export const Main: Story<FileInfoProps> = ({ ...props }) => {
             }
             fileName={props.fileName || 'Bladee.png'}
             isPrivate={props.isPrivate || true}
+            imageDimensions={{ width: 128, height: 144 }}
             {...props}
         />
     );
