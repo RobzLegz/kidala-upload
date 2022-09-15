@@ -12,11 +12,9 @@ export default {
     },
 };
 
-const TheInput: Story<InputProps> = ({ placeholder, ...props }) => {
+export const Main: Story<InputProps> = ({ placeholder, ...props }) => {
     return <Input placeholder={placeholder || 'Search for files'} {...props} />;
 };
-
-export const Main = TheInput.bind({});
 
 Main.argTypes = {
     value: toStr(),
@@ -25,3 +23,5 @@ Main.argTypes = {
     error: toStr(),
     transparent: toBoolean(),
 };
+
+Main.bind({});

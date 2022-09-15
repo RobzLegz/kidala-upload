@@ -5,7 +5,7 @@ import { toStr } from '../utils/toStr';
 import { toBoolean } from '../utils/toBoolean';
 
 export default {
-    title: 'search/SearchBar',
+    title: 'search/components/SearchBar',
     argTypes: {
         onChange: { action: 'changed' },
     },

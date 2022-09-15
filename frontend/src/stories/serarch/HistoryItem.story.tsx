@@ -6,7 +6,7 @@ import SearchHistory, {
 import { toStr } from '../utils/toStr';
 
 export default {
-    title: 'search/SearchHistory',
+    title: 'search/components/SearchHistory',
     component: SearchHistory,
 };
 
