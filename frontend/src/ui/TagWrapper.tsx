@@ -12,7 +12,7 @@ export const TagWrapper: React.FC<TagWrapperProps> = ({ tags, setTags }) => {
     }
 
     return (
-        <div className="w-full overflow-x-scroll tag_wrapper flex items-center justify-start px-4 py-2">
+        <div className="w-full max-w-[400px] overflow-x-scroll tag_wrapper flex items-center justify-start px-4 py-2">
             {tags.map((tag, i) => (
                 <Tag tag={tag} tags={tags} setTags={setTags} key={i} />
             ))}

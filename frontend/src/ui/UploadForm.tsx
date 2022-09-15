@@ -14,6 +14,7 @@ import FileInfo from './FileInfo';
 import { Input } from './Input';
 import SelectFileButton from './SelectFileButton';
 import SquareButton from './SquareButton';
+import { DropBox } from './uploadForm/DropBox';
 
 const UploadForm: React.FC = () => {
     const dispatch = useDispatch();
@@ -120,20 +121,21 @@ const UploadForm: React.FC = () => {
         setAddingTag(false);
     };
 
-    const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files || !e.target.files[0]) {
+    const selectFile = (files: FileList) => {
+        if (!files || files.length === 0) {
             return;
         }
 
-        const selectedFile = e.target.files[0];
+        const selectedFile = files[0];
 
         if (selectedFile.size > 1024 * 1024) {
-            return dispatch(
+            dispatch(
                 setNotification({
                     type: 'error',
                     message: 'File size too large',
                 })
             );
+            return;
         }
 
         if (detectFileType(selectedFile.name) === 'image') {
@@ -172,39 +174,18 @@ const UploadForm: React.FC = () => {
         dispatch(clearNotification());
     };
 
-    const addTag = () => {
+    const addTag = (e?: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+        }
+
         setTags([...tags, tag.toLowerCase()]);
+        setTag('');
     };
 
     return (
         <form className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center">
-            <input
-                type="text"
-                name="select_file_new"
-                id="select_file_new"
-                onChange={selectFile}
-                className="hidden"
-            />
-
-            <div className="flex items-center justify-center w-full">
-                <SelectFileButton
-                    className="h-8 mr-1 flex-1"
-                    htmlFor="select_file_new"
-                >
-                    Select file
-                </SelectFileButton>
-
-                <SquareButton
-                    className="flex-1 ml-1 h-8"
-                    color="secondary"
-                    type="submit"
-                    onClick={handleUpload}
-                >
-                    Upload
-                </SquareButton>
-            </div>
-
-            {file && (
+            {file ? (
                 <FileInfo
                     source={filePreview}
                     fileName={file.name}
@@ -216,6 +197,8 @@ const UploadForm: React.FC = () => {
                     setTags={setTags}
                     addTag={addTag}
                 />
+            ) : (
+                <DropBox selectFile={selectFile} />
             )}
         </form>
     );

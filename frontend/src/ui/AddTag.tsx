@@ -5,7 +5,7 @@ export interface AddTagProps {
     tag?: string;
     opened?: boolean;
     className?: string;
-    addTag?: () => void;
+    addTag?: (e?: React.MouseEvent) => void;
     setOpened?: React.Dispatch<React.SetStateAction<boolean>>;
     setTag?: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -16,8 +16,14 @@ export const AddTag: React.FC<AddTagProps> = ({
     opened,
     setOpened,
     className,
-    addTag
+    addTag,
 }) => {
+    const handleOpen = (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        setOpened && setOpened(!opened);
+    };
+
     return (
         <div
             className={`h-6 transition-all duration-300 rounded-full flex items-center justify-center ${
@@ -28,7 +34,7 @@ export const AddTag: React.FC<AddTagProps> = ({
         >
             <button
                 className={`w-6 h-6 flex items-center justify-center rounded-full cursor-pointer`}
-                onClick={() => setOpened && setOpened(!opened)}
+                onClick={handleOpen}
             >
                 <HashtagIcon
                     className={`h-4 ${opened ? 'text-accent' : 'text-white'}`}
