@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Switch } from './Switch';
 
 export interface SwitchWrapperProps {
@@ -7,6 +7,7 @@ export interface SwitchWrapperProps {
     action?: string;
     actionDescription?: string;
     className?: string;
+    icon?: ReactNode;
 }
 
 export const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
@@ -15,6 +16,7 @@ export const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
     action,
     actionDescription,
     className,
+    icon,
 }) => {
     const handleCheck = () => {
         if (setChecked) {
@@ -24,7 +26,7 @@ export const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
 
     return (
         <div
-            className={`flex items-center justify-between bg-primary-800 py-2 px-4 w-full rounded-lg ${
+            className={`flex items-center justify-between bg-primary-800 py-2 px-4 w-full rounded-lg cursor-pointer ${
                 className && className
             }`}
             onClick={handleCheck}
@@ -35,7 +37,7 @@ export const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
                 <small className="text-primary-200">{actionDescription}</small>
             </div>
 
-            <Switch checked={checked} setChecked={setChecked} />
+            <Switch checked={checked} setChecked={setChecked} icon={icon} />
         </div>
     );
 };

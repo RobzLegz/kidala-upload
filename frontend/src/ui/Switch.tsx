@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export interface SwitchProps {
     checked: boolean;
+    icon?: ReactNode;
     setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Switch: React.FC<SwitchProps> = ({ checked, setChecked }) => {
+export const Switch: React.FC<SwitchProps> = ({
+    checked,
+    setChecked,
+    icon,
+}) => {
     const handleCheck = () => {
         if (setChecked) {
             setChecked(!checked);
@@ -22,12 +27,14 @@ export const Switch: React.FC<SwitchProps> = ({ checked, setChecked }) => {
             onClick={handleCheck}
         >
             <div
-                className={`w-5 h-5 rounded-full transition duration-500 ease-in-out-hard absolute top-2/4 left-0 transform -translate-y-1/2 ${
+                className={`flex items-center justify-center w-5 h-5 rounded-full transition duration-500 ease-in-out-hard absolute top-2/4 left-0 transform -translate-y-1/2 ${
                     checked
-                        ? 'translate-x-5 bg-primary-100'
+                        ? 'translate-x-5 bg-white'
                         : 'translate-x-0 bg-primary-300'
                 }`}
-            />
+            >
+                {icon && icon}
+            </div>
         </div>
     );
 };

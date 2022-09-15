@@ -1,4 +1,3 @@
-import { HashtagIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { getFileExtension } from '../../utils/getFileExtension';
@@ -7,6 +6,8 @@ import BubbleText from '../BubbleText';
 import { Input } from '../Input';
 import { SwitchWrapper } from '../SwitchWrapper';
 import { TagWrapper } from './TagWrapper';
+import Button from '../Button';
+import { EyeIcon, LockClosedIcon } from '@heroicons/react/solid';
 
 export interface FileInfoProps {
     source?: string;
@@ -16,6 +17,8 @@ export interface FileInfoProps {
     tags: string[];
     isPrivate?: boolean;
     addTag?: () => void;
+    formWidth?: number;
+    selectFile?: (files: FileList) => void;
     setIsPrivate?: React.Dispatch<React.SetStateAction<boolean>>;
     setTag?: React.Dispatch<React.SetStateAction<string>>;
     setTags?: React.Dispatch<React.SetStateAction<string[]>>;
@@ -32,11 +35,27 @@ const FileInfo: React.FC<FileInfoProps> = ({
     tags,
     setTags,
     addTag,
+    formWidth,
+    selectFile,
 }) => {
     const [tagOpened, setTagOpened] = useState(false);
 
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            selectFile && selectFile(e.target.files);
+        }
+    };
+
     return (
         <div className="flex bg-primary-700 w-full p-4 mt-2 rounded-lg">
+            <input
+                type="file"
+                name="drop_box_reselect_file"
+                id="drop_box_reselect_file"
+                className="hidden"
+                onChange={handleFileSelect}
+            />
+
             <div className="w-32 h-48 relative mr-2">
                 {source ? (
                     <Image
@@ -70,7 +89,11 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     </div>
                 )}
 
-                <TagWrapper tags={tags} setTags={setTags} />
+                <TagWrapper
+                    tags={tags}
+                    setTags={setTags}
+                    formWidth={formWidth}
+                />
 
                 <Input
                     className="bg-primary-800 w-full mt-2"
@@ -83,20 +106,36 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     <SwitchWrapper
                         checked={isPrivate}
                         setChecked={setIsPrivate}
-                        action="Make private"
-                        actionDescription="Other users won't be able to view your file"
+                        action={isPrivate ? 'File private' : 'File public'}
+                        actionDescription={
+                            isPrivate
+                                ? "Other users won't be able to see your file"
+                                : 'Other users will be able to see your file'
+                        }
                         className="mt-2"
+                        icon={
+                            isPrivate ? (
+                                <LockClosedIcon className="text-primary-300 h-4" />
+                            ) : (
+                                <EyeIcon className="text-white h-4" />
+                            )
+                        }
                     />
                 )}
 
-                {/* <div className="flex items-center bg-primary-800">
-                    <HashtagIcon className="text-white h-6" />
+                <div className="flex w-full items-center justify-end mt-2">
+                    <Button
+                        size="small"
+                        color="secondary-800"
+                        className="mr-2"
+                        isLabel
+                        htmlFor="drop_box_reselect_file"
+                    >
+                        Change file
+                    </Button>
 
-                    <Input
-                        className="bg-primary-800 w-full"
-                        placeholder="Enter tag"
-                    />
-                </div> */}
+                    <Button size="small">Upload</Button>
+                </div>
             </div>
         </div>
     );

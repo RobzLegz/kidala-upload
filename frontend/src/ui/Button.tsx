@@ -34,6 +34,8 @@ export type ButtonProps = DetailedHTMLProps<
     loading?: boolean;
     icon?: ReactNode;
     transition?: boolean;
+    isLabel?: boolean;
+    htmlFor?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -45,8 +47,31 @@ const Button: React.FC<ButtonProps> = ({
     icon,
     className = '',
     transition,
+    isLabel,
+    htmlFor,
     ...props
 }) => {
+    if (isLabel && htmlFor) {
+        return (
+            <label
+                className={`flex outline-none cursor-pointer focus:ring-4 focus:ring-${color} ${
+                    sizeClassnames[size]
+                } ${transition ? `transition duration-200 ease-in-out` : ``} ${
+                    colorClassnames[color]
+                } font-bold flex items-center justify-center ${className}`}
+                data-testid="button"
+                htmlFor={htmlFor}
+            >
+                <span className={loading ? 'opacity-0' : `flex items-center`}>
+                    {icon ? (
+                        <span className={`mr-1 items-center`}>{icon}</span>
+                    ) : null}
+                    {children}
+                </span>
+            </label>
+        );
+    }
+
     return (
         <button
             disabled={disabled || loading}
@@ -66,7 +91,7 @@ const Button: React.FC<ButtonProps> = ({
             </span>
             {loading ? (
                 <span className={`absolute`}>
-                    <Spinner size='4' />
+                    <Spinner size="4" />
                 </span>
             ) : null}
         </button>

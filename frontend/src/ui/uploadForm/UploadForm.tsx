@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import {
@@ -21,6 +21,8 @@ const UploadForm: React.FC = () => {
 
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
     const languageInfo: LanguageInfo = useSelector(selectLanguage);
+
+    const formRef = useRef<any>(null);
 
     const [file, setFile] = useState<File | null>(null);
     const [filePreview, setFilePreview] = useState('');
@@ -184,7 +186,10 @@ const UploadForm: React.FC = () => {
     };
 
     return (
-        <form className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center">
+        <form
+            className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center"
+            ref={formRef}
+        >
             {file ? (
                 <FileInfo
                     source={filePreview}
@@ -196,6 +201,12 @@ const UploadForm: React.FC = () => {
                     tags={tags}
                     setTags={setTags}
                     addTag={addTag}
+                    selectFile={selectFile}
+                    formWidth={
+                        formRef.current
+                            ? formRef.current.offsetWidth
+                            : undefined
+                    }
                 />
             ) : (
                 <DropBox selectFile={selectFile} />
