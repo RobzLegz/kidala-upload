@@ -1,3 +1,4 @@
+import shutil
 from fastapi import APIRouter, UploadFile, Form, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -21,11 +22,11 @@ class Page(BaseModel):
     page: int
     limit: int
 
-class UploadResponse(BaseModel):
-    msg: str
-    url: str
-    file: File
-    token: str | None = None
+# class UploadResponse(BaseModel):
+#     msg: str
+#     url: str
+#     file: File
+#     token: str | None = None
 
 router = APIRouter(
     prefix="/api/v1/files",
@@ -85,26 +86,35 @@ def get_file(file_hash: str):
     else:
         raise HTTPException(404)
 
-@router.post('/upload', response_model=UploadResponse)
-def upload_file(file: UploadFile, tag: str | None= Form(), description: str = Form(), private: str = Form(), user: User = Depends(get_potential_user)):
+@router.post('/upload') # response_model=UploadResponse
+async def upload_file(file: UploadFile, tag: str | None = Form(None), description: str | None = Form(None), private: str | None = Form(None), user: User = Depends(get_potential_user)):
     md5object = hashlib.md5()
-    md5object.update(file.read())
+    md5object.update(file.file.read())
     md5string = md5object.hexdigest()
 
     query = db.files.find_one({'hash': md5string})
 
     if query != None:
-        return UploadResponse(
-            msg="file already exists",
-            url=f'{SERVER_URL}/uploads/{query["hash"]}/{query["name"]}',
-            file=File(**query)
-            )
+        # return UploadResponse(
+        #     msg="file already exists",
+        #     url=f'{SERVER_URL}/uploads/{md5string}/{secure_filename(file.filename)}',
+        #     file=File(**query)
+        #     )
+        return {
+            'msg':"file already exists",
+            'url':f'{SERVER_URL}/files/{md5string}/{secure_filename(file.filename)}',
+            'file':File(**query)
+        }
 
     os.makedirs(UPLOAD_FOLDER / md5string, exist_ok=True)
-    file.seek(0)
-    file.save(UPLOAD_FOLDER / md5string / secure_filename(file.filename))
 
-    if tag == '':
+    await file.seek(0)
+    with open((UPLOAD_FOLDER / md5string / secure_filename(file.filename)), 'wb') as file_object:
+        shutil.copyfileobj(file.file, file_object)
+    await file.close()
+
+
+    if tag == '' or tag == None:
         tag_id = None
     else:
         tag.lower()
@@ -114,7 +124,7 @@ def upload_file(file: UploadFile, tag: str | None= Form(), description: str = Fo
         if tagquery == None:
             tagobject = Tag(tag_text=tag)
 
-            created_tag = db.tags.insert_one(jsonable_encoder(tagobject))
+            created_tag = db.tags.insert_one(tagobject.dict(exclude={'id'}))
 
             tag_id = created_tag.inserted_id
         else:
@@ -127,7 +137,7 @@ def upload_file(file: UploadFile, tag: str | None= Form(), description: str = Fo
         private_bool = False
 
     if user.id == None:
-        inserted_user = db.users.insert_one(jsonable_encoder(user))
+        inserted_user = db.users.insert_one(user.dict(exclude={'id'}))
         access_token = create_access_token(data={'user_id': str(inserted_user.inserted_id)}, admin=False)
 
         user.id = inserted_user.inserted_id
@@ -135,19 +145,30 @@ def upload_file(file: UploadFile, tag: str | None= Form(), description: str = Fo
         access_token = None
 
     upload_file = File(
-            name=secure_filename(file.filename),
-            hash=md5string,
-            size=Path(UPLOAD_FOLDER / md5string / secure_filename(file.filename)).stat().st_size,
-            author=user.id,
-            tag=tag_id,
-            description=description,
-            private=private_bool
-            )
-
-    return UploadResponse(
-        msg="file uploaded",
-        url=f'{SERVER_URL}/uploads/{query["hash"]}/{query["name"]}',
-        file=upload_file,
-        token=access_token
+        name=secure_filename(file.filename),
+        hash=md5string,
+        size=Path(UPLOAD_FOLDER / md5string / secure_filename(file.filename)).stat().st_size,
+        author=user.id,
+        tag=tag_id,
+        description=description,
+        private=private_bool,
         )
+
+    insert_file = db.files.insert_one(upload_file.dict(exclude={'id'}))
+
+    upload_file.id = insert_file.inserted_id
+
+    # return UploadResponse(
+    #     msg="file uploaded",
+    #     url=f'{SERVER_URL}/files/{hash}/{secure_filename(file.filename)}',
+    #     file=upload_file,
+    #     token=access_token
+    #     )
+
+    return {
+        'msg':"file uploaded",
+        'url':f'{SERVER_URL}/files/{md5string}/{secure_filename(file.filename)}',
+        'file':upload_file,
+        'token':access_token
+    }
             

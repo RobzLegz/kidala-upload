@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from ..database import User, File
+from ..database import User, File, db
 from ..auth import get_current_user
 
 router = APIRouter(
@@ -15,4 +15,8 @@ async def get_own_user(current_user: User = Depends(get_current_user)):
 
 @router.get("/me/items", response_model=list[File])
 async def read_own_items(current_user: User = Depends(get_current_user)):
-    return [{"msg": "not finished"}]
+    dbcursor = db.files.find({"_id": current_user[id]})
+    returnlist = []
+    for file in dbcursor:
+        returnlist.append(File(**file))
+    return returnlist

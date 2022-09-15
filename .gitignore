@@ -50,6 +50,7 @@ yarn-error.log*
 
 #files
 /backend/files
+/kebab/files
 
 # socket
 
