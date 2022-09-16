@@ -73,6 +73,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     <GetIconFromFileType
                         extension={detectFileType(fileName)}
                         source={source}
+                        imageDimensions={imageDimensions}
                     />
                 </div>
             ) : null}
