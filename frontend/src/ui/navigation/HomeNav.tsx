@@ -1,8 +1,10 @@
 import React from 'react'
 
-function HomeNav() {
+const HomeNav = () => {
   return (
-    <nav>HomeNav</nav>
+    <nav className='w-full'>
+        
+    </nav>
   )
 }
 
