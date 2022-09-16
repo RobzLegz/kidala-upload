@@ -9,7 +9,10 @@ import { TagWrapper } from './TagWrapper';
 import Button from '../Button';
 import GetIconFromFileType from '../GetIconFromFileType';
 import { detectFileType } from '../../utils/detectFileType';
-import { NotificationInfo, selectNotification } from '../../redux/slices/notificationSlice';
+import {
+    NotificationInfo,
+    selectNotification,
+} from '../../redux/slices/notificationSlice';
 import { useSelector } from 'react-redux';
 
 export interface FileInfoProps {
@@ -126,13 +129,15 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 />
 
                 <Input
-                    className="bg-primary-800 w-full mt-2"
+                    className="bg-primary-800 w-full mt-2 tag_wrapper"
                     placeholder="Enter description"
                     textarea
                     rows={4}
                     value={description}
                     onChange={(e) =>
-                        setDescription && setDescription(e.target.value)
+                        setDescription &&
+                        e.target.value.length < 250 &&
+                        setDescription(e.target.value)
                     }
                 />
 
