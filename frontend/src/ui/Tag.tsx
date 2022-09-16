@@ -8,7 +8,9 @@ export interface TagProps {
 }
 
 export const Tag: React.FC<TagProps> = ({ tag, setTags, tags }) => {
-    const removeTag = () => {
+    const removeTag = (e: React.MouseEvent) => {
+        e.preventDefault();
+        
         if (setTags) {
             const newTags = tags.filter((t) => t !== tag);
 

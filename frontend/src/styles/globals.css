@@ -20,7 +20,7 @@
     }
 
     .page {
-        @apply h-screen w-full bg-primary-900;
+        @apply min-h-screen w-full bg-primary-900 flex flex-col items-center justify-start;
     }
 
     .link {

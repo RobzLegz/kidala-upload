@@ -65,11 +65,10 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 onChange={handleFileSelect}
             />
 
-            <div className="w-32 relative mr-2">
+            <div className="w-32 relative mr-2 h-40 overflow-hidden">
                 {source ? (
                     <Image
                         src={source}
-                        layout="fill"
                         objectFit="cover"
                         draggable={false}
                         width={
@@ -129,12 +128,8 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     <SwitchWrapper
                         checked={isPrivate}
                         setChecked={setIsPrivate}
-                        action={isPrivate ? 'File private' : 'File public'}
-                        actionDescription={
-                            isPrivate
-                                ? "Other users won't be able to see your file"
-                                : 'Other users will be able to see your file'
-                        }
+                        action="File private"
+                        actionDescription="Other users won't be able to see your file"
                         className="mt-2"
                         icon={
                             isPrivate ? (
