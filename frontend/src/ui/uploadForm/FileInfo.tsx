@@ -7,13 +7,12 @@ import { Input } from '../Input';
 import { SwitchWrapper } from '../SwitchWrapper';
 import { TagWrapper } from './TagWrapper';
 import Button from '../Button';
-import { EyeIcon, LockClosedIcon } from '@heroicons/react/solid';
 
 export interface FileInfoProps {
     source?: string;
-    file?: File;
     fileName?: string;
     tag?: string;
+    description?: string;
     tags: string[];
     isPrivate?: boolean;
     addTag?: () => void;
@@ -29,11 +28,11 @@ export interface FileInfoProps {
         width: number;
         height: number;
     };
+    setDescription?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FileInfo: React.FC<FileInfoProps> = ({
     source,
-    file,
     fileName,
     tag,
     setTag,
@@ -46,6 +45,8 @@ const FileInfo: React.FC<FileInfoProps> = ({
     selectFile,
     handleUpload,
     imageDimensions,
+    description = '',
+    setDescription,
 }) => {
     const [tagOpened, setTagOpened] = useState(false);
 
@@ -129,6 +130,10 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     placeholder="Enter description"
                     textarea
                     rows={4}
+                    value={description}
+                    onChange={(e) =>
+                        setDescription && setDescription(e.target.value)
+                    }
                 />
 
                 {typeof isPrivate === 'boolean' && (

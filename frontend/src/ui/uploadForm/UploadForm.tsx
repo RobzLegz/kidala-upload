@@ -225,6 +225,8 @@ const UploadForm: React.FC = () => {
                     }
                     handleUpload={handleUpload}
                     imageDimensions={imageDimensions}
+                    description={description}
+                    setDescription={setDescription}
                 />
             ) : (
                 <DropBox selectFile={selectFile} />
