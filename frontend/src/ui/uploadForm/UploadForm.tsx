@@ -38,8 +38,6 @@ const UploadForm: React.FC = () => {
 
     useEffect(() => {
         if (filePreview) {
-            console.log(filePreview);
-
             const img = new Image();
             img.src = filePreview;
             img.onload = () => {
@@ -90,6 +88,8 @@ const UploadForm: React.FC = () => {
             setTag('');
             setAddingTag(false);
             setImageDimensions({ width: 0, height: 0 });
+            setTags([]);
+            setDescription('');
 
             event.preventDefault();
         };
@@ -150,6 +150,8 @@ const UploadForm: React.FC = () => {
         setTag('');
         setAddingTag(false);
         setImageDimensions({ width: 0, height: 0 });
+        setDescription('');
+        setTags([]);
     };
 
     const selectFile = (files: FileList) => {
@@ -184,6 +186,8 @@ const UploadForm: React.FC = () => {
         setHash('');
         setTag('');
         setAddingTag(false);
+        setDescription('');
+        setTags([]);
     };
 
     const addTag = (e?: React.MouseEvent) => {
@@ -197,7 +201,7 @@ const UploadForm: React.FC = () => {
 
     return (
         <form
-            className={`w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center ${hash ? "bg-primary-800 p-2" : ""}`}
+            className={`w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center`}
             ref={formRef}
         >
             {file ? (
@@ -222,16 +226,15 @@ const UploadForm: React.FC = () => {
                     description={description}
                     setDescription={setDescription}
                 />
-            ) : (
-                <DropBox selectFile={selectFile} />
-            )}
-
-            {hash && (
+            ) : hash ? (
                 <UploadResponse
                     hash={hash}
+                    setHash={setHash}
                     savedToClipboard={savedToClipboard}
                     setSavedToClipboard={setSavedToClipboard}
                 />
+            ) : (
+                <DropBox selectFile={selectFile} />
             )}
         </form>
     );

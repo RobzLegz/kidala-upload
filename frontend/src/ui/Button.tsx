@@ -54,7 +54,7 @@ const Button: React.FC<ButtonProps> = ({
     if (isLabel && htmlFor) {
         return (
             <label
-                className={`flex outline-none cursor-pointer focus:ring-4 focus:ring-${color} ${
+                className={`flex outline-none cursor-pointer ${
                     sizeClassnames[size]
                 } ${transition ? `transition duration-200 ease-in-out` : ``} ${
                     colorClassnames[color]
@@ -75,7 +75,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <button
             disabled={disabled || loading}
-            className={`flex outline-none focus:ring-4 focus:ring-${color} ${
+            className={`flex outline-none ${
                 sizeClassnames[size]
             } ${transition ? `transition duration-200 ease-in-out` : ``} ${
                 colorClassnames[color]
