@@ -1,11 +1,9 @@
 import React from 'react';
 import { Story } from '@storybook/react';
 import { toStr } from './utils/toStr';
-import { toBoolean } from './utils/toBoolean';
 import DropDownController, {
     DropDownControllerProps,
 } from '../ui/DropDownController';
-import { toNumber } from './utils/toNumber';
 import { ChatIcon } from '@heroicons/react/solid';
 import { BASE_URL } from '../requests/routes';
 

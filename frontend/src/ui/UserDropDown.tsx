@@ -49,7 +49,7 @@ const UserDropDown: React.FC<UserDropDownProps> = ({
 
     return (
         <div
-            className={`flex flex-col items-end justify-start w-48 ${
+            className={`flex flex-col items-end justify-start w-48 relative h-10 overflow-visible ${
                 className && className
             }`}
         >
