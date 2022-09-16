@@ -13,6 +13,7 @@ import FileInfo from './FileInfo';
 import { DropBox } from './DropBox';
 import { UploadResponse } from './UploadResponse';
 import { useKeyPress } from '../../hooks/useKeyPress';
+import { formatTag } from '../../utils/formatTag';
 
 const UploadForm: React.FC = () => {
     const dispatch = useDispatch();
@@ -89,28 +90,30 @@ const UploadForm: React.FC = () => {
         const handlePasteAnywhere = (event: any) => {
             const cb_file: File = event.clipboardData.files[0];
 
-            if (cb_file.size > 1024 * 1024) {
-                return dispatch(
-                    setNotification({
-                        type: 'error',
-                        message: 'File size too large',
-                    })
-                );
+            if (cb_file) {
+                if (cb_file.size > 1024 * 1024) {
+                    return dispatch(
+                        setNotification({
+                            type: 'error',
+                            message: 'File size too large',
+                        })
+                    );
+                }
+
+                resetState();
+
+                if (detectFileType(cb_file.name) === 'image') {
+                    const preview = URL.createObjectURL(cb_file);
+
+                    setFilePreview(preview);
+                } else {
+                    setFilePreview('');
+                }
+
+                dispatch(clearNotification());
+                setFile(cb_file);
             }
-
-            resetState();
-
-            if (detectFileType(cb_file.name) === 'image') {
-                const preview = URL.createObjectURL(cb_file);
-
-                setFilePreview(preview);
-            } else {
-                setFilePreview('');
-            }
-
-            dispatch(clearNotification());
-            setFile(cb_file);
-
+            
             event.preventDefault();
         };
 
@@ -191,6 +194,8 @@ const UploadForm: React.FC = () => {
             return;
         }
 
+        resetState();
+
         if (detectFileType(selectedFile.name) === 'image') {
             const preview = URL.createObjectURL(selectedFile);
 
@@ -199,8 +204,6 @@ const UploadForm: React.FC = () => {
             setFilePreview('');
             setImageDimensions({ width: 0, height: 0 });
         }
-
-        resetState();
 
         dispatch(clearNotification());
         setFile(selectedFile);
@@ -211,7 +214,17 @@ const UploadForm: React.FC = () => {
             e.preventDefault();
         }
 
-        setTags([...tags, tag.toLowerCase()]);
+        if (tag.length > 25) {
+            dispatch(
+                setNotification({ type: 'error', message: 'Tag too long' })
+            );
+
+            return;
+        }
+
+        const formattedTag = formatTag(tag);
+
+        setTags([...tags, formattedTag]);
         setTag('');
     };
 
