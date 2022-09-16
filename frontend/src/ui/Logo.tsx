@@ -6,12 +6,12 @@ export interface LogoProps {
     divider?: number;
 }
 
-const Logo: React.FC<LogoProps> = ({ className, divider = 1.5 }) => {
+const Logo: React.FC<LogoProps> = ({ className, divider = 2.8 }) => {
     return (
         <Image
-            src="/logo.png"
-            width={421 / divider}
-            height={50 / divider}
+            src="/logo.svg"
+            width={Math.floor(351 / divider)}
+            height={Math.floor(132 / divider)}
             objectFit="cover"
             className={`${className ? className : ''}`}
         />
