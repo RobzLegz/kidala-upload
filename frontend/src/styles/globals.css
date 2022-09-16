@@ -42,6 +42,10 @@
     .playerRange {
         @apply w-full bg-transparent;
     }
+
+    .dropbox_animation {
+        @apply w-[150%] h-[150%] absolute bg-gradient-to-tr from-primary-900 z-0 to-accent -top-1/4 -left-1/4 animate-border-animate content-none rounded-lg;
+    }
 }
 
 label {

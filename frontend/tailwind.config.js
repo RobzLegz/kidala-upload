@@ -58,8 +58,14 @@ module.exports = {
                 20: '20px',
                 40: '40px',
             },
+            keyframes: {
+                border: {
+                    '100%': { transform: 'rotate(-360deg)' },
+                },
+            },
             animation: {
                 'spin-slow': 'spin 15s linear forwards infinite',
+                'border-animate': 'border 4s infinite linear'
             },
         },
     },
