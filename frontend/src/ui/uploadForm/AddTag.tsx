@@ -23,7 +23,7 @@ export const AddTag: React.FC<AddTagProps> = ({
 
         if (tag && addTag) {
             addTag();
-            
+
             return;
         }
 
@@ -56,7 +56,7 @@ export const AddTag: React.FC<AddTagProps> = ({
                     type="text"
                     name="hashtag_new"
                     id="hashtag_new"
-                    className={`w-full h-full bg-transparent outline-none text-primary-100 placeholder-primary-200 ${
+                    className={`w-full h-full bg-transparent outline-none text-primary-100 placeholder-primary-200 text-xs ${
                         !opened ? 'hidden' : 'block'
                     }`}
                     placeholder="Enter tag"

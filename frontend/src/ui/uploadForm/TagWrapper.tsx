@@ -16,13 +16,9 @@ export const TagWrapper: React.FC<TagWrapperProps> = ({
         return null;
     }
 
-    const maxW = formWidth ? `max-w-[${formWidth - 170}px]` : 'max-w-[400px]';
-
-    console.log(maxW);
-
     return (
         <div
-            className={`w-full overflow-x-scroll tag_wrapper flex items-center justify-start px-4 py-2 ${maxW}`}
+            className={`overflow-x-auto tag_wrapper flex items-center justify-start px-4 py-2 w-full max-w-[430px]`}
         >
             {tags.map((tag, i) => (
                 <Tag tag={tag} tags={tags} setTags={setTags} key={i} />

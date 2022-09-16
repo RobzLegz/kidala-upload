@@ -35,7 +35,6 @@ const UploadForm: React.FC = () => {
         width: 0,
         height: 0,
     });
-    console.log("asdasdsa")
 
     useEffect(() => {
         if (filePreview) {

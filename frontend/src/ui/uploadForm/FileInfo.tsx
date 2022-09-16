@@ -89,7 +89,11 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 ) : null}
             </div>
 
-            <div className="flex flex-col flex-1">
+            <div
+                className={`flex flex-col flex-1 ${
+                    formWidth ? `max-w-[430px]` : ''
+                }`}
+            >
                 {fileName && (
                     <div className="flex items-center">
                         <strong className="text-white mr-4">{fileName}</strong>
