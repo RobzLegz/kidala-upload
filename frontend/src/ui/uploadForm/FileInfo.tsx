@@ -85,12 +85,11 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 {fileName && (
                     <div className="flex items-center">
                         {detectFileType(fileName) !== 'image' ? (
-                            <div className="w-6 relative mr-1 overflow-hidden">
-                                <GetIconFromFileType
-                                    extension={detectFileType(fileName)}
-                                    source={source}
-                                />
-                            </div>
+                            <GetIconFromFileType
+                                extension={detectFileType(fileName)}
+                                source={source}
+                                className="w-6 mr-1"
+                            />
                         ) : null}
 
                         <div className="flex items-center mr-2">

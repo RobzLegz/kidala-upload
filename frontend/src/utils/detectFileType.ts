@@ -1,8 +1,14 @@
-export interface FileType {
-    file: 'image' | 'audio' | 'video' | 'html' | 'css' | 'scss' | null;
-}
+export type FileType =
+    | 'image'
+    | 'audio'
+    | 'video'
+    | 'html'
+    | 'css'
+    | 'scss'
+    | 'js'
+    | null;
 
-export const detectFileType: (name: string | undefined) => FileType['file'] = (
+export const detectFileType: (name: string | undefined) => FileType = (
     name: string | undefined
 ) => {
     if (!name) {
@@ -29,6 +35,8 @@ export const detectFileType: (name: string | undefined) => FileType['file'] = (
         return 'css';
     } else if (name.includes('.scss')) {
         return 'scss';
+    } else if (name.includes('.js')) {
+        return 'js';
     }
 
     return null;

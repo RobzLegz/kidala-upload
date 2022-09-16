@@ -57,6 +57,46 @@ export const Mp3: Story<FileInfoProps> = ({ ...props }) => {
     );
 };
 
+export const Css: Story<FileInfoProps> = ({ ...props }) => {
+    return (
+        <FileInfo
+            fileName={props.fileName || 'styles.css'}
+            isPrivate={props.isPrivate || true}
+            {...props}
+        />
+    );
+};
+
+export const Scss: Story<FileInfoProps> = ({ ...props }) => {
+    return (
+        <FileInfo
+            fileName={props.fileName || 'styles.scss'}
+            isPrivate={props.isPrivate || true}
+            {...props}
+        />
+    );
+};
+
+export const Html: Story<FileInfoProps> = ({ ...props }) => {
+    return (
+        <FileInfo
+            fileName={props.fileName || 'index.html'}
+            isPrivate={props.isPrivate || true}
+            {...props}
+        />
+    );
+};
+
+export const Js: Story<FileInfoProps> = ({ ...props }) => {
+    return (
+        <FileInfo
+            fileName={props.fileName || 'index.js'}
+            isPrivate={props.isPrivate || true}
+            {...props}
+        />
+    );
+};
+
 Main.argTypes = {
     source: toStr(),
     fileName: toStr(),

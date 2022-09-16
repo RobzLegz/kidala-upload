@@ -5,7 +5,7 @@ import { ImageDimensions } from '../types/ImageDimensions';
 import { FileType } from '../utils/detectFileType';
 
 export interface GetIconFromFileTypeProps {
-    extension?: FileType['file'] | null;
+    extension?: FileType | null;
     className?: string;
     source?: string;
     imageDimensions?: ImageDimensions;
@@ -63,6 +63,70 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         className && className
                     }`}
                 />
+            );
+        case 'css':
+            return (
+                <div
+                    className={`flex items-center justify-center ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/css-3.png"
+                        width={20}
+                        height={20}
+                        objectFit="contain"
+                        draggable={false}
+                    />
+                </div>
+            );
+        case 'html':
+            return (
+                <div
+                    className={`flex items-center justify-center ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/html-5.png"
+                        width={20}
+                        height={20}
+                        objectFit="contain"
+                        draggable={false}
+                    />
+                </div>
+            );
+        case 'js':
+            return (
+                <div
+                    className={`flex items-center justify-center ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/javascript.png"
+                        width={20}
+                        height={20}
+                        objectFit="contain"
+                        draggable={false}
+                    />
+                </div>
+            );
+        case 'scss':
+            return (
+                <div
+                    className={`flex items-center justify-center ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/sass.png"
+                        width={20}
+                        height={20}
+                        objectFit="contain"
+                        draggable={false}
+                    />
+                </div>
             );
     }
 
