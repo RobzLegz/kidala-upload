@@ -134,10 +134,9 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     textarea
                     rows={4}
                     value={description}
+                    maxLength={250}
                     onChange={(e) =>
-                        setDescription &&
-                        e.target.value.length < 250 &&
-                        setDescription(e.target.value)
+                        setDescription && setDescription(e.target.value)
                     }
                 />
 
