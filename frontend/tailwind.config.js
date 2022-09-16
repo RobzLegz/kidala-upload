@@ -21,6 +21,10 @@ module.exports = {
                 '7xl': '5rem',
             },
             colors: {
+                notification: {
+                    DEFAULT: "#FD4D4D",
+                    red: "#FD4D4D"
+                },
                 primary: {
                     100: '#DEE3EA',
                     200: '#B2BDCD',
