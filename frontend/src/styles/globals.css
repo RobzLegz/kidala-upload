@@ -85,6 +85,7 @@ input[type='range']::-webkit-slider-runnable-track {
 
 .tag_wrapper::-webkit-scrollbar {
     height: 7px;
+    width: 6px;
 }
 
 .tag_wrapper::-webkit-scrollbar-track {
