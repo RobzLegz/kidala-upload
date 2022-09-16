@@ -12,9 +12,11 @@ import { detectFileType } from '../../utils/detectFileType';
 import FileInfo from './FileInfo';
 import { DropBox } from './DropBox';
 import { UploadResponse } from './UploadResponse';
+import { useKeyPress } from '../../hooks/useKeyPress';
 
 const UploadForm: React.FC = () => {
     const dispatch = useDispatch();
+    const escPressed = useKeyPress('Escape');
 
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
     const languageInfo: LanguageInfo = useSelector(selectLanguage);
@@ -35,6 +37,29 @@ const UploadForm: React.FC = () => {
         width: 0,
         height: 0,
     });
+
+    const resetState = () => {
+        setImageDimensions({
+            width: 0,
+            height: 0,
+        });
+        setDescription('');
+        setIsPrivate(false);
+        setLoading(false);
+        setSavedToClipboard(false);
+        setAddingTag(false);
+        setTags([]);
+        setTag('');
+        setHash('');
+        setFilePreview('');
+        setFile(null);
+    };
+
+    useEffect(() => {
+        if (escPressed) {
+            resetState();
+        }
+    }, [escPressed]);
 
     useEffect(() => {
         if (filePreview) {
@@ -73,6 +98,8 @@ const UploadForm: React.FC = () => {
                 );
             }
 
+            resetState();
+
             if (detectFileType(cb_file.name) === 'image') {
                 const preview = URL.createObjectURL(cb_file);
 
@@ -83,13 +110,6 @@ const UploadForm: React.FC = () => {
 
             dispatch(clearNotification());
             setFile(cb_file);
-            setSavedToClipboard(false);
-            setHash('');
-            setTag('');
-            setAddingTag(false);
-            setImageDimensions({ width: 0, height: 0 });
-            setTags([]);
-            setDescription('');
 
             event.preventDefault();
         };

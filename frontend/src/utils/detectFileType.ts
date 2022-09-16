@@ -22,6 +22,7 @@ export const detectFileType: (name: string | undefined) => FileType = (
         name.includes('.jpeg') ||
         name.includes('.svg') ||
         name.includes('.jfif') ||
+        name.includes('.ico') ||
         name.includes('.webp')
     ) {
         return 'image';
