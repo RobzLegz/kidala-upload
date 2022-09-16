@@ -1,4 +1,8 @@
-export const getFileExtension = (fileName: string) => {
+export const getFileExtension = (fileName: string | undefined) => {
+    if (!fileName) {
+        return '';
+    }
+
     const splitName = fileName.split('.');
     const extension = splitName[splitName.length - 1];
 

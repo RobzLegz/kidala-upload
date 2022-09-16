@@ -7,6 +7,8 @@ import { Input } from '../Input';
 import { SwitchWrapper } from '../SwitchWrapper';
 import { TagWrapper } from './TagWrapper';
 import Button from '../Button';
+import GetIconFromFileType from '../GetIconFromFileType';
+import { detectFileType } from '../../utils/detectFileType';
 
 export interface FileInfoProps {
     source?: string;
@@ -66,29 +68,14 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 onChange={handleFileSelect}
             />
 
-            <div className="w-32 relative mr-2 h-40 overflow-hidden">
-                {source ? (
-                    <Image
-                        src={source}
-                        objectFit="cover"
-                        draggable={false}
-                        width={
-                            imageDimensions
-                                ? imageDimensions.width
-                                    ? imageDimensions.width
-                                    : 128
-                                : 128
-                        }
-                        height={
-                            imageDimensions
-                                ? imageDimensions.height
-                                    ? imageDimensions.height
-                                    : 164
-                                : 164
-                        }
+            {detectFileType(fileName) === 'image' ? (
+                <div className="w-32 relative mr-2 h-40 overflow-hidden">
+                    <GetIconFromFileType
+                        extension={detectFileType(fileName)}
+                        source={source}
                     />
-                ) : null}
-            </div>
+                </div>
+            ) : null}
 
             <div
                 className={`flex flex-col flex-1 ${
@@ -97,6 +84,15 @@ const FileInfo: React.FC<FileInfoProps> = ({
             >
                 {fileName && (
                     <div className="flex items-center">
+                        {detectFileType(fileName) !== 'image' ? (
+                            <div className="w-6 relative mr-1 overflow-hidden">
+                                <GetIconFromFileType
+                                    extension={detectFileType(fileName)}
+                                    source={source}
+                                />
+                            </div>
+                        ) : null}
+
                         <div className="flex items-center mr-2">
                             <strong className="text-white mr-4">
                                 {fileName}

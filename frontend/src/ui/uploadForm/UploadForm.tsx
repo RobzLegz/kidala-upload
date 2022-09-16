@@ -38,7 +38,7 @@ const UploadForm: React.FC = () => {
 
     useEffect(() => {
         if (filePreview) {
-            console.log(filePreview)
+            console.log(filePreview);
 
             const img = new Image();
             img.src = filePreview;

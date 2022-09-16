@@ -7,7 +7,7 @@ const HomeNav = () => {
     const router = useRouter();
 
     return (
-        <nav className="w-full px-48 py-4 flex items-center justify-between absolute top-0 left-0">
+        <nav className="w-full px-52 h-24 flex items-center justify-between absolute top-0 left-0">
             <button onClick={() => router.push('/')}>
                 <Logo />
             </button>
