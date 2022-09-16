@@ -40,7 +40,17 @@ export const Mp4: Story<FileInfoProps> = ({ ...props }) => {
             source={
                 props.source || `${BASE_URL}/09713e1e139f390f13cc29b056cfd05f`
             }
-            fileName={props.fileName || 'Sussy.mp4'}
+            fileName={props.fileName || 'Sussy-vid.mp4'}
+            isPrivate={props.isPrivate || true}
+            {...props}
+        />
+    );
+};
+
+export const Mp3: Story<FileInfoProps> = ({ ...props }) => {
+    return (
+        <FileInfo
+            fileName={props.fileName || 'Amongus-theme-song.mp3'}
             isPrivate={props.isPrivate || true}
             {...props}
         />
