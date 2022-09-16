@@ -173,7 +173,9 @@ const AudioPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     <div className="w-2 h-2 rounded-full absolute bg-sky-800"></div>
                 </div>
             </div>
-
+            <p className="text-white text-center">
+                {file.name}
+            </p>
             {duration && playerRef ? (
                 <div className="flex items-center justify-center">
                     <p className="text-white w-10 flex items-center justify-center">

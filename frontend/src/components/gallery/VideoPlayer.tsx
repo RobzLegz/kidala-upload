@@ -185,7 +185,9 @@ const VideoPlayer: React.FC<{ file: FileInterface }> = ({ file }) => {
                     />
                 ) : null}
             </div>
-
+            <p className="text-white text-center">
+                {file.name}
+            </p>
             {duration ? (
                 <div className="flex items-center justify-center">
                     <p className="text-white w-10 flex items-center justify-center">
