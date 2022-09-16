@@ -197,16 +197,10 @@ const UploadForm: React.FC = () => {
 
     return (
         <form
-            className="w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center"
+            className={`w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center ${hash ? "bg-primary-800 p-2" : ""}`}
             ref={formRef}
         >
-            {hash ? (
-                <UploadResponse
-                    hash={hash}
-                    savedToClipboard={savedToClipboard}
-                    setSavedToClipboard={setSavedToClipboard}
-                />
-            ) : file ? (
+            {file ? (
                 <FileInfo
                     source={filePreview}
                     fileName={file.name}
@@ -230,6 +224,14 @@ const UploadForm: React.FC = () => {
                 />
             ) : (
                 <DropBox selectFile={selectFile} />
+            )}
+
+            {hash && (
+                <UploadResponse
+                    hash={hash}
+                    savedToClipboard={savedToClipboard}
+                    setSavedToClipboard={setSavedToClipboard}
+                />
             )}
         </form>
     );

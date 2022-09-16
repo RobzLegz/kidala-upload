@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { clearNotification } from '../../redux/slices/notificationSlice';
-import SquareButton from '../SquareButton';
+import Button from '../Button';
 import SaveToClipboard from './SaveToClipboard';
 
 export interface UploadResponseProps {
@@ -27,18 +27,20 @@ export const UploadResponse: React.FC<UploadResponseProps> = ({
     };
 
     return (
-        <div className="w-full flex items-center justify-center flex-col">
+        <div className="w-full flex items-center justify-center flex-col mt-4">
             <p className="text-primary-200">File uploaded successfully 🚀</p>
 
-            <SquareButton className="w-48 h-8 mt-4" onClick={openUrl}>
-                Open
-            </SquareButton>
+            <div className="flex w-full justify-end items-center mt-2">
+                <Button className="w-1/3 h-8 mr-2" onClick={openUrl} color="secondary">
+                    Open
+                </Button>
 
-            <SaveToClipboard
-                savedToClipboard={savedToClipboard}
-                hash={hash}
-                setSavedToClipboard={setSavedToClipboard}
-            />
+                <SaveToClipboard
+                    savedToClipboard={savedToClipboard}
+                    hash={hash}
+                    setSavedToClipboard={setSavedToClipboard}
+                />
+            </div>
         </div>
     );
 };
