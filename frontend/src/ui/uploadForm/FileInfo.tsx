@@ -96,20 +96,23 @@ const FileInfo: React.FC<FileInfoProps> = ({
             >
                 {fileName && (
                     <div className="flex items-center">
-                        <strong className="text-white mr-4">{fileName}</strong>
+                        <div className="flex items-center mr-2">
+                            <strong className="text-white mr-4">
+                                {fileName}
+                            </strong>
 
-                        <BubbleText live>
-                            <span className="text-white text-sm font-normal">
-                                {getFileExtension(fileName)}
-                            </span>
-                        </BubbleText>
+                            <BubbleText live>
+                                <span className="text-white text-sm font-normal">
+                                    {getFileExtension(fileName)}
+                                </span>
+                            </BubbleText>
+                        </div>
 
                         <AddTag
                             tag={tag}
                             setTag={setTag}
                             opened={tagOpened}
                             setOpened={setTagOpened}
-                            className="ml-2"
                             addTag={addTag}
                         />
                     </div>
@@ -135,13 +138,6 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         action="File private"
                         actionDescription="Other users won't be able to see your file"
                         className="mt-2"
-                        icon={
-                            isPrivate ? (
-                                <LockClosedIcon className="text-primary-300 h-4" />
-                            ) : (
-                                <EyeIcon className="text-white h-4" />
-                            )
-                        }
                     />
                 )}
 
