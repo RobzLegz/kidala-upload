@@ -60,7 +60,7 @@ export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
                     </strong>
 
                     <small className="text-primary-200">
-                        and prepare for takeoff
+                        or click to select
                     </small>
                 </div>
             </div>
