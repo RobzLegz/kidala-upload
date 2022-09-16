@@ -113,7 +113,7 @@ const UploadForm: React.FC = () => {
                 dispatch(clearNotification());
                 setFile(cb_file);
             }
-            
+
             event.preventDefault();
         };
 
@@ -216,7 +216,10 @@ const UploadForm: React.FC = () => {
 
         if (tag.length > 25) {
             dispatch(
-                setNotification({ type: 'error', message: 'Tag too long' })
+                setNotification({
+                    type: 'error',
+                    message: "Tags can't be that long!",
+                })
             );
 
             return;

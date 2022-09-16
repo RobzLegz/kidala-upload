@@ -1,5 +1,12 @@
 import { HashtagIcon } from '@heroicons/react/solid';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    clearNotification,
+    NotificationInfo,
+    selectNotification,
+    setNotification,
+} from '../../redux/slices/notificationSlice';
 
 export interface AddTagProps {
     tag?: string;
@@ -18,11 +25,27 @@ export const AddTag: React.FC<AddTagProps> = ({
     className,
     addTag,
 }) => {
+    const dispatch = useDispatch();
+
+    const notificationInfo: NotificationInfo = useSelector(selectNotification);
+
     const handleOpen = (e: React.MouseEvent) => {
         e.preventDefault();
 
         if (tag && addTag) {
+            if (tag.length > 25) {
+                dispatch(
+                    setNotification({
+                        type: 'error',
+                        message: "Tags can't be that long!",
+                    })
+                );
+
+                return;
+            }
+
             addTag();
+            dispatch(clearNotification());
 
             return;
         }
@@ -32,7 +55,7 @@ export const AddTag: React.FC<AddTagProps> = ({
 
     return (
         <div
-            className={`h-6 transition-all duration-300 rounded-full flex items-center justify-center ${
+            className={`h-6 transition-all duration-300 rounded-full flex items-center justify-center relative ${
                 opened
                     ? 'w-48 bg-primary-800 border-2 border-primary-200'
                     : 'w-6 bg-accent'
@@ -77,6 +100,19 @@ export const AddTag: React.FC<AddTagProps> = ({
                     +
                 </button>
             </div>
+
+            {notificationInfo.message === "Tags can't be that long!" ? (
+                <div
+                    className="flex absolute -bottom-7 left-0 items-center justify-start bg-notification px-2 py-0.5 rounded-full"
+                    onMouseOver={() =>
+                        setTimeout(() => dispatch(clearNotification()), 500)
+                    }
+                >
+                    <small className="text-white text-xs">
+                        Tags can't be that long
+                    </small>
+                </div>
+            ) : null}
         </div>
     );
 };

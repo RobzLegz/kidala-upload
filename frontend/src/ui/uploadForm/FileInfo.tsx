@@ -9,6 +9,8 @@ import { TagWrapper } from './TagWrapper';
 import Button from '../Button';
 import GetIconFromFileType from '../GetIconFromFileType';
 import { detectFileType } from '../../utils/detectFileType';
+import { NotificationInfo, selectNotification } from '../../redux/slices/notificationSlice';
+import { useSelector } from 'react-redux';
 
 export interface FileInfoProps {
     source?: string;
@@ -50,6 +52,8 @@ const FileInfo: React.FC<FileInfoProps> = ({
     description = '',
     setDescription,
 }) => {
+    const notificationInfo: NotificationInfo = useSelector(selectNotification);
+
     const [tagOpened, setTagOpened] = useState(false);
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
