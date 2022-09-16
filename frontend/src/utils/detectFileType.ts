@@ -6,6 +6,8 @@ export type FileType =
     | 'css'
     | 'scss'
     | 'js'
+    | 'text'
+    | 'word'
     | null;
 
 export const detectFileType: (name: string | undefined) => FileType = (
@@ -38,6 +40,10 @@ export const detectFileType: (name: string | undefined) => FileType = (
         return 'scss';
     } else if (name.includes('.js')) {
         return 'js';
+    } else if (name.includes('.docx')) {
+        return 'word';
+    } else if (name.includes('.txt')) {
+        return 'text';
     }
 
     return null;

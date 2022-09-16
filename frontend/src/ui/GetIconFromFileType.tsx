@@ -1,4 +1,8 @@
-import { MusicNoteIcon, VideoCameraIcon } from '@heroicons/react/solid';
+import {
+    DocumentIcon,
+    MusicNoteIcon,
+    VideoCameraIcon,
+} from '@heroicons/react/solid';
 import Image from 'next/image';
 import React from 'react';
 import { ImageDimensions } from '../types/ImageDimensions';
@@ -48,6 +52,14 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                     }
                 />
             );
+        case 'text':
+            return (
+                <DocumentIcon
+                    className={`text-primary-100 w-full ${
+                        className && className
+                    }`}
+                />
+            );
         case 'audio':
             return (
                 <MusicNoteIcon
@@ -63,6 +75,22 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         className && className
                     }`}
                 />
+            );
+        case 'word':
+            return (
+                <div
+                    className={`flex items-center justify-center ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/word.png"
+                        width={20}
+                        height={20}
+                        objectFit="contain"
+                        draggable={false}
+                    />
+                </div>
             );
         case 'css':
             return (

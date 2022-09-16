@@ -80,7 +80,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
 
             <div
                 className={`flex flex-col flex-1 ${
-                    formWidth ? `max-w-[430px]` : ''
+                    detectFileType(fileName) === 'image' ? `max-w-[430px]` : ''
                 }`}
             >
                 {fileName && (
