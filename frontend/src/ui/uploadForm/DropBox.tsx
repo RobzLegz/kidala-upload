@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { windowSizes } from '../../constants/windowSizes';
+import useWindowSize from '../../hooks/useWindowSize';
 import {
     clearNotification,
     NotificationInfo,
@@ -12,6 +14,7 @@ export interface DropBoxProps {
 
 export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
     const dispatch = useDispatch();
+    const windowSize = useWindowSize();
 
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
 
@@ -52,7 +55,7 @@ export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
 
     return (
         <div
-            className={`relative flex items-center justify-center w-full h-36 border-4 border-dashed rounded-lg transition-colors duration-300 hover:border-primary-500 overflow-hidden ${
+            className={`relative flex items-center justify-center w-full h-24 sm:h-36 border-4 border-dashed rounded-lg transition-colors duration-300 hover:border-primary-500 overflow-hidden ${
                 dragActive ? 'border-transparent' : 'border-primary-600'
             } ${
                 notificationInfo.type === 'error'
@@ -83,6 +86,8 @@ export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
                         {notificationInfo.type === 'error' &&
                         notificationInfo.message
                             ? notificationInfo.message
+                            : Number(windowSize.width) < windowSizes.sm
+                            ? 'Select files'
                             : 'Drop your files here!'}
                     </strong>
 
@@ -90,6 +95,8 @@ export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
                         {notificationInfo.type === 'error' &&
                         notificationInfo.message === 'File size too large'
                             ? 'max file size 1mb'
+                            : Number(windowSize.width) < windowSizes.sm
+                            ? 'and prepare for takeoff'
                             : 'or click to select'}
                     </small>
                 </div>
