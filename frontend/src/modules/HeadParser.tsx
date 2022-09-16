@@ -10,7 +10,11 @@ export interface HeadParserProps {
     description: string;
 }
 
-const HeadParser: React.FC<HeadParserProps> = ({ file, title, description }) => {
+const HeadParser: React.FC<HeadParserProps> = ({
+    file,
+    title,
+    description,
+}) => {
     if (!file) {
         return (
             <Head>
