@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
+import Logo from '../Logo';
 
 const HomeNav = () => {
-  return (
-    <nav className='w-full'>
-        
-    </nav>
-  )
-}
+    return (
+        <nav className="w-full">
+            <button>
+                <Logo />
+            </button>
+        </nav>
+    );
+};
 
-export default HomeNav
+export default HomeNav;
