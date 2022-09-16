@@ -159,13 +159,13 @@ const UploadForm: React.FC = () => {
         await uploadFile(
             setHash,
             dispatch,
-            setFile,
             file,
             tag.toLowerCase(),
             description,
             isPrivate
         );
 
+        setFile(null);
         setLoading(false);
         setTag('');
         setAddingTag(false);
@@ -200,14 +200,10 @@ const UploadForm: React.FC = () => {
             setImageDimensions({ width: 0, height: 0 });
         }
 
+        resetState();
+
         dispatch(clearNotification());
         setFile(selectedFile);
-        setSavedToClipboard(false);
-        setHash('');
-        setTag('');
-        setAddingTag(false);
-        setDescription('');
-        setTags([]);
     };
 
     const addTag = (e?: React.MouseEvent) => {

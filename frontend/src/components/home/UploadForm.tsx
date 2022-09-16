@@ -99,7 +99,6 @@ function UploadForm() {
         await uploadFile(
             setHash,
             dispatch,
-            setFile,
             file,
             tag.toLowerCase(),
             description,
