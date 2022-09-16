@@ -18,7 +18,7 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({
 }) => {
     const router = useRouter();
 
-    const [showLanguages, setShowLanguages] = useState(false);
+    const [showLanguages, setShowLanguages] = useState(true);
 
     const pushTo = () => {
         if (text === 'Report a bug') {
