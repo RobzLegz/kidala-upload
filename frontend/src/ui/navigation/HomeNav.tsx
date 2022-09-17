@@ -21,7 +21,13 @@ const HomeNav = () => {
     if (windowSize.width && windowSize.width < windowSizes.sm) {
         return (
             <nav className="w-full h-16 px-4 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
-                <UserDropDown icon={!userInfo.loggedIn && <MenuAlt2Icon className="text-white h-6" />}/>
+                <UserDropDown
+                    icon={
+                        !userInfo.loggedIn && (
+                            <MenuAlt2Icon className="text-white h-6" />
+                        )
+                    }
+                />
 
                 <div className=""></div>
 
@@ -40,18 +46,21 @@ const HomeNav = () => {
                         size="small"
                         color="secondary"
                         onClick={() => router.push('/dropbox')}
+                        icon={<ArchiveIcon className="text-white h-6" />}
                     >
-                        <ArchiveIcon className="text-white h-6" />
+                        Dropbox
                     </Button>
 
-                    <Button
-                        className="bg-transparent z-10 ml-1"
-                        size="small"
-                        color="secondary"
-                        onClick={() => router.push('/login')}
-                    >
-                        Login
-                    </Button>
+                    {!userInfo.loggedIn && (
+                        <Button
+                            className="bg-transparent z-10 ml-1"
+                            size="small"
+                            color="secondary"
+                            onClick={() => router.push('/login')}
+                        >
+                            Login
+                        </Button>
+                    )}
                 </div>
             </nav>
         );
