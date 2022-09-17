@@ -21,7 +21,7 @@ export const DropBox: React.FC<DropBoxProps> = ({ selectFile }) => {
     const [dragActive, setDragActive] = useState(false);
 
     useEffect(() => {
-        if (notificationInfo.type) {
+        if (notificationInfo.type && notificationInfo.type !== "tag_err") {
             setTimeout(() => {
                 dispatch(clearNotification());
             }, 6000);

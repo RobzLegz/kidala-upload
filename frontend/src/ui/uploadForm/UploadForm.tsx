@@ -146,8 +146,8 @@ const UploadForm: React.FC = () => {
             if (tag.length > 25) {
                 dispatch(
                     setNotification({
-                        type: 'error',
-                        message: "Tags can't be that long!",
+                        type: 'tag_err',
+                        message: "Tags can't be that long",
                     })
                 );
 
@@ -214,11 +214,33 @@ const UploadForm: React.FC = () => {
             e.preventDefault();
         }
 
+        if (tags.some((t) => t === tag)) {
+            dispatch(
+                setNotification({
+                    type: 'tag_err',
+                    message: 'This tag has been selected',
+                })
+            );
+
+            return;
+        }
+
+        if (tags.length >= 3) {
+            dispatch(
+                setNotification({
+                    type: 'tag_err',
+                    message: 'You can only add 3 tags',
+                })
+            );
+
+            return;
+        }
+
         if (tag.length > 25) {
             dispatch(
                 setNotification({
-                    type: 'error',
-                    message: "Tags can't be that long!",
+                    type: 'tag_err',
+                    message: "Tags can't be that long",
                 })
             );
 

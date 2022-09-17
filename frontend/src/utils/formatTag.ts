@@ -1,14 +1,14 @@
 export const formatTag = (tag: string) => {
     let newTag = tag.toLowerCase();
-    newTag = newTag.replace(';', '');
-    newTag = newTag.replace(' ', '-');
 
     const splitTag = newTag.split('');
 
     let rtrnTag = '';
 
     splitTag.forEach((char) => {
-        if (allowedChars.some((c) => c === char)) {
+        if (char === ' ') {
+            rtrnTag = `${rtrnTag}-`;
+        } else if (allowedChars.some((c) => c === char)) {
             rtrnTag = `${rtrnTag}${char}`;
         }
     });
@@ -43,7 +43,6 @@ const allowedChars = [
     'b',
     'n',
     'm',
-    '-',
     '1',
     '2',
     '3',

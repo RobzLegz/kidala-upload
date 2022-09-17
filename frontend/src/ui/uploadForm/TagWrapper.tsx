@@ -17,12 +17,16 @@ export const TagWrapper: React.FC<TagWrapperProps> = ({
     }
 
     return (
-        <div
-            className={`overflow-x-auto tag_wrapper flex items-center justify-start px-4 py-2 w-full max-w-[430px]`}
-        >
-            {tags.map((tag, i) => (
-                <Tag tag={tag} tags={tags} setTags={setTags} key={i} />
-            ))}
+        <div className="overflow-x-auto tag_wrapper">
+            <div
+                className={`flex items-center justify-start sm:px-4 py-2 min-w-full max-w-[900px] sm:max-w-[430px]`}
+            >
+                {tags.map((tag, i) => (
+                    <div className="" key={i}>
+                        <Tag tag={tag} tags={tags} setTags={setTags} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

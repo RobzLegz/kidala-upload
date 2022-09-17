@@ -33,19 +33,7 @@ export const AddTag: React.FC<AddTagProps> = ({
         e.preventDefault();
 
         if (tag && addTag) {
-            if (tag.length > 25) {
-                dispatch(
-                    setNotification({
-                        type: 'error',
-                        message: "Tags can't be that long!",
-                    })
-                );
-
-                return;
-            }
-
             addTag();
-            dispatch(clearNotification());
 
             return;
         }
@@ -88,10 +76,11 @@ export const AddTag: React.FC<AddTagProps> = ({
                     autoCorrect="off"
                     value={tag}
                     onChange={(e) => setTag && setTag(e.target.value)}
+                    onBlur={() => dispatch(clearNotification())}
                 />
 
                 <button
-                    className={`bg-accent rounded-full flex items-center justify-center font-bold ${
+                    className={`bg-accent rounded-full flex items-center justify-center font-bold text-white ${
                         opened ? 'px-2 h-full' : 'hidden'
                     }`}
                     type="button"
@@ -101,15 +90,13 @@ export const AddTag: React.FC<AddTagProps> = ({
                 </button>
             </div>
 
-            {notificationInfo.message === "Tags can't be that long!" ? (
+            {notificationInfo.type === 'tag_err' ? (
                 <div
-                    className="flex absolute -bottom-7 left-0 items-center justify-start bg-notification px-2 py-0.5 rounded-full"
-                    onMouseOver={() =>
-                        setTimeout(() => dispatch(clearNotification()), 500)
-                    }
+                    className="flex absolute -bottom-7 left-0 items-center justify-start bg-notification px-2 py-0.5 rounded-full z-10"
+                    onMouseOver={() => dispatch(clearNotification())}
                 >
                     <small className="text-white text-xs">
-                        Tags can't be that long
+                        {notificationInfo.message}
                     </small>
                 </div>
             ) : null}
