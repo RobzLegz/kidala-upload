@@ -19,7 +19,7 @@ export const TagWrapper: React.FC<TagWrapperProps> = ({
     return (
         <div className="overflow-x-auto tag_wrapper">
             <div
-                className={`flex items-center justify-start sm:px-4 py-2 min-w-full max-w-[900px] sm:max-w-[430px]`}
+                className={`flex items-center justify-start py-2 min-w-full max-w-[900px] sm:max-w-[430px]`}
             >
                 {tags.map((tag, i) => (
                     <div className="" key={i}>

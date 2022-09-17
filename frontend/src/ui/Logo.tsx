@@ -6,7 +6,7 @@ export interface LogoProps {
     divider?: number;
 }
 
-const Logo: React.FC<LogoProps> = ({ className, divider = 2.8 }) => {
+const Logo: React.FC<LogoProps> = ({ className, divider = 3.6 }) => {
     return (
         <Image
             src="/logo.svg"

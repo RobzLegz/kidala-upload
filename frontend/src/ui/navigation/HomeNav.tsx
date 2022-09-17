@@ -10,6 +10,7 @@ import React from 'react';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import Button from '../Button';
+import LanguageSelector from '../LanguageSelector';
 import Logo from '../Logo';
 import UserDropDown from '../UserDropDown';
 
@@ -57,7 +58,7 @@ const HomeNav = () => {
     }
 
     return (
-        <nav className="w-full pl-28 lg:pl-52 h-20 pr-12 lg:pr-[135px] flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
+        <nav className="w-full px-12 h-16 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
             <button onClick={() => router.push('/')}>
                 <Logo />
             </button>
@@ -72,28 +73,27 @@ const HomeNav = () => {
                 </Link>
             </div> */}
 
-            <UserDropDown />
+            {/* <UserDropDown /> */}
 
             <div className="flex items-center justify-center relative">
+                <Button
+                    className="bg-transparent z-10 ml-1"
+                    size="small"
+                    color="secondary"
+                    onClick={() => router.push('/dropbox')}
+                    icon={<ArchiveIcon className="text-white h-6" />}
+                >
+                    Dropbox
+                </Button>
+
                 <Button
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
                     onClick={() => router.push('/gallery')}
                 >
-                    <p className="text-primary-100">Gallery</p>
+                    Gallery
                 </Button>
-
-                <Button
-                    className="bg-transparent z-10 ml-1"
-                    size="small"
-                    color="secondary"
-                    onClick={() => router.push('/dropbox')}
-                >
-                    <ArchiveIcon className="text-white h-6" />
-                </Button>
-
-                <div className="w-16"></div>
 
                 <Button
                     className="bg-transparent z-10"
@@ -101,8 +101,10 @@ const HomeNav = () => {
                     color="secondary"
                     onClick={() => router.push('/login')}
                 >
-                    <p className="text-primary-100">Login</p>
+                    Login
                 </Button>
+
+                <LanguageSelector />
             </div>
         </nav>
     );

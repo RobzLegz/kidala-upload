@@ -89,7 +89,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 className={`flex flex-col flex-1 ${
                     detectFileType(fileName) === 'image'
                         ? `max-w-full sm:max-w-[430px]`
-                        : ''
+                        : 'max-w-full'
                 }`}
             >
                 {fileName && (
@@ -112,15 +112,10 @@ const FileInfo: React.FC<FileInfoProps> = ({
                             ) : null}
 
                             <div className="flex items-center mr-2 justify-start w-full sm:w-auto pl-1 sm:pl-0">
-                                <strong className="text-white mr-4">
+                                <strong className="text-white mr-4 truncate  sm:w-40">
                                     {fileName}
+                                    {/* asdasdasgdfvasgydcvyas jdhfgascvdghjs adhgvcas dvcsagydcv */}
                                 </strong>
-
-                                <BubbleText live>
-                                    <span className="text-white text-sm font-normal">
-                                        {getFileExtension(fileName)}
-                                    </span>
-                                </BubbleText>
                             </div>
 
                             <div className="flex w-full items-start sm:hidden mt-1">
@@ -131,6 +126,14 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                     setOpened={setTagOpened}
                                     addTag={addTag}
                                 />
+
+                                <div className="ml-2">
+                                    <BubbleText live>
+                                        <span className="text-white text-sm font-normal">
+                                            {getFileExtension(fileName)}
+                                        </span>
+                                    </BubbleText>
+                                </div>
                             </div>
 
                             <AddTag
