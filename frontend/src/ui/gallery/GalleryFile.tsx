@@ -56,7 +56,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
 
     return (
         <div className="bg-primary-800 w-full h-full flex items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700">
-            <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] max-w-full max-h-full relative">
+            <div className="w-[180px] sm:w-[250px] md:w-[400px] h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/${props.hash}`}
                     alt={props.name}
