@@ -98,17 +98,13 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                             {totalLikes}
                         </button>
                     </div>
-
-                    <button className="flex items-center justify-center">
-                        {/* <ReplyIcon className="text-white h-7" /> */}
-                    </button>
                 </div>
 
                 <button onClick={handleSave}>
                     {saved ? (
-                        <BookmarkFullIcon className="text-notification-loading w-8" />
+                        <BookmarkFullIcon className="text-notification-loading w-7" />
                     ) : (
-                        <BookmarkIcon className="text-white w-8" />
+                        <BookmarkIcon className="text-white w-7" />
                     )}
                 </button>
             </div>
