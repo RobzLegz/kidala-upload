@@ -1,7 +1,9 @@
 import {
     BanIcon,
+    BookmarkIcon,
     ChevronRightIcon,
     CogIcon,
+    DocumentIcon,
     GlobeAltIcon,
     GlobeIcon,
     UserIcon,
@@ -19,6 +21,18 @@ export interface UserDropDownProps {
 }
 
 const dropdownOptions: DropdownOptionProps[] = [
+    {
+        icon: <DocumentIcon className="text-primary-200 h-5" />,
+        text: 'My files',
+        isLanguage: false,
+        url: '/my-files',
+    },
+    {
+        icon: <BookmarkIcon className="text-primary-200 h-5" />,
+        text: 'Saved',
+        isLanguage: false,
+        url: '/saved',
+    },
     {
         icon: <GlobeAltIcon className="text-primary-200 h-5" />,
         text: 'Language',
