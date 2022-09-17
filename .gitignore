@@ -50,6 +50,7 @@ yarn-error.log*
 
 #files
 /borsch/files
+/kebab/files
 
 # socket
 
