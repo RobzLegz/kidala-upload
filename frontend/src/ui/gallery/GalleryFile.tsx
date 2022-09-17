@@ -6,7 +6,7 @@ export interface GalleryFileProps {
 }
 
 const GalleryFile: React.FC<GalleryFileProps> = ({ info }) => {
-    return <div>GalleryFile</div>;
+    return <div>insans</div>;
 };
 
 export default GalleryFile;
