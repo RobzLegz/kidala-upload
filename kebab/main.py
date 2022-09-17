@@ -36,12 +36,16 @@ async def favicon():
 async def root():
     return {"message": "Hello World"}
 
+@app.get("/files/{filehash}/{filename}")
+async def return_file(filehash: str, filename: str):
+    return FileResponse(Path(APP_ROOT / "files" / filehash / filename))
+
 @app.get("/{filehash}")
 async def redirectFile(filehash: str):
     if (query := db.files.find_one({'hash': filehash})) == None:
         return "File not found"
     else:
-        return RedirectResponse(f"{SERVER_URL}/uploads/{query['hash']}/{query['name']}")
+        return RedirectResponse(f"{SERVER_URL}/files/{query['hash']}/{query['name']}")
 
 
 
