@@ -26,7 +26,7 @@ export const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
 
     return (
         <div
-            className={`flex items-center justify-between bg-primary-800 py-2 px-4 w-full rounded-lg cursor-pointer ${
+            className={`flex items-center justify-between bg-primary-700 py-2 px-4 w-full rounded-lg cursor-pointer transition-opacity duration-300 ${checked ? "" : "opacity-75"} ${
                 className && className
             }`}
             onClick={handleCheck}

@@ -14,6 +14,8 @@ import {
     selectNotification,
 } from '../../redux/slices/notificationSlice';
 import { useSelector } from 'react-redux';
+import useWindowSize from '../../hooks/useWindowSize';
+import { windowSizes } from '../../constants/windowSizes';
 
 export interface FileInfoProps {
     source?: string;
@@ -55,6 +57,8 @@ const FileInfo: React.FC<FileInfoProps> = ({
     description = '',
     setDescription,
 }) => {
+    const windowSize = useWindowSize();
+
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
 
     const [tagOpened, setTagOpened] = useState(false);
@@ -66,7 +70,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
     };
 
     return (
-        <div className="flex bg-primary-700 w-full p-4 mt-2 rounded-lg">
+        <div className="flex bg-primary-800 w-full p-2 sm:p-4 mt-2 rounded-lg border border-primary-700">
             <input
                 type="file"
                 name="drop_box_reselect_file"
@@ -76,7 +80,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
             />
 
             {detectFileType(fileName) === 'image' ? (
-                <div className="w-32 relative mr-2 h-40 overflow-hidden">
+                <div className="w-32 relative mr-2 h-40 overflow-hidden hidden sm:block">
                     <GetIconFromFileType
                         extension={detectFileType(fileName)}
                         source={source}
@@ -87,38 +91,61 @@ const FileInfo: React.FC<FileInfoProps> = ({
 
             <div
                 className={`flex flex-col flex-1 ${
-                    detectFileType(fileName) === 'image' ? `max-w-[430px]` : ''
+                    detectFileType(fileName) === 'image'
+                        ? `max-w-full sm:max-w-[430px]`
+                        : 'max-w-full'
                 }`}
             >
                 {fileName && (
-                    <div className="flex items-center">
-                        {detectFileType(fileName) !== 'image' ? (
-                            <GetIconFromFileType
-                                extension={detectFileType(fileName)}
-                                source={source}
-                                className="w-6 mr-1"
-                            />
-                        ) : null}
-
-                        <div className="flex items-center mr-2">
-                            <strong className="text-white mr-4">
-                                {fileName}
-                            </strong>
-
-                            <BubbleText live>
-                                <span className="text-white text-sm font-normal">
-                                    {getFileExtension(fileName)}
-                                </span>
-                            </BubbleText>
+                    <div className="flex w-full justify-start">
+                        <div className="w-14 mr-2 block sm:hidden">
+                            <div className="w-14 relative mr-2 h-14 overflow-hidden">
+                                <GetIconFromFileType
+                                    extension={detectFileType(fileName)}
+                                    source={source}
+                                    imageDimensions={imageDimensions}
+                                />
+                            </div>
                         </div>
 
-                        <AddTag
-                            tag={tag}
-                            setTag={setTag}
-                            opened={tagOpened}
-                            setOpened={setTagOpened}
-                            addTag={addTag}
-                        />
+                        <div className="flex items-center flex-col justify-start flex-1 sm:w-full overflow-hidden">
+                            {detectFileType(fileName) !== 'image' ? (
+                                <GetIconFromFileType
+                                    extension={detectFileType(fileName)}
+                                    source={source}
+                                    className="w-6 mr-1 hidden sm:flex"
+                                />
+                            ) : null}
+
+                            <div className="flex items-center justify-start w-full">
+                                <strong className="text-white text-left truncate text-sm sm:text-base flex-1">
+                                    {fileName}
+                                </strong>
+
+                                <div className="ml-2">
+                                    <BubbleText live>
+                                        <span className="text-white text-sm font-normal">
+                                            {getFileExtension(fileName)}
+                                        </span>
+                                    </BubbleText>
+                                </div>
+                            </div>
+
+                            <div className="flex w-full items-start mt-1">
+                                <AddTag
+                                    tag={tag}
+                                    setTag={setTag}
+                                    opened={
+                                        windowSize.width &&
+                                        windowSize.width > windowSizes.sm
+                                            ? tagOpened
+                                            : true
+                                    }
+                                    setOpened={setTagOpened}
+                                    addTag={addTag}
+                                />
+                            </div>
+                        </div>
                     </div>
                 )}
 
@@ -129,7 +156,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 />
 
                 <Input
-                    className="bg-primary-800 w-full mt-2 tag_wrapper"
+                    className="bg-primary-700 w-full mt-2"
                     placeholder="Enter description"
                     textarea
                     rows={4}

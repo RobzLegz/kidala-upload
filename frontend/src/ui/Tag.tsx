@@ -23,8 +23,8 @@ export const Tag: React.FC<TagProps> = ({ tag, setTags, tags }) => {
     }
 
     return (
-        <div className="relative flex items-center justify-center mr-2 bg-accent px-1 rounded-full">
-            <p className="text-white mr-1">#{tag}</p>
+        <div className="flex items-center justify-center mr-2 bg-accent px-1 rounded-full max-h-6 overflow-hidden">
+            <p className="text-white mr-1 truncate">#{tag}</p>
 
             <button
                 className="items-center justify-center flex"
