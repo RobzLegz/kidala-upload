@@ -14,6 +14,8 @@ import {
     selectNotification,
 } from '../../redux/slices/notificationSlice';
 import { useSelector } from 'react-redux';
+import useWindowSize from '../../hooks/useWindowSize';
+import { windowSizes } from '../../constants/windowSizes';
 
 export interface FileInfoProps {
     source?: string;
@@ -55,6 +57,8 @@ const FileInfo: React.FC<FileInfoProps> = ({
     description = '',
     setDescription,
 }) => {
+    const windowSize = useWindowSize();
+
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
 
     const [tagOpened, setTagOpened] = useState(false);
@@ -93,16 +97,18 @@ const FileInfo: React.FC<FileInfoProps> = ({
                 }`}
             >
                 {fileName && (
-                    <div className="flex">
-                        <div className="w-14 relative mr-2 h-14 overflow-hidden block sm:hidden">
-                            <GetIconFromFileType
-                                extension={detectFileType(fileName)}
-                                source={source}
-                                imageDimensions={imageDimensions}
-                            />
+                    <div className="flex w-full justify-start">
+                        <div className="w-14 mr-2 block sm:hidden">
+                            <div className="w-14 relative mr-2 h-14 overflow-hidden">
+                                <GetIconFromFileType
+                                    extension={detectFileType(fileName)}
+                                    source={source}
+                                    imageDimensions={imageDimensions}
+                                />
+                            </div>
                         </div>
 
-                        <div className="flex items-center flex-col justify-start sm:flex-row">
+                        <div className="flex items-center flex-col justify-start flex-1 sm:w-full overflow-hidden">
                             {detectFileType(fileName) !== 'image' ? (
                                 <GetIconFromFileType
                                     extension={detectFileType(fileName)}
@@ -111,21 +117,10 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 />
                             ) : null}
 
-                            <div className="flex items-center mr-2 justify-start w-full sm:w-auto pl-1 sm:pl-0">
-                                <strong className="text-white mr-4 truncate  sm:w-40">
+                            <div className="flex items-center justify-start w-full">
+                                <strong className="text-white text-left truncate text-sm sm:text-base flex-1">
                                     {fileName}
-                                    {/* asdasdasgdfvasgydcvyas jdhfgascvdghjs adhgvcas dvcsagydcv */}
                                 </strong>
-                            </div>
-
-                            <div className="flex w-full items-start sm:hidden mt-1">
-                                <AddTag
-                                    tag={tag}
-                                    setTag={setTag}
-                                    opened={tagOpened}
-                                    setOpened={setTagOpened}
-                                    addTag={addTag}
-                                />
 
                                 <div className="ml-2">
                                     <BubbleText live>
@@ -136,14 +131,20 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 </div>
                             </div>
 
-                            <AddTag
-                                tag={tag}
-                                setTag={setTag}
-                                opened={tagOpened}
-                                setOpened={setTagOpened}
-                                addTag={addTag}
-                                className="hidden sm:flex"
-                            />
+                            <div className="flex w-full items-start mt-1">
+                                <AddTag
+                                    tag={tag}
+                                    setTag={setTag}
+                                    opened={
+                                        windowSize.width &&
+                                        windowSize.width > windowSizes.sm
+                                            ? tagOpened
+                                            : true
+                                    }
+                                    setOpened={setTagOpened}
+                                    addTag={addTag}
+                                />
+                            </div>
                         </div>
                     </div>
                 )}
