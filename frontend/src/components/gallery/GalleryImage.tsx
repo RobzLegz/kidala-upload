@@ -1,6 +1,6 @@
 import {
     DocumentIcon,
-    MusicNoteIcon,
+    MusicalNoteIcon,
     VideoCameraIcon,
 } from '@heroicons/react/20/solid';
 import Image from 'next/image';
@@ -72,7 +72,7 @@ const GalleryImage: React.FC<{
             >
                 <div className="w-[250px] md:w-[400px] h-[200px] sm:h-[300px] lg:h-[400px] 2xl:h-[400px] max-w-full max-h-full relative flex flex-col items-center justify-center">
                     {detectFileType(file.name) === 'audio' ? (
-                        <MusicNoteIcon className="text-white h-16" />
+                        <MusicalNoteIcon className="text-white h-16" />
                     ) : detectFileType(file.name) === 'video' ? (
                         <VideoCameraIcon className="text-white h-16" />
                     ) : (

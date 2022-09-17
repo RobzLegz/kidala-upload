@@ -1,8 +1,8 @@
 import {
     DocumentIcon,
-    DownloadIcon,
+    ArrowDownTrayIcon,
     LinkIcon,
-    MailIcon,
+    EnvelopeIcon,
     PhoneIcon,
 } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
@@ -152,7 +152,7 @@ function SingleFileContainer() {
                                         href={`mailto:${file.email}`}
                                     >
                                         <div className="w-full flex flex-col items-center justify-center">
-                                            <MailIcon className="h-6 text-gray-100" />
+                                            <EnvelopeIcon className="h-6 text-gray-100" />
 
                                             <p className="text-gray-100">
                                                 {file.email}
@@ -184,7 +184,7 @@ function SingleFileContainer() {
                             className="flex w-full bg-emerald-600 items-center justify-center mt-4 h-8 sm:mx-2"
                             onClick={download}
                         >
-                            <DownloadIcon className="text-white h-4 mr-1" />
+                            <ArrowDownTrayIcon className="text-white h-4 mr-1" />
 
                             <p className="text-white">
                                 {languageInfo.text.gallery.download}

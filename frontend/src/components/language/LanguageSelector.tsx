@@ -14,9 +14,8 @@ function LanguageSelector() {
 
     const languageInfo: LanguageInfo = useSelector(selectLanguage);
 
-    const [activeLang, setActiveLang] = useState<SupportedLang | undefined>(
-        undefined
-    );
+    const [activeLang, setActiveLang] =
+        useState<SupportedLang | undefined>(undefined);
     const [langsOpen, setLangsOpen] = useState<boolean>(false);
 
     useEffect(() => {
