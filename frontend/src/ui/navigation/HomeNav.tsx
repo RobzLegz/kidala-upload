@@ -1,4 +1,4 @@
-import { ArchiveIcon } from '@heroicons/react/solid';
+import { ArchiveIcon, MenuAlt2Icon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import React from 'react';
 import LanguageSelector from '../LanguageSelector';
@@ -21,7 +21,7 @@ const HomeNav = () => {
     if (windowSize.width && windowSize.width < windowSizes.sm) {
         return (
             <nav className="w-full h-16 px-4 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
-                <UserDropDown />
+                <UserDropDown icon={!userInfo.loggedIn && <MenuAlt2Icon className="text-white h-6" />}/>
 
                 <div className=""></div>
 

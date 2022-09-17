@@ -9,6 +9,8 @@ import {
     UserIcon,
 } from '@heroicons/react/solid';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser, UserInfo } from '../redux/slices/userSlice';
 import DropDownController from './DropDownController';
 import { DropdownOptionProps } from './DropdownOption';
 import DropdownOptions from './DropdownOptions';
@@ -59,6 +61,8 @@ const UserDropDown: React.FC<UserDropDownProps> = ({
     icon,
     controllerClassName,
 }) => {
+    const userInfo: UserInfo = useSelector(selectUser);
+
     const [expanded, setExpanded] = useState(false);
 
     const handleDropdown = () => {
