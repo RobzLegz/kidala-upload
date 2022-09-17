@@ -79,7 +79,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 <div className="flex items-center">
                     <div className="flex items-center mr-4">
                         <button
-                            className="flex items-center justify-center text-notification"
+                            className="flex items-center justify-center text-notification no_select"
                             onClick={handleLike}
                         >
                             <HeartIconFull className="text-notification h-6 mr-0.5" />
@@ -90,7 +90,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                         <div className="h-7 w-[1.5px] bg-white mx-2" />
 
                         <button
-                            className="flex items-center justify-center text-white"
+                            className="flex items-center justify-center text-white no_select"
                             onClick={handleDislike}
                         >
                             <HeartIcon className="text-white h-6 mr-0.5" />
