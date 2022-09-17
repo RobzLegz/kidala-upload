@@ -14,7 +14,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
     return (
         <div
-            className="hidden sm:flex relative w-8 h-8 items-center justify-center"
+            className="hidden sm:flex relative w-8 h-8 items-center justify-center z-20"
             onMouseOver={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >

@@ -19,13 +19,13 @@ const DropDownController: React.FC<DropDownControllerProps> = ({
 }) => {
     return (
         <button
-            className={`w-10 h-10 flex items-center justify-center relative overflow-hidden ${
+            className={`w-8 h-8 flex items-center justify-center relative overflow-hidden ${
                 props.className && props.className
             }`}
             {...props}
             onClick={handleDropdown}
         >
-            <div className="w-10 h-10 flex items-center justify-center relative bg-primary-700 rounded-full overflow-hidden cursor-pointer z-10">
+            <div className="w-8 h-8 flex items-center justify-center relative bg-primary-700 rounded-md overflow-hidden cursor-pointer z-10">
                 {avatar ? (
                     <Image
                         src={avatar}
