@@ -15,7 +15,7 @@ const DropdownOptions: React.FC<DropdownOptionsProps> = ({
 }) => {
     return (
         <div
-            className={`z-20 sm:z-10 min-h-[300px] sm:min-h-[200px] flex flex-col border border-primary-700 rounded-lg items-center justify-start w-48 bottom-0 left-0 sm:bottom-auto sm:left-auto sm:mt-2 fixed sm:relative transition-all duration-500 bg-primary-800 sm:p-1.5 ${
+            className={`z-20 sm:z-10 min-h-[300px] sm:min-h-[200px] flex flex-col border border-primary-700 rounded-none sm:rounded-lg items-center justify-start w-full sm:w-48 bottom-0 left-0 sm:bottom-auto sm:left-auto sm:mt-2 fixed sm:relative transition-all duration-500 bg-primary-800 sm:p-1.5 ${
                 expanded
                     ? '-translate-y-0 sm:flex sm:translate-y-0'
                     : 'translate-y-full sm:hidden sm:translate-y-0'

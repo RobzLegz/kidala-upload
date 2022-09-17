@@ -34,7 +34,7 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({
     if (!isLanguage) {
         return (
             <button
-                className="flex h-10 sm:h-9 items-center justify-start px-4 w-full hover:bg-primary-700 rounded-lg"
+                className="flex h-10 sm:h-9 items-center justify-start px-4 w-full sm:hover:bg-primary-700 sm:rounded-lg"
                 onClick={pushTo}
             >
                 {icon}
