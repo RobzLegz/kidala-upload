@@ -1,4 +1,5 @@
 import React from 'react';
+import CheckAuth from '../hooks/CheckAuth';
 import HeadParser, { HeadParserProps } from './HeadParser';
 
 interface PageModuleProps extends HeadParserProps {
@@ -17,6 +18,8 @@ const PageModule: React.FC<PageModuleProps> = ({
             <HeadParser title={title} description={description} file={file} />
             
             {children}
+
+            <CheckAuth />
         </main>
     );
 };
