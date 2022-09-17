@@ -42,7 +42,7 @@ module.exports = {
                     'washed-out': '#F5BFBF',
                 },
                 accent: {
-                    DEFAULT: '#FD4D4D',
+                    DEFAULT: '#3A8AE9',
                     hover: '#FD6868',
                     disabled: '#F5BFBF',
                 },

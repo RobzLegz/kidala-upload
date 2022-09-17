@@ -35,7 +35,7 @@ const dropdownOptions: DropdownOptionProps[] = [
         icon: <BanIcon className="text-primary-200 h-5" />,
         text: 'Report a bug',
         isLanguage: false,
-        url: '',
+        url: 'https://github.com/RobzLegz/kidala-upload/issues/new',
     },
 ];
 
@@ -47,9 +47,13 @@ const UserDropDown: React.FC<UserDropDownProps> = ({
 }) => {
     const [expanded, setExpanded] = useState(false);
 
+    const handleDropdown = () => {
+        setExpanded(!expanded);
+    };
+
     return (
         <div
-            className={`flex flex-col items-end justify-start w-48 lg:w-52 relative h-10 overflow-visible ${
+            className={`flex flex-col items-end justify-start sm:w-48 lg:w-52 h-10 overflow-visible absolute sm:right-28 lg:right-[200px] ${
                 className && className
             }`}
         >
@@ -57,11 +61,15 @@ const UserDropDown: React.FC<UserDropDownProps> = ({
                 avatar={avatar}
                 icon={icon}
                 className={controllerClassName}
-                setExpanded={setExpanded}
                 expanded={expanded}
+                handleDropdown={handleDropdown}
             />
 
-            {expanded && <DropdownOptions items={dropdownOptions} />}
+            <DropdownOptions
+                items={dropdownOptions}
+                expanded={expanded}
+                handleDropdown={handleDropdown}
+            />
         </div>
     );
 };

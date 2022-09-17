@@ -79,7 +79,7 @@ const Button: React.FC<ButtonProps> = ({
                 sizeClassnames[size]
             } ${transition ? `transition duration-200 ease-in-out` : ``} ${
                 colorClassnames[color]
-            } font-bold flex items-center justify-center ${className}`}
+            } font-bold flex items-center justify-center cursor-pointer ${className}`}
             data-testid="button"
             {...props}
         >
