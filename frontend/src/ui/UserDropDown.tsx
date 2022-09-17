@@ -1,11 +1,10 @@
 import {
-    BanIcon,
+    BugAntIcon,
     BookmarkIcon,
     ChevronRightIcon,
     CogIcon,
     DocumentIcon,
-    GlobeAltIcon,
-    GlobeIcon,
+    LanguageIcon,
     UserIcon,
 } from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
@@ -36,7 +35,7 @@ const dropdownOptions: DropdownOptionProps[] = [
         url: '/saved',
     },
     {
-        icon: <GlobeAltIcon className="text-primary-200 h-5" />,
+        icon: <LanguageIcon className="text-primary-200 h-5" />,
         text: 'Language',
         isLanguage: true,
         url: '',
@@ -48,7 +47,7 @@ const dropdownOptions: DropdownOptionProps[] = [
         url: '/settings',
     },
     {
-        icon: <BanIcon className="text-primary-200 h-5" />,
+        icon: <BugAntIcon className="text-primary-200 h-5" />,
         text: 'Report a bug',
         isLanguage: false,
         url: 'https://github.com/RobzLegz/kidala-upload/issues/new',

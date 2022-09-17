@@ -1,6 +1,6 @@
 import {
     DocumentIcon,
-    MusicNoteIcon,
+    MusicalNoteIcon,
     VideoCameraIcon,
 } from '@heroicons/react/20/solid';
 import Image from 'next/image';
@@ -62,7 +62,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
             );
         case 'audio':
             return (
-                <MusicNoteIcon
+                <MusicalNoteIcon
                     className={`text-primary-100 w-full ${
                         className && className
                     }`}
