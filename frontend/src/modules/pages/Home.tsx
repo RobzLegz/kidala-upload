@@ -1,9 +1,10 @@
+import { NextPage } from 'next';
 import React from 'react';
 import HomeNav from '../../ui/navigation/HomeNav';
 import UploadForm from '../../ui/uploadForm/UploadForm';
 import PageModule from '../PageModule';
 
-function Home() {
+const Home: NextPage = () => {
     return (
         <PageModule
             title="Home"

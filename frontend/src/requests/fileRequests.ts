@@ -24,3 +24,7 @@ export const getAllFiles = async (dispatch: Dispatch) => {
             );
         });
 };
+
+export const getFilesV2 = async () => {
+    console.log("getting files")
+}
