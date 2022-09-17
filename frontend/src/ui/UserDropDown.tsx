@@ -67,7 +67,7 @@ const UserDropDown: React.FC<UserDropDownProps> = ({
 
     return (
         <div
-            className={`flex flex-col items-end justify-start sm:w-48 lg:w-52 h-10 overflow-visible absolute sm:right-28 lg:right-[200px] ${
+            className={`flex flex-col items-end justify-start sm:w-48 lg:w-52 h-10 overflow-visible ${
                 className && className
             }`}
         >

@@ -32,7 +32,7 @@ const HomeNav = () => {
                         color="secondary"
                         onClick={() => router.push('/gallery')}
                     >
-                        <p className="text-primary-100">Gallery</p>
+                        Gallery
                     </Button>
 
                     <Button
@@ -50,7 +50,7 @@ const HomeNav = () => {
                         color="secondary"
                         onClick={() => router.push('/login')}
                     >
-                        <p className="text-primary-100">Login</p>
+                        Login
                     </Button>
                 </div>
             </nav>
@@ -62,18 +62,6 @@ const HomeNav = () => {
             <button onClick={() => router.push('/')}>
                 <Logo />
             </button>
-
-            {/* <div className="flex items-center justify-center z-10">
-                <Link href="/gallery">
-                    <div className="flex items-center justify-center cursor-pointer">
-                        <PhotographIcon className="text-white h-6" />
-
-                        <p className="text-white ml-1">Gallery</p>
-                    </div>
-                </Link>
-            </div> */}
-
-            {/* <UserDropDown /> */}
 
             <div className="flex items-center justify-center relative">
                 <Button

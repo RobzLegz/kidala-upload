@@ -59,23 +59,7 @@ const DropdownOption: React.FC<DropdownOptionProps> = ({
         );
     }
 
-    return (
-        <div
-            className="flex h-9 items-center justify-between px-4 w-full relative cursor-pointer"
-            onMouseOver={() => setShowLanguages(true)}
-            onMouseLeave={() => setShowLanguages(false)}
-        >
-            <div className="flex items-center justify-start">
-                {icon}
-
-                <p className="text-primary-200 ml-1">{text}</p>
-            </div>
-
-            <ChevronRightIcon className="text-primary-200 h-4" />
-
-            {showLanguages && <DropdownLanguageSelector />}
-        </div>
-    );
+    return null;
 };
 
 export default DropdownOption;
