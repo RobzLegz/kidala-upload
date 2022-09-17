@@ -1,4 +1,4 @@
-import { XCircleIcon } from '@heroicons/react/solid';
+import { XCircleIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 
 export interface TagProps {

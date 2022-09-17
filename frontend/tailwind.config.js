@@ -23,7 +23,8 @@ module.exports = {
             colors: {
                 notification: {
                     DEFAULT: "#FD4D4D",
-                    red: "#FD4D4D"
+                    red: "#FD4D4D",
+                    loading: "#F2B861"
                 },
                 primary: {
                     100: '#DEE3EA',

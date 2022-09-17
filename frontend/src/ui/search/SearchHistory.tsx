@@ -1,4 +1,4 @@
-import { SearchIcon } from '@heroicons/react/solid';
+import { SearchIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 
 export interface SearchHistoryProps {

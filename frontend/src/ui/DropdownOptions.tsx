@@ -1,4 +1,4 @@
-import { ChevronLeftIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 import DropdownOption, { DropdownOptionProps } from './DropdownOption';
 

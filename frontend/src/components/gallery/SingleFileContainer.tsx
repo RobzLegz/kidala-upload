@@ -4,7 +4,7 @@ import {
     LinkIcon,
     MailIcon,
     PhoneIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

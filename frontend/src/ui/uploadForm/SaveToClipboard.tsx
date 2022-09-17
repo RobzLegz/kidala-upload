@@ -1,4 +1,4 @@
-import { LinkIcon } from '@heroicons/react/solid';
+import { LinkIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 import Button from '../Button';
 import { UploadResponseProps } from './UploadResponse';

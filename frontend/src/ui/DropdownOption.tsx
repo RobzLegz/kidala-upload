@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { windowSizes } from '../constants/windowSizes';

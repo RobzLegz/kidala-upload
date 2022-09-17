@@ -7,7 +7,7 @@ import {
     GlobeAltIcon,
     GlobeIcon,
     UserIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
+import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/20/solid';
 import { uploadFile } from '../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
 import {

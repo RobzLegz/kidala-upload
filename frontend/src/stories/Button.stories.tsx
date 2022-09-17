@@ -3,7 +3,7 @@ import { Story } from '@storybook/react';
 import Button, { ButtonProps } from '../ui/Button';
 import { toEnum } from './utils/toEnum';
 import { toBoolean } from './utils/toBoolean';
-import { SearchIcon } from '@heroicons/react/solid';
+import { SearchIcon } from '@heroicons/react/20/solid';
 
 export default {
     title: 'Button',

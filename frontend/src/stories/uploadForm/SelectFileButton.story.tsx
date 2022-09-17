@@ -2,7 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import { toEnum } from '../utils/toEnum';
 import { toBoolean } from '../utils/toBoolean';
-import { SearchIcon } from '@heroicons/react/solid';
+import { SearchIcon } from '@heroicons/react/20/solid';
 import SelectFileButton, {
     SelectFileButtonProps,
 } from '../../ui/uploadForm/SelectFileButton';

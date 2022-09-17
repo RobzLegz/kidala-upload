@@ -1,4 +1,4 @@
-import { ChevronLeftIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 import { supportedLanguages } from '../languages/text';

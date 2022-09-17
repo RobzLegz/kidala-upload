@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/solid';
+import { UserIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 

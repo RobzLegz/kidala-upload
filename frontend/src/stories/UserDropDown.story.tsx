@@ -3,7 +3,7 @@ import { Story } from '@storybook/react';
 import UserDropDown, { UserDropDownProps } from '../ui/UserDropDown';
 import { toStr } from './utils/toStr';
 import { BASE_URL } from '../requests/routes';
-import { ChatIcon } from '@heroicons/react/solid';
+import { ChatIcon } from '@heroicons/react/20/solid';
 
 export default {
     title: 'UserDropDown',

@@ -48,7 +48,8 @@
     }
 }
 
-label {
+label,
+.no_select {
     user-select: none;
     -webkit-user-select: none;
 }

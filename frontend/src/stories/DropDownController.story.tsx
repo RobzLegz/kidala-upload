@@ -4,7 +4,7 @@ import { toStr } from './utils/toStr';
 import DropDownController, {
     DropDownControllerProps,
 } from '../ui/DropDownController';
-import { ChatIcon } from '@heroicons/react/solid';
+import { ChatIcon } from '@heroicons/react/20/solid';
 import { BASE_URL } from '../requests/routes';
 
 export default {

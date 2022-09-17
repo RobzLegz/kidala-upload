@@ -2,7 +2,7 @@ import {
     DocumentIcon,
     MusicNoteIcon,
     VideoCameraIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 import { ImageDimensions } from '../types/ImageDimensions';

@@ -1,4 +1,4 @@
-import { ArchiveIcon, MenuAlt2Icon } from '@heroicons/react/solid';
+import { ArchiveBoxIcon, Bars3CenterLeftIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import React from 'react';
 import LanguageSelector from '../LanguageSelector';
@@ -24,7 +24,7 @@ const HomeNav = () => {
                 <UserDropDown
                     icon={
                         !userInfo.loggedIn && (
-                            <MenuAlt2Icon className="text-white h-6" />
+                            <Bars3CenterLeftIcon className="text-white h-6" />
                         )
                     }
                 />
@@ -46,7 +46,7 @@ const HomeNav = () => {
                         size="small"
                         color="secondary"
                         onClick={() => router.push('/new/dropbox')}
-                        icon={<ArchiveIcon className="text-white h-6" />}
+                        icon={<ArchiveBoxIcon className="text-white h-6" />}
                     >
                         Dropbox
                     </Button>
@@ -87,7 +87,7 @@ const HomeNav = () => {
                     size="small"
                     color="secondary"
                     onClick={() => router.push('/dropbox')}
-                    icon={<ArchiveIcon className="text-white h-6" />}
+                    icon={<ArchiveBoxIcon className="text-white h-6" />}
                 >
                     Dropbox
                 </Button>
