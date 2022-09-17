@@ -14,6 +14,7 @@ export interface AppInfo {
     previewIdx: number | null;
     sortOptions: SortOptions;
     audioVolume: number;
+    db_file_len: number;
 }
 
 const initialState: AppInfo = {
@@ -25,6 +26,7 @@ const initialState: AppInfo = {
         new: false,
     },
     audioVolume: 1,
+    db_file_len: 0,
 };
 
 export const appSlice = createSlice({
@@ -32,7 +34,11 @@ export const appSlice = createSlice({
     initialState,
     reducers: {
         setFiles: (state, action) => {
-            const files: FileInterface[] = action.payload;
+            const files: FileInterface[] | null = action.payload;
+
+            if (!files) {
+                return state;
+            }
 
             const sortedFiles = sortFiles(files);
 
@@ -50,7 +56,7 @@ export const appSlice = createSlice({
                 files = state.files;
             }
 
-            files = [...files].filter((f) => f._id.$oid !== action.payload);
+            files = [...files].filter((f) => f._id !== action.payload);
 
             state = {
                 ...state,
@@ -123,6 +129,61 @@ export const appSlice = createSlice({
 
             return state;
         },
+        receiveFiles: (state, action) => {
+            const files: FileInterface[] | null = action.payload;
+
+            if (!files) {
+                return state;
+            }
+
+            if (
+                !state.files ||
+                state.files.length === 0 ||
+                state.files === null
+            ) {
+                const sortedFiles = sortFiles(files);
+
+                state = {
+                    ...state,
+                    files: sortedFiles,
+                };
+
+                return state;
+            }
+
+            const siftBlogs = files.map((blog) => {
+                if (state.files?.some((b) => b._id === blog._id)) {
+                    return null;
+                }
+
+                return blog;
+            });
+
+            const okBlogs = siftBlogs.filter((bl) => bl !== null);
+
+            let newBlogs: FileInterface[] = [...state.files];
+
+            okBlogs.forEach((blog) => {
+                if (blog) {
+                    newBlogs = [...newBlogs, blog];
+                }
+            });
+
+            state = {
+                ...state,
+                files: newBlogs,
+            };
+
+            return state;
+        },
+        setDbFileLen: (state, action) => {
+            state = {
+                ...state,
+                db_file_len: action.payload,
+            };
+
+            return state;
+        },
     },
 });
 
@@ -134,6 +195,8 @@ export const {
     setPreviewIdx,
     setSortOptions,
     setAudioVolume,
+    receiveFiles,
+    setDbFileLen
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

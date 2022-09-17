@@ -52,7 +52,7 @@ export const uploadFile = async (
                 dispatch(setToken(access_token));
             }
 
-            setUrl(hash);
+            setUrl(file.hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
         })
