@@ -46,7 +46,7 @@ yarn-error.log*
 # cache
 /borsch/__pycache__
 /kebab/__pycache__
-/kebab/endpoints/__pycache__
+**/__pycache__
 
 #files
 /borsch/files

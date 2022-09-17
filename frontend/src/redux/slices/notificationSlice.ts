@@ -1,10 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface NotificationInfo {
-    type: null | 'success' | 'error' | 'popup' | 'loading';
+    type: null | 'success' | 'error' | 'popup' | 'loading' | 'tag_err';
     message: null | string;
     fun: null | 'DELETE_CATEGORY';
     params: null | string;
+}
+
+interface Action {
+    type: string;
+    payload: {
+        type: NotificationInfo['type'];
+        message: string;
+        fun?: NotificationInfo['fun'];
+        params?: string;
+    };
 }
 
 const initialState: NotificationInfo = {
@@ -18,18 +28,8 @@ export const notificationSlice = createSlice({
     name: 'notification',
     initialState,
     reducers: {
-        setNotification: (state, action) => {
-            const {
-                type,
-                message,
-                fun,
-                params,
-            }: {
-                type: 'success' | 'error' | 'popup' | 'loading';
-                message: string;
-                fun?: 'DELETE_CATEGORY';
-                params?: string;
-            } = action.payload;
+        setNotification: (state, action: Action) => {
+            const { type, message, fun, params } = action.payload;
 
             state = {
                 ...state,
