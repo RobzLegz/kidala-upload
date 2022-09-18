@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
 import SearchBar from './SearchBar';
 import SearchOverlay from './SearchOverlay';
 import History, { HistoryItem } from './History';
 import Result from './Result';
+import { useKeyPress } from '../../hooks/useKeyPress';
 
 export interface GlobalSearchProps {
     history: HistoryItem[];
@@ -39,7 +40,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
             {focused && (
                 <SearchOverlay className="absolute z-0">
                     <div className="flex flex-col w-full">
-                        {!term && history && <History history={history} />}
+                        {!term && history && <History history={history} setTerm={setTerm} />}
                         {term && searchResults && (
                             <Result items={searchResults} />
                         )}
