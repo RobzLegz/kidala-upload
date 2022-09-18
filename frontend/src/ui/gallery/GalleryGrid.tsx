@@ -7,7 +7,7 @@ const GalleryGrid = () => {
     const appInfo: AppInfo = useSelector(selectApp);
 
     return (
-        <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 px-0.5 gap-0.5 sm:gap-2 sm:px-2">
+        <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2 sm:px-2 xl:px-16 2xl:px-40">
             {appInfo.files &&
                 appInfo.files.map((file, i) => (
                     <GalleryFile props={file} key={i} />
