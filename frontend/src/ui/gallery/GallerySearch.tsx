@@ -18,7 +18,7 @@ const GallerySearch = () => {
     const [term, setTerm] = useState('');
 
     return (
-        <div className="flex-1 pl-16 pr-2">
+        <div className="flex-1 pl-4 2xl:pl-16 pr-2">
             <GlobalSearch
                 term={term}
                 setTerm={setTerm}
