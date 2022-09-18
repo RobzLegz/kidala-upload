@@ -19,7 +19,7 @@ const Gallery = () => {
 
     const appInfo: AppInfo = useSelector(selectApp);
 
-    const [limit, setLimit] = useState(9); //amount of files to receive
+    const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
 
@@ -36,8 +36,10 @@ const Gallery = () => {
 
     useEffect(() => {
         if (windowSize.width) {
-            if (windowSize.width < windowSizes.sm) {
+            if (windowSize.width < windowSizes.xl) {
                 setLimit(9);
+            } else if (windowSize.width >= windowSizes.xl) {
+                setLimit(12);
             }
         }
     }, [windowSize.width]);
@@ -45,7 +47,7 @@ const Gallery = () => {
     useEffect(() => {
         if (appInfo.files && loading) {
             const fetchFiles = async () => {
-                if (!appInfo.files) {
+                if (!appInfo.files || !limit) {
                     return;
                 }
 
@@ -73,13 +75,14 @@ const Gallery = () => {
             !isServer &&
             windowSize.height &&
             appInfo.files &&
-            appInfo.files.length < appInfo.db_file_len
+            appInfo.files.length < appInfo.db_file_len &&
+            limit
         ) {
             window.addEventListener('scroll', handleScroll);
 
             return () => window.removeEventListener('scroll', handleScroll);
         }
-    }, [windowSize.height, appInfo.files]);
+    }, [windowSize.height, appInfo.files, limit]);
 
     const changeCheckbox = () => {
         dispatch(

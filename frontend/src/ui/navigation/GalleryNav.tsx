@@ -11,7 +11,7 @@ import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 
-const HomeNav = () => {
+const GalleryNav = () => {
     const router = useRouter();
     const windowSize = useWindowSize();
 
@@ -20,7 +20,7 @@ const HomeNav = () => {
 
     if (windowSize.width && windowSize.width < windowSizes.sm) {
         return (
-            <nav className="w-full h-16 px-4 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
+            <nav className="w-full h-16 px-4 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700 z-30">
                 <UserDropDown
                     icon={
                         !userInfo.loggedIn && (
@@ -67,7 +67,7 @@ const HomeNav = () => {
     }
 
     return (
-        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
+        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700 z-30">
             <button onClick={() => router.push('/new')}>
                 <Logo />
             </button>
@@ -126,4 +126,4 @@ const HomeNav = () => {
     );
 };
 
-export default HomeNav;
+export default GalleryNav;

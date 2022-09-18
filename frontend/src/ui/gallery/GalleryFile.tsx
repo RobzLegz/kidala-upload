@@ -2,7 +2,11 @@ import {
     BookmarkIcon as BookmarkFullIcon,
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
-import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
+import {
+    HeartIcon,
+    BookmarkIcon,
+    ArrowUpOnSquareIcon,
+} from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
@@ -75,9 +79,9 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 onClick={handleImageClick}
             />
 
-            <div className="flex h-10 w-full items-center justify-between absolute  bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0">
+            <div className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0">
                 <div className="flex items-center">
-                    <div className="flex items-center mr-4">
+                    <div className="flex items-center mr-2">
                         <button
                             className="flex items-center justify-center text-notification no_select"
                             onClick={handleLike}
@@ -98,15 +102,23 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                             {totalLikes}
                         </button>
                     </div>
+
+                    <button onClick={handleSave}>
+                        <ArrowUpOnSquareIcon className="text-white w-7" />
+                    </button>
                 </div>
 
-                <button onClick={handleSave}>
-                    {saved ? (
-                        <BookmarkFullIcon className="text-notification-loading w-7" />
-                    ) : (
-                        <BookmarkIcon className="text-white w-7" />
-                    )}
-                </button>
+                <div className="flex items-center justify-end">
+                    
+
+                    <button onClick={handleSave}>
+                        {saved ? (
+                            <BookmarkFullIcon className="text-notification-loading w-7" />
+                        ) : (
+                            <BookmarkIcon className="text-white w-7" />
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );

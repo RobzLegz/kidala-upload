@@ -6,6 +6,7 @@ import { ListFilesResponse } from '../../requests/fileRequests';
 import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
 import Gallery from '../../ui/gallery/Gallery';
+import GalleryNav from '../../ui/navigation/GalleryNav';
 import PageModule from '../PageModule';
 
 interface GalleryPageProps extends ListFilesResponse {}
@@ -27,7 +28,10 @@ const GalleryPage: PageComponent<GalleryPageProps> = ({ files, total_db }) => {
         <PageModule
             title="Gallery"
             description="Kidala life - combining social media with file upload"
+            className='pt-24'
         >
+            <GalleryNav />
+
             <Gallery />
         </PageModule>
     );
