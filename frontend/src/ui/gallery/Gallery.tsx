@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
-import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import {
+    AppInfo,
+    selectApp,
+    setSortOptions,
+} from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
 import Checkbox from '../Checkbox';
 import GalleryGrid from './GalleryGrid';
@@ -77,9 +81,22 @@ const Gallery = () => {
         }
     }, [windowSize.height, appInfo.files]);
 
+    const changeCheckbox = () => {
+        dispatch(
+            setSortOptions({
+                ...appInfo.sortOptions,
+                showFiles: !appInfo.sortOptions.showFiles,
+            })
+        );
+    };
+
     return (
-        <div className="w-full flex flex-col items-start justify-center">
-            <Checkbox text="Show files" checked={appInfo.sortOptions.showFiles} />
+        <div className="w-full flex flex-col items-start justify-center sm:px-2 xl:px-16 2xl:px-40">
+            <Checkbox
+                text="Show files"
+                checked={appInfo.sortOptions.showFiles}
+                onClick={changeCheckbox}
+            />
 
             <GalleryGrid />
 
