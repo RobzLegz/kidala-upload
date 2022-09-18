@@ -5,6 +5,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
+import Checkbox from '../Checkbox';
 import GalleryGrid from './GalleryGrid';
 import GallerySpinner from './GallerySpinner';
 
@@ -77,7 +78,9 @@ const Gallery = () => {
     }, [windowSize.height, appInfo.files]);
 
     return (
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col items-start justify-center">
+            <Checkbox text="Show files" />
+
             <GalleryGrid />
 
             {loading && <GallerySpinner />}
