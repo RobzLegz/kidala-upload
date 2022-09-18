@@ -15,7 +15,7 @@ const Gallery = () => {
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [limit, setLimit] = useState(9); //amount of files to receive
-    const [prevLimit, setPrevLimit] = useState(9); //amount of files to receive
+    const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
 
     const handleScroll = () => {
@@ -35,6 +35,12 @@ const Gallery = () => {
                 if (!appInfo.files) {
                     return;
                 }
+
+                if (appInfo.files.length === prevCursor) {
+                    return;
+                }
+
+                setPrevCursor(appInfo.files.length);
 
                 await getFilesV2({
                     cursor: appInfo.files.length,
@@ -61,24 +67,6 @@ const Gallery = () => {
             return () => window.removeEventListener('scroll', handleScroll);
         }
     }, [windowSize.height, appInfo.files]);
-
-    useEffect(() => {
-        if(!appInfo.files){
-            setLoading(true);
-
-            const fetchFiles = async () => {
-                await getFilesV2({
-                    cursor: 0,
-                    limit: 15,
-                    dispatch,
-                });
-            };
-
-            fetchFiles().then(() => {
-                setLoading(false);
-            });
-        }
-    }, [appInfo.files])
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
