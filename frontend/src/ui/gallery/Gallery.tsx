@@ -4,6 +4,9 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
+import Spinner from '../Spinner';
+import GalleryFile from './GalleryFile';
+import GallerySpinner from './GallerySpinner';
 
 const Gallery = () => {
     const dispatch = useDispatch();
@@ -11,8 +14,8 @@ const Gallery = () => {
 
     const appInfo: AppInfo = useSelector(selectApp);
 
-    const [limit, setLimit] = useState(20); //amount of files received
-    const [cursor, setCursor] = useState(0); //start to receive from here
+    const [limit, setLimit] = useState(9); //amount of files to receive
+    const [prevLimit, setPrevLimit] = useState(9); //amount of files to receive
     const [loading, setLoading] = useState(true); //start to receive from here
 
     const handleScroll = () => {
@@ -21,32 +24,73 @@ const Gallery = () => {
             const scrollTop = document.documentElement.scrollTop;
 
             if (windowSize.height + scrollTop + 1 >= docHeight) {
-                setLimit(limit + 1);
                 setLoading(true);
             }
         }
     };
 
     useEffect(() => {
-        const fetchFiles = async () => {
-            await getFilesV2({ cursor, limit, dispatch });
-        };
+        if (appInfo.files && loading) {
+            const fetchFiles = async () => {
+                if (!appInfo.files) {
+                    return;
+                }
 
-        fetchFiles().then(() => {
-            setLoading(false);
-        });
-    }, [cursor]);
+                await getFilesV2({
+                    cursor: appInfo.files.length,
+                    limit: limit,
+                    dispatch,
+                });
+            };
+
+            fetchFiles().then(() => {
+                setLoading(false);
+            });
+        }
+    }, [appInfo.files, loading]);
 
     useEffect(() => {
-        if (!isServer && windowSize.height) {
+        if (
+            !isServer &&
+            windowSize.height &&
+            appInfo.files &&
+            appInfo.files.length < appInfo.db_file_len
+        ) {
             window.addEventListener('scroll', handleScroll);
 
             return () => window.removeEventListener('scroll', handleScroll);
         }
-    }, []);
+    }, [windowSize.height, appInfo.files]);
+
+    useEffect(() => {
+        if(!appInfo.files){
+            setLoading(true);
+
+            const fetchFiles = async () => {
+                await getFilesV2({
+                    cursor: 0,
+                    limit: 15,
+                    dispatch,
+                });
+            };
+
+            fetchFiles().then(() => {
+                setLoading(false);
+            });
+        }
+    }, [appInfo.files])
 
     return (
-        <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 gap-2"></div>
+        <div className="w-full flex flex-col items-center justify-center">
+            <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 gap-2">
+                {appInfo.files &&
+                    appInfo.files.map((file, i) => (
+                        <GalleryFile props={file} key={i} />
+                    ))}
+            </div>
+
+            {loading && <GallerySpinner />}
+        </div>
     );
 };
 

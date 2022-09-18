@@ -5,6 +5,7 @@ import { receiveFiles, setDbFileLen } from '../../redux/slices/appSlice';
 import { ListFilesResponse } from '../../requests/fileRequests';
 import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
+import Gallery from '../../ui/gallery/Gallery';
 import PageModule from '../PageModule';
 
 interface GalleryPageProps extends ListFilesResponse {}
@@ -31,7 +32,7 @@ const GalleryPage: PageComponent<GalleryPageProps> = ({
             title="Gallery"
             description="Kidala life - combining social media with file upload"
         >
-            sadasds
+            <Gallery />
         </PageModule>
     );
 };

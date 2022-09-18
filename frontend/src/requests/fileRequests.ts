@@ -44,6 +44,8 @@ export const getFilesV2 = async ({
 }) => {
     const route = `${LIST_FILES_ROUTE}?cursor=${cursor}&limit=${limit}`;
 
+    console.log(route)
+
     await axios
         .get(route)
         .then((res) => {
