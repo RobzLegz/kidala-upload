@@ -5,7 +5,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
-import GalleryFile from './GalleryFile';
+import GalleryGrid from './GalleryGrid';
 import GallerySpinner from './GallerySpinner';
 
 const Gallery = () => {
@@ -78,12 +78,7 @@ const Gallery = () => {
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
-            <div className="mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 2xl:grid-cols-5 gap-2">
-                {appInfo.files &&
-                    appInfo.files.map((file, i) => (
-                        <GalleryFile props={file} key={i} />
-                    ))}
-            </div>
+            <GalleryGrid />
 
             {loading && <GallerySpinner />}
         </div>
