@@ -79,7 +79,7 @@ const Gallery = () => {
 
     return (
         <div className="w-full flex flex-col items-start justify-center">
-            <Checkbox text="Show files" />
+            <Checkbox text="Show files" checked={appInfo.sortOptions.showFiles} />
 
             <GalleryGrid />
 

@@ -25,7 +25,7 @@ const Checkbox: React.FC<CheckBoxProps> = ({
     ...props
 }) => {
     const cn = `flex rounded-sm items-center justify-center ${sizes[size]} ${
-        checked ? 'bg-accent' : 'border-accent border-2'
+        checked ? 'bg-accent' : 'border-accent border-3'
     } ${props.className}`;
 
     if (!text) {
