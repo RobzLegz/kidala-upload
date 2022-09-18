@@ -8,18 +8,21 @@ import Result from './Result';
 export interface GlobalSearchProps {
     history: HistoryItem[];
     searchResults: FileInterface[];
+    term?: string;
+    setTerm?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GlobalSearch: React.FC<GlobalSearchProps> = ({
     history,
     searchResults,
+    setTerm,
+    term,
 }) => {
     const [focused, setFocused] = useState(false);
-    const [term, setTerm] = useState('');
 
     const setSearchTerm = ({
         currentTarget: { value },
-    }: React.FormEvent<HTMLInputElement>) => setTerm(value);
+    }: React.FormEvent<HTMLInputElement>) => setTerm && setTerm(value);
     const focusHandler = () => setFocused(true);
     const blurHandler = () => setFocused(false);
 

@@ -55,11 +55,11 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
     };
 
     const handleImageClick = () => {
-        router.push(`${BASE_URL}/${props.hash}`);
+        router.push(`/new/gallery/${props.hash}`);
     };
 
     return (
-        <div className="bg-primary-800 w-full h-full flex items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700">
+        <div className="bg-primary-800 w-full h-full flex items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700 no_select">
             <div className="w-[200px] sm:w-[250px] md:w-[400px] h-[160px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
                 <Image
                     src={`${BASE_URL}/files/${props.hash}/${props.name}`}
@@ -102,10 +102,6 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                             {totalLikes}
                         </button>
                     </div>
-
-                    <button onClick={handleSave}>
-                        <ArrowUpOnSquareIcon className="text-white w-7" />
-                    </button>
                 </div>
 
                 <div className="flex items-center justify-end">

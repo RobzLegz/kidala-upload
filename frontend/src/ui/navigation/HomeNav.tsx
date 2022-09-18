@@ -46,9 +46,8 @@ const HomeNav = () => {
                         size="small"
                         color="secondary"
                         onClick={() => router.push('/new/dropbox')}
-                        icon={<ArchiveBoxIcon className="text-white h-6" />}
                     >
-                        Dropbox
+                        <ArchiveBoxIcon className="text-white h-6" />
                     </Button>
 
                     {!userInfo.loggedIn && (

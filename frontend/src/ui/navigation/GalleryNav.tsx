@@ -10,6 +10,7 @@ import UserDropDown from '../UserDropDown';
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import GallerySearch from '../gallery/GallerySearch';
 
 const GalleryNav = () => {
     const router = useRouter();
@@ -46,9 +47,8 @@ const GalleryNav = () => {
                         size="small"
                         color="secondary"
                         onClick={() => router.push('/new/dropbox')}
-                        icon={<ArchiveBoxIcon className="text-white h-6" />}
                     >
-                        Dropbox
+                        <ArchiveBoxIcon className="text-white h-6" />
                     </Button>
 
                     {!userInfo.loggedIn && (
@@ -71,6 +71,8 @@ const GalleryNav = () => {
             <button onClick={() => router.push('/new')}>
                 <Logo />
             </button>
+
+            <GallerySearch />
 
             <div className="flex items-center justify-center relative">
                 <Button
