@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
-import Spinner from '../Spinner';
 import GalleryFile from './GalleryFile';
 import GallerySpinner from './GallerySpinner';
 
@@ -28,6 +28,14 @@ const Gallery = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (windowSize.width) {
+            if (windowSize.width < windowSizes.sm) {
+                setLimit(9);
+            }
+        }
+    }, [windowSize.width]);
 
     useEffect(() => {
         if (appInfo.files && loading) {

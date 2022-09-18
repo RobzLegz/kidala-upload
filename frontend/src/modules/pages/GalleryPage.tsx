@@ -10,11 +10,7 @@ import PageModule from '../PageModule';
 
 interface GalleryPageProps extends ListFilesResponse {}
 
-const GalleryPage: PageComponent<GalleryPageProps> = ({
-    files,
-    cursor,
-    total_db,
-}) => {
+const GalleryPage: PageComponent<GalleryPageProps> = ({ files, total_db }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
