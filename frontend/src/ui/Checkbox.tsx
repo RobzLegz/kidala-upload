@@ -30,21 +30,21 @@ const Checkbox: React.FC<CheckBoxProps> = ({
 
     if (!text) {
         return (
-            <button className={cn}>
+            <button className={cn} {...props}>
                 {checked && <CheckIcon className="text-white h-5" />}
             </button>
         );
     }
 
     return (
-        <button className="flex items-center justify-start">
+        <button className="flex items-center justify-start" {...props}>
             <div className={cn}>
                 {checked && <CheckIcon className="text-white h-5" />}
             </div>
 
-            <p className={`text-white no_select ml-1.5 ${textClassName}`}>
+            <span className={`text-white text-sm no_select ml-1.5 ${textClassName}`}>
                 {text}
-            </p>
+            </span>
         </button>
     );
 };
