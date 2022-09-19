@@ -63,7 +63,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
         case 'audio':
             return (
                 <MusicalNoteIcon
-                    className={`text-primary-100 w-full ${
+                    className={`text-primary-100 w-6 ${
                         className && className
                     }`}
                 />
@@ -71,7 +71,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
         case 'video':
             return (
                 <VideoCameraIcon
-                    className={`text-primary-100 w-full ${
+                    className={`text-primary-100 w-6 ${
                         className && className
                     }`}
                 />

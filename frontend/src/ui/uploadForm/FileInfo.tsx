@@ -109,15 +109,15 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         </div>
 
                         <div className="flex items-center flex-col justify-start flex-1 sm:w-full overflow-hidden">
-                            {detectFileType(fileName) !== 'image' ? (
-                                <GetIconFromFileType
-                                    extension={detectFileType(fileName)}
-                                    source={source}
-                                    className="w-6 mr-1 hidden sm:flex"
-                                />
-                            ) : null}
-
                             <div className="flex items-center justify-start w-full">
+                                {detectFileType(fileName) !== 'image' ? (
+                                    <GetIconFromFileType
+                                        extension={detectFileType(fileName)}
+                                        source={source}
+                                        className="w-6 mr-1 hidden sm:flex"
+                                    />
+                                ) : null}
+
                                 <strong className="text-white text-left truncate text-sm sm:text-base flex-1">
                                     {fileName}
                                 </strong>

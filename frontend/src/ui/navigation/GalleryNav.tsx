@@ -37,7 +37,7 @@ const GalleryNav = () => {
                         className="bg-transparent z-10"
                         size="small"
                         color="secondary"
-                        onClick={() => router.push('/gallery')}
+                        onClick={() => router.push('/new/gallery')}
                     >
                         Gallery
                     </Button>
@@ -79,7 +79,7 @@ const GalleryNav = () => {
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/gallery')}
+                    onClick={() => router.push('/new/gallery')}
                 >
                     Gallery
                 </Button>
@@ -88,7 +88,7 @@ const GalleryNav = () => {
                     className="bg-transparent z-10 ml-1"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/dropbox')}
+                    onClick={() => router.push('/new/dropbox')}
                     icon={<ArchiveBoxIcon className="text-white h-6" />}
                 >
                     Dropbox
@@ -100,7 +100,7 @@ const GalleryNav = () => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/login')}
+                            onClick={() => router.push('/new/login')}
                         >
                             My files
                         </Button>
@@ -109,7 +109,7 @@ const GalleryNav = () => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/login')}
+                            onClick={() => router.push('/new/login')}
                         >
                             Login
                         </Button>
