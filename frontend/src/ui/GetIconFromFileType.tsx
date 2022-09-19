@@ -5,23 +5,32 @@ import {
 } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
+import { AppInfo } from '../redux/slices/appSlice';
 import { ImageDimensions } from '../types/ImageDimensions';
 import { FileType } from '../utils/detectFileType';
+import { getRandImage } from '../utils/getRandomImage';
+import MusicPlate from './gallery/MusicPlate';
+import { useSelector } from 'react-redux';
+import { selectApp } from './../redux/slices/appSlice';
 
 export interface GetIconFromFileTypeProps {
     extension?: FileType | null;
     className?: string;
     source?: string;
     imageDimensions?: ImageDimensions;
+    file?: boolean;
 }
 
 const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
     extension,
     className,
     source,
+    file = false,
     imageDimensions,
 }) => {
-    if (!extension) {
+    const appInfo: AppInfo = useSelector(selectApp);
+
+    if (!extension || !appInfo.files) {
         return null;
     }
 
@@ -61,98 +70,93 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                 />
             );
         case 'audio':
+            if (file) {
+                return <MusicPlate image={getRandImage(appInfo.files)} />;
+            }
+
             return (
                 <MusicalNoteIcon
-                    className={`text-primary-100 w-6 ${
-                        className && className
-                    }`}
+                    className={`text-primary-100 w-6 ${className && className}`}
                 />
             );
         case 'video':
             return (
                 <VideoCameraIcon
-                    className={`text-primary-100 w-6 ${
-                        className && className
-                    }`}
+                    className={`text-primary-100 w-6 ${className && className}`}
                 />
             );
         case 'word':
             return (
                 <div
-                    className={`flex items-center justify-center ${
+                    className={`flex items-center justify-center relative w-6 h-6 ${
                         className ? className : ''
                     }`}
                 >
                     <Image
                         src="/media-icons/word.png"
-                        width={20}
-                        height={20}
                         objectFit="contain"
                         draggable={false}
+                        layout="fill"
                     />
                 </div>
             );
         case 'css':
             return (
                 <div
-                    className={`flex items-center justify-center ${
+                    className={`flex items-center justify-center relative w-6 h-6 ${
                         className ? className : ''
                     }`}
                 >
                     <Image
                         src="/media-icons/css-3.png"
-                        width={20}
-                        height={20}
                         objectFit="contain"
                         draggable={false}
+                        layout="fill"
                     />
                 </div>
             );
         case 'html':
             return (
                 <div
-                    className={`flex items-center justify-center ${
+                    className={`flex items-center justify-center relative w-6 h-6 ${
                         className ? className : ''
                     }`}
                 >
                     <Image
                         src="/media-icons/html-5.png"
-                        width={20}
-                        height={20}
                         objectFit="contain"
                         draggable={false}
+                        layout="fill"
                     />
                 </div>
             );
         case 'js':
             return (
                 <div
-                    className={`flex items-center justify-center ${
+                    className={`flex items-center justify-center relative w-6 h-6 ${
                         className ? className : ''
                     }`}
                 >
                     <Image
                         src="/media-icons/javascript.png"
-                        width={20}
-                        height={20}
                         objectFit="contain"
                         draggable={false}
+                        layout="fill"
                     />
                 </div>
             );
         case 'scss':
             return (
                 <div
-                    className={`flex items-center justify-center ${
+                    className={`flex items-center justify-center relative w-6 h-6 ${
                         className ? className : ''
                     }`}
                 >
                     <Image
-                        src="/media-icons/sass.png"
-                        width={20}
-                        height={20}
+                        src="/media-icons/javascript.png"
                         objectFit="contain"
                         draggable={false}
+                        layout="fill"
                     />
                 </div>
             );
