@@ -1,20 +1,20 @@
-import React from 'react'
+import React from 'react';
 import AuthForm from '../../ui/auth/AuthForm';
 import HomeNav from '../../ui/navigation/HomeNav';
 import PageModule from '../PageModule';
 
-const Login = () => {
+const Register = () => {
     return (
         <PageModule
-            title="Login"
+            title="Register"
             description="Kidala file upload. Free file hosting, unlimited uploads"
             className="justify-center h-screen"
         >
             <HomeNav />
 
-            <AuthForm />
+            <AuthForm register />
         </PageModule>
     );
-}
+};
 
-export default Login
+export default Register;

@@ -15,6 +15,10 @@
         @apply text-4xl font-extrabold;
     }
 
+    h2 {
+        @apply text-3xl font-extrabold;
+    }
+
     strong {
         @apply font-bold text-base;
     }
