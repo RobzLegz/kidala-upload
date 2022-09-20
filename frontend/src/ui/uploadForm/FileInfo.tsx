@@ -123,7 +123,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 </strong>
 
                                 <div className="ml-2">
-                                    <BubbleText live>
+                                    <BubbleText filled>
                                         <span className="text-white text-sm font-normal">
                                             {getFileExtension(fileName)}
                                         </span>

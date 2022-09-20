@@ -17,7 +17,7 @@ export const Main: Story<BubbleTextProps> = ({ ...props }) => {
 };
 
 Main.argTypes = {
-    live: toBoolean(),
+    filled: toBoolean(),
 };
 
 Main.bind({});
