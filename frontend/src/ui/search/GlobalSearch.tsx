@@ -35,6 +35,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                     onBlur={blurHandler}
                     onChange={setSearchTerm}
                     placeholder="Search for files..."
+                    value={term}
                 />
             </div>
             {focused && (
