@@ -2,11 +2,7 @@ import {
     BookmarkIcon as BookmarkFullIcon,
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
-import {
-    HeartIcon,
-    BookmarkIcon,
-    ArrowUpOnSquareIcon,
-} from '@heroicons/react/24/outline';
+import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
@@ -18,6 +14,7 @@ import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { AppInfo } from '../../redux/slices/appSlice';
 import { useSelector } from 'react-redux';
 import { selectApp } from './../../redux/slices/appSlice';
+import GalleryNonImage from './GalleryNonImage';
 
 export interface GalleryFileProps {
     props: FileInterface;
@@ -67,15 +64,22 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
         router.push(`/new/gallery/${props.hash}`);
     };
 
-    if (
-        !appInfo.sortOptions.showFiles &&
-        detectFileType(props.name) !== 'image'
-    ) {
-        return null;
-    }
+    // if (
+    //     !appInfo.sortOptions.showFiles &&
+    //     detectFileType(props.name) !== 'image'
+    // ) {
+    //     return null;
+    // }
 
     return (
-        <div className="bg-primary-800 w-full h-full flex items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700 no_select">
+        <div
+            className={`bg-primary-800 w-full h-full items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700 no_select ${
+                !appInfo.sortOptions.showFiles &&
+                detectFileType(props.name) !== 'image'
+                    ? 'hidden'
+                    : 'flex'
+            }`}
+        >
             <div className="flex items-center justify-center w-[200px] sm:w-[250px] md:w-[400px] h-[160px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
                 {detectFileType(props.name) === 'image' ? (
                     <Image
@@ -90,11 +94,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                         className="rounded-lg"
                     />
                 ) : (
-                    <GetIconFromFileType
-                        extension={detectFileType(props.name)}
-                        className="w-10 h-10"
-                        file
-                    />
+                    <GalleryNonImage filename={props.name} />
                 )}
             </div>
 

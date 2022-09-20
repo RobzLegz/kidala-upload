@@ -4,7 +4,7 @@ import {
     VideoCameraIcon,
 } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppInfo } from '../redux/slices/appSlice';
 import { ImageDimensions } from '../types/ImageDimensions';
 import { FileType } from '../utils/detectFileType';
@@ -29,6 +29,15 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
     imageDimensions,
 }) => {
     const appInfo: AppInfo = useSelector(selectApp);
+
+    const [randImage, setRandImage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (extension === 'audio' && file && appInfo.files && !randImage) {
+            const img = getRandImage(appInfo.files);
+            setRandImage(img);
+        }
+    }, [appInfo.files]);
 
     if (!extension || !appInfo.files) {
         return null;
@@ -70,8 +79,8 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                 />
             );
         case 'audio':
-            if (file) {
-                return <MusicPlate image={getRandImage(appInfo.files)} />;
+            if (file && randImage) {
+                return <MusicPlate image={randImage} />;
             }
 
             return (

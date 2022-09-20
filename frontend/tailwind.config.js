@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
     content: [
         './pages/**/*.{js,ts,jsx,tsx}',
@@ -6,6 +8,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
+            },
             fontSize: {
                 tiny: '0.625rem',
                 xs: '.75rem',
@@ -22,9 +27,9 @@ module.exports = {
             },
             colors: {
                 notification: {
-                    DEFAULT: "#FD4D4D",
-                    red: "#FD4D4D",
-                    loading: "#F2B861"
+                    DEFAULT: '#FD4D4D',
+                    red: '#FD4D4D',
+                    loading: '#F2B861',
                 },
                 primary: {
                     100: '#DEE3EA',
@@ -43,7 +48,7 @@ module.exports = {
                     'washed-out': '#F5BFBF',
                 },
                 accent: {
-                    DEFAULT: '#9013A5',
+                    DEFAULT: '#D119EF',
                     hover: '#9F48AD',
                     disabled: '#F5BFBF',
                 },
@@ -71,7 +76,7 @@ module.exports = {
             },
             animation: {
                 'spin-slow': 'spin 15s linear forwards infinite',
-                'border-animate': 'border 4s infinite linear'
+                'border-animate': 'border 4s infinite linear',
             },
         },
     },
