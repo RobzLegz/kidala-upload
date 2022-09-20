@@ -131,7 +131,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 </div>
                             </div>
 
-                            <div className="flex w-full items-start mt-1">
+                            <div className="flex w-full items-start mt-2">
                                 <AddTag
                                     tag={tag}
                                     setTag={setTag}

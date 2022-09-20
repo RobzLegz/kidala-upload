@@ -50,29 +50,35 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
 
     switch (extension) {
         case 'image':
-            if (!source) {
-                return null;
-            }
-
-            return (
-                <Image
-                    src={source}
-                    objectFit="cover"
-                    draggable={false}
-                    width={
-                        imageDimensions
-                            ? imageDimensions.width
+            if (source) {
+                return (
+                    <Image
+                        src={source}
+                        objectFit="cover"
+                        draggable={false}
+                        width={
+                            imageDimensions
                                 ? imageDimensions.width
+                                    ? imageDimensions.width
+                                    : 128
                                 : 128
-                            : 128
-                    }
-                    height={
-                        imageDimensions
-                            ? imageDimensions.height
+                        }
+                        height={
+                            imageDimensions
                                 ? imageDimensions.height
+                                    ? imageDimensions.height
+                                    : 164
                                 : 164
-                            : 164
-                    }
+                        }
+                    />
+                );
+            }
+           
+            return (
+                <DocumentIcon
+                    className={`text-primary-100 w-full ${
+                        className && className
+                    }`}
                 />
             );
         case 'text':
@@ -99,7 +105,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                     className={`text-primary-100 w-6 ${className && className}`}
                 />
             );
-        case 'word':
+        case 'docx':
             return (
                 <div
                     className={`flex items-center justify-center relative w-6 h-6 ${
