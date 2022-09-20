@@ -12,6 +12,7 @@ import { getRandImage } from '../utils/getRandomImage';
 import MusicPlate from './gallery/MusicPlate';
 import { useSelector } from 'react-redux';
 import { selectApp } from './../redux/slices/appSlice';
+import { DocumentTextIcon } from '@heroicons/react/24/outline';
 
 export interface GetIconFromFileTypeProps {
     extension?: FileType | null;
@@ -40,7 +41,11 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
     }, [appInfo.files]);
 
     if (!extension || !appInfo.files) {
-        return null;
+        return (
+            <DocumentTextIcon
+                className={`text-primary-100 w-6 ${className && className}`}
+            />
+        );
     }
 
     switch (extension) {
@@ -162,16 +167,50 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                     }`}
                 >
                     <Image
-                        src="/media-icons/javascript.png"
+                        src="/media-icons/sass.png"
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
                     />
                 </div>
             );
+        case 'pdf':
+            return (
+                <div
+                    className={`flex items-center justify-center relative w-6 h-6 ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/pdf.png"
+                        objectFit="contain"
+                        draggable={false}
+                        layout="fill"
+                    />
+                </div>
+            );
+        case 'json':
+            return (
+                <div
+                    className={`flex items-center justify-center relative w-6 h-6 ${
+                        className ? className : ''
+                    }`}
+                >
+                    <Image
+                        src="/media-icons/json.png"
+                        objectFit="contain"
+                        draggable={false}
+                        layout="fill"
+                    />
+                </div>
+            );
+        default:
+            return (
+                <DocumentTextIcon
+                    className={`text-primary-100 w-6 ${className && className}`}
+                />
+            );
     }
-
-    return null;
 };
 
 export default GetIconFromFileType;

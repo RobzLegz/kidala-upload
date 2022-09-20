@@ -1,14 +1,6 @@
-export type FileType =
-    | 'image'
-    | 'audio'
-    | 'video'
-    | 'html'
-    | 'css'
-    | 'scss'
-    | 'js'
-    | 'text'
-    | 'word'
-    | null;
+import { getFileExtension } from './getFileExtension';
+
+export type FileType = string | null;
 
 export const detectFileType: (name: string | undefined) => FileType = (
     name: string | undefined
@@ -32,19 +24,7 @@ export const detectFileType: (name: string | undefined) => FileType = (
         return 'audio';
     } else if (name.includes('.mp4') || name.includes('.mov')) {
         return 'video';
-    } else if (name.includes('.html')) {
-        return 'html';
-    } else if (name.includes('.css')) {
-        return 'css';
-    } else if (name.includes('.scss')) {
-        return 'scss';
-    } else if (name.includes('.js')) {
-        return 'js';
-    } else if (name.includes('.docx')) {
-        return 'word';
-    } else if (name.includes('.txt')) {
-        return 'text';
+    } else {
+        return getFileExtension(name);
     }
-
-    return null;
 };

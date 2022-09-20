@@ -49,8 +49,8 @@ module.exports = {
                 },
                 accent: {
                     DEFAULT: '#D119EF',
-                    hover: '#9F48AD',
-                    disabled: '#F5BFBF',
+                    hover: '#B94ECB',
+                    disabled: '#BF64CE',
                 },
                 transparent_dark: {
                     DEFAULT: 'rgba(0, 0, 0, 0.4)',
