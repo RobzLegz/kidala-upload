@@ -8,14 +8,14 @@ export interface GalleryNonImageProps {
 
 const GalleryNonImage: React.FC<GalleryNonImageProps> = ({ filename }) => {
     return (
-        <div className="flex flex-col items-center justify-center w-full">
+        <div className="flex flex-col items-center justify-center w-full relative">
             <GetIconFromFileType
                 extension={detectFileType(filename)}
                 className="w-10 h-10"
                 file
             />
 
-            <div className="w-full mt-2 h-6 overflow-hidden">
+            <div className="w-full mt-2 h-6 overflow-hidden px-2">
                 <p className="text-center text-accent truncate">
                     {filename}
                 </p>
