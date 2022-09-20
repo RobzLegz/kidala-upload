@@ -23,6 +23,8 @@ export interface GalleryFileProps {
     testSaves?: number;
     testSaved?: boolean;
     testGivenLikes?: number;
+    index?: number;
+    handleFileClick?: (index?: number, hash?: string) => void;
 }
 
 const GalleryFile: React.FC<GalleryFileProps> = ({
@@ -32,6 +34,8 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
     testShares,
     testSaved,
     testGivenLikes,
+    index,
+    handleFileClick,
 }) => {
     const router = useRouter();
 
@@ -61,7 +65,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
     };
 
     const handleImageClick = () => {
-        router.push(`/new/gallery/${props.hash}`);
+        handleFileClick && handleFileClick(index, props.hash);
     };
 
     // if (
