@@ -1,9 +1,13 @@
 import { FileInterface } from '../interfaces/file';
 import { detectFileType } from './detectFileType';
 import { generateRandomBetween } from './generateRandomIntBetween';
-import { generateImageUrl } from './generateImageUrl';
+import { generateFileUrl } from './generateFileUrl';
 
-export const getRandImage = (files: FileInterface[]) => {
+export const getRandImage = (files: FileInterface[] | null) => {
+    if (!files) {
+        return '';
+    }
+
     const imageFiles = files.filter(
         (file) => detectFileType(file.name) === 'image'
     );
@@ -12,5 +16,5 @@ export const getRandImage = (files: FileInterface[]) => {
 
     const imgFile = imageFiles[imgIndex];
 
-    return generateImageUrl(imgFile.hash, imgFile.name);
+    return generateFileUrl(imgFile.hash, imgFile.name);
 };
