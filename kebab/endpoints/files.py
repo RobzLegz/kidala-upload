@@ -172,6 +172,8 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
     #     token=access_token
     #     )
 
+    db.users.update_one({'_id': user.id}, {'$push': {'files': upload_file.id}})
+
     return {
         'msg':"file uploaded",
         'url':f'{SERVER_URL}/files/{md5string}/{secure_filename(file.filename)}',
