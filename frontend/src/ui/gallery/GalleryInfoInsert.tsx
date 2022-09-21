@@ -107,6 +107,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                             placeholder="empty"
                             className="rounded-lg"
                             onLoad={() => setLoading(false)}
+                            onLoadStart={() => setLoading(true)}
                         />
 
                         <div
