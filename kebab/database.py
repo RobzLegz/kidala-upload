@@ -23,12 +23,23 @@ class PyObjectId(ObjectId):
     def __modify_schema__(cls, field_schema):
         field_schema.update(type="string")
 
+class Like(BaseModel):
+    user_id: PyObjectId
+    count: int
+
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
     ip: str | None = None
+    email: str
     username: str | None = None
     password: str | None = None
     role: str | None = None
+    favourites: list[PyObjectId] = []
+    likes: list[Like] = []
+    verified: bool = False
+    followers: list[PyObjectId] = []
+    following: list[PyObjectId] = []
+    files: list[PyObjectId] = []
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -54,6 +65,7 @@ class File(BaseModel):
     tag: list[Tag] | None = []
     private: bool = False
     description: str | None = None
+    likes: list[Like] = []
 
     class Config:
         json_encoders = {ObjectId: str}
