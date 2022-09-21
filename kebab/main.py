@@ -6,7 +6,7 @@ import uvicorn
 import os
 
 from .endpoints import admin, files, tags, users
-from .database import db, User
+from .database import PyObjectId, db, User
 
 app = FastAPI()
 
@@ -26,7 +26,47 @@ app.include_router(tags.router)
 app.include_router(files.router)
 app.include_router(users.router)
 
+@app.get("/migrate")
+async def favicon():
+    dbcursor = db.files.find()
+    for file in dbcursor:
+        print(file)
+        if 'tag' in file:
+            if file['tag'] != None:
+                db.files.update_one(
+                    {'_id': file['_id']},
+                    {'$set':
+                        {'tag': 
+                            [
+                                db.tags.find_one({'_id': PyObjectId(file['tag'])})          
+                            ]
+                        }
+                    }
+                )
 
+            else:
+                db.files.update_one(
+                    {'_id': file['_id']},
+                    {'$set':
+                        {'tag': 
+                            [   
+                            ]
+                        }
+                    }
+                )
+        else:
+            db.files.update_one(
+                    {'_id': file['_id']},
+                    {'$set':
+                        {'tag': 
+                            [   
+                            ]
+                        }
+                    }
+                )
+    return 'success'
+
+    
 
 @app.get("/favicon.ico")
 async def favicon():

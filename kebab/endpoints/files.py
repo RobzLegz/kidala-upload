@@ -115,20 +115,27 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
 
 
     if tag == '' or tag == None:
-        tag_id = None
+        tag_array = []
     else:
         tag.lower()
 
-        tagquery = db.tags.find_one({'tag': tag})
+        taglist = tag.split(';')
 
-        if tagquery == None:
-            tagobject = Tag(tag_text=tag)
+        tag_array = []
 
-            created_tag = db.tags.insert_one(tagobject.dict(exclude={'id'}))
+        for tag in taglist:
+            tagquery = db.tags.find_one({'tag': tag})
 
-            tag_id = created_tag.inserted_id
-        else:
-            tag_id = tagquery['_id']
+            if tagquery == None:
+                tagobject = Tag(tag=tag)
+
+                created_tag = db.tags.insert_one(tagobject.dict(exclude={'id'}))
+
+                tagobject.id = created_tag.inserted_id
+
+                tag_array.append(tagobject)
+            else:
+                tag_array.append(tagquery)
 
     
     if private == 'true':
@@ -149,7 +156,7 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
         hash=md5string,
         size=Path(UPLOAD_FOLDER / md5string / secure_filename(file.filename)).stat().st_size,
         author=user.id,
-        tag=tag_id,
+        tag=tag_array,
         description=description,
         private=private_bool,
         )

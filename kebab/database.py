@@ -38,7 +38,7 @@ class User(BaseModel):
 
 class Tag(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
-    tag_text: str
+    tag: str
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -51,7 +51,7 @@ class File(BaseModel):
     hash: str
     size: int
     author: PyObjectId | None = None
-    tag: PyObjectId | None = None
+    tag: list[Tag] | None = []
     private: bool = False
     description: str | None = None
 
