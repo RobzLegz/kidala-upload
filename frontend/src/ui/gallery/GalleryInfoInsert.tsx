@@ -91,12 +91,12 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
         <div
             className={`${
                 colspan === 3 ? 'col-span-3' : 'col-span-4'
-            } bg-primary-800 border border-primary-700 rounded-lg flex flex-col items-center justify-center p-2 ${
+            } rounded-lg flex flex-col items-center justify-center p-2 ${
                 props.className ? props.className : ''
             }`}
             {...props}
         >
-            <div className="flex flex-col rounded-lg items-center justify-start w-full max-w-[600px]">
+            <div className="flex flex-col rounded-lg items-center justify-start w-full max-w-[600px] bg-primary-800 border border-primary-700 p-2">
                 {detectFileType(fileInfo.name) === 'image' ? (
                     <div className="relative">
                         <OptImage
@@ -111,7 +111,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                         />
 
                         <div
-                            className={`absolute left-0 top-0 flex items-center justify-center bg-transparent_dark w-full h-full transition-opacity duration-300 ${
+                            className={`absolute left-0 -top-1 flex items-center justify-center bg-transparent_dark rounded-lg w-full h-full transition-opacity duration-300 ${
                                 loading ? 'opacity-100' : 'opacity-0'
                             }`}
                         >
@@ -121,7 +121,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 ) : null}
 
                 <div className="hidden sm:flex h-10 w-full items-center justify-between px-2 mt-1">
-                    <div className="flex items-center">
+                    <div className="flex items-center w-full">
                         <div className="flex items-center mr-2 w-28">
                             <button
                                 className="flex items-center justify-center text-notification no_select"
@@ -164,24 +164,26 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                             : ''}
                     </p>
 
-                    <div className="w-56 flex items-center justify-center mt-2">
-                        <Button
-                            className="flex-1 mr-1"
-                            size="small"
-                            icon={
-                                <ArrowDownTrayIcon className="text-white h-5" />
-                            }
-                        >
-                            Download
-                        </Button>
+                    <div className="w-full justify-start flex items-center">
+                        <div className="w-56 flex items-center justify-center mt-2">
+                            <Button
+                                className="flex-1 mr-1"
+                                size="small"
+                                icon={
+                                    <ArrowDownTrayIcon className="text-white h-5" />
+                                }
+                            >
+                                Download
+                            </Button>
 
-                        <Button
-                            className="flex-1 ml-1"
-                            size="small"
-                            icon={<LinkIcon className="text-white h-5" />}
-                        >
-                            Copy url
-                        </Button>
+                            <Button
+                                className="flex-1 ml-1"
+                                size="small"
+                                icon={<LinkIcon className="text-white h-5" />}
+                            >
+                                Copy url
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
