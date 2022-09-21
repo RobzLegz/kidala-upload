@@ -1,26 +1,26 @@
 # dependencies
-/frontend/node_modules
-/frontend/.pnp
-/frontend.pnp.js
+**/node_modules
+**/.pnp
+**.pnp.js
 /backend/kidalaenv
 /kebab/env
 /socket/assets/node_modules/
 /socket/deps/
 
 # testing
-/frontend/coverage
+**/coverage
 /backend/script.py
 
 # next.js
-/frontend/.next/
-/frontend/out/
+**/.next/
+**/out/
 
 # production
-/frontend/build
+**/build
 /socket/_build/
 
 # misc
-/frontend.DS_Store
+**.DS_Store
 *.pem
 
 # debug
@@ -44,10 +44,11 @@ yarn-error.log*
 
 # cache
 /backend/__pycache__
-/kebab/__pycache__
+**/__pycache__
 
 #files
 /backend/files
+/kebab/files
 
 # socket
 
