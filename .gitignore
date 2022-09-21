@@ -1,4 +1,6 @@
 # dependencies
+**/node_modules
+**/.next
 /frontend/node_modules
 /frontend/.pnp
 /frontend.pnp.js
