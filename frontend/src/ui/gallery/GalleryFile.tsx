@@ -68,13 +68,6 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
         handleFileClick && handleFileClick(index, props.hash);
     };
 
-    // if (
-    //     !appInfo.sortOptions.showFiles &&
-    //     detectFileType(props.name) !== 'image'
-    // ) {
-    //     return null;
-    // }
-
     return (
         <div
             className={`bg-primary-800 w-full h-full items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700 no_select ${

@@ -11,7 +11,7 @@ import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
 
 const cn =
-    'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2';
+    'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2 mb-4';
 
 const GalleryGrid = () => {
     const windowSize = useWindowSize();
@@ -48,7 +48,7 @@ const GalleryGrid = () => {
             infoRef.current.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
-                inline: 'start',
+                // inline: 'start',
             });
 
         router.push(
