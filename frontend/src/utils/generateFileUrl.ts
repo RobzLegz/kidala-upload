@@ -1,4 +1,4 @@
 import { BASE_URL } from '../requests/routes';
 
-export const generateImageUrl = (hash: string, name: string) =>
+export const generateFileUrl = (hash: string, name: string) =>
     `${BASE_URL}/files/${hash}/${name}`;

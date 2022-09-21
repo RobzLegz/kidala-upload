@@ -32,11 +32,11 @@
     }
 
     .track {
-        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1.5 relative overflow-hidden rounded-lg bg-accent;
     }
 
     .vol_track {
-        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1 relative overflow-hidden rounded-lg bg-accent-hover;
     }
 
     .animate-track {
