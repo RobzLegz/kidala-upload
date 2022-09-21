@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
@@ -44,6 +43,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
     const [playedPercentage, setPlayedPercentage] = useState<number>(0);
     const [prevFileName, setPrevFileName] = useState<string>(file.name);
     const [playerRef, setPlayerRef] = useState<ReactPlayer | null>(null);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     const trackAnim = {
         transform: `translateX(${playedPercentage}%)`,
@@ -102,6 +102,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
             setDuration(null);
             setPlayedTime(0);
             setRandImage(getRandImage(appInfo.files));
+            setPlayerRef(null);
+            setLoaded(false);
         }
     }, [file.name, appInfo.files]);
 
@@ -173,8 +175,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                         </p>
                     </div>
                 ) : (
-                    <div className="w-8 h-8 flex items-center justify-center">
-                        <Spinner />
+                    <div className="w-[260px] flex items-center justify-center">
+                        <Spinner size="4" />
                     </div>
                 )}
 
@@ -263,7 +265,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                     onProgress={(progress) => {
                         setPlayedTime(progress.playedSeconds);
                     }}
-                    onReady={(player) => setPlayerRef(player)}
+                    onReady={(player) => {
+                        setPlayerRef(player);
+                        setLoaded(true);
+                    }}
                 />
             </div>
         </div>

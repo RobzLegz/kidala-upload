@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FileInterface } from '../interfaces/file';
 import {
-    ArrowDownTrayIcon,
     BookmarkIcon as BookmarkFullIcon,
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';

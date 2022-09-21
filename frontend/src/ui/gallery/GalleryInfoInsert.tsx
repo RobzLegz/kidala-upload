@@ -1,9 +1,5 @@
-import {
-    ArrowDownTrayIcon,
-    BookmarkIcon as BookmarkFullIcon,
-    HeartIcon as HeartIconFull,
-} from '@heroicons/react/20/solid';
-import { HeartIcon, BookmarkIcon, LinkIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon } from '@heroicons/react/20/solid';
+import { LinkIcon } from '@heroicons/react/24/outline';
 import { default as OptImage } from 'next/image';
 import React, { useEffect, useState } from 'react';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -14,6 +10,7 @@ import FileControls from '../FileControls';
 import Spinner from '../Spinner';
 import { BASE_URL } from './../../requests/routes';
 import AudioPlayer from './AudioPlayer';
+import { useForceUpdate } from './../../hooks/useForceUpdate';
 
 export interface GalleryInfoInsertProps
     extends React.ComponentPropsWithRef<'div'> {
@@ -37,26 +34,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
         width: 0,
         height: 0,
     });
-    const [totalLikes, setTotalLikes] = useState(0);
-    const [givenLikes, setGivenLikes] = useState(0);
-    const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(true);
-
-    const handleSave = () => {
-        setSaved(!saved);
-    };
-
-    const handleLike = () => {
-        setGivenLikes(givenLikes + 1);
-        setTotalLikes(totalLikes + 1);
-    };
-
-    const handleDislike = () => {
-        if (givenLikes > 0) {
-            setGivenLikes(givenLikes - 1);
-            setTotalLikes(totalLikes - 1);
-        }
-    };
 
     const fileSource = `${BASE_URL}/files/${fileInfo.hash}/${fileInfo.name}`;
 
