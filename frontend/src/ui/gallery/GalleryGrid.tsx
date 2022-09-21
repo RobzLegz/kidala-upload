@@ -7,6 +7,8 @@ import GalleryFile from './GalleryFile';
 import { useRouter } from 'next/router';
 import GalleryInfoInsert from './GalleryInfoInsert';
 import { detectFileType } from '../../utils/detectFileType';
+import { getFileFromHash } from '../../utils/getFileFromHash';
+import { FileInterface } from '../../interfaces/file';
 
 const cn =
     'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2';
@@ -20,6 +22,8 @@ const GalleryGrid = () => {
     const infoRef = useRef<any>();
 
     const [infoInsert, setInfoInsert] = useState<number | null>(null);
+    const [clickedFileInfo, setClickedFileInfo] =
+        useState<FileInterface | null>(null);
 
     const handleFileClick = (index?: number, hash?: string) => {
         if (!index) {
@@ -34,16 +38,27 @@ const GalleryGrid = () => {
 
         setInfoInsert(nextRowFirst);
 
-        console.log(infoRef.current)
+        const clickedInfo = getFileFromHash(hash, appInfo.files);
+
+        if (clickedInfo) {
+            setClickedFileInfo(clickedInfo);
+        }
 
         infoRef.current &&
             infoRef.current.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
-                inline: 'nearest',
+                inline: 'start',
             });
 
-        // router.push(`/new/gallery?f=${hash}`);
+        router.push(
+            {
+                pathname: '/new/gallery',
+                query: { f: hash },
+            },
+            undefined,
+            { shallow: true }
+        );
     };
 
     if (infoInsert && appInfo.files) {
@@ -65,10 +80,15 @@ const GalleryGrid = () => {
                         />
                     ))}
 
-                <GalleryInfoInsert
-                    ref={infoRef}
-                    colspan={Number(windowSize.width) >= windowSizes.xl ? 4 : 3}
-                />
+                {clickedFileInfo && (
+                    <GalleryInfoInsert
+                        ref={infoRef}
+                        fileInfo={clickedFileInfo}
+                        colspan={
+                            Number(windowSize.width) >= windowSizes.xl ? 4 : 3
+                        }
+                    />
+                )}
 
                 {appInfo.files
                     .filter((file) =>
