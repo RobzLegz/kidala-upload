@@ -9,7 +9,6 @@ import { FileInterface } from '../../interfaces/file';
 import { BASE_URL } from '../../requests/routes';
 import { useRouter } from 'next/router';
 import { detectFileType } from '../../utils/detectFileType';
-import GetIconFromFileType from '../GetIconFromFileType';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { AppInfo } from '../../redux/slices/appSlice';
 import { useSelector } from 'react-redux';

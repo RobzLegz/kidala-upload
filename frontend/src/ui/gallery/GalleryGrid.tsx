@@ -19,14 +19,12 @@ const GalleryGrid = () => {
 
     const appInfo: AppInfo = useSelector(selectApp);
 
-    const infoRef = useRef<any>();
-
     const [infoInsert, setInfoInsert] = useState<number | null>(null);
     const [clickedFileInfo, setClickedFileInfo] =
         useState<FileInterface | null>(null);
 
     const handleFileClick = (index?: number, hash?: string) => {
-        if (!index) {
+        if (typeof index !== "number") {
             return;
         }
 
@@ -44,13 +42,6 @@ const GalleryGrid = () => {
             setClickedFileInfo(clickedInfo);
         }
 
-        infoRef.current &&
-            infoRef.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                // inline: 'start',
-            });
-
         router.push(
             {
                 pathname: '/new/gallery',
@@ -61,7 +52,7 @@ const GalleryGrid = () => {
         );
     };
 
-    if (infoInsert && appInfo.files) {
+    if (typeof infoInsert === 'number' && appInfo.files) {
         return (
             <div className={cn}>
                 {appInfo.files
@@ -82,7 +73,6 @@ const GalleryGrid = () => {
 
                 {clickedFileInfo && (
                     <GalleryInfoInsert
-                        ref={infoRef}
                         fileInfo={clickedFileInfo}
                         colspan={
                             Number(windowSize.width) >= windowSizes.xl ? 4 : 3
