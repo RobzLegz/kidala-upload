@@ -1,27 +1,27 @@
 # dependencies
-/frontend/node_modules
-/frontend/.pnp
-/frontend.pnp.js
-/borsch/kidalaenv
+**/node_modules
+**/.pnp
+**.pnp.js
+/backend/kidalaenv
 /kebab/env
 /kebab/venv
 /socket/assets/node_modules/
 /socket/deps/
 
 # testing
-/frontend/coverage
-/borsch/script.py
+**/coverage
+/backend/script.py
 
 # next.js
-/frontend/.next/
-/frontend/out/
+**/.next/
+**/out/
 
 # production
-/frontend/build
+**/build
 /socket/_build/
 
 # misc
-/frontend.DS_Store
+**.DS_Store
 *.pem
 
 # debug
@@ -44,12 +44,12 @@ yarn-error.log*
 .vercel
 
 # cache
-/borsch/__pycache__
-/kebab/__pycache__
+/backend/__pycache__
 **/__pycache__
 
 #files
-/borsch/files
+/backend/files
+/kebab/files
 
 # socket
 
