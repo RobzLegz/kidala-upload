@@ -60,7 +60,7 @@ async def get_own_user(current_user: User = Depends(get_current_user)):
 
 @router.get("/me/items", response_model=list[File])
 async def read_own_items(current_user: User = Depends(get_current_user)):
-    dbcursor = db.files.find({"_id": current_user[id]})
+    dbcursor = db.files.find({"_id": {"$in": current_user.files}})
     returnlist = []
     for file in dbcursor:
         returnlist.append(File(**file))
