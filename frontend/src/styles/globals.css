@@ -22,9 +22,55 @@
     .link {
         @apply text-white hover:underline focus:underline cursor-pointer;
     }
+
+    .track {
+        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+    }
+
+    .vol_track {
+        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+    }
+
+    .animate-track {
+        @apply w-full top-0 left-0 absolute transform translate-x-0 p-4 pointer-events-none bg-indigo-100;
+    }
+
+    .playerRange {
+        @apply w-full bg-transparent;
+    }
 }
 
 label {
     user-select: none;
     -webkit-user-select: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+}
+
+input[type='range']::-webkit-progress-inner-element {
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+input[type='range']::-webkit-progress-bar {
+    -webkit-appearance: none;
+    background: transparent;
+}
+
+input[type='range'] {
+    overflow: hidden;
+    outline: none;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background: transparent;
 }
