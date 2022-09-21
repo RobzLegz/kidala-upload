@@ -9,7 +9,6 @@ import { UPLOAD_ROUTE } from './routes';
 export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
-    setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file: File | null,
     tag: string,
     description: string,
@@ -56,7 +55,6 @@ export const uploadFile = async (
             setUrl(hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
-            setFile(null);
         })
         .catch((err) => {
             if (!err.response) {

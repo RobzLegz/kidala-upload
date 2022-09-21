@@ -2,7 +2,7 @@ import {
     DocumentIcon,
     FolderOpenIcon,
     TrashIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
