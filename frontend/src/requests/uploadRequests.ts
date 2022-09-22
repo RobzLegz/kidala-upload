@@ -12,21 +12,21 @@ export const uploadFile = async (
     file: File | null,
     tags: string[],
     description: string,
-    isPrivate: boolean,
+    isPrivate: boolean
 ) => {
     if (!file) {
         return;
     }
 
-    let file_tags = ""
+    let file_tags = '';
 
-    tags.forEach(tag => {
-        if(file_tags === ""){
+    tags.forEach((tag) => {
+        if (file_tags === '') {
             file_tags = tag;
-        }else{
-            file_tags = `${file_tags};${tag}`
+        } else {
+            file_tags = `${file_tags};${tag}`;
         }
-    })
+    });
 
     let formData = new FormData();
     formData.append('file', file);
@@ -46,7 +46,7 @@ export const uploadFile = async (
             ...headers,
             headers: {
                 ...headers.headers,
-                Authorization: access_token,
+                Authorization: `Bearer ${access_token}`,
             },
         };
     }

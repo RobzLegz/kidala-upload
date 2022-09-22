@@ -21,7 +21,7 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
 
     const headers = {
         headers: {
-            Authorization: access_token,
+            Authorization: `Bearer ${access_token}`,
         },
     };
 
