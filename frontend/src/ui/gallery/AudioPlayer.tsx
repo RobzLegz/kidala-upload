@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { useDispatch, useSelector } from 'react-redux';
-import { windowSizes } from '../../constants/windowSizes';
-import useWindowSize from '../../hooks/useWindowSize';
+import { useSelector } from 'react-redux';
 import { FileInterface } from '../../interfaces/file';
 import {
     AppInfo,
@@ -15,6 +13,7 @@ import MusicPlate from './MusicPlate';
 import { generateFileUrl } from './../../utils/generateFileUrl';
 import FileControls from '../FileControls';
 import PlayerControls from '../PlayerControls';
+import FileInfoControls from '../FileInfoControls';
 
 export interface AudioPlayerProps {
     file: FileInterface;
@@ -22,9 +21,6 @@ export interface AudioPlayerProps {
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
-    const dispatch = useDispatch();
-    const windowSize = useWindowSize();
-
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [playing, setPlaying] = useState(false);
@@ -56,9 +52,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
         }
     }, []);
 
-    setTimeout(() => {
-        setLoaded(true);
-    }, 1000);
+    useEffect(() => {
+        if (!loaded) {
+            setTimeout(() => {
+                setLoaded(true);
+            }, 1000);
+        }
+    }, [loaded]);
 
     if (detectFileType(file.name) !== 'audio' || !randImage) {
         return null;
@@ -74,9 +74,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                 <MusicPlate image={randImage} />
             </div>
 
-            <p className="text-white my-2">{file.name}</p>
-
-           <PlayerControls 
+            <PlayerControls
                 file={file}
                 setPlaying={setPlaying}
                 playing={playing}
@@ -91,7 +89,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                 setMuted={setMuted}
                 muted={muted}
                 looping={looping}
-           />
+            />
 
             {insert && <FileControls file={file} />}
 
@@ -117,6 +115,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                     />
                 </div>
             ) : null}
+
+            <FileInfoControls file={file} />
         </div>
     );
 };

@@ -124,7 +124,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
     }, [duration, playedTime, file]);
 
     return (
-        <div className="flex flex-col bg-primary-900 p-2 rounded-lg border border-primary-700">
+        <div className="flex flex-col p-2 mt-2">
             {duration && playerRef ? (
                 <div className="flex items-center justify-center h-6">
                     <p className="text-white w-10 flex items-center justify-center">

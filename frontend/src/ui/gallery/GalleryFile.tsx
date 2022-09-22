@@ -138,35 +138,4 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
     );
 };
 
-{
-    /* <div className="flex items-center mr-4">
-    <button onClick={handleLike} className="flex items-center justify-center">
-        {givenLikes > 0 ? (
-            <HeartIconFull className="text-notification h-8" />
-        ) : (
-            <>
-                <HeartIcon className="text-white h-8" />
-
-                <p className="text-white no_select ml-0.5">{totalLikes}</p>
-            </>
-        )}
-    </button>
-
-    {givenLikes > 0 && (
-        <button
-            className="flex items-center justify-center ml-2"
-            onClick={handleDislike}
-        >
-            <small className="text-notification border-white no_select">
-                {givenLikes}
-            </small>
-
-            <p className="text-white mx-2">|</p>
-
-            <small className="text-white no_select">{totalLikes}</small>
-        </button>
-    )}
-</div>; */
-}
-
 export default GalleryFile;
