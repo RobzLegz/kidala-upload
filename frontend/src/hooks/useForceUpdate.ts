@@ -4,7 +4,7 @@ export function useForceUpdate() {
     const [value, setValue] = useState(0);
 
     useEffect(() => {
-        setValue((value) => value + 1);
+        setValue(value + 1);
 
         return () => setValue((value) => value + 1);
     }, []);

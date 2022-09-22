@@ -113,6 +113,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
         }
     }, []);
 
+    setTimeout(() => {
+        setLoaded(true)
+    }, 1000);
+
     useEffect(() => {
         if (file && duration) {
             const percentage = Math.floor((playedTime / duration) * 100);
@@ -124,6 +128,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
             }
         }
     }, [duration, playedTime, file]);
+
+    console.log(loaded)
 
     if (detectFileType(file.name) !== 'audio' || !randImage) {
         return null;
@@ -252,25 +258,28 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
 
             {insert && <FileControls file={file} />}
 
-            <div className="hidden">
-                <ReactPlayer
-                    url={generateFileUrl(file.hash, file.name)}
-                    playing={playing}
-                    volume={appInfo.audioVolume}
-                    muted={muted}
-                    loop={looping}
-                    onDuration={(dur) => {
-                        setDuration(dur);
-                    }}
-                    onProgress={(progress) => {
-                        setPlayedTime(progress.playedSeconds);
-                    }}
-                    onReady={(player) => {
-                        setPlayerRef(player);
-                        setLoaded(true);
-                    }}
-                />
-            </div>
+            {loaded ? (
+                <div className="hidden">
+                    <ReactPlayer
+                        url={generateFileUrl(file.hash, file.name)}
+                        playing={playing}
+                        volume={appInfo.audioVolume}
+                        muted={muted}
+                        loop={looping}
+                        onDuration={(dur) => {
+                            setDuration(dur);
+                        }}
+                        onProgress={(progress) => {
+                            setPlayedTime(progress.playedSeconds);
+                        }}
+                        onReady={(player) => {
+                            setPlayerRef(player);
+                            setLoaded(true);
+                        }}
+                        stopOnUnmount
+                    />
+                </div>
+            ) : null}
         </div>
     );
 };
