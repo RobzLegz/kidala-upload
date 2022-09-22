@@ -6,7 +6,7 @@ export interface FileInterface {
     name: string;
     hash: string;
     size: number;
-    author?: string;
+    author: string;
     private: boolean;
     description: string | null;
     tag: Tag[];
