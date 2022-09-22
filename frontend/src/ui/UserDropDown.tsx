@@ -1,11 +1,9 @@
 import {
     BugAntIcon,
     BookmarkIcon,
-    ChevronRightIcon,
     CogIcon,
     DocumentIcon,
     LanguageIcon,
-    UserIcon,
 } from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';

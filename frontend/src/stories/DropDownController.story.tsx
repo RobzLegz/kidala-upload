@@ -4,7 +4,7 @@ import { toStr } from './utils/toStr';
 import DropDownController, {
     DropDownControllerProps,
 } from '../ui/DropDownController';
-import { ChatIcon } from '@heroicons/react/20/solid';
+import { ChatBubbleBottomCenterIcon } from '@heroicons/react/20/solid';
 import { BASE_URL } from '../requests/routes';
 
 export default {
@@ -21,7 +21,7 @@ export const Main: Story<DropDownControllerProps> = ({ ...props }) => {
 export const Icon: Story<DropDownControllerProps> = ({ ...props }) => {
     return (
         <DropDownController
-            icon={<ChatIcon className="text-white h-8" />}
+            icon={<ChatBubbleBottomCenterIcon className="text-white h-8" />}
             {...props}
         />
     );
