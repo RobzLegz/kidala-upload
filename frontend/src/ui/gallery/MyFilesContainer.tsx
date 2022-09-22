@@ -6,12 +6,16 @@ import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getFilesV2 } from '../../requests/fileRequests';
 import { getUserFiles } from '../../requests/userRequests';
+import { useRouter } from 'next/router';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 
 const MyFilesContainer = () => {
+    const router = useRouter();
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
 
     const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
@@ -77,6 +81,36 @@ const MyFilesContainer = () => {
             return () => window.removeEventListener('scroll', handleScroll);
         }
     }, [windowSize.height, appInfo.files, limit]);
+
+    useEffect(() => {
+        const user_token = localStorage.getItem('access_token');
+
+        if (!user_token) {
+            router.push('/new/login');
+        }
+        
+        const fetchFiles = async () => {
+            if (!appInfo.files || !limit) {
+                return;
+            }
+
+            if (appInfo.files.length === prevCursor) {
+                return;
+            }
+
+            setPrevCursor(appInfo.files.length);
+
+            await getUserFiles({
+                cursor: appInfo.files.length,
+                limit: limit,
+                dispatch,
+            });
+        };
+
+        fetchFiles().then(() => {
+            setLoading(false);
+        });
+    }, []);
 
     return <div>MyFilesContainer</div>;
 };

@@ -57,17 +57,15 @@ export const userSlice = createSlice({
                 state.myFiles.length === 0 ||
                 state.myFiles === null
             ) {
-                const sortedFiles = sortFiles(files);
-
                 state = {
                     ...state,
-                    myFiles: sortedFiles,
+                    myFiles: files,
                 };
 
                 return state;
             }
 
-            const siftBlogs = files.map((blog) => {
+            const siftFiles = files.map((blog) => {
                 if (state.myFiles?.some((b) => b._id === blog._id)) {
                     return null;
                 }
@@ -75,19 +73,19 @@ export const userSlice = createSlice({
                 return blog;
             });
 
-            const okBlogs = siftBlogs.filter((bl) => bl !== null);
+            const okFiles = siftFiles.filter((bl) => bl !== null);
 
-            let newBlogs: FileInterface[] = [...state.myFiles];
+            let newFiles: FileInterface[] = [...state.myFiles];
 
-            okBlogs.forEach((blog) => {
+            okFiles.forEach((blog) => {
                 if (blog) {
-                    newBlogs = [...newBlogs, blog];
+                    newFiles = [...newFiles, blog];
                 }
             });
 
             state = {
                 ...state,
-                myFiles: newBlogs,
+                myFiles: newFiles,
             };
 
             return state;
