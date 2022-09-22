@@ -7,6 +7,7 @@ import { FileInterface } from '../../interfaces/file';
 import { detectFileType } from '../../utils/detectFileType';
 import Button from '../Button';
 import FileControls from '../FileControls';
+import FileInfoControls from '../FileInfoControls';
 import Spinner from '../Spinner';
 import { BASE_URL } from './../../requests/routes';
 import AudioPlayer from './AudioPlayer';
@@ -79,7 +80,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 <AudioPlayer file={fileInfo} insert />
             </div>
         );
-    }else if (detectFileType(fileInfo.name) === 'video') {
+    } else if (detectFileType(fileInfo.name) === 'video') {
         return (
             <div className={cn}>
                 <VideoPlayer file={fileInfo} insert />
@@ -115,36 +116,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
 
                 <FileControls file={fileInfo} />
 
-                <div className="w-full p-2 flex-col items-start justify-start bg-primary-900 mt-1 rounded-lg border border-primary-700">
-                    <p className="text-white text-xs">
-                        <span className="text-sm">{fileInfo.name}</span>
-                        {fileInfo.description
-                            ? ` - ${fileInfo.description}`
-                            : ''}
-                    </p>
-
-                    <div className="w-full justify-start flex items-center">
-                        <div className="w-56 flex items-center justify-center mt-2">
-                            <Button
-                                className="flex-1 mr-1"
-                                size="small"
-                                icon={
-                                    <ArrowDownTrayIcon className="text-white h-5" />
-                                }
-                            >
-                                Download
-                            </Button>
-
-                            <Button
-                                className="flex-1 ml-1"
-                                size="small"
-                                icon={<LinkIcon className="text-white h-5" />}
-                            >
-                                Copy url
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+                <FileInfoControls file={fileInfo} />
             </div>
         </div>
     );

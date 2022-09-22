@@ -12,6 +12,7 @@ import { BASE_URL } from '../../requests/routes';
 import { detectFileType } from '../../utils/detectFileType';
 import { generateFileUrl } from '../../utils/generateFileUrl';
 import FileControls from '../FileControls';
+import FileInfoControls from '../FileInfoControls';
 import PlayerControls from '../PlayerControls';
 import { AudioPlayerProps } from './AudioPlayer';
 
@@ -63,7 +64,7 @@ const VideoPlayer: React.FC<AudioPlayerProps> = ({ file, insert }) => {
 
                 nH = videoHeight + hDiff;
 
-                while (nH > Number(windowSize.height) - 200) {
+                while (nH > Number(windowSize.height) - 300) {
                     if (Number(windowSize.width) < windowSizes.sm) {
                         nW -= 20;
                     } else {
@@ -157,10 +158,6 @@ const VideoPlayer: React.FC<AudioPlayerProps> = ({ file, insert }) => {
                 ) : null}
             </div>
 
-            <p className="text-white my-2">{file.name}</p>
-
-            {insert && <FileControls file={file} />}
-
             <PlayerControls
                 file={file}
                 setPlaying={setPlaying}
@@ -177,6 +174,10 @@ const VideoPlayer: React.FC<AudioPlayerProps> = ({ file, insert }) => {
                 muted={muted}
                 looping={looping}
             />
+
+            {insert && <FileControls file={file} />}
+
+            <FileInfoControls file={file} />
         </div>
     );
 };

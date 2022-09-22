@@ -13,6 +13,7 @@ import MusicPlate from './MusicPlate';
 import { generateFileUrl } from './../../utils/generateFileUrl';
 import FileControls from '../FileControls';
 import PlayerControls from '../PlayerControls';
+import FileInfoControls from '../FileInfoControls';
 
 export interface AudioPlayerProps {
     file: FileInterface;
@@ -52,12 +53,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
     }, []);
 
     useEffect(() => {
-        if(!loaded){
+        if (!loaded) {
             setTimeout(() => {
                 setLoaded(true);
             }, 1000);
         }
-    }, [loaded])
+    }, [loaded]);
 
     if (detectFileType(file.name) !== 'audio' || !randImage) {
         return null;
@@ -72,8 +73,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
             <div className={`${playing ? 'animate-spin-slow' : ''}`}>
                 <MusicPlate image={randImage} />
             </div>
-
-            <p className="text-white my-2">{file.name}</p>
 
             <PlayerControls
                 file={file}
@@ -116,6 +115,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                     />
                 </div>
             ) : null}
+
+            <FileInfoControls file={file} />
         </div>
     );
 };
