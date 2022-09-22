@@ -1,13 +1,14 @@
+import { Tag } from './tag';
+import { Like } from './like';
+
 export interface FileInterface {
     _id: string;
     name: string;
     hash: string;
-    size?: number;
+    size: number;
     author?: string;
-    email?: string;
-    phoneNumber?: string;
-    private?: boolean;
-    is_ad?: boolean;
-    tag?: string;
-    description?: string;
+    private: boolean;
+    description: string | null;
+    tag: Tag[];
+    likes: Like[];
 }

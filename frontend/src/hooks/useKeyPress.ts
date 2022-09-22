@@ -6,8 +6,10 @@ export function useKeyPress(targetKey: string): boolean {
     function downHandler(e: KeyboardEvent): void {
         const { key } = e;
 
-        e.stopPropagation();
-        e.preventDefault();
+        if (targetKey === ' ') {
+            e.stopPropagation();
+            e.preventDefault();
+        }
 
         if (key === targetKey) {
             setKeyPressed(true);
@@ -17,8 +19,10 @@ export function useKeyPress(targetKey: string): boolean {
     const upHandler = (e: KeyboardEvent): void => {
         const { key } = e;
 
-        e.stopPropagation();
-        e.preventDefault();
+        if (targetKey === ' ') {
+            e.stopPropagation();
+            e.preventDefault();
+        }
 
         if (key === targetKey) {
             setKeyPressed(false);
