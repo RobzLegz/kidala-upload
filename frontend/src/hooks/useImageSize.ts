@@ -1,16 +1,36 @@
-export function useImageSize(url: string) {
-    let width = 0;
-    let height = 0;
+import { useEffect, useState } from 'react';
 
-    const img = new Image();
-    img.src = url;
-    img.onload = () => {
-        width = img.width;
-        height = img.height;
-    };
+const useImageSize = (url?: string) => {
+    const [imageDimensions, setImageDimensions] = useState({
+        width: 0,
+        height: 0,
+    });
 
-    return {
-        width,
-        height,
-    };
-}
+    useEffect(() => {
+        if (url) {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => {
+                const { width, height } = img;
+
+                let nH = 0;
+
+                const nW = 128;
+                const w_c_p = ((nW - width) / width) * 100;
+                const f_w_c_p = Math.floor(w_c_p) / 100;
+                const hDiff = height * f_w_c_p;
+
+                nH = height + hDiff;
+
+                setImageDimensions({
+                    width: nW,
+                    height: nH,
+                });
+            };
+        }
+    }, [url]);
+
+    return imageDimensions;
+};
+
+export default useImageSize;

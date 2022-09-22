@@ -4,12 +4,11 @@ import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
 import { setToken } from '../redux/slices/userSlice';
-import { UPLOAD_BASE } from './routes';
+import { UPLOAD_ROUTE } from './routes';
 
 export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
-    setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file: File | null,
     tag: string,
     description: string,
@@ -43,7 +42,7 @@ export const uploadFile = async (
     }
 
     await axios
-        .post(UPLOAD_BASE, formData, headers)
+        .post(UPLOAD_ROUTE, formData, headers)
         .then((res) => {
             const { access_token, hash, url, file } = res.data;
 
@@ -53,10 +52,9 @@ export const uploadFile = async (
                 dispatch(setToken(access_token));
             }
 
-            setUrl(hash);
+            setUrl(file.hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
-            setFile(null);
         })
         .catch((err) => {
             if (!err.response) {

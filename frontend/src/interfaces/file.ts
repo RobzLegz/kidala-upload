@@ -1,7 +1,5 @@
 export interface FileInterface {
-    _id: {
-        $oid: string;
-    };
+    _id: string;
     name: string;
     hash: string;
     size?: number;

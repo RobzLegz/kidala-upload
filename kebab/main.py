@@ -1,13 +1,54 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
+import uvicorn
+import os
+
+from .endpoints import admin, files, tags, users
+from .database import db, User
 
 app = FastAPI()
 
-@app.route("/favicon.ico")
-def favicon():
-    return FileResponse(Path(app.root_path) / 'favicon.ico')
+APP_ROOT = Path('kebab')
+SERVER_URL = os.environ["SERVER_URL"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(admin.router)
+app.include_router(tags.router)
+app.include_router(files.router)
+app.include_router(users.router)
+
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse(APP_ROOT / 'favicon.ico')
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.get("/files/{filehash}/{filename}")
+async def return_file(filehash: str, filename: str):
+    return FileResponse(Path(APP_ROOT / "files" / filehash / filename))
+
+@app.get("/{filehash}")
+async def redirectFile(filehash: str):
+    if (query := db.files.find_one({'hash': filehash})) == None:
+        return "File not found"
+    else:
+        return RedirectResponse(f"{SERVER_URL}/files/{query['hash']}/{query['name']}")
+
+
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
+

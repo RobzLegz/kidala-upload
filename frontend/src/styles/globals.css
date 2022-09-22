@@ -4,19 +4,27 @@
 
 @layer components {
     * {
-        @apply p-0 m-0 box-border;
+        @apply p-0 m-0 box-border font-poppins;
     }
 
     body {
-        @apply bg-sky-900;
+        @apply bg-primary-900;
     }
 
     h1 {
         @apply text-4xl font-extrabold;
     }
 
+    h2 {
+        @apply text-3xl font-extrabold;
+    }
+
+    strong {
+        @apply font-bold text-base;
+    }
+
     .page {
-        @apply h-screen w-full bg-sky-900;
+        @apply min-h-screen w-full bg-primary-900 flex flex-col items-center justify-start;
     }
 
     .link {
@@ -24,11 +32,11 @@
     }
 
     .track {
-        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1.5 relative overflow-hidden rounded-lg bg-accent;
     }
 
     .vol_track {
-        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1 relative overflow-hidden rounded-lg bg-accent-hover;
     }
 
     .animate-track {
@@ -38,9 +46,14 @@
     .playerRange {
         @apply w-full bg-transparent;
     }
+
+    .dropbox_animation {
+        @apply w-[150%] h-[150%] absolute bg-gradient-to-tr from-primary-900 z-0 to-accent -top-1/4 -left-1/4 animate-border-animate content-none rounded-lg;
+    }
 }
 
-label {
+label,
+.no_select {
     user-select: none;
     -webkit-user-select: none;
 }
@@ -73,4 +86,22 @@ input[type='range'] {
 input[type='range']::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     background: transparent;
+}
+
+.tag_wrapper::-webkit-scrollbar {
+    height: 7px;
+    width: 6px;
+}
+
+.tag_wrapper::-webkit-scrollbar-track {
+    background: #0b0e11;
+}
+
+.tag_wrapper::-webkit-scrollbar-thumb {
+    background: #242c37;
+    border-radius: 4px;
+}
+
+.tag_wrapper::-webkit-scrollbar-thumb:hover {
+    background: #fd4d4d;
 }

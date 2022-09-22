@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,9 +14,8 @@ function LanguageSelector() {
 
     const languageInfo: LanguageInfo = useSelector(selectLanguage);
 
-    const [activeLang, setActiveLang] = useState<SupportedLang | undefined>(
-        undefined
-    );
+    const [activeLang, setActiveLang] =
+        useState<SupportedLang | undefined>(undefined);
     const [langsOpen, setLangsOpen] = useState<boolean>(false);
 
     useEffect(() => {
