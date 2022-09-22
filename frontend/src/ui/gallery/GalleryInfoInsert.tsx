@@ -10,7 +10,7 @@ import FileControls from '../FileControls';
 import Spinner from '../Spinner';
 import { BASE_URL } from './../../requests/routes';
 import AudioPlayer from './AudioPlayer';
-import { useForceUpdate } from './../../hooks/useForceUpdate';
+import VideoPlayer from './VideoPlayer';
 
 export interface GalleryInfoInsertProps
     extends React.ComponentPropsWithRef<'div'> {
@@ -77,6 +77,12 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
         return (
             <div className={cn}>
                 <AudioPlayer file={fileInfo} insert />
+            </div>
+        );
+    }else if (detectFileType(fileInfo.name) === 'video') {
+        return (
+            <div className={cn}>
+                <VideoPlayer file={fileInfo} insert />
             </div>
         );
     }
