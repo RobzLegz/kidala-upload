@@ -14,9 +14,10 @@ import GallerySearch from '../gallery/GallerySearch';
 
 export interface NavProps {
     gallery?: boolean;
+    myFiles?: boolean;
 }
 
-const Nav: React.FC<NavProps> = ({ gallery = false }) => {
+const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
     const router = useRouter();
     const windowSize = useWindowSize();
 

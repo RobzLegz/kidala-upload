@@ -1,56 +1,24 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { receiveFiles, setDbFileLen } from '../../redux/slices/appSlice';
+import React from 'react';
 import { ListFilesResponse } from '../../requests/fileRequests';
-import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
 import Nav from '../../ui/navigation/Nav';
 import PageModule from '../PageModule';
+import MyFilesContainer from './../../ui/gallery/MyFilesContainer';
 
 interface MyFilesProps extends ListFilesResponse {}
 
-const MyFiles: PageComponent<MyFilesProps> = ({ files, total_db }) => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (files) {
-            dispatch(receiveFiles(files));
-        }
-
-        if (total_db) {
-            dispatch(setDbFileLen(total_db));
-        }
-    }, []);
-
+const MyFiles: PageComponent<MyFilesProps> = () => {
     return (
         <PageModule
             title="MyFiles"
             description="Kidala life - combining social media with file upload"
             className="pt-24"
         >
-            <Nav gallery />
+            <Nav myFiles />
 
-            {/* <MyFilesComponent /> */}
+            <MyFilesContainer />
         </PageModule>
     );
-};
-
-MyFiles.getInitialProps = async () => {
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
-    const route = `${LIST_FILES_ROUTE}?cursor=0&limit=15`;
-
-    const res = await fetch(route, requestOptions);
-    const resJson: ListFilesResponse = await res.json();
-
-    return {
-        ...resJson,
-    };
 };
 
 export default MyFiles;
