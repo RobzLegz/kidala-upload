@@ -45,7 +45,7 @@ export const loginUser = async (
 export const getUserInfo = async (token: string, dispatch: Dispatch) => {
     const headers = {
         headers: {
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
         },
     };
 
