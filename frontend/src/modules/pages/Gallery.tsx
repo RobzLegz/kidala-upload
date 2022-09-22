@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { FileInterface } from '../../interfaces/file';
 import { receiveFiles, setDbFileLen } from '../../redux/slices/appSlice';
 import { ListFilesResponse } from '../../requests/fileRequests';
 import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
-import Gallery from '../../ui/gallery/Gallery';
-import GalleryNav from '../../ui/navigation/GalleryNav';
+import { default as GalleryComponent } from '../../ui/gallery/Gallery';
+import Nav from '../../ui/navigation/Nav';
 import PageModule from '../PageModule';
 
-interface GalleryPageProps extends ListFilesResponse {}
+interface GalleryProps extends ListFilesResponse {}
 
-const GalleryPage: PageComponent<GalleryPageProps> = ({ files, total_db }) => {
+const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -28,16 +27,16 @@ const GalleryPage: PageComponent<GalleryPageProps> = ({ files, total_db }) => {
         <PageModule
             title="Gallery"
             description="Kidala life - combining social media with file upload"
-            className='pt-24'
+            className="pt-24"
         >
-            <GalleryNav />
+            <Nav gallery />
 
-            <Gallery />
+            <GalleryComponent />
         </PageModule>
     );
 };
 
-GalleryPage.getInitialProps = async () => {
+Gallery.getInitialProps = async () => {
     const requestOptions = {
         method: 'GET',
         headers: {
@@ -55,4 +54,4 @@ GalleryPage.getInitialProps = async () => {
     };
 };
 
-export default GalleryPage;
+export default Gallery;

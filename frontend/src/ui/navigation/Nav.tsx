@@ -12,7 +12,11 @@ import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import GallerySearch from '../gallery/GallerySearch';
 
-const GalleryNav = () => {
+export interface NavProps {
+    gallery?: boolean;
+}
+
+const Nav: React.FC<NavProps> = ({ gallery = false }) => {
     const router = useRouter();
     const windowSize = useWindowSize();
 
@@ -21,7 +25,7 @@ const GalleryNav = () => {
 
     if (windowSize.width && windowSize.width < windowSizes.sm) {
         return (
-            <nav className="w-full h-16 px-4 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700 z-30">
+            <nav className="w-full h-16 px-4 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
                 <UserDropDown
                     icon={
                         !userInfo.loggedIn && (
@@ -29,8 +33,6 @@ const GalleryNav = () => {
                         )
                     }
                 />
-
-                <div className=""></div>
 
                 <div className="flex items-center justify-center">
                     <Button
@@ -67,12 +69,12 @@ const GalleryNav = () => {
     }
 
     return (
-        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700 z-30">
+        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
             <button onClick={() => router.push('/new')}>
                 <Logo />
             </button>
 
-            <GallerySearch />
+            {gallery && <GallerySearch />}
 
             <div className="flex items-center justify-center relative">
                 <Button
@@ -84,7 +86,7 @@ const GalleryNav = () => {
                     Gallery
                 </Button>
 
-                <Button
+                {/* <Button
                     className="bg-transparent z-10 ml-1"
                     size="small"
                     color="secondary"
@@ -92,7 +94,7 @@ const GalleryNav = () => {
                     icon={<ArchiveBoxIcon className="text-white h-6" />}
                 >
                     Dropbox
-                </Button>
+                </Button> */}
 
                 {!userInfo.loggedIn && (
                     <>
@@ -100,7 +102,7 @@ const GalleryNav = () => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/new/login')}
+                            onClick={() => router.push('/new/my-files')}
                         >
                             My files
                         </Button>
@@ -128,4 +130,4 @@ const GalleryNav = () => {
     );
 };
 
-export default GalleryNav;
+export default Nav;

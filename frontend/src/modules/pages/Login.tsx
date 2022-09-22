@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthForm from '../../ui/auth/AuthForm';
-import HomeNav from '../../ui/navigation/HomeNav';
+import Nav from '../../ui/navigation/Nav';
 import PageModule from '../PageModule';
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
             description="Kidala file upload. Free file hosting, unlimited uploads"
             className="justify-center h-screen"
         >
-            <HomeNav />
+            <Nav />
 
             <AuthForm />
         </PageModule>

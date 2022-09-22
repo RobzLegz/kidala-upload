@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import GalleryPage from '../../modules/pages/GalleryPage';
+import GalleryPage from '../../modules/pages/Gallery';
 import { Provider } from 'react-redux';
 import store from '../../redux/app/store';
 
