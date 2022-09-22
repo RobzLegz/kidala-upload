@@ -22,6 +22,7 @@ import {
     SpeakerXMarkIcon,
 } from '@heroicons/react/20/solid';
 import FileControls from '../FileControls';
+import { useKeyPress } from '../../hooks/useKeyPress';
 
 export interface AudioPlayerProps {
     file: FileInterface;
@@ -31,6 +32,7 @@ export interface AudioPlayerProps {
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
+    const spacePressed = useKeyPress(' ');
 
     const appInfo: AppInfo = useSelector(selectApp);
 
@@ -114,7 +116,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
     }, []);
 
     setTimeout(() => {
-        setLoaded(true)
+        setLoaded(true);
     }, 1000);
 
     useEffect(() => {
@@ -129,7 +131,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
         }
     }, [duration, playedTime, file]);
 
-    console.log(loaded)
+    useEffect(() => {
+        if (spacePressed) {
+            setPlaying(!playing);
+        }
+    }, [spacePressed]);
 
     if (detectFileType(file.name) !== 'audio' || !randImage) {
         return null;
@@ -149,7 +155,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
 
             <div className="flex flex-col bg-primary-900 p-2 rounded-lg border border-primary-700">
                 {duration && playerRef ? (
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center h-6">
                         <p className="text-white w-10 flex items-center justify-center">
                             {getTime(playedTime)}
                         </p>
@@ -181,7 +187,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                         </p>
                     </div>
                 ) : (
-                    <div className="w-[260px] flex items-center justify-center">
+                    <div className="w-[356px] flex items-center justify-center h-6">
                         <Spinner size="4" />
                     </div>
                 )}
@@ -233,7 +239,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ file, insert = false }) => {
                                         id="audio_range"
                                         min={0}
                                         max={1}
-                                        step="any"
+                                        step={0.1}
                                         value={appInfo.audioVolume}
                                         onChange={handleVolumeChange}
                                         onMouseUp={() => {
