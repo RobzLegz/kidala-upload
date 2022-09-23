@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
-import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { getUserFiles } from '../../requests/userRequests';
 import { useRouter } from 'next/router';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import MyFilesView from './MyFilesView';
 
 const user_token = !isServer ? localStorage.getItem('access_token') : null;
 
@@ -15,7 +15,6 @@ const MyFilesContainer = () => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
-    const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
 
     const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
@@ -137,7 +136,7 @@ const MyFilesContainer = () => {
         });
     }, []);
 
-    return <div>MyFilesContainer</div>;
+    return <MyFilesView />;
 };
 
 export default MyFilesContainer;
