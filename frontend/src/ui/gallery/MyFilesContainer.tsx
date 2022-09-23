@@ -4,10 +4,11 @@ import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
-import { getFilesV2 } from '../../requests/fileRequests';
 import { getUserFiles } from '../../requests/userRequests';
 import { useRouter } from 'next/router';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+
+const user_token = !isServer ? localStorage.getItem('access_token') : null;
 
 const MyFilesContainer = () => {
     const router = useRouter();
@@ -43,22 +44,28 @@ const MyFilesContainer = () => {
     }, [windowSize.width]);
 
     useEffect(() => {
-        if (appInfo.files && loading) {
+        if (userInfo.myFiles && loading) {
             const fetchFiles = async () => {
-                if (!appInfo.files || !limit) {
+                if (!userInfo.myFiles || !limit) {
                     return;
                 }
 
-                if (appInfo.files.length === prevCursor) {
+                if (userInfo.myFiles.length === prevCursor) {
                     return;
                 }
 
-                setPrevCursor(appInfo.files.length);
+                if (!user_token) {
+                    router.push('/new/login');
+                    return;
+                }
+
+                setPrevCursor(userInfo.myFiles.length);
 
                 await getUserFiles({
-                    cursor: appInfo.files.length,
+                    cursor: userInfo.myFiles.length,
                     limit: limit,
                     dispatch,
+                    token: user_token,
                 });
             };
 
@@ -66,44 +73,62 @@ const MyFilesContainer = () => {
                 setLoading(false);
             });
         }
-    }, [appInfo.files, loading]);
+    }, [userInfo.myFiles, loading]);
 
     useEffect(() => {
         if (
             !isServer &&
             windowSize.height &&
-            appInfo.files &&
-            appInfo.files.length < appInfo.db_file_len &&
+            userInfo.info &&
+            userInfo.myFiles &&
+            userInfo.myFiles.length < Number(userInfo.info?.files.length) &&
             limit
         ) {
             window.addEventListener('scroll', handleScroll);
 
             return () => window.removeEventListener('scroll', handleScroll);
         }
-    }, [windowSize.height, appInfo.files, limit]);
+    }, [windowSize.height, userInfo.myFiles, limit, userInfo.info]);
 
     useEffect(() => {
-        const user_token = localStorage.getItem('access_token');
-
         if (!user_token) {
             router.push('/new/login');
+            return;
         }
-        
+
         const fetchFiles = async () => {
-            if (!appInfo.files || !limit) {
+            if (!userInfo.info) {
                 return;
             }
 
-            if (appInfo.files.length === prevCursor) {
+            if (!userInfo.myFiles || !limit) {
+                await getUserFiles({
+                    cursor: 0,
+                    limit: 20,
+                    dispatch,
+                    token: user_token,
+                });
+
                 return;
             }
 
-            setPrevCursor(appInfo.files.length);
+            if (userInfo.myFiles.length === prevCursor) {
+                return;
+            }
+
+            if (
+                userInfo.myFiles.length >= Number(userInfo.info?.files.length)
+            ) {
+                return;
+            }
+
+            setPrevCursor(userInfo.myFiles.length);
 
             await getUserFiles({
-                cursor: appInfo.files.length,
+                cursor: userInfo.myFiles.length,
                 limit: limit,
                 dispatch,
+                token: user_token,
             });
         };
 

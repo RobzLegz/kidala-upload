@@ -58,13 +58,13 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 async def get_own_user(current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.get("/me/items", response_model=list[File])
+@router.get("/me/items")
 async def read_own_items(current_user: User = Depends(get_current_user), cursor: int = 0, limit: int = 20):
     if cursor >= 0 and limit >= 0:
-        dbcursor = db.files.find({"_id": {"$in": current_user.files}}).skip(cursor).limit(limit)
+        db_cursor = db.files.find({"_id": {"$in": current_user.files}}).skip(cursor).limit(limit)
         returnlist = []
-        for file in dbcursor:
+        for file in db_cursor:
             returnlist.append(File(**file))
-        return {'files': returnlist, 'count':len(returnlist), 'total_userfiles':db_cursor.count()}
+        return {'files': returnlist, 'count':len(returnlist)}
     else:
         raise HTTPException(400)

@@ -62,12 +62,10 @@ export const getUserInfo = async (token: string, dispatch: Dispatch) => {
     await axios
         .get(GET_USER_INFO_ROUTE, headers)
         .then((res) => {
-            const { user }: { user: User } = res.data;
-
-            dispatch(setUserInfo(user));
+            dispatch(setUserInfo(res.data));
             dispatch(setToken(token));
 
-            if (user.username && user.password) {
+            if (res.data.username && res.data.password) {
                 dispatch(handleLogin(true));
             }
         })
@@ -87,18 +85,26 @@ export const getUserInfo = async (token: string, dispatch: Dispatch) => {
 };
 
 export const getUserFiles = async ({
+    token,
     cursor,
     limit,
     dispatch,
 }: {
+    token: string;
     cursor: number;
     limit: number;
     dispatch: Dispatch;
 }) => {
     const route = `${GET_USER_ITEMS_ROUTE}?cursor=${cursor}&limit=${limit}`;
 
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
     await axios
-        .get(route)
+        .get(route, headers)
         .then((res) => {
             const data: ListFilesResponse = res.data;
 
