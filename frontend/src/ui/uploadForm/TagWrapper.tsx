@@ -27,7 +27,7 @@ export const TagWrapper: React.FC<TagWrapperProps> = ({
                 >
                     {formTags.map((tag, i) => (
                         <div className="" key={i}>
-                            <Tag tag={tag.tag} />
+                            <Tag tag={tag.tag} close={false} />
                         </div>
                     ))}
                 </div>

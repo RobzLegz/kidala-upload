@@ -1,5 +1,5 @@
 import { ChevronDownIcon, HeartIcon } from '@heroicons/react/20/solid';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, LinkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
@@ -27,7 +27,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         src={generateFileUrl(file.hash, file.name)}
                         draggable={false}
                         objectFit="cover"
-                        layout='fill'
+                        layout="fill"
                     />
                 ) : (
                     <GalleryNonImage filename={file.name} />
@@ -50,16 +50,24 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 <TagWrapper formTags={file.tag} />
             </div>
 
-            <div className="w-32 flex items-center justify-center h-full pt-5">
+            <div className="w-32 flex items-center justify-center h-20">
                 <div className="flex flex-col items-center justify-center">
                     <HeartIcon className="h-6 text-notification" />
 
                     <p className="text-primary-100">16</p>
                 </div>
 
-                <button className="ml-4">
-                    <ArrowDownTrayIcon className="h-6 text-notification" />
-                </button>
+                <div className="flex flex-col ml-4 items-center justify-center">
+                    <button className="mb-1">
+                        <ArrowDownTrayIcon className="h-6 text-notification" />
+                    </button>
+
+                    {!file.private && (
+                        <button className="mt-1">
+                            <LinkIcon className="h-6 text-notification" />
+                        </button>
+                    )}
+                </div>
 
                 <button className="ml-4" onClick={() => setOpened(!opened)}>
                     <ChevronDownIcon
