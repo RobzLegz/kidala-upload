@@ -40,7 +40,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
         }
     }, [appInfo.files]);
 
-    if (!extension || !appInfo.files) {
+    if (!extension) {
         return (
             <DocumentTextIcon
                 className={`text-primary-100 w-6 ${className && className}`}
@@ -73,7 +73,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                     />
                 );
             }
-           
+
             return (
                 <DocumentIcon
                     className={`text-primary-100 w-full ${
