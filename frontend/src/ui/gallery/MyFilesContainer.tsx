@@ -95,11 +95,11 @@ const MyFilesContainer = () => {
             return;
         }
 
-        const fetchFiles = async () => {
-            if (!userInfo.info) {
-                return;
-            }
+        if (!userInfo.info) {
+            return;
+        }
 
+        const fetchFiles = async () => {
             if (!userInfo.myFiles || !limit) {
                 await getUserFiles({
                     cursor: 0,
@@ -134,7 +134,7 @@ const MyFilesContainer = () => {
         fetchFiles().then(() => {
             setLoading(false);
         });
-    }, []);
+    }, [userInfo.info]);
 
     return <MyFilesView />;
 };

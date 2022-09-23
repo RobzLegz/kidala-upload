@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface TagProps {
     tag: string;
-    tags: string[];
+    tags?: string[];
     setTags?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
@@ -11,16 +11,12 @@ export const Tag: React.FC<TagProps> = ({ tag, setTags, tags }) => {
     const removeTag = (e: React.MouseEvent) => {
         e.preventDefault();
         
-        if (setTags) {
+        if (setTags && tags) {
             const newTags = tags.filter((t) => t !== tag);
 
             setTags(newTags);
         }
     };
-
-    if (!tags || tags.length === 0) {
-        return null;
-    }
 
     return (
         <div className="flex items-center justify-center mr-2 bg-accent px-1 rounded-full max-h-6 overflow-hidden">
