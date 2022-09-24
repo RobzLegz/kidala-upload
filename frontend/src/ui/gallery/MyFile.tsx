@@ -23,7 +23,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
     if (windowSize.width && windowSize.width <= windowSizes.sm) {
         return (
             <div
-                className={`w-full bg-primary-800 border border-primary-700 p-2 rounded-lg flex flex-col sm:hidden items-start justify-start transition-all duration-300 ${
+                className={`w-full bg-primary-800 border border-primary-700 p-2 rounded-lg flex flex-col sm:hidden items-start justify-start transition-all duration-300 mb-2 ${
                     opened ? 'h-auto' : 'h-20'
                 }`}
             >
@@ -97,7 +97,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
 
     return (
         <div
-            className={`w-full bg-primary-800 border border-primary-700 p-2 rounded-lg hidden sm:flex items-start justify-start transition-all duration-300 ${
+            className={`w-full bg-primary-800 border border-primary-700 p-2 rounded-lg hidden sm:flex items-start justify-start transition-all duration-300 mb-2 ${
                 opened ? 'h-auto' : 'h-24'
             }`}
         >
