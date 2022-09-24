@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
 import { detectFileType } from '../../utils/detectFileType';
+import { formatFileSize } from '../../utils/formatFileSize';
 import { generateFileUrl } from '../../utils/generateFileUrl';
 import { TagWrapper } from '../uploadForm/TagWrapper';
 import GalleryNonImage from './GalleryNonImage';
@@ -50,26 +51,24 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 <TagWrapper formTags={file.tag} />
             </div>
 
-            <div className="w-32 flex items-center justify-center h-20">
-                <div className="flex flex-col items-center justify-center">
+            <div className="w-16 sm:w-28 flex items-center justify-between h-20">
+                <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
                     <p className="text-primary-100">16</p>
                 </div>
 
-                <div className="flex flex-col ml-4 items-center justify-center">
+                <div className="hidden sm:flex flex-col items-center justify-center">
                     <button className="mb-1">
                         <ArrowDownTrayIcon className="h-6 text-notification" />
                     </button>
 
-                    {!file.private && (
-                        <button className="mt-1">
-                            <LinkIcon className="h-6 text-notification" />
-                        </button>
-                    )}
+                    <small className="text-primary-300">
+                        {formatFileSize(file.size)}mb
+                    </small>
                 </div>
 
-                <button className="ml-4" onClick={() => setOpened(!opened)}>
+                <button onClick={() => setOpened(!opened)}>
                     <ChevronDownIcon
                         className={`text-primary-100 h-8 transition-all duration-300 ${
                             opened ? '-rotate-180' : 'rotate-0'
