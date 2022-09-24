@@ -11,7 +11,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 ALGORITHM = 'HS256'
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='admin/login')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='api/v1/users/login')
 
 pwd_context = CryptContext(schemes=['bcrypt'])
 
