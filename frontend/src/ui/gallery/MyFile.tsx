@@ -71,13 +71,15 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         </div>
                     </div>
 
-                    <button onClick={() => setOpened(!opened)}>
-                        <ChevronDownIcon
-                            className={`text-primary-100 h-8 transition-all duration-300 ${
-                                opened ? '-rotate-180' : 'rotate-0'
-                            }`}
-                        />
-                    </button>
+                    {(file.description || file.tag.length > 0) && (
+                        <button onClick={() => setOpened(!opened)}>
+                            <ChevronDownIcon
+                                className={`text-primary-100 h-8 transition-all duration-300 ${
+                                    opened ? '-rotate-180' : 'rotate-0'
+                                }`}
+                            />
+                        </button>
+                    )}
                 </div>
 
                 {opened && (
@@ -143,13 +145,15 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                     </small>
                 </button>
 
-                <button onClick={() => setOpened(!opened)}>
-                    <ChevronDownIcon
-                        className={`text-primary-100 h-8 transition-all duration-300 ${
-                            opened ? '-rotate-180' : 'rotate-0'
-                        }`}
-                    />
-                </button>
+                {(file.description || file.tag.length > 0) && (
+                    <button onClick={() => setOpened(!opened)}>
+                        <ChevronDownIcon
+                            className={`text-primary-100 h-8 transition-all duration-300 ${
+                                opened ? '-rotate-180' : 'rotate-0'
+                            }`}
+                        />
+                    </button>
+                )}
             </div>
         </div>
     );
