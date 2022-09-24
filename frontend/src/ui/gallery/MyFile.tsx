@@ -130,7 +130,21 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 )}
             </div>
 
-            <div className="w-28 flex items-center justify-between h-20">
+            <div
+                className={`flex items-center justify-between h-20 ${
+                    file.description || file.tag.length > 0 ? 'w-28' : 'w-20'
+                }`}
+            >
+                {(file.description || file.tag.length > 0) && (
+                    <button onClick={() => setOpened(!opened)}>
+                        <ChevronDownIcon
+                            className={`text-primary-100 h-8 transition-all duration-300 ${
+                                opened ? '-rotate-180' : 'rotate-0'
+                            }`}
+                        />
+                    </button>
+                )}
+
                 <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
@@ -144,16 +158,6 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         {formatFileSize(file.size)}mb
                     </small>
                 </button>
-
-                {(file.description || file.tag.length > 0) && (
-                    <button onClick={() => setOpened(!opened)}>
-                        <ChevronDownIcon
-                            className={`text-primary-100 h-8 transition-all duration-300 ${
-                                opened ? '-rotate-180' : 'rotate-0'
-                            }`}
-                        />
-                    </button>
-                )}
             </div>
         </div>
     );
