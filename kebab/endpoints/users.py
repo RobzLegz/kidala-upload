@@ -59,11 +59,33 @@ async def get_own_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.get("/me/items")
-async def read_own_items(current_user: User = Depends(get_current_user), cursor: int = 0, limit: int = 20):
+async def get_own_items(current_user: User = Depends(get_current_user), cursor: int = 0, limit: int = 20):
     if cursor >= 0 and limit >= 0:
         db_cursor = db.files.find({"_id": {"$in": current_user.files}}).skip(cursor).limit(limit)
         returnlist = []
         for file in db_cursor:
+            returnlist.append(File(**file))
+        return {'files': returnlist, 'count':len(returnlist)}
+    else:
+        raise HTTPException(400)
+
+@router.get("/me/likes")
+async def get_own_likes(current_user: User = Depends(get_current_user), cursor: int = 0, limit: int = 20):
+    if cursor >= 0 and limit >= 0:
+        dbcursor = db.files.find({"_id": {"$in": [x.file_id for x in current_user.likes]}}).skip(cursor).limit(limit)
+        returnlist = []
+        for file in dbcursor:
+            returnlist.append(File(**file))
+        return {'files': returnlist, 'count':len(returnlist)}
+    else:
+        raise HTTPException(400)
+
+@router.get("/me/favourites")
+async def get_own_favourites(current_user: User = Depends(get_current_user), cursor: int = 0, limit: int = 20):
+    if cursor >= 0 and limit >= 0:
+        dbcursor = db.files.find({"_id": {"$in": current_user.favourites}}).skip(cursor).limit(limit)
+        returnlist = []
+        for file in dbcursor:
             returnlist.append(File(**file))
         return {'files': returnlist, 'count':len(returnlist)}
     else:
