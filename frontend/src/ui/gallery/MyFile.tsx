@@ -148,7 +148,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
-                    <p className="text-primary-100">16</p>
+                    <p className="text-primary-100">{file.likes.length}</p>
                 </div>
 
                 <button className="flex flex-col items-center justify-center">
