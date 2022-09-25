@@ -42,7 +42,8 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
     if current_user.id == None:
         user = User(email=email, username=username, password=hashed_pass, role='default')
 
-        db.users.insert_one(user.dict(exclude={'id'}))
+        insertobj = db.users.insert_one(user.dict(exclude={'id'}))
+        user.id = insertobj.inserted_id
 
     else:
         user = db.users.find_one({"_id": current_user.id})
@@ -52,7 +53,9 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         db.users.replace_one({'_id': current_user.id}, user)
 
-    return user
+    token = create_access_token(data={'user_id': user.id}, admin=False)
+
+    return {'user': user, 'token': token}
 
 @router.get("/me", response_model=User)
 async def get_own_user(current_user: User = Depends(get_current_user)):
