@@ -65,6 +65,6 @@ async def read_own_items(current_user: User = Depends(get_current_user), cursor:
         returnlist = []
         for file in dbcursor:
             returnlist.append(File(**file))
-        return {'files': returnlist, 'count':len(returnlist), 'total_userfiles':db_cursor.count()}
+        return {'files': returnlist, 'count':len(returnlist)}
     else:
         raise HTTPException(400)
