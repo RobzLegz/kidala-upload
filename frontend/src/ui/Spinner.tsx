@@ -3,6 +3,7 @@ import React from 'react';
 const sizes = {
     '2': 'h-2 w-2',
     '4': 'h-4 w-4',
+    '8': 'h-8 w-8',
 };
 
 const Spinner: React.FC<{ size?: keyof typeof sizes }> = ({ size = '4' }) => {

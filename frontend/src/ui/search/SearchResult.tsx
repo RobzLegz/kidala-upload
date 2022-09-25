@@ -24,7 +24,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
                         {file.name}
                     </span>
 
-                    <BubbleText live>{getFileExtension(file.name)}</BubbleText>
+                    <BubbleText filled>{getFileExtension(file.name)}</BubbleText>
                 </div>
             </div>
         </div>

@@ -2,8 +2,18 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { User } from '../interfaces/user';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { handleLogin, setToken, setUserInfo } from '../redux/slices/userSlice';
-import { GET_USER_INFO_ROUTE, LOGIN_ROUTE } from './routes';
+import {
+    handleLogin,
+    receiveMyFiles,
+    setToken,
+    setUserInfo,
+} from '../redux/slices/userSlice';
+import { ListFilesResponse } from './fileRequests';
+import {
+    GET_USER_INFO_ROUTE,
+    GET_USER_ITEMS_ROUTE,
+    LOGIN_ROUTE,
+} from './routes';
 
 export const loginUser = async (
     username: string,
@@ -45,21 +55,60 @@ export const loginUser = async (
 export const getUserInfo = async (token: string, dispatch: Dispatch) => {
     const headers = {
         headers: {
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
         },
     };
 
     await axios
         .get(GET_USER_INFO_ROUTE, headers)
         .then((res) => {
-            const { user }: { user: User } = res.data;
-
-            dispatch(setUserInfo(user));
+            dispatch(setUserInfo(res.data));
             dispatch(setToken(token));
 
-            if (user.username && user.password) {
+            if (res.data.username && res.data.password) {
                 dispatch(handleLogin(true));
             }
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const getUserFiles = async ({
+    token,
+    cursor,
+    limit,
+    dispatch,
+}: {
+    token: string;
+    cursor: number;
+    limit: number;
+    dispatch: Dispatch;
+}) => {
+    const route = `${GET_USER_ITEMS_ROUTE}?cursor=${cursor}&limit=${limit}`;
+
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    await axios
+        .get(route, headers)
+        .then((res) => {
+            const data: ListFilesResponse = res.data;
+
+            dispatch(receiveMyFiles(data.files));
         })
         .catch((err) => {
             if (!err.response) {

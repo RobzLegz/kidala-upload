@@ -1,13 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { FileInterface } from '../../interfaces/file';
 import { User } from '../../interfaces/user';
+import { sortFiles } from '../../utils/sortFiles';
 
 export interface UserInfo {
+    myFiles: FileInterface[] | null;
     loggedIn: boolean;
     info: User | null;
     token: string;
 }
 
 const initialState: UserInfo = {
+    myFiles: null,
     loggedIn: false,
     info: null,
     token: '',
@@ -41,10 +45,56 @@ export const userSlice = createSlice({
 
             return state;
         },
+        receiveMyFiles: (state, action) => {
+            const files: FileInterface[] | null = action.payload;
+
+            if (!files) {
+                return state;
+            }
+
+            if (
+                !state.myFiles ||
+                state.myFiles.length === 0 ||
+                state.myFiles === null
+            ) {
+                state = {
+                    ...state,
+                    myFiles: files,
+                };
+
+                return state;
+            }
+
+            const siftFiles = files.map((blog) => {
+                if (state.myFiles?.some((b) => b._id === blog._id)) {
+                    return null;
+                }
+
+                return blog;
+            });
+
+            const okFiles = siftFiles.filter((bl) => bl !== null);
+
+            let newFiles: FileInterface[] = [...state.myFiles];
+
+            okFiles.forEach((blog) => {
+                if (blog) {
+                    newFiles = [...newFiles, blog];
+                }
+            });
+
+            state = {
+                ...state,
+                myFiles: newFiles,
+            };
+
+            return state;
+        },
     },
 });
 
-export const { handleLogin, setUserInfo, setToken } = userSlice.actions;
+export const { handleLogin, setUserInfo, setToken, receiveMyFiles } =
+    userSlice.actions;
 
 export const selectUser = (state: any) => state.user;
 
