@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import React from 'react';
-import HomeNav from '../../ui/navigation/HomeNav';
+import Nav from '../../ui/navigation/Nav';
 import UploadForm from '../../ui/uploadForm/UploadForm';
 import PageModule from '../PageModule';
 
@@ -11,7 +11,7 @@ const Home: NextPage = () => {
             description="Kidala file upload. Free file hosting, unlimited uploads"
             className="justify-center h-screen"
         >
-            <HomeNav />
+            <Nav />
 
             <UploadForm />
         </PageModule>

@@ -70,7 +70,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return User(**user)
 
 async def get_potential_user(authorization: str | None = Header(default=None)): #authorization: str | None = Header(None)
-
     if authorization == None:
         return User()
 

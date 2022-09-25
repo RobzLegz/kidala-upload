@@ -136,7 +136,7 @@ function AdminContainer() {
                                     <button
                                         className="bg-red-500 h-8 w-10 flex items-center justify-center"
                                         onClick={() =>
-                                            deleteFile(file._id.$oid, dispatch)
+                                            deleteFile(file._id, dispatch)
                                         }
                                     >
                                         <TrashIcon className="text-white h-5" />

@@ -1,4 +1,9 @@
 # dependencies
+**/node_modules
+**/.pnp
+**.pnp.js
+/backend/kidalaenv
+**/.next
 /frontend/node_modules
 /frontend/.pnp
 /frontend.pnp.js
@@ -9,19 +14,19 @@
 /socket/deps/
 
 # testing
-/frontend/coverage
-/borsch/script.py
+**/coverage
+/backend/script.py
 
 # next.js
-/frontend/.next/
-/frontend/out/
+**/.next/
+**/out/
 
 # production
-/frontend/build
+**/build
 /socket/_build/
 
 # misc
-/frontend.DS_Store
+**.DS_Store
 *.pem
 
 # debug
@@ -44,13 +49,13 @@ yarn-error.log*
 .vercel
 
 # cache
-/borsch/__pycache__
-/kebab/__pycache__
+/backend/__pycache__
 **/__pycache__
 
 #files
-/borsch/files
 /kebab/files
+/borsch/files
+/backend/files
 
 # socket
 

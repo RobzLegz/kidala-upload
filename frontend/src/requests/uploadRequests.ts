@@ -10,17 +10,27 @@ export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
     file: File | null,
-    tag: string,
+    tags: string[],
     description: string,
-    isPrivate: boolean,
+    isPrivate: boolean
 ) => {
     if (!file) {
         return;
     }
 
+    let file_tags = '';
+
+    tags.forEach((tag) => {
+        if (file_tags === '') {
+            file_tags = tag;
+        } else {
+            file_tags = `${file_tags};${tag}`;
+        }
+    });
+
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('tag', tag);
+    formData.append('tag', file_tags);
     formData.append('description', description);
     formData.append('private', isPrivate.toString());
 
@@ -36,7 +46,7 @@ export const uploadFile = async (
             ...headers,
             headers: {
                 ...headers.headers,
-                Authorization: access_token,
+                Authorization: `Bearer ${access_token}`,
             },
         };
     }
@@ -44,15 +54,15 @@ export const uploadFile = async (
     await axios
         .post(UPLOAD_ROUTE, formData, headers)
         .then((res) => {
-            const { access_token, hash, url, file } = res.data;
+            const { token, hash, url, file } = res.data;
 
-            if (access_token) {
-                localStorage.setItem('access_token', access_token);
+            if (token) {
+                localStorage.setItem('access_token', token);
 
-                dispatch(setToken(access_token));
+                dispatch(setToken(token));
             }
 
-            setUrl(hash);
+            setUrl(file.hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
         })

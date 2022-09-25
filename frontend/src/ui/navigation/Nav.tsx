@@ -10,8 +10,14 @@ import UserDropDown from '../UserDropDown';
 import { LanguageInfo, selectLanguage } from '../../redux/slices/languageSlice';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import GallerySearch from '../gallery/GallerySearch';
 
-const HomeNav = () => {
+export interface NavProps {
+    gallery?: boolean;
+    myFiles?: boolean;
+}
+
+const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
     const router = useRouter();
     const windowSize = useWindowSize();
 
@@ -29,14 +35,12 @@ const HomeNav = () => {
                     }
                 />
 
-                <div className=""></div>
-
                 <div className="flex items-center justify-center">
                     <Button
                         className="bg-transparent z-10"
                         size="small"
                         color="secondary"
-                        onClick={() => router.push('/gallery')}
+                        onClick={() => router.push('/new/gallery')}
                     >
                         Gallery
                     </Button>
@@ -46,9 +50,8 @@ const HomeNav = () => {
                         size="small"
                         color="secondary"
                         onClick={() => router.push('/new/dropbox')}
-                        icon={<ArchiveBoxIcon className="text-white h-6" />}
                     >
-                        Dropbox
+                        <ArchiveBoxIcon className="text-white h-6" />
                     </Button>
 
                     {!userInfo.loggedIn && (
@@ -72,25 +75,27 @@ const HomeNav = () => {
                 <Logo />
             </button>
 
+            {gallery && <GallerySearch />}
+
             <div className="flex items-center justify-center relative">
                 <Button
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/gallery')}
+                    onClick={() => router.push('/new/gallery')}
                 >
                     Gallery
                 </Button>
 
-                <Button
+                {/* <Button
                     className="bg-transparent z-10 ml-1"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/dropbox')}
+                    onClick={() => router.push('/new/dropbox')}
                     icon={<ArchiveBoxIcon className="text-white h-6" />}
                 >
                     Dropbox
-                </Button>
+                </Button> */}
 
                 {!userInfo.loggedIn && (
                     <>
@@ -98,7 +103,7 @@ const HomeNav = () => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/login')}
+                            onClick={() => router.push('/new/my-files')}
                         >
                             My files
                         </Button>
@@ -107,7 +112,7 @@ const HomeNav = () => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/login')}
+                            onClick={() => router.push('/new/login')}
                         >
                             Login
                         </Button>
@@ -126,4 +131,4 @@ const HomeNav = () => {
     );
 };
 
-export default HomeNav;
+export default Nav;
