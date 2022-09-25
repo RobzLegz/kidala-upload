@@ -162,7 +162,9 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     rows={4}
                     value={description}
                     maxLength={250}
-                    onChange={(e) => setDescription && setDescription(e.target.value)}
+                    onChange={(e) =>
+                        setDescription && setDescription(e.target.value)
+                    }
                 />
 
                 {typeof isPrivate === 'boolean' && (

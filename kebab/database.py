@@ -6,7 +6,7 @@ from bson import ObjectId
 MONGO_DB_LINK = os.environ["MONGO_DB_LINK"]
 
 client = pymongo.MongoClient(MONGO_DB_LINK)
-db = client.roberts_kidala
+db = client.kidala_roberts_majas
 
 class PyObjectId(ObjectId):
     @classmethod
@@ -24,7 +24,8 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class Like(BaseModel):
-    user_id: PyObjectId
+    user_id: PyObjectId | None = None
+    file_id: PyObjectId
     count: int
 
 class User(BaseModel):

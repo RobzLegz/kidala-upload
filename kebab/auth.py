@@ -11,7 +11,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 ALGORITHM = 'HS256'
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='admin/login')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='api/v1/users/login')
 
 pwd_context = CryptContext(schemes=['bcrypt'])
 
@@ -70,17 +70,16 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return User(**user)
 
 async def get_potential_user(authorization: str | None = Header(default=None)): #authorization: str | None = Header(None)
-
     if authorization == None:
         return User()
 
-    authorization.replace('Bearer ', '')
+    token = authorization.replace('Bearer ', '')
 
     try:
-        payload = jwt.decode(authorization, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload["user_id"]
     except:
-        payload = jwt.decode(authorization, ADMIN_TOKEN, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, ADMIN_TOKEN, algorithms=[ALGORITHM])
         user_id: str = payload["user_id"]
     
     user = db.users.find_one({'_id': PyObjectId(user_id)})

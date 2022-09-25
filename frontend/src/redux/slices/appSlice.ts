@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
-import { shuffle } from '../../utils/shuffleArray';
 import { sortFiles } from '../../utils/sortFiles';
 
 export interface SortOptions {
@@ -71,7 +70,7 @@ export const appSlice = createSlice({
             if (state.files) {
                 files = state.files;
 
-                const newFiles = [action.payload, ...files];
+                const newFiles = [...files, action.payload];
 
                 state = {
                     ...state,
@@ -141,17 +140,17 @@ export const appSlice = createSlice({
                 state.files.length === 0 ||
                 state.files === null
             ) {
-                const sortedFiles = sortFiles(files);
+                // const sortedFiles = sortFiles(files);
 
                 state = {
                     ...state,
-                    files: sortedFiles,
+                    files: files,
                 };
 
                 return state;
             }
 
-            const siftBlogs = files.map((blog) => {
+            const siftFiles = files.map((blog) => {
                 if (state.files?.some((b) => b._id === blog._id)) {
                     return null;
                 }
@@ -159,19 +158,19 @@ export const appSlice = createSlice({
                 return blog;
             });
 
-            const okBlogs = siftBlogs.filter((bl) => bl !== null);
+            const okFiles = siftFiles.filter((bl) => bl !== null);
 
-            let newBlogs: FileInterface[] = [...state.files];
+            let newFiles: FileInterface[] = [...state.files];
 
-            okBlogs.forEach((blog) => {
+            okFiles.forEach((blog) => {
                 if (blog) {
-                    newBlogs = [...newBlogs, blog];
+                    newFiles = [...newFiles, blog];
                 }
             });
 
             state = {
                 ...state,
-                files: newBlogs,
+                files: newFiles,
             };
 
             return state;
