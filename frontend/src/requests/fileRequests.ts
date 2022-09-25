@@ -65,3 +65,12 @@ export const getFilesV2 = async ({
             );
         });
 };
+
+export const likeFile = () => {
+    const likeObj = {
+        user_id: null,
+        file_id: 1,
+        count: 12,
+    };
+};
+
