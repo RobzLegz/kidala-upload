@@ -24,7 +24,8 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 class Like(BaseModel):
-    user_id: PyObjectId
+    user_id: PyObjectId | None = None
+    file_id: PyObjectId
     count: int
 
 class User(BaseModel):

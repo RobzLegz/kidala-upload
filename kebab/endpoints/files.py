@@ -1,5 +1,5 @@
 import shutil
-from fastapi import APIRouter, UploadFile, Form, Depends, HTTPException
+from fastapi import APIRouter, UploadFile, Form, Depends, HTTPException, Body
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 import hashlib
@@ -8,8 +8,8 @@ import unicodedata
 import re
 from pathlib import Path
 
-from ..auth import get_potential_user, create_access_token
-from ..database import File, User, db, Tag
+from ..auth import get_current_user, get_potential_user, create_access_token
+from ..database import File, Like, PyObjectId, User, db, Tag
 
 APP_ROOT = Path('kebab')
 SERVER_URL = os.environ["SERVER_URL"]
@@ -72,7 +72,7 @@ def all_files(cursor: int = 0, limit: int = 20):
         for file in db_cursor:
             returnlist.append(File(**file))
 
-        return {'files': returnlist, 'cursor':limit+cursor, 'count':len(returnlist), 'total_db':db.files.count_documents({})}
+        return {'files': returnlist, 'count':len(returnlist), 'total_db':db.files.count_documents({})}
         #this doesnt work due to fastapi bug
         #return Page(files=returnlist, page=page, limit=limit, total=db.files.count_documents({}), total_page=returnlist.count({}))
     else:
@@ -181,3 +181,41 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
         'token':access_token
     }
             
+@router.post("/like")
+async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
+    if user.username == None:
+        return {'msg': 'not logged in'}
+    if likeobj.user_id != user.id:
+        return {'msg': 'incorrect user'}
+    if 0 < likeobj.count <= 20:
+        if db.files.find_one({'_id': likeobj.file_id, 'likes.user_id': likeobj.user_id}) == None:
+            db.files.update_one({'_id': likeobj.file_id}, {'$push': {'likes': likeobj.dict()}})
+        else:
+            db.files.update_one({'_id': likeobj.file_id, 'likes.user_id': likeobj.user_id}, {'$set': {'likes.$.count': likeobj.count}})
+
+        if db.users.find_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id}) == None:
+            db.users.update_one({'_id': likeobj.user_id}, {'$push': {'likes': likeobj.dict()}})
+        else:
+            db.users.update_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id},  {'$set': {'likes.$.count': likeobj.count}})
+
+    elif likeobj.count == 0:
+        db.files.update_one({'_id': likeobj.file_id}, {'$pull': {'likes': {'user_id': likeobj.user_id}}})
+        db.users.update_one({'_id': likeobj.user_id}, {'$pull': {'likes': {'file_id': likeobj.file_id}}})
+
+    else:
+        return {'msg': 'invalid like count'}
+
+    return {'msg': 'success', 'likeobj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
+
+@router.post("/favourite")
+async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_current_user)):
+    if user.username == None:
+        return {'msg': 'not logged in'}
+    if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
+        db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
+        
+        return {'msg': 'added favourite'}
+    else:
+        db.users.update_one({'_id': user.id}, {'$pull': {'favourites': PyObjectId(file_id)}})
+
+        return {'msg': 'removed favourite'}
