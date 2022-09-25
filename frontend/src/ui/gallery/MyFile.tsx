@@ -132,10 +132,10 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
 
             <div
                 className={`flex items-center justify-between h-20 ${
-                    file.description || file.tag.length > 0 ? 'w-28' : 'w-20'
+                    file.description ? 'w-28' : 'w-20'
                 }`}
             >
-                {(file.description || file.tag.length > 0) && (
+                {file.description && (
                     <button onClick={() => setOpened(!opened)}>
                         <ChevronDownIcon
                             className={`text-primary-100 h-8 transition-all duration-300 ${
