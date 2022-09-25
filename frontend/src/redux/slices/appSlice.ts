@@ -140,11 +140,11 @@ export const appSlice = createSlice({
                 state.files.length === 0 ||
                 state.files === null
             ) {
-                const sortedFiles = sortFiles(files);
+                // const sortedFiles = sortFiles(files);
 
                 state = {
                     ...state,
-                    files: sortedFiles,
+                    files: files,
                 };
 
                 return state;
