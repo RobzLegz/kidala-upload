@@ -14,6 +14,7 @@ import { AppInfo } from '../../redux/slices/appSlice';
 import { useSelector } from 'react-redux';
 import { selectApp } from './../../redux/slices/appSlice';
 import GalleryNonImage from './GalleryNonImage';
+import FileControls from '../FileControls';
 
 export interface GalleryFileProps {
     props: FileInterface;
@@ -99,6 +100,8 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 onClick={handleImageClick}
             />
 
+            <FileControls className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0" />
+{/* 
             <div className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0">
                 <div className="flex items-center">
                     <div className="flex items-center mr-2">
@@ -133,7 +136,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                         )}
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

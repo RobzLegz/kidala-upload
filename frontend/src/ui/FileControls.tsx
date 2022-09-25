@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileInterface } from '../interfaces/file';
 import {
     BookmarkIcon as BookmarkFullIcon,
@@ -8,21 +8,26 @@ import { HeartIcon, BookmarkIcon, LinkIcon } from '@heroicons/react/24/outline';
 
 export interface FileControlsProps {
     file?: FileInterface;
+    className?: string;
 }
 
-const FileControls: React.FC<FileControlsProps> = ({ file }) => {
+const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [totalLikes, setTotalLikes] = useState(0);
     const [givenLikes, setGivenLikes] = useState(0);
     const [saved, setSaved] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState<number | null>(null);
 
     const handleSave = () => {
         setSaved(!saved);
     };
 
     const handleLike = () => {
+        setLoading(false);
+        setTimer(3);
         setGivenLikes(givenLikes + 1);
         setTotalLikes(totalLikes + 1);
+        setLoading(true);
     };
 
     const handleDislike = () => {
@@ -32,8 +37,27 @@ const FileControls: React.FC<FileControlsProps> = ({ file }) => {
         }
     };
 
+    useEffect(() => {
+        if (loading) {
+            setTimeout(() => {
+                if (typeof timer === 'number') {
+                    if (timer > 0) {
+                        setTimer(timer - 1);
+                    } else {
+                        console.log('sent');
+                    }
+                }
+                console.log(timer);
+            }, 1000);
+        }
+    }, [timer, loading]);
+
     return (
-        <div className="hidden sm:flex h-10 w-full items-center justify-between px-2 mt-1">
+        <div
+            className={`flex h-10 w-full items-center justify-between px-2 mt-1 ${
+                className ? className : ''
+            }`}
+        >
             <div className="flex items-center w-full">
                 <div className="flex items-center mr-2 w-28">
                     <button
