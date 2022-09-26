@@ -92,7 +92,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
         timeoutEffect();
 
-        return () => send();
+        return () => undefined;
     }, [prevGivenLikes]);
 
     return (

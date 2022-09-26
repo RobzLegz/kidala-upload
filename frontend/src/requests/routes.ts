@@ -10,7 +10,8 @@ export const USERS_BASE = `${API_BASE}/users`;
 
 export const ADMIN_DELETE_ROUTE = `${ADMIN_BASE}/delete`;
 
-export const LOGIN_ROUTE = `${ADMIN_BASE}/login`;
+export const LOGIN_ROUTE = `${USERS_BASE}/login`;
+export const REGISTER_ROUTE = `${USERS_BASE}/register`;
 
 export const UPLOAD_ROUTE = `${FILE_BASE}/upload`;
 export const LIST_FILES_ROUTE = `${FILE_BASE}/allfiles`;
