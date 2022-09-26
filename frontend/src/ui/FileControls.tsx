@@ -5,6 +5,9 @@ import {
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
 import { HeartIcon, BookmarkIcon, LinkIcon } from '@heroicons/react/24/outline';
+import { likeFile } from '../requests/fileRequests';
+import { selectUser, UserInfo } from '../redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export interface FileControlsProps {
     file?: FileInterface;
@@ -12,15 +15,26 @@ export interface FileControlsProps {
 }
 
 const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
+    const dispatch = useDispatch();
+
+    const userInfo: UserInfo = useSelector(selectUser);
+
     const [totalLikes, setTotalLikes] = useState(0);
     const [givenLikes, setGivenLikes] = useState(0);
-    const [prevgivenLikes, setPrevGivenLikes] = useState<number | null>(null);
+    const [prevGivenLikes, setPrevGivenLikes] = useState<number | null>(null);
+    const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(false);
     const [sent, setSent] = useState<boolean>(false);
 
     const handleSave = () => {
         setSaved(!saved);
+    };
+
+    const checkIfLogged = () => {
+        if (userInfo.info && userInfo.info.username && userInfo.loggedIn) {
+            return;
+        }
     };
 
     const handleLike = () => {
@@ -48,10 +62,25 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     };
 
     useEffect(() => {
+        const makeReq = async () => {
+            await likeFile({
+                user_id: userInfo.info?._id,
+                file_id: file?._id,
+                count: givenLikes,
+                dispatch,
+            });
+        };
+
         const send = () => {
-            if (prevgivenLikes === givenLikes && !sent) {
+            if (
+                prevGivenLikes === givenLikes &&
+                !sent &&
+                prevSentLikes !== givenLikes
+            ) {
                 setSent(true);
-                console.log("sent");
+                makeReq().then(() => {
+                    setPrevSentLikes(givenLikes);
+                });
             }
         };
 
@@ -64,7 +93,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         timeoutEffect();
 
         return () => send();
-    }, [prevgivenLikes]);
+    }, [prevGivenLikes]);
 
     return (
         <div

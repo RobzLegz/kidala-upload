@@ -66,17 +66,22 @@ export const getFilesV2 = async ({
         });
 };
 
-export const likeFile = (
-    user_id: string,
-    file_id: string,
-    count: number,
-    dispatch: Dispatch
-) => {
+export const likeFile = async ({
+    user_id,
+    file_id,
+    count,
+    dispatch,
+}: {
+    user_id?: string;
+    file_id?: string;
+    count: number;
+    dispatch: Dispatch;
+}) => {
     const likeObj = {
         user_id: user_id,
         file_id: file_id,
         count: count,
     };
 
-    console.log(likeObj)
+    console.log(likeObj);
 };

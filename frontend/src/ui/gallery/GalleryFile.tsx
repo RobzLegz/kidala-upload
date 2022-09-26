@@ -100,43 +100,10 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 onClick={handleImageClick}
             />
 
-            <FileControls className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0" />
-{/* 
-            <div className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0">
-                <div className="flex items-center">
-                    <div className="flex items-center mr-2">
-                        <button
-                            className="flex items-center justify-center text-notification no_select"
-                            onClick={handleLike}
-                        >
-                            <HeartIconFull className="text-notification h-6 mr-0.5" />
-
-                            {givenLikes}
-                        </button>
-
-                        <div className="h-7 w-[1.5px] bg-white mx-2" />
-
-                        <button
-                            className="flex items-center justify-center text-white no_select"
-                            onClick={handleDislike}
-                        >
-                            <HeartIcon className="text-white h-6 mr-0.5" />
-
-                            {totalLikes}
-                        </button>
-                    </div>
-                </div>
-
-                <div className="flex items-center justify-end">
-                    <button onClick={handleSave}>
-                        {saved ? (
-                            <BookmarkFullIcon className="text-notification-loading w-7" />
-                        ) : (
-                            <BookmarkIcon className="text-white w-7" />
-                        )}
-                    </button>
-                </div>
-            </div> */}
+            <FileControls
+                className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0"
+                file={props}
+            />
         </div>
     );
 };
