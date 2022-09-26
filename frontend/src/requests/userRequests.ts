@@ -57,13 +57,14 @@ export const registerUser = async (
     username: string,
     password: string,
     email: string,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    token: string
 ) => {
-    const data = {
-        username,
-        email,
-        password,
-    };
+    const data = new FormData();
+
+    data.append("username", username);
+    data.append("email", email);
+    data.append("password", password);
 
     await axios
         .post(REGISTER_ROUTE, data)
