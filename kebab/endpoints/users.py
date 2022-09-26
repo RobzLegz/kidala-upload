@@ -10,7 +10,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/login", response_model=Token)
+@router.post("/login")
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -22,9 +22,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     access_token = create_access_token(data={"user_id": str(user.id)})
 
-    return Token(access_token=access_token, token_type='bearer')
+    return {'user': user, 'token':Token(access_token=access_token, token_type='bearer')}
 
-@router.post("/register", response_model=User)
+@router.post("/register")
 async def register_user(username: str = Form(), password: str = Form(), email: str = Form(), current_user: User = Depends(get_potential_user)):
     emailq = db.users.find_one({"email": email.lower()})
     if emailq != None:
