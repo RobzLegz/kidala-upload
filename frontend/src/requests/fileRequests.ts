@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { FileInterface } from '../interfaces/file';
 import { receiveFiles, setFiles } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { LIST_FILES_ROUTE } from './routes';
+import { LIST_FILES_ROUTE, LIKE_FILE_ROUTE } from './routes';
 
 export interface ListFilesResponse {
     count?: number;
@@ -71,17 +71,46 @@ export const likeFile = async ({
     file_id,
     count,
     dispatch,
+    token,
 }: {
     user_id?: string;
     file_id?: string;
     count: number;
     dispatch: Dispatch;
+    token: string;
 }) => {
-    const likeObj = {
+    const body = {
         user_id: user_id,
         file_id: file_id,
         count: count,
     };
 
-    console.log(likeObj);
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    await axios
+        .post(LIKE_FILE_ROUTE, body, headers)
+        .then((res) => {
+            console.log(res.data);
+
+            // const data: ListFilesResponse = res.data;
+
+            // dispatch(receiveFiles(data.files));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
 };

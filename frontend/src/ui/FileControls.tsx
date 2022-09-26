@@ -40,11 +40,11 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const handleLike = () => {
         setGivenLikes(givenLikes + 1);
         setTotalLikes(totalLikes + 1);
-        setSent(false);
 
         setTimeout(() => {
             setPrevGivenLikes(givenLikes + 1);
             console.log('gave: ', givenLikes + 1);
+            setSent(false);
         }, 3000);
     };
 
@@ -52,11 +52,11 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         if (givenLikes > 0) {
             setGivenLikes(givenLikes - 1);
             setTotalLikes(totalLikes - 1);
-            setSent(false);
 
             setTimeout(() => {
                 setPrevGivenLikes(givenLikes - 1);
                 console.log('gave: ', givenLikes - 1);
+                setSent(false);
             }, 3000);
         }
     };
@@ -68,6 +68,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 file_id: file?._id,
                 count: givenLikes,
                 dispatch,
+                token: userInfo.token
             });
         };
 
