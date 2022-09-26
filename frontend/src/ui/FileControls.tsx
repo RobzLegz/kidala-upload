@@ -14,43 +14,57 @@ export interface FileControlsProps {
 const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [totalLikes, setTotalLikes] = useState(0);
     const [givenLikes, setGivenLikes] = useState(0);
+    const [prevgivenLikes, setPrevGivenLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [timer, setTimer] = useState<number | null>(null);
+    const [sent, setSent] = useState<boolean>(false);
 
     const handleSave = () => {
         setSaved(!saved);
     };
 
     const handleLike = () => {
-        setLoading(false);
-        setTimer(3);
         setGivenLikes(givenLikes + 1);
         setTotalLikes(totalLikes + 1);
-        setLoading(true);
+        setSent(false);
+
+        setTimeout(() => {
+            setPrevGivenLikes(givenLikes + 1);
+            console.log('gave: ', givenLikes + 1);
+        }, 3000);
     };
 
     const handleDislike = () => {
         if (givenLikes > 0) {
             setGivenLikes(givenLikes - 1);
             setTotalLikes(totalLikes - 1);
+            setSent(false);
+
+            setTimeout(() => {
+                setPrevGivenLikes(givenLikes - 1);
+                console.log('gave: ', givenLikes - 1);
+            }, 3000);
         }
     };
 
     useEffect(() => {
-        if (loading) {
+        const send = () => {
+            if (prevgivenLikes === givenLikes && !sent) {
+                setSent(true);
+                console.log("sent");
+            }
+        };
+
+        const timeoutEffect = () => {
             setTimeout(() => {
-                if (typeof timer === 'number') {
-                    if (timer > 0) {
-                        setTimer(timer - 1);
-                    } else {
-                        console.log('sent');
-                    }
-                }
-                console.log(timer);
-            }, 1000);
-        }
-    }, [timer, loading]);
+                send();
+            }, 3000);
+        };
+
+        timeoutEffect();
+
+        return () => send();
+    }, [prevgivenLikes]);
 
     return (
         <div
