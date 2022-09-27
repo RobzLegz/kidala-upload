@@ -11,6 +11,8 @@ export interface UserInfo {
     loggedIn: boolean;
     info: User | null;
     token: string;
+    likedFiles: FileInterface[] | null;
+    savedFiles: FileInterface[] | null;
 }
 
 const initialState: UserInfo = {
@@ -18,6 +20,8 @@ const initialState: UserInfo = {
     loggedIn: false,
     info: null,
     token: '',
+    likedFiles: null,
+    savedFiles: null,
 };
 
 export const userSlice = createSlice({
@@ -68,21 +72,21 @@ export const userSlice = createSlice({
                 return state;
             }
 
-            const siftFiles = files.map((blog) => {
-                if (state.myFiles?.some((b) => b._id === blog._id)) {
+            const siftFiles = files.map((file) => {
+                if (state.myFiles?.some((b) => b._id === file._id)) {
                     return null;
                 }
 
-                return blog;
+                return file;
             });
 
             const okFiles = siftFiles.filter((bl) => bl !== null);
 
             let newFiles: FileInterface[] = [...state.myFiles];
 
-            okFiles.forEach((blog) => {
-                if (blog) {
-                    newFiles = [...newFiles, blog];
+            okFiles.forEach((file) => {
+                if (file) {
+                    newFiles = [...newFiles, file];
                 }
             });
 
@@ -135,6 +139,53 @@ export const userSlice = createSlice({
 
             return state;
         },
+        receiveLikedFiles: (state, action) => {
+            const likedFiles: FileInterface[] | null = action.payload;
+
+            console.log(likedFiles)
+
+            if (!likedFiles) {
+                return state;
+            }
+
+            if (
+                !state.likedFiles ||
+                state.likedFiles.length === 0 ||
+                state.likedFiles === null
+            ) {
+                state = {
+                    ...state,
+                    likedFiles: likedFiles,
+                };
+
+                return state;
+            }
+
+            const siftLikedFiles = likedFiles.map((file) => {
+                if (state.likedFiles?.some((b) => b._id === file._id)) {
+                    return null;
+                }
+
+                return file;
+            });
+
+            const okFiles = siftLikedFiles.filter((bl) => bl !== null);
+
+            let newFiles: FileInterface[] = [...state.likedFiles];
+
+            okFiles.forEach((file) => {
+                if (file) {
+                    newFiles = [...newFiles, file];
+                }
+            });
+
+            state = {
+                ...state,
+                likedFiles: newFiles,
+            };
+
+            return state;
+        },
     },
 });
 
@@ -144,6 +195,7 @@ export const {
     setToken,
     receiveMyFiles,
     authHandler,
+    receiveLikedFiles
 } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;

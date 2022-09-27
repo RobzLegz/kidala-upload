@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import Button from '../Button';
+import Gallery from '../gallery/Gallery';
 import MyFilesContainer from '../gallery/MyFilesContainer';
 import ProfileNavigation from './ProfileNavigation';
 import ProfileUserIcon from './ProfileUserIcon';
@@ -90,6 +91,8 @@ const ProfileContainer = () => {
                             <p className="text-white">{userInfo.info.bio}</p>
                         )}
                     </div>
+                ) : router.query.page && router.query.page === 'liked' ? (
+                    <Gallery liked />
                 ) : (
                     <div className="w-full flex flex-col bg-primary-800 rounded-lg border border-primary-700 p-4">
                         <h4 className="text-white">

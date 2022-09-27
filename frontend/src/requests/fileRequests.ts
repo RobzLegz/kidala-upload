@@ -4,7 +4,12 @@ import { FileInterface } from '../interfaces/file';
 import { Like } from '../interfaces/like';
 import { likeFileRdx, receiveFiles, setFiles } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { LIST_FILES_ROUTE, LIKE_FILE_ROUTE } from './routes';
+import { receiveLikedFiles } from '../redux/slices/userSlice';
+import {
+    LIST_FILES_ROUTE,
+    LIKE_FILE_ROUTE,
+    GET_USER_LIKED_FILES,
+} from './routes';
 
 export interface ListFilesResponse {
     count?: number;
@@ -152,6 +157,39 @@ export const saveFile = async ({
             // const data: ListFilesResponse = res.data;
 
             // dispatch(receiveFiles(data.files));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const getLiked = async ({
+    cursor,
+    limit,
+    dispatch,
+}: {
+    cursor: number;
+    limit: number;
+    dispatch: Dispatch;
+}) => {
+    const route = `${GET_USER_LIKED_FILES}?cursor=${cursor}&limit=${limit}`;
+
+    await axios
+        .get(route)
+        .then((res) => {
+            const data: ListFilesResponse = res.data;
+
+            dispatch(receiveLikedFiles(data.files));
         })
         .catch((err) => {
             if (!err.response) {

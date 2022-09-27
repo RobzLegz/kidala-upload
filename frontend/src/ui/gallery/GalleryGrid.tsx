@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -13,7 +13,17 @@ import { FileInterface } from '../../interfaces/file';
 const cn =
     'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2 mb-4';
 
-const GalleryGrid = () => {
+export interface GalleryGridProps {
+    activeFiles?: FileInterface[] | null;
+    liked?: boolean;
+    saved?: boolean;
+}
+
+const GalleryGrid: React.FC<GalleryGridProps> = ({
+    activeFiles = null,
+    liked = false,
+    saved = false,
+}) => {
     const windowSize = useWindowSize();
     const router = useRouter();
 
@@ -22,9 +32,18 @@ const GalleryGrid = () => {
     const [infoInsert, setInfoInsert] = useState<number | null>(null);
     const [clickedFileInfo, setClickedFileInfo] =
         useState<FileInterface | null>(null);
+    const [ittFiles, setIttFiles] = useState(appInfo.files);
+
+    useEffect(() => {
+        if (activeFiles) {
+            setIttFiles(activeFiles);
+        } else {
+            setIttFiles(appInfo.files);
+        }
+    }, [activeFiles]);
 
     const handleFileClick = (index?: number, hash?: string) => {
-        if (typeof index !== "number") {
+        if (typeof index !== 'number') {
             return;
         }
 
@@ -52,10 +71,10 @@ const GalleryGrid = () => {
         );
     };
 
-    if (typeof infoInsert === 'number' && appInfo.files) {
+    if (typeof infoInsert === 'number' && ittFiles) {
         return (
             <div className={cn}>
-                {appInfo.files
+                {ittFiles
                     .filter((file) =>
                         appInfo.sortOptions.showFiles
                             ? true
@@ -80,13 +99,13 @@ const GalleryGrid = () => {
                     />
                 )}
 
-                {appInfo.files
+                {ittFiles
                     .filter((file) =>
                         appInfo.sortOptions.showFiles
                             ? true
                             : detectFileType(file.name) === 'image'
                     )
-                    .slice(infoInsert, appInfo.files.length)
+                    .slice(infoInsert, ittFiles.length)
                     .map((file, i) => (
                         <GalleryFile
                             props={file}
@@ -101,8 +120,8 @@ const GalleryGrid = () => {
 
     return (
         <div className={cn}>
-            {appInfo.files &&
-                appInfo.files.map((file, i) => (
+            {ittFiles &&
+                ittFiles.map((file, i) => (
                     <GalleryFile
                         props={file}
                         index={i}
