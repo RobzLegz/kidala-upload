@@ -38,7 +38,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         setTimeout(() => {
             setPrevSaved(!saved);
             setSavedSent(prevSentSaved === saved);
-        }, 3000);
+        }, 1000);
     };
 
     useEffect(() => {
@@ -58,7 +58,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         const timeoutEffect = () => {
             setTimeout(() => {
                 send();
-            }, 3000);
+            }, 1000);
         };
 
         timeoutEffect();
