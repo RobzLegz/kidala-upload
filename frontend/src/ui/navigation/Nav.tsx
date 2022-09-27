@@ -96,6 +96,19 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     Gallery
                 </Button>
 
+                {!userInfo.loggedIn &&
+                    userInfo.info &&
+                    userInfo.info.files.length > 0 && (
+                        <Button
+                            className="bg-transparent z-10"
+                            size="small"
+                            color="secondary"
+                            onClick={() => router.push('/new/my-files')}
+                        >
+                            My files
+                        </Button>
+                    )}
+
                 {/* <Button
                     className="bg-transparent z-10 ml-1"
                     size="small"
@@ -108,15 +121,6 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
 
                 {!userInfo.loggedIn && (
                     <>
-                        <Button
-                            className="bg-transparent z-10"
-                            size="small"
-                            color="secondary"
-                            onClick={() => router.push('/new/my-files')}
-                        >
-                            My files
-                        </Button>
-
                         <Button
                             className="bg-transparent z-10"
                             size="small"

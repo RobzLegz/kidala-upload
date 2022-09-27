@@ -69,7 +69,7 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         user_id = str(current_user.id)
 
-        db.users.replace_one({'_id': user_id}, user)
+        db.users.find_one_and_replace({'_id': current_user.id}, user)
 
         rtrn_user: User = User(** user)
 

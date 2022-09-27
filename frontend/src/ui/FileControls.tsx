@@ -25,21 +25,57 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [prevGivenLikes, setPrevGivenLikes] = useState<number | null>(null);
     const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [sent, setSent] = useState<boolean>(false);
+    const [savedSent, setSavedSent] = useState<boolean>(true);
+    const [prevSaved, setPrevSaved] = useState<boolean>(false);
+    const [prevSentSaved, setPrevSentSaved] = useState<boolean | null>(
+        userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
+    );
 
     const handleSave = () => {
         setSaved(!saved);
+
+        setTimeout(() => {
+            setPrevSaved(!saved);
+            setSavedSent(prevSentSaved === saved);
+        }, 3000);
     };
+
+    useEffect(() => {
+        const makeReq = async () => {
+            console.log(saved);
+        };
+
+        const send = async () => {
+            if (prevSaved === saved && !savedSent && prevSentSaved !== saved) {
+                setSavedSent(true);
+                await makeReq().then(() => {
+                    setPrevSentSaved(saved);
+                });
+            }
+        };
+
+        const timeoutEffect = () => {
+            setTimeout(() => {
+                send();
+            }, 3000);
+        };
+
+        timeoutEffect();
+
+        return () => undefined;
+    }, [prevSaved]);
 
     const checkIfLogged = () => {
         if (userInfo.info && userInfo.info.username && userInfo.loggedIn) {
-            return;
+            return true;
         }
+
+        return false;
     };
 
     const handleLike = () => {
-        if (!userInfo.loggedIn) {
+        if (!checkIfLogged) {
             dispatch(
                 setNotification({
                     type: 'error',
@@ -55,13 +91,12 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
         setTimeout(() => {
             setPrevGivenLikes(givenLikes + 1);
-            console.log('gave: ', givenLikes + 1);
             setSent(false);
         }, 3000);
     };
 
     const handleDislike = () => {
-        if (!userInfo.loggedIn) {
+        if (!checkIfLogged) {
             dispatch(
                 setNotification({
                     type: 'error',
@@ -78,7 +113,6 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
             setTimeout(() => {
                 setPrevGivenLikes(givenLikes - 1);
-                console.log('gave: ', givenLikes - 1);
                 setSent(false);
             }, 3000);
         }
@@ -95,14 +129,14 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             });
         };
 
-        const send = () => {
+        const send = async () => {
             if (
                 prevGivenLikes === givenLikes &&
                 !sent &&
                 prevSentLikes !== givenLikes
             ) {
                 setSent(true);
-                makeReq().then(() => {
+                await makeReq().then(() => {
                     setPrevSentLikes(givenLikes);
                 });
             }
