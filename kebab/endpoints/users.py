@@ -20,7 +20,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(data={"user_id": str(user.id)})
+    if user.role == 'admin':
+        admin_bool = True
+    else:
+        admin_bool = False
+
+    access_token = create_access_token(data={"user_id": str(user.id)}, admin=admin_bool)
 
     return {'user': user, 'token':Token(access_token=access_token, token_type='bearer')}
 
@@ -43,19 +48,24 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
         user = User(email=email, username=username, password=hashed_pass, role='default')
 
         insertobj = db.users.insert_one(user.dict(exclude={'id'}))
-        user.id = insertobj.inserted_id
+        user.id = str(insertobj.inserted_id)
+
+        token = create_access_token(data={'user_id': user.id}, admin=False)
 
     else:
         user = db.users.find_one({"_id": current_user.id})
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
+        user["role"] = 'default'
 
         db.users.replace_one({'_id': current_user.id}, user)
 
-    token = create_access_token(data={'user_id': user.id}, admin=False)
+        token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    return {'user': user, 'token': token}
+    rtrn_user = User(**user)
+
+    return {'user': rtrn_user, 'token': token}
 
 @router.get("/me", response_model=User)
 async def get_own_user(current_user: User = Depends(get_current_user)):
