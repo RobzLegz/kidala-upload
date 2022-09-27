@@ -35,6 +35,7 @@ class User(BaseModel):
     username: str | None = None
     password: str | None = None
     role: str | None = None
+    avatar: str | None = None
     favourites: list[PyObjectId] = []
     likes: list[Like] = []
     verified: bool = False

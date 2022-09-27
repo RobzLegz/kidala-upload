@@ -99,16 +99,18 @@ export const registerUser = async (
         .then((res) => {
             dispatch(authHandler(res.data));
 
-            localStorage.setItem('access_token', res.data.token);
+            console.log(res.data)
 
-            router.push('/new/profile');
+            // localStorage.setItem('access_token', res.data.token);
+
+            // router.push('/new/profile');
         })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
             }
 
-            localStorage.removeItem('access_token');
+            // localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(

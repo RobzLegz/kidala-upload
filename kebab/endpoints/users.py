@@ -39,6 +39,9 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
     hashed_pass = get_password_hash(password)
 
+    print(current_user)
+    print(current_user.id)
+
     if current_user.id == None:
         user = User(email=email, username=username, password=hashed_pass, role='default')
 

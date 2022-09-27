@@ -100,7 +100,7 @@ export const userSlice = createSlice({
             state = {
                 ...state,
                 token: token ? token : '',
-                info: user,
+                info: { ...user },
                 loggedIn: true,
             };
 

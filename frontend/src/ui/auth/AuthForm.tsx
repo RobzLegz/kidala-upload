@@ -27,29 +27,33 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
     const handleLogin = async (e: React.MouseEvent) => {
         e.preventDefault();
 
-        setUsernameError('');
-        setEmailError('');
-        setPasswordError('');
+        let usernameErr = '',
+            emailErr = '',
+            passwordErr = '';
 
         if (register) {
             if (!email) {
-                setEmailError('Enter your email');
+                emailErr = 'Enter your email';
             } else {
                 if (!validateEmail(email)) {
-                    setEmailError('Invalid email format');
+                    emailErr = 'Invalid email format';
                 }
             }
         }
 
-        setUsernameError(invalidUsername(username));
+        usernameErr = invalidUsername(username);
 
         if (!password) {
-            setPasswordError('Enter your password');
+            passwordErr = 'Enter your password';
         } else if (password.length < 6) {
-            setPasswordError('Password should be at least 6 characters long');
+            passwordErr = 'Password should be at least 6 characters long';
         }
 
-        if (usernameError || emailError || passwordError) {
+        setUsernameError(usernameErr);
+        setEmailError(emailErr);
+        setPasswordError(passwordErr);
+
+        if (usernameErr || emailErr || passwordErr) {
             return;
         }
 
