@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { NextRouter } from 'next/router';
 import { Dispatch } from 'redux';
 import { User } from '../interfaces/user';
 import { setNotification } from '../redux/slices/notificationSlice';
 import {
     handleLogin,
     receiveMyFiles,
+    authHandler,
     setToken,
     setUserInfo,
 } from '../redux/slices/userSlice';
@@ -16,10 +18,16 @@ import {
     REGISTER_ROUTE,
 } from './routes';
 
+export interface AuthResponse {
+    token: string;
+    user: User;
+}
+
 export const loginUser = async (
     username: string,
     password: string,
-    dispatch: Dispatch
+    dispatch: Dispatch,
+    router: NextRouter
 ) => {
     const data = {
         username,
@@ -29,19 +37,20 @@ export const loginUser = async (
     await axios
         .post(LOGIN_ROUTE, data)
         .then((res) => {
-            const { token, user } = res.data;
-
-            dispatch(setUserInfo(user));
-            dispatch(setToken(token));
+            const { token }: AuthResponse = res.data;
 
             localStorage.setItem('access_token', token);
 
-            dispatch(handleLogin(true));
+            dispatch(authHandler(res.data));
+
+            router.replace('/new/profile');
         })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
             }
+
+            localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(
@@ -58,30 +67,48 @@ export const registerUser = async (
     password: string,
     email: string,
     dispatch: Dispatch,
-    token: string
+    token: string,
+    router: NextRouter
 ) => {
     const data = new FormData();
 
-    data.append("username", username);
-    data.append("email", email);
-    data.append("password", password);
+    data.append('username', username);
+    data.append('email', email);
+    data.append('password', password);
+
+    let headers: { headers: Record<string, any> } = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    };
+
+    console.log(token);
+
+    if (token) {
+        headers = {
+            ...headers,
+            headers: {
+                ...headers.headers,
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    }
 
     await axios
-        .post(REGISTER_ROUTE, data)
+        .post(REGISTER_ROUTE, data, headers)
         .then((res) => {
-            const { token, user } = res.data;
+            dispatch(authHandler(res.data));
 
-            dispatch(setUserInfo(user));
-            dispatch(setToken(token));
+            localStorage.setItem('access_token', res.data.token);
 
-            localStorage.setItem('access_token', token);
-
-            dispatch(handleLogin(true));
+            router.push('/new/profile');
         })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
             }
+
+            localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(
@@ -114,6 +141,8 @@ export const getUserInfo = async (token: string, dispatch: Dispatch) => {
             if (!err.response) {
                 return console.log(err);
             }
+
+            localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(

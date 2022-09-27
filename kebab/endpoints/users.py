@@ -44,31 +44,51 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         insertobj = db.users.insert_one(user.dict(exclude={'id'}))
         user.id = insertobj.inserted_id
+        user_id = insertobj.inserted_id
 
+        rtrn_user = {
+            "_id": str(user_id),
+            "ip": user.ip,
+            "email": email,
+            "username": username,
+            "password": hashed_pass,
+            "role": user.role,
+            "favourites": user.favourites,
+            "likes": user.likes,
+            "verified": user.verified,
+            "followers": user.followers,
+            "following": user.following,
+            "files": user.files,
+        }
     else:
         user = db.users.find_one({"_id": current_user.id})
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
 
+        user_id = current_user.id
+
+        print(user_id)
+        print(type(user_id))
+
         db.users.replace_one({'_id': current_user.id}, user)
 
-    token = create_access_token(data={'user_id': user.id}, admin=False)
+        rtrn_user = {
+            "_id": str(user_id),
+            "ip": user["ip"],
+            "email": email,
+            "username": username,
+            "password": hashed_pass,
+            "role": user["role"],
+            "favourites": user["favourites"],
+            "likes": user["likes"],
+            "verified": user["verified"],
+            "followers": user["followers"],
+            "following": user["following"],
+            "files": user["files"],
+        }
 
-    rtrn_user = {
-        "_id": str(user.user_id),
-        "email": email,
-        "username": username,
-        "password": password,
-        "ip": user["ip"],
-        "role": user["role"],
-        "favourites": user["ip"],
-        "likes": user["likes"],
-        "verified": user["verified"],
-        "followers": user["followers"],
-        "following": user["following"],
-        "files": user["files"],
-    }
+    token = create_access_token(data={'user_id': str(user_id)}, admin=False)
 
     return {'user': rtrn_user, 'token': token}
 

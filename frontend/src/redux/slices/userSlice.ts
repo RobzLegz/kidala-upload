@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
 import { User } from '../../interfaces/user';
+import { AuthResponse } from '../../requests/userRequests';
 import { sortFiles } from '../../utils/sortFiles';
 
 export interface UserInfo {
@@ -90,11 +91,31 @@ export const userSlice = createSlice({
 
             return state;
         },
+        authHandler: (
+            state,
+            action: { type: string; payload: AuthResponse }
+        ) => {
+            const { token, user } = action.payload;
+
+            state = {
+                ...state,
+                token: token ? token : '',
+                info: user,
+                loggedIn: true,
+            };
+
+            return state;
+        },
     },
 });
 
-export const { handleLogin, setUserInfo, setToken, receiveMyFiles } =
-    userSlice.actions;
+export const {
+    handleLogin,
+    setUserInfo,
+    setToken,
+    receiveMyFiles,
+    authHandler,
+} = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;
 
