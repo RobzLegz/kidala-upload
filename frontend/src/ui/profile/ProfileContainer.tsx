@@ -129,7 +129,7 @@ const ProfileContainer = () => {
                 </div>
 
                 {router.query.page && router.query.page === 'my-files' ? (
-                    <MyFilesContainer />
+                    <MyFilesContainer isProfile />
                 ) : router.query.page && router.query.page === 'favourites' ? (
                     <div className="w-full flex flex-col bg-primary-800 rounded-lg border border-primary-700 p-4">
                         <h4 className="text-white">

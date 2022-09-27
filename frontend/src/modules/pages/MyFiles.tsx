@@ -12,7 +12,7 @@ const MyFiles: PageComponent<MyFilesProps> = () => {
         <PageModule
             title="MyFiles"
             description="Kidala life - combining social media with file upload"
-            className="pt-24"
+            className="pt-24 px-2"
         >
             <Nav myFiles />
 
