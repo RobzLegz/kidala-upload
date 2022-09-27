@@ -4,11 +4,12 @@ import {
     BookmarkIcon as BookmarkFullIcon,
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
-import { HeartIcon, BookmarkIcon, LinkIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import { likeFile } from '../requests/fileRequests';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../redux/slices/notificationSlice';
+import { getFileLikes, getFileUserLikes } from '../utils/getFileLikes';
 
 export interface FileControlsProps {
     file?: FileInterface;
@@ -20,8 +21,8 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [totalLikes, setTotalLikes] = useState(0);
-    const [givenLikes, setGivenLikes] = useState(0);
+    const [totalLikes, setTotalLikes] = useState<number | null>(null);
+    const [givenLikes, setGivenLikes] = useState<number | null>(null);
     const [prevGivenLikes, setPrevGivenLikes] = useState<number | null>(null);
     const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState(false);
@@ -31,6 +32,16 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [prevSentSaved, setPrevSentSaved] = useState<boolean | null>(
         userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
     );
+
+    useEffect(() => {
+        if (totalLikes === null && file) {
+            setTotalLikes(getFileLikes(file));
+        }
+
+        if (givenLikes === null && userInfo.info && userInfo.info._id) {
+            setGivenLikes(getFileUserLikes(file, userInfo.info._id));
+        }
+    }, [userInfo.info, file]);
 
     const handleSave = () => {
         setSaved(!saved);
@@ -86,11 +97,11 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             return;
         }
 
-        setGivenLikes(givenLikes + 1);
-        setTotalLikes(totalLikes + 1);
+        setGivenLikes(Number(givenLikes) + 1);
+        setTotalLikes(Number(totalLikes) + 1);
 
         setTimeout(() => {
-            setPrevGivenLikes(givenLikes + 1);
+            setPrevGivenLikes(Number(givenLikes) + 1);
             setSent(false);
         }, 3000);
     };
@@ -107,12 +118,12 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             return;
         }
 
-        if (givenLikes > 0) {
-            setGivenLikes(givenLikes - 1);
-            setTotalLikes(totalLikes - 1);
+        if (Number(givenLikes) > 0) {
+            setGivenLikes(Number(givenLikes) - 1);
+            setTotalLikes(Number(totalLikes) - 1);
 
             setTimeout(() => {
-                setPrevGivenLikes(givenLikes - 1);
+                setPrevGivenLikes(Number(givenLikes) - 1);
                 setSent(false);
             }, 3000);
         }
@@ -123,7 +134,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             await likeFile({
                 user_id: userInfo.info?._id,
                 file_id: file?._id,
-                count: givenLikes,
+                count: Number(givenLikes),
                 dispatch,
                 token: userInfo.token,
             });
@@ -179,6 +190,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                     <button
                         className="flex items-center justify-center text-white no_select"
                         onClick={handleDislike}
+                        disabled={userInfo.info?._id === file?.author}
                     >
                         <HeartIcon className="text-white h-6 mr-0.5" />
 
@@ -187,15 +199,17 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 </div>
             </div>
 
-            <div className="flex items-center justify-end w-28">
-                <button onClick={handleSave}>
-                    {saved ? (
-                        <BookmarkFullIcon className="text-notification-loading w-7" />
-                    ) : (
-                        <BookmarkIcon className="text-white w-7" />
-                    )}
-                </button>
-            </div>
+            {userInfo.info?._id !== file?.author && (
+                <div className="flex items-center justify-end w-28">
+                    <button onClick={handleSave}>
+                        {saved ? (
+                            <BookmarkFullIcon className="text-notification-loading w-7" />
+                        ) : (
+                            <BookmarkIcon className="text-white w-7" />
+                        )}
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

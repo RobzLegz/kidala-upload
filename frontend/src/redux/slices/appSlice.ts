@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
+import { Like } from '../../interfaces/like';
+import { LikeFileResponse } from '../../requests/fileRequests';
 import { sortFiles } from '../../utils/sortFiles';
 
 export interface SortOptions {
@@ -87,12 +89,47 @@ export const appSlice = createSlice({
                 return state;
             }
 
-            const newfiles: FileInterface[] = state.files.map((prod) => {
-                if (prod._id === updatedFile._id) {
-                    prod = updatedFile;
+            const newfiles: FileInterface[] = state.files.map((fileQ) => {
+                if (fileQ._id === updatedFile._id) {
+                    fileQ = updatedFile;
                 }
 
-                return prod;
+                return fileQ;
+            });
+
+            state = {
+                ...state,
+                files: newfiles,
+            };
+
+            return state;
+        },
+        likeFileRdx: (
+            state,
+            action: { type: string; payload: LikeFileResponse['likeObj'] }
+        ) => {
+            if (!state.files) {
+                return state;
+            }
+
+            const newLike: Like = {
+                ...action.payload,
+            };
+
+            const newfiles: FileInterface[] = state.files.map((fileQ) => {
+                if (fileQ._id === action.payload.file_id) {
+                    fileQ = {
+                        ...fileQ,
+                        likes: [
+                            ...fileQ.likes.filter(
+                                (l) => l.user_id !== newLike.user_id
+                            ),
+                            newLike,
+                        ],
+                    };
+                }
+
+                return fileQ;
             });
 
             state = {
@@ -195,7 +232,8 @@ export const {
     setSortOptions,
     setAudioVolume,
     receiveFiles,
-    setDbFileLen
+    setDbFileLen,
+    likeFileRdx,
 } = appSlice.actions;
 
 export const selectApp = (state: any) => state.app;

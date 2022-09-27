@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { FileInterface } from '../interfaces/file';
-import { receiveFiles, setFiles } from '../redux/slices/appSlice';
+import { Like } from '../interfaces/like';
+import { likeFileRdx, receiveFiles, setFiles } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
 import { LIST_FILES_ROUTE, LIKE_FILE_ROUTE } from './routes';
 
@@ -10,6 +11,11 @@ export interface ListFilesResponse {
     cursor?: number;
     files?: FileInterface[];
     total_db?: number;
+}
+
+export interface LikeFileResponse {
+    likeObj: Like;
+    msg: string;
 }
 
 export const getAllFiles = async (dispatch: Dispatch) => {
@@ -67,6 +73,53 @@ export const getFilesV2 = async ({
 };
 
 export const likeFile = async ({
+    user_id,
+    file_id,
+    count,
+    dispatch,
+    token,
+}: {
+    user_id?: string;
+    file_id?: string;
+    count: number;
+    dispatch: Dispatch;
+    token: string;
+}) => {
+    const body = {
+        user_id: user_id,
+        file_id: file_id,
+        count: count,
+    };
+
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    await axios
+        .post(LIKE_FILE_ROUTE, body, headers)
+        .then((res) => {
+            const data: LikeFileResponse = res.data;
+
+            dispatch(likeFileRdx(data.likeObj));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const saveFile = async ({
     user_id,
     file_id,
     count,

@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
+import { Like } from '../../interfaces/like';
 import { User } from '../../interfaces/user';
+import { LikeFileResponse } from '../../requests/fileRequests';
 import { AuthResponse } from '../../requests/userRequests';
 import { sortFiles } from '../../utils/sortFiles';
 
@@ -102,6 +104,33 @@ export const userSlice = createSlice({
                 token: token ? token : '',
                 info: { ...user },
                 loggedIn: true,
+            };
+
+            return state;
+        },
+        likeFileUserHandlerRdx: (
+            state,
+            action: { type: string; payload: LikeFileResponse['likeObj'] }
+        ) => {
+            if (!state.info) {
+                return state;
+            }
+
+            const newLike: Like = {
+                ...action.payload,
+            };
+
+            state = {
+                ...state,
+                info: {
+                    ...state.info,
+                    likes: [
+                        ...state.info.likes.filter(
+                            (l) => l.file_id !== newLike.file_id
+                        ),
+                        newLike,
+                    ],
+                },
             };
 
             return state;
