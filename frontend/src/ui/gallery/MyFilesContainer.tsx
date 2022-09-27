@@ -35,14 +35,16 @@ const MyFilesContainer = () => {
     useEffect(() => {
         if (userInfo.info && loading) {
             if (!user_token) {
+                setLoading(false);
                 router.push('/new/login');
                 return;
             }
 
             if (
                 userInfo.myFiles &&
-                userInfo.myFiles.length < Number(userInfo.info?.files.length)
+                userInfo.myFiles.length >= Number(userInfo.info?.files.length)
             ) {
+                setLoading(false);
                 return;
             }
 
