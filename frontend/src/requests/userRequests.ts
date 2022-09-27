@@ -82,8 +82,6 @@ export const registerUser = async (
         },
     };
 
-    console.log(token);
-
     if (token) {
         headers = {
             ...headers,
@@ -97,7 +95,7 @@ export const registerUser = async (
     await axios
         .post(REGISTER_ROUTE, data, headers)
         .then((res) => {
-            dispatch(authHandler(res.data));
+            // dispatch(authHandler(res.data));
 
             console.log(res.data)
 

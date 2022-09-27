@@ -8,6 +8,7 @@ import { HeartIcon, BookmarkIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { likeFile } from '../requests/fileRequests';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { setNotification } from '../redux/slices/notificationSlice';
 
 export interface FileControlsProps {
     file?: FileInterface;
@@ -38,6 +39,17 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     };
 
     const handleLike = () => {
+        if (!userInfo.loggedIn) {
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: 'You must be logged in to like files',
+                })
+            );
+
+            return;
+        }
+
         setGivenLikes(givenLikes + 1);
         setTotalLikes(totalLikes + 1);
 
@@ -49,6 +61,17 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     };
 
     const handleDislike = () => {
+        if (!userInfo.loggedIn) {
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: 'You must be logged in to dislike files',
+                })
+            );
+
+            return;
+        }
+
         if (givenLikes > 0) {
             setGivenLikes(givenLikes - 1);
             setTotalLikes(totalLikes - 1);
@@ -68,7 +91,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 file_id: file?._id,
                 count: givenLikes,
                 dispatch,
-                token: userInfo.token
+                token: userInfo.token,
             });
         };
 
@@ -104,16 +127,20 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         >
             <div className="flex items-center w-full">
                 <div className="flex items-center mr-2 w-28">
-                    <button
-                        className="flex items-center justify-center text-notification no_select"
-                        onClick={handleLike}
-                    >
-                        <HeartIconFull className="text-notification h-6 mr-0.5" />
+                    {userInfo.info?._id !== file?.author && (
+                        <>
+                            <button
+                                className="flex items-center justify-center text-notification no_select"
+                                onClick={handleLike}
+                            >
+                                <HeartIconFull className="text-notification h-6 mr-0.5" />
 
-                        {givenLikes}
-                    </button>
+                                {givenLikes}
+                            </button>
 
-                    <div className="h-7 w-[1.5px] bg-white mx-2" />
+                            <div className="h-7 w-[1.5px] bg-white mx-2" />
+                        </>
+                    )}
 
                     <button
                         className="flex items-center justify-center text-white no_select"
