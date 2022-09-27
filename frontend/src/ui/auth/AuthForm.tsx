@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../Button';
 import { Input } from '../Input';
 import { useRouter } from 'next/router';
+import { loginUser, registerUser } from '../../requests/userRequests';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 
 export interface AuthFormProps {
     register?: boolean;
@@ -9,12 +12,27 @@ export interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const userInfo: UserInfo = useSelector(selectUser);
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = async (e: React.MouseEvent) => {
         e.preventDefault();
 
         if (!register) {
+            await loginUser(username, password, dispatch);
         } else {
+            await registerUser(
+                username,
+                password,
+                email,
+                dispatch,
+                userInfo.token
+            );
         }
     };
 
@@ -46,6 +64,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                         name="email"
                         id="email"
                         required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
             )}
@@ -60,6 +80,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     name="username"
                     id="username"
                     required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
 
@@ -74,6 +96,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     id="password"
                     type="password"
                     required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
 

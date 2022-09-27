@@ -13,6 +13,7 @@ import {
     GET_USER_INFO_ROUTE,
     GET_USER_ITEMS_ROUTE,
     LOGIN_ROUTE,
+    REGISTER_ROUTE,
 } from './routes';
 
 export const loginUser = async (
@@ -28,12 +29,52 @@ export const loginUser = async (
     await axios
         .post(LOGIN_ROUTE, data)
         .then((res) => {
-            const { access_token, info } = res.data;
+            const { token, user } = res.data;
 
-            dispatch(setUserInfo(info));
-            dispatch(setToken(access_token));
+            dispatch(setUserInfo(user));
+            dispatch(setToken(token));
 
-            localStorage.setItem('access_token', access_token);
+            localStorage.setItem('access_token', token);
+
+            dispatch(handleLogin(true));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const registerUser = async (
+    username: string,
+    password: string,
+    email: string,
+    dispatch: Dispatch,
+    token: string
+) => {
+    const data = new FormData();
+
+    data.append("username", username);
+    data.append("email", email);
+    data.append("password", password);
+
+    await axios
+        .post(REGISTER_ROUTE, data)
+        .then((res) => {
+            const { token, user } = res.data;
+
+            dispatch(setUserInfo(user));
+            dispatch(setToken(token));
+
+            localStorage.setItem('access_token', token);
 
             dispatch(handleLogin(true));
         })
