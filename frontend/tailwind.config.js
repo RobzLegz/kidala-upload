@@ -48,7 +48,7 @@ module.exports = {
                     'washed-out': '#F5BFBF',
                 },
                 accent: {
-                    DEFAULT: '#3A65FF',
+                    DEFAULT: '#FD4D4D',
                     hover: '#5278FF',
                     disabled: '#7189DC',
                 },

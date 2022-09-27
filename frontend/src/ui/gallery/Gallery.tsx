@@ -94,7 +94,7 @@ const Gallery = () => {
     };
 
     return (
-        <div className="w-full flex flex-col items-start justify-center sm:px-2 xl:px-16 2xl:px-52">
+        <div className="w-full flex flex-col items-start justify-start sm:px-2 xl:px-16 2xl:px-52">
             <Checkbox
                 text="Show all file types"
                 checked={appInfo.sortOptions.showFiles}

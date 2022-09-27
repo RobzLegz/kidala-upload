@@ -13,14 +13,12 @@ const MyFilesView: React.FC<MyFilesViewProps> = ({ loading = false }) => {
 
     return (
         <div className="w-full flex flex-col items-center justify-start">
-            <div className="w-11/12 flex flex-col items-center justify-start max-w-[800px]">
-                {userInfo.myFiles &&
-                    userInfo.myFiles.map((myFile, i) => (
-                        <MyFile file={myFile} key={i} />
-                    ))}
+            {userInfo.myFiles &&
+                userInfo.myFiles.map((myFile, i) => (
+                    <MyFile file={myFile} key={i} />
+                ))}
 
-                {loading && <Spinner size="8" />}
-            </div>
+            {loading && <Spinner size="8" />}
         </div>
     );
 };

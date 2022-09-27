@@ -16,7 +16,7 @@ const PageModule: React.FC<PageModuleProps> = ({
     return (
         <main className={`page ${className}`}>
             <HeadParser title={title} description={description} file={file} />
-            
+
             {children}
 
             <CheckAuth />

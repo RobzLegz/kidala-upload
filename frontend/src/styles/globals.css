@@ -19,6 +19,14 @@
         @apply text-3xl font-extrabold;
     }
 
+    h3 {
+        @apply text-2xl font-extrabold;
+    }
+
+    h4 {
+        @apply text-xl font-extrabold;
+    }
+
     strong {
         @apply font-bold text-base;
     }

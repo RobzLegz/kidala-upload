@@ -82,6 +82,15 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
+                    onClick={() => router.push('/new')}
+                >
+                    Home
+                </Button>
+
+                <Button
+                    className="bg-transparent z-10"
+                    size="small"
+                    color="secondary"
                     onClick={() => router.push('/new/gallery')}
                 >
                     Gallery

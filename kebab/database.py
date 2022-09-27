@@ -31,6 +31,8 @@ class Like(BaseModel):
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
     ip: str | None = None
+    name: str | None = None
+    bio: str | None = None
     email: str | None = None
     username: str | None = None
     password: str | None = None

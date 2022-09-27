@@ -39,6 +39,13 @@ const MyFilesContainer = () => {
                 return;
             }
 
+            if (
+                userInfo.myFiles &&
+                userInfo.myFiles.length < Number(userInfo.info?.files.length)
+            ) {
+                return;
+            }
+
             const fetchFiles = async () => {
                 if (
                     userInfo.myFiles &&
