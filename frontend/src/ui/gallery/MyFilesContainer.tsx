@@ -17,7 +17,7 @@ const MyFilesContainer = () => {
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [limit, setLimit] = useState<number>(10); //amount of files to receive
+    const [limit, setLimit] = useState<number>(15); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
 
