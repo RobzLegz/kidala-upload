@@ -9,6 +9,7 @@ import {
     LIST_FILES_ROUTE,
     LIKE_FILE_ROUTE,
     GET_USER_LIKED_FILES,
+    FAVOURITE_FILE_ROUTE,
 } from './routes';
 
 export interface ListFilesResponse {
@@ -125,22 +126,16 @@ export const likeFile = async ({
 };
 
 export const saveFile = async ({
-    user_id,
     file_id,
-    count,
     dispatch,
     token,
 }: {
-    user_id?: string;
     file_id?: string;
-    count: number;
     dispatch: Dispatch;
     token: string;
 }) => {
     const body = {
-        user_id: user_id,
         file_id: file_id,
-        count: count,
     };
 
     const headers = {
@@ -150,7 +145,7 @@ export const saveFile = async ({
     };
 
     await axios
-        .post(LIKE_FILE_ROUTE, body, headers)
+        .post(FAVOURITE_FILE_ROUTE, body, headers)
         .then((res) => {
             console.log(res.data);
 

@@ -17,7 +17,7 @@ export const UPLOAD_ROUTE = `${FILE_BASE}/upload`;
 export const LIST_FILES_ROUTE = `${FILE_BASE}/allfiles`;
 export const SINGLE_FILE_ROUTE = `${FILE_BASE}/file`;
 export const LIKE_FILE_ROUTE = `${FILE_BASE}/like`;
-export const FAVOURITE_FILE_ROUTE = `${FILE_BASE}/favourtie`;
+export const FAVOURITE_FILE_ROUTE = `${FILE_BASE}/favourite`;
 
 export const GET_USER_INFO_ROUTE = `${USERS_BASE}/me`;
 export const GET_USER_ITEMS_ROUTE = `${GET_USER_INFO_ROUTE}/items`;

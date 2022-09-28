@@ -5,7 +5,7 @@ import {
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
 import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
-import { likeFile } from '../requests/fileRequests';
+import { likeFile, saveFile } from '../requests/fileRequests';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../redux/slices/notificationSlice';
@@ -25,15 +25,10 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [givenLikes, setGivenLikes] = useState<number | null>(null);
     const [prevGivenLikes, setPrevGivenLikes] = useState<number | null>(null);
     const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
-    const [saved, setSaved] = useState(false);
+    const [saved, setSaved] = useState<boolean | null>(null);
     const [sent, setSent] = useState<boolean>(false);
-    const [savedSent, setSavedSent] = useState<boolean>(false);
-    const [prevSaved, setPrevSaved] = useState<boolean>(
-        userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
-    );
-    const [prevSentSaved, setPrevSentSaved] = useState<boolean | null>(
-        userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
-    );
+    const [prevSaved, setPrevSaved] = useState<boolean | null>(null);
+    const [timer, setTimer] = useState<number | null>(null);
 
     useEffect(() => {
         if (totalLikes === null && file) {
@@ -43,46 +38,23 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         if (givenLikes === null && userInfo.info && userInfo.info._id) {
             setGivenLikes(getFileUserLikes(file, userInfo.info._id));
         }
+
+        if (saved === null && userInfo.info) {
+            setSaved(
+                userInfo.info?.favourites?.some((f) => f === file?._id)
+                    ? true
+                    : false
+            );
+        }
+
+        if (prevSaved === null && userInfo.info) {
+            setPrevSaved(
+                userInfo.info?.favourites?.some((f) => f === file?._id)
+                    ? true
+                    : false
+            );
+        }
     }, [userInfo.info, file]);
-
-    const handleSave = () => {
-        const newSaved = !saved;
-
-        setSaved(newSaved);
-
-        setTimeout(() => {
-            setPrevSaved(newSaved);
-            setSavedSent(false);
-        }, 3000);
-    };
-
-    useEffect(() => {
-        const makeReq = async () => {
-            if (prevSentSaved !== saved && prevSaved === saved && !savedSent) {
-                setSavedSent(true);
-                setPrevSentSaved(saved);
-                console.log(saved);
-            }
-        };
-
-        const send = async () => {
-            if (prevSaved === saved && prevSentSaved !== saved && !savedSent) {
-                await makeReq().then(() => {
-                    setPrevSentSaved(saved);
-                });
-            }
-        };
-
-        const timeoutEffect = () => {
-            setTimeout(() => {
-                send();
-            }, 1000);
-        };
-
-        timeoutEffect();
-
-        return () => undefined;
-    }, [prevSaved]);
 
     const checkIfLogged = () => {
         if (userInfo.info && userInfo.info.username && userInfo.loggedIn) {
@@ -91,6 +63,65 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
         return false;
     };
+
+    const handleSave = () => {
+        if (!checkIfLogged) {
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: 'You must be logged in to save files',
+                })
+            );
+
+            return;
+        }
+
+        if (saved === null) {
+            return;
+        }
+
+        const newSaved = !saved;
+
+        setSaved(newSaved);
+
+        setTimer(3);
+    };
+
+    useEffect(() => {
+        const makeReq = async () => {
+            await saveFile({
+                file_id: file?._id,
+                dispatch,
+                token: userInfo.token,
+            });
+
+            // console.log(timer)
+        };
+
+        const send = async () => {
+            if (prevSaved !== saved) {
+                await makeReq().then(() => {
+                    setPrevSaved(saved);
+                });
+            }
+        };
+
+        const timeoutEffect = () => {
+            if (typeof timer === 'number') {
+                setTimeout(() => {
+                    if (timer > 0) {
+                        setTimer(timer - 1);
+                    } else {
+                        send();
+                    }
+                }, 1000);
+            }
+        };
+
+        timeoutEffect();
+
+        return () => undefined;
+    }, [timer]);
 
     const handleLike = () => {
         if (!checkIfLogged) {

@@ -73,7 +73,7 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
             setPrevCursor(appInfo.files ? appInfo.files.length : 0);
         }
         setLoading(true);
-    }, [liked, saved, userInfo.info, userInfo.likedFiles, userInfo.savedFiles]);
+    }, [liked, saved, userInfo.info, userInfo.likedFiles, userInfo.savedFiles, appInfo.files]);
 
     const handleScroll = () => {
         if (windowSize.height) {
