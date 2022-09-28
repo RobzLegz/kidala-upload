@@ -42,8 +42,6 @@ class User(BaseModel):
     avatar: str | None = None
     banner: str | None = None
     role: str | None = None
-    avatar: str | None = None
-    banner: str | None = None
     favourites: list[PyObjectId] = []
     likes: list[Like] = []
     verified: bool = False

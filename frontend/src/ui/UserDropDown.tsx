@@ -4,7 +4,6 @@ import {
     CogIcon,
     DocumentIcon,
     LanguageIcon,
-    UserIcon,
 } from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -22,10 +21,16 @@ export interface UserDropDownProps {
 
 const dropdownOptions: DropdownOptionProps[] = [
     {
-        icon: <UserIcon className="text-primary-200 h-5" />,
-        text: 'Profile',
+        icon: <DocumentIcon className="text-primary-200 h-5" />,
+        text: 'My files',
         isLanguage: false,
-        url: '/new/profile',
+        url: '/my-files',
+    },
+    {
+        icon: <BookmarkIcon className="text-primary-200 h-5" />,
+        text: 'Saved',
+        isLanguage: false,
+        url: '/saved',
     },
     {
         icon: <LanguageIcon className="text-primary-200 h-5" />,
@@ -37,7 +42,7 @@ const dropdownOptions: DropdownOptionProps[] = [
         icon: <CogIcon className="text-primary-200 h-5" />,
         text: 'Settings',
         isLanguage: false,
-        url: '/new/settings',
+        url: '/settings',
     },
     {
         icon: <BugAntIcon className="text-primary-200 h-5" />,

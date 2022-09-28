@@ -68,7 +68,7 @@ def secure_filename(filename: str) -> str:
 def all_files(cursor: int = 0, limit: int = 20):
     if cursor >= 0 and limit >= 0:
         returnlist = []
-        db_cursor = db.files.find({'private': False}).sort("_id", -1).skip(cursor).limit(limit)
+        db_cursor = db.files.find({'private': False}).sort("_id", 1).skip(cursor).limit(limit)
         for file in db_cursor:
             returnlist.append(File(**file))
 
