@@ -9,7 +9,7 @@ const SettingsContainer = () => {
     const { page } = router.query;
 
     return (
-        <div className="flex items-start justify-start w-full px-12">
+        <div className="flex items-start justify-start w-full pl-72 pr-12">
             <SettingsSidebar />
 
             {page === 'profile' ? <ProfileSettings /> : null}

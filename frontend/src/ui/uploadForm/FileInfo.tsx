@@ -188,7 +188,12 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         Change file
                     </Button>
 
-                    <Button size="small" onClick={handleUpload} type="submit">
+                    <Button
+                        size="small"
+                        onClick={handleUpload}
+                        type="submit"
+                        autoFocus
+                    >
                         Upload
                     </Button>
                 </div>

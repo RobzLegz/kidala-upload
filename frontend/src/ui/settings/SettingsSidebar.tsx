@@ -1,13 +1,26 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const SettingsSidebar = () => {
     const router = useRouter();
 
     const { page } = router.query;
 
+    useEffect(() => {
+        if (!page) {
+            router.push(
+                {
+                    pathname: '/new/settings',
+                    query: { page: 'profile' },
+                },
+                undefined,
+                { shallow: true }
+            );
+        }
+    }, [page]);
+
     return (
-        <ul className="flex flex-col h-full w-60 px-2">
+        <ul className="flex flex-col h-full w-60 px-2 fixed left-12 top-24">
             <li>
                 <strong className="text-primary-300">USER SETTINGS</strong>
             </li>

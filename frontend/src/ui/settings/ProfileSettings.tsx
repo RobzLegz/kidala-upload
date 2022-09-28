@@ -17,13 +17,23 @@ const ProfileSettings = () => {
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [username, setUsername] = useState<string>('');
-    const [name, setName] = useState<string>('');
-    const [bio, setBio] = useState<string>('');
+    const [username, setUsername] = useState<string>(
+        userInfo.info?.username ? userInfo.info?.username : ''
+    );
+    const [name, setName] = useState<string>(
+        userInfo.info?.name ? userInfo.info?.name : ''
+    );
+    const [bio, setBio] = useState<string>(
+        userInfo.info?.bio ? userInfo.info?.bio : ''
+    );
     const [file, setFile] = useState<File | null>(null);
     const [bannerfile, setBannerFile] = useState<File | null>(null);
-    const [avatarPreview, setAvatarPreview] = useState('');
-    const [bannerPreview, setBannerPreview] = useState('');
+    const [avatarPreview, setAvatarPreview] = useState(
+        userInfo.info?.avatar ? userInfo.info?.avatar : ''
+    );
+    const [bannerPreview, setBannerPreview] = useState(
+        userInfo.info?.banner ? userInfo.info?.banner : ''
+    );
 
     const handleFileSelect = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -254,6 +264,18 @@ const ProfileSettings = () => {
                                 textarea
                             />
                         </div>
+                    </div>
+
+                    <div className="flex mt-4">
+                        <Button size="small">Save changes</Button>
+
+                        <Button
+                            size="small"
+                            color="primary-300"
+                            className="ml-4"
+                        >
+                            Reset
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -70,7 +70,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
     }
 
     return (
-        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between absolute top-0 left-0 bg-primary-800 border-b border-primary-700">
+        <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700">
             <button onClick={() => router.push('/new')}>
                 <Logo />
             </button>
