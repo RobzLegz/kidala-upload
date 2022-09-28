@@ -133,7 +133,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                                 fileUser ? 'flex' : 'hidden'
                             }`}
                         >
-                            <button className='flex items-center justify-center cursor-pointer'>
+                            <button className="flex items-center justify-center cursor-pointer">
                                 <ProfileUserIcon
                                     avatar={
                                         fileUser?.avatar

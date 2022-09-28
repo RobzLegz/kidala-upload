@@ -29,28 +29,32 @@ export const loginUser = async (
     dispatch: Dispatch,
     router: NextRouter
 ) => {
-    const data = {
-        username,
-        password,
+    const data = new FormData();
+
+    data.append('username', username);
+    data.append('password', password);
+
+    let headers: { headers: Record<string, any> } = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
     };
 
     await axios
-        .post(LOGIN_ROUTE, data)
+        .post(LOGIN_ROUTE, data, headers)
         .then((res) => {
-            const { token }: AuthResponse = res.data;
-
-            localStorage.setItem('access_token', token);
-
             dispatch(authHandler(res.data));
 
-            router.replace('/new/profile');
+            localStorage.setItem('access_token', res.data.token);
+
+            router.push('/new/profile');
         })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
             }
 
-            localStorage.removeItem('access_token');
+            // localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(

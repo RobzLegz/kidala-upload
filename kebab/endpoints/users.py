@@ -53,7 +53,7 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
         token = create_access_token(data={'user_id': user.id}, admin=False)
     else:
         user = db.users.find_one({"_id": current_user.id})
-        
+
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
@@ -63,12 +63,13 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         db.users.find_one_and_replace({'_id': current_user.id}, user)
 
-        rtrn_user: User = User(** user)
+        # rtrn_user: User = User(** user)
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    rtrn_user = User(**user)
+    rtrn_user: User = User(**user)
 
     return {'user': rtrn_user, 'token': token}
+
 
 @router.get("/me", response_model=User)
 async def get_own_user(current_user: User = Depends(get_current_user)):
