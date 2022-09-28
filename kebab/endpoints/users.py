@@ -113,3 +113,8 @@ async def get_own_favourites(current_user: User = Depends(get_current_user), cur
         return {'files': returnlist, 'count':len(returnlist)}
     else:
         raise HTTPException(400)
+
+# @router.post("/me/update")
+# async def get_own_user(current_user: User = Depends(get_current_user)):
+    
+#     return current_user
