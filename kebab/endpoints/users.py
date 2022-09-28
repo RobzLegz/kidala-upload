@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Form, Body
 from fastapi.security import OAuth2PasswordRequestForm 
 
-from ..database import User, File, db, Token, User
+from ..database import PyObjectId, User, File, db, Token, User
 from ..auth import get_current_user, authenticate_user, create_access_token, get_password_hash, get_potential_user
 
 router = APIRouter(
@@ -103,3 +103,50 @@ async def get_own_favourites(current_user: User = Depends(get_current_user), cur
         return {'files': returnlist, 'count':len(returnlist)}
     else:
         raise HTTPException(400)
+
+@router.get("/user")
+async def get_user(user_id: str):
+    user = db.users.find_one({'_id': PyObjectId(user_id)})
+    if user != None:
+        rtrn_user = User(**user)
+        rtrn_user.password = None
+        return rtrn_user
+    else:
+        raise HTTPException(404)
+
+@router.put('/update')
+async def update_user(user: User = Depends(get_current_user),
+                      bio: str | None = Body(),
+                      name: str | None = Body(),
+                      username: str | None = Body(),
+                      avatar: str | None = Body(),
+                      banner: str | None = Body()
+                    ):
+
+    user = db.users.find_one({'_id': user.id})
+
+    if avatar == "":
+        avatar = None
+    if banner == "":
+        banner = None
+
+    update_dict = {
+        'bio': bio,
+        'name': name,
+        'username': username,
+        'avatar': avatar,
+        'banner': banner
+    }
+
+    if user != None:
+        if username != None:
+            q = db.users.find_one({'username': username})
+            if username == user['username'] or q == None:        
+                updated_user = db.users.find_one_and_update({'_id': user['_id']}, {'$set': update_dict}, return_document=True)
+                rtrn_user: User = User(**updated_user)
+                return rtrn_user
+            else:
+                return {'msg': 'Username already taken.'}
+        return {'msg': 'Invalid username.'}
+    else:
+        raise HTTPException(404)
