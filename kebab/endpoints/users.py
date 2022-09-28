@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Form, Body
 from fastapi.security import OAuth2PasswordRequestForm 
 
-from ..database import User, File, db, Token, User
+from ..database import PyObjectId, User, File, db, Token, User
 from ..auth import get_current_user, authenticate_user, create_access_token, get_password_hash, get_potential_user
 
 router = APIRouter(
@@ -20,7 +20,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(data={"user_id": str(user.id)})
+    if user.role == 'admin':
+        admin_bool = True
+    else:
+        admin_bool = False
+
+    access_token = create_access_token(data={"user_id": str(user.id)}, admin=admin_bool)
 
     return {'user': user, 'token':Token(access_token=access_token, token_type='bearer')}
 
@@ -43,37 +48,25 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
         user = User(email=email, username=username, password=hashed_pass, role='default')
 
         insertobj = db.users.insert_one(user.dict(exclude={'id'}))
-        user.id = insertobj.inserted_id
-        user_id = str(insertobj.inserted_id)
+        user.id = str(insertobj.inserted_id)
 
-        rtrn_user = {
-            "_id": user_id,
-            "ip": user.ip,
-            "email": email,
-            "username": username,
-            "password": hashed_pass,
-            "role": user.role,
-            "favourites": user.favourites,
-            "likes": user.likes,
-            "verified": user.verified,
-            "followers": user.followers,
-            "following": user.following,
-            "files": user.files,
-        }
+        token = create_access_token(data={'user_id': user.id}, admin=False)
     else:
         user = db.users.find_one({"_id": current_user.id})
         
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
+        user["role"] = 'default'
 
         user_id = str(current_user.id)
 
         db.users.find_one_and_replace({'_id': current_user.id}, user)
 
         rtrn_user: User = User(** user)
+        token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    token = create_access_token(data={'user_id': user_id}, admin=False)
+    rtrn_user = User(**user)
 
     return {'user': rtrn_user, 'token': token}
 
@@ -114,7 +107,49 @@ async def get_own_favourites(current_user: User = Depends(get_current_user), cur
     else:
         raise HTTPException(400)
 
-# @router.post("/me/update")
-# async def get_own_user(current_user: User = Depends(get_current_user)):
-    
-#     return current_user
+@router.get("/user")
+async def get_user(user_id: str):
+    user = db.users.find_one({'_id': PyObjectId(user_id)})
+    if user != None:
+        rtrn_user = User(**user)
+        rtrn_user.password = None
+        return rtrn_user
+    else:
+        raise HTTPException(404)
+
+@router.put('/update')
+async def update_user(user: User = Depends(get_current_user),
+                      bio: str | None = Body(),
+                      name: str | None = Body(),
+                      username: str | None = Body(),
+                      avatar: str | None = Body(),
+                      banner: str | None = Body()
+                    ):
+
+    user = db.users.find_one({'_id': user.id})
+
+    if avatar == "":
+        avatar = None
+    if banner == "":
+        banner = None
+
+    update_dict = {
+        'bio': bio,
+        'name': name,
+        'username': username,
+        'avatar': avatar,
+        'banner': banner
+    }
+
+    if user != None:
+        if username != None:
+            q = db.users.find_one({'username': username})
+            if username == user['username'] or q == None:        
+                updated_user = db.users.find_one_and_update({'_id': user['_id']}, {'$set': update_dict}, return_document=True)
+                rtrn_user: User = User(**updated_user)
+                return rtrn_user
+            else:
+                return {'msg': 'Username already taken.'}
+        return {'msg': 'Invalid username.'}
+    else:
+        raise HTTPException(404)
