@@ -59,7 +59,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 
         setInfoInsert(nextRowFirst);
 
-        const clickedInfo = getFileFromHash(hash, appInfo.files);
+        const clickedInfo = getFileFromHash(hash, ittFiles);
 
         if (clickedInfo) {
             setClickedFileInfo(clickedInfo);
