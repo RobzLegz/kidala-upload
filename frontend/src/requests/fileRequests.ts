@@ -177,15 +177,23 @@ export const getLiked = async ({
     cursor,
     limit,
     dispatch,
+    token,
 }: {
     cursor: number;
     limit: number;
     dispatch: Dispatch;
+    token: string;
 }) => {
     const route = `${GET_USER_LIKED_FILES}?cursor=${cursor}&limit=${limit}`;
 
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
     await axios
-        .get(route)
+        .get(route, headers)
         .then((res) => {
             const data: ListFilesResponse = res.data;
 

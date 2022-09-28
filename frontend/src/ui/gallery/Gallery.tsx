@@ -19,6 +19,8 @@ export interface GalleryProps {
     saved?: boolean;
 }
 
+const limit = 12;
+
 const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
@@ -26,42 +28,51 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
-    const [loading, setLoading] = useState(true); //start to receive from here
+    const [loading, setLoading] = useState(false); //start to receive from here
     const [activeFiles, setActiveFiles] = useState(appInfo.files);
     const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
 
     useEffect(() => {
         if (liked) {
-            setActiveFiles(userInfo.likedFiles);
+            setActiveFiles(userInfo.likedFiles ? userInfo.likedFiles : []);
             setActiveFileLen(
                 userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
             );
+            setPrevCursor(
+                userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
+            );
+
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
                     showFiles: true,
                 })
             );
-            setLoading(true);
         } else if (saved) {
-            setActiveFiles(userInfo.savedFiles);
+            setActiveFiles(userInfo.savedFiles ? userInfo.savedFiles : []);
             setActiveFileLen(
                 userInfo.info?.favourites.length
                     ? userInfo.info?.favourites.length
                     : 0
             );
+            setPrevCursor(
+                userInfo.info?.favourites.length
+                    ? userInfo.info?.favourites.length
+                    : 0
+            );
+
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
                     showFiles: true,
                 })
             );
-            setLoading(true);
         } else {
             setActiveFiles(appInfo.files);
+            setPrevCursor(appInfo.files ? appInfo.files.length : 0);
         }
+        setLoading(true);
     }, [liked, saved, userInfo.info, userInfo.likedFiles, userInfo.savedFiles]);
 
     const handleScroll = () => {
@@ -76,19 +87,9 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     };
 
     useEffect(() => {
-        if (windowSize.width) {
-            if (windowSize.width < windowSizes.xl) {
-                setLimit(9);
-            } else if (windowSize.width >= windowSizes.xl) {
-                setLimit(12);
-            }
-        }
-    }, [windowSize.width]);
-
-    useEffect(() => {
         if (activeFiles && loading) {
             const fetchFiles = async () => {
-                if (!activeFiles || !limit) {
+                if (!limit) {
                     return;
                 }
 
@@ -100,10 +101,15 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
 
                 if (saved) {
                 } else if (liked) {
+                    if (!userInfo.token) {
+                        return;
+                    }
+
                     await getLiked({
                         cursor: activeFiles.length,
                         limit: limit,
                         dispatch,
+                        token: userInfo.token,
                     });
                 } else {
                     await getFilesV2({
@@ -118,7 +124,7 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
                 setLoading(false);
             });
         }
-    }, [activeFiles, loading]);
+    }, [activeFiles, loading, userInfo.token]);
 
     useEffect(() => {
         if (

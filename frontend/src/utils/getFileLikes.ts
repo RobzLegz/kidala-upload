@@ -9,7 +9,6 @@ export const getFileLikes = (file?: FileInterface) => {
 
     file.likes.forEach((like) => {
         totalLikes += like.count;
-        console.log(like);
     });
 
     return totalLikes;
