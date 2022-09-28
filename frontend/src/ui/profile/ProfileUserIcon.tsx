@@ -7,13 +7,39 @@ import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 export interface ProfileUserIconProps {
     className?: string;
     tempAvatar?: string;
+    avatar?: string;
+    showAvatar?: boolean;
 }
 
 const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
     className,
     tempAvatar,
+    avatar,
+    showAvatar = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
+
+    if (showAvatar) {
+        return (
+            <div>
+                {avatar ? (
+                    <div className="h-10 w-10 relative">
+                        <Image
+                            objectFit="cover"
+                            src={avatar}
+                            layout="fill"
+                            className="rounded-full"
+                            draggable={false}
+                        />
+                    </div>
+                ) : (
+                    <div className="bg-primary-800 rounded-full h-10 w-10">
+                        <UserIcon className="w-full text-primary-200" />
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className={`absolute ${className ? className : ''}`}>
