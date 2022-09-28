@@ -18,7 +18,7 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
     return (
         <div className={`absolute ${className ? className : ''}`}>
             {userInfo.info?.avatar || tempAvatar ? (
-                <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-20 w-20 relative">
+                <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-16 sm:h-20 w-16 sm:w-20 relative">
                     <Image
                         objectFit="cover"
                         src={
@@ -34,8 +34,8 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
                     />
                 </div>
             ) : (
-                <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-20 w-20">
-                    <UserIcon className="h-[76px] text-primary-200" />
+                <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-16 sm:h-20 w-16 sm:w-20">
+                    <UserIcon className="h-[60px] sm:h-[76px] text-primary-200" />
                 </div>
             )}
         </div>

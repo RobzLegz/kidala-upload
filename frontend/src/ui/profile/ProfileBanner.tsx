@@ -13,7 +13,7 @@ const ProfileBanner: React.FC<ProfileUserIconProps> = ({
     return (
         <div>
             {userInfo.info?.avatar || tempAvatar ? (
-                <div className="h-36 w-full rounded-t-lg relative">
+                <div className="h-24 sm:h-36 w-full rounded-t-lg relative">
                     <Image
                         objectFit="cover"
                         src={
@@ -29,7 +29,7 @@ const ProfileBanner: React.FC<ProfileUserIconProps> = ({
                     />
                 </div>
             ) : (
-                <div className="h-36 w-full bg-sky-900 rounded-t-lg"></div>
+                <div className="h-24 sm:h-36 w-full bg-sky-900 rounded-t-lg"></div>
             )}
         </div>
     );
