@@ -205,7 +205,7 @@ async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
     else:
         return {'msg': 'invalid like count'}
 
-    return {'msg': 'success', 'likeobj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
+    return {'msg': 'success', 'likeObj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
 
 @router.post("/favourite")
 async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_current_user)):
@@ -214,8 +214,8 @@ async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_cu
     if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
         db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
         
-        return {'msg': 'added favourite'}
+        return {'msg': 'added to favourites', 'saved': True, 'file_id': file_id}
     else:
         db.users.update_one({'_id': user.id}, {'$pull': {'favourites': PyObjectId(file_id)}})
 
-        return {'msg': 'removed favourite'}
+        return {'msg': 'removed from favourites', 'saved': False, 'file_id': file_id}

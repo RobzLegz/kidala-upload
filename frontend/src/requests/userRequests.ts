@@ -82,8 +82,6 @@ export const registerUser = async (
         },
     };
 
-    console.log(token);
-
     if (token) {
         headers = {
             ...headers,
@@ -99,11 +97,9 @@ export const registerUser = async (
         .then((res) => {
             dispatch(authHandler(res.data));
 
-            console.log(res.data)
+            localStorage.setItem('access_token', res.data.token);
 
-            // localStorage.setItem('access_token', res.data.token);
-
-            // router.push('/new/profile');
+            router.push('/new/profile');
         })
         .catch((err) => {
             if (!err.response) {

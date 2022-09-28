@@ -39,18 +39,15 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
     hashed_pass = get_password_hash(password)
 
-    print(current_user)
-    print(current_user.id)
-
     if current_user.id == None:
         user = User(email=email, username=username, password=hashed_pass, role='default')
 
         insertobj = db.users.insert_one(user.dict(exclude={'id'}))
         user.id = insertobj.inserted_id
-        user_id = insertobj.inserted_id
+        user_id = str(insertobj.inserted_id)
 
         rtrn_user = {
-            "_id": str(user_id),
+            "_id": user_id,
             "ip": user.ip,
             "email": email,
             "username": username,
@@ -65,33 +62,18 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
         }
     else:
         user = db.users.find_one({"_id": current_user.id})
+        
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
 
-        user_id = current_user.id
+        user_id = str(current_user.id)
 
-        print(user_id)
-        print(type(user_id))
+        db.users.find_one_and_replace({'_id': current_user.id}, user)
 
-        db.users.replace_one({'_id': current_user.id}, user)
+        rtrn_user: User = User(** user)
 
-        rtrn_user = {
-            "_id": str(user_id),
-            "ip": user["ip"],
-            "email": email,
-            "username": username,
-            "password": hashed_pass,
-            "role": user["role"],
-            "favourites": user["favourites"],
-            "likes": user["likes"],
-            "verified": user["verified"],
-            "followers": user["followers"],
-            "following": user["following"],
-            "files": user["files"],
-        }
-
-    token = create_access_token(data={'user_id': str(user_id)}, admin=False)
+    token = create_access_token(data={'user_id': user_id}, admin=False)
 
     return {'user': rtrn_user, 'token': token}
 

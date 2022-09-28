@@ -10,7 +10,11 @@ import MyFilesView from './MyFilesView';
 
 const user_token = !isServer ? localStorage.getItem('access_token') : null;
 
-const MyFilesContainer = () => {
+export interface MyFilesContainerProps {
+    isProfile?: boolean;
+}
+
+const MyFilesContainer: React.FC<MyFilesContainerProps> = ({ isProfile = false }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
@@ -91,7 +95,7 @@ const MyFilesContainer = () => {
         }
     }, [windowSize.height, userInfo.myFiles, limit, userInfo.info]);
 
-    return <MyFilesView loading={loading} />;
+    return <MyFilesView loading={loading} isProfile={isProfile} />;
 };
 
 export default MyFilesContainer;

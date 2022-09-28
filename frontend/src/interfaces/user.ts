@@ -1,3 +1,5 @@
+import { Like } from './like';
+
 export interface User {
     _id: string;
     ip: string | null;
@@ -9,6 +11,7 @@ export interface User {
     name?: string | null;
     avatar?: string | null;
     favourites: string[];
+    likes: Like[];
     verified: boolean;
     followers: string[];
     following: string[];
