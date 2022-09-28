@@ -214,8 +214,8 @@ async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_cu
     if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
         db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
         
-        return {'msg': 'added to favourites'}
+        return {'msg': 'added to favourites', 'saved': True, 'file_id': file_id}
     else:
         db.users.update_one({'_id': user.id}, {'$pull': {'favourites': PyObjectId(file_id)}})
 
-        return {'msg': 'removed from favourites'}
+        return {'msg': 'removed from favourites', 'saved': False, 'file_id': file_id}

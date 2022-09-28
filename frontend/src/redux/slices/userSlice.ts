@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { FileInterface } from '../../interfaces/file';
 import { Like } from '../../interfaces/like';
 import { User } from '../../interfaces/user';
-import { LikeFileResponse } from '../../requests/fileRequests';
+import {
+    LikeFileResponse,
+    SaveFileResponse,
+} from '../../requests/fileRequests';
 import { AuthResponse } from '../../requests/userRequests';
 import { sortFiles } from '../../utils/sortFiles';
 
@@ -142,7 +145,7 @@ export const userSlice = createSlice({
         receiveLikedFiles: (state, action) => {
             const likedFiles: FileInterface[] | null = action.payload;
 
-            console.log(likedFiles)
+            console.log(likedFiles);
 
             if (!likedFiles) {
                 return state;
@@ -186,6 +189,51 @@ export const userSlice = createSlice({
 
             return state;
         },
+        saveFileUserHandlerRdx: (
+            state,
+            action: {
+                type: string;
+                payload: SaveFileResponse;
+            }
+        ) => {
+            if (!state.info) {
+                return state;
+            }
+
+            const resp: SaveFileResponse = {
+                ...action.payload,
+            };
+
+            const { file_id, saved } = resp;
+
+            let newInfo: User = {
+                ...state.info,
+            };
+
+            if (saved) {
+                newInfo = {
+                    ...newInfo,
+                    favourites: [
+                        ...newInfo.favourites.filter((fav) => fav !== file_id),
+                        file_id,
+                    ],
+                };
+            } else {
+                newInfo = {
+                    ...newInfo,
+                    favourites: [
+                        ...newInfo.favourites.filter((fav) => fav !== file_id),
+                    ],
+                };
+            }
+
+            state = {
+                ...state,
+                info: { ...newInfo },
+            };
+
+            return state;
+        },
     },
 });
 
@@ -195,7 +243,8 @@ export const {
     setToken,
     receiveMyFiles,
     authHandler,
-    receiveLikedFiles
+    receiveLikedFiles,
+    saveFileUserHandlerRdx,
 } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;

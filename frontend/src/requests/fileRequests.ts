@@ -4,7 +4,10 @@ import { FileInterface } from '../interfaces/file';
 import { Like } from '../interfaces/like';
 import { likeFileRdx, receiveFiles, setFiles } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { receiveLikedFiles } from '../redux/slices/userSlice';
+import {
+    receiveLikedFiles,
+    saveFileUserHandlerRdx,
+} from '../redux/slices/userSlice';
 import {
     LIST_FILES_ROUTE,
     LIKE_FILE_ROUTE,
@@ -21,6 +24,12 @@ export interface ListFilesResponse {
 
 export interface LikeFileResponse {
     likeObj: Like;
+    msg: string;
+}
+
+export interface SaveFileResponse {
+    file_id: string;
+    saved: boolean;
     msg: string;
 }
 
@@ -147,11 +156,9 @@ export const saveFile = async ({
     await axios
         .post(FAVOURITE_FILE_ROUTE, body, headers)
         .then((res) => {
-            console.log(res.data);
+            const data: SaveFileResponse = res.data;
 
-            // const data: ListFilesResponse = res.data;
-
-            // dispatch(receiveFiles(data.files));
+            dispatch(saveFileUserHandlerRdx(data));
         })
         .catch((err) => {
             if (!err.response) {

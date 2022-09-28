@@ -84,7 +84,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
         setSaved(newSaved);
 
-        setTimer(3);
+        setTimer(5);
     };
 
     useEffect(() => {
