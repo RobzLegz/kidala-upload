@@ -10,6 +10,7 @@ export interface User {
     bio?: string | null;
     name?: string | null;
     avatar?: string | null;
+    banner?: string | null;
     favourites: string[];
     likes: Like[];
     verified: boolean;

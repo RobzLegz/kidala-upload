@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import React from 'react';
 import Nav from '../../ui/navigation/Nav';
+import SettingsContainer from '../../ui/settings/SettingsContainer';
 import PageModule from '../PageModule';
 
 const Settings: NextPage = () => {
@@ -11,6 +12,8 @@ const Settings: NextPage = () => {
             className="pt-24 px-2"
         >
             <Nav />
+
+            <SettingsContainer />
         </PageModule>
     );
 };
