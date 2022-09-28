@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import {
@@ -9,7 +8,7 @@ import {
     setSortOptions,
 } from '../../redux/slices/appSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
-import { getFilesV2, getLiked } from '../../requests/fileRequests';
+import { getFilesV2, getLiked, getSaved } from '../../requests/fileRequests';
 import Checkbox from '../Checkbox';
 import GalleryGrid from './GalleryGrid';
 import GallerySpinner from './GallerySpinner';
@@ -29,12 +28,18 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     const userInfo: UserInfo = useSelector(selectUser);
 
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
-    const [loading, setLoading] = useState(false); //start to receive from here
+    const [loading, setLoading] = useState(true); //start to receive from here
     const [activeFiles, setActiveFiles] = useState(appInfo.files);
     const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
 
     useEffect(() => {
-        if (liked) {
+        if (liked || saved) {
+            setLoading(true);
+        }
+    }, [liked, saved]);
+
+    useEffect(() => {
+        if (liked && userInfo.info) {
             setActiveFiles(userInfo.likedFiles ? userInfo.likedFiles : []);
             setActiveFileLen(
                 userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
@@ -42,14 +47,13 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
             setPrevCursor(
                 userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
             );
-
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
                     showFiles: true,
                 })
             );
-        } else if (saved) {
+        } else if (saved && userInfo.info) {
             setActiveFiles(userInfo.savedFiles ? userInfo.savedFiles : []);
             setActiveFileLen(
                 userInfo.info?.favourites.length
@@ -61,19 +65,24 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
                     ? userInfo.info?.favourites.length
                     : 0
             );
-
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
                     showFiles: true,
                 })
             );
-        } else {
+        } else if (appInfo.files) {
             setActiveFiles(appInfo.files);
             setPrevCursor(appInfo.files ? appInfo.files.length : 0);
         }
-        setLoading(true);
-    }, [liked, saved, userInfo.info, userInfo.likedFiles, userInfo.savedFiles, appInfo.files]);
+    }, [
+        liked,
+        saved,
+        userInfo.info,
+        userInfo.likedFiles,
+        userInfo.savedFiles,
+        appInfo.files,
+    ]);
 
     const handleScroll = () => {
         if (windowSize.height) {
@@ -100,6 +109,16 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
                 setPrevCursor(activeFiles.length);
 
                 if (saved) {
+                    if (!userInfo.token) {
+                        return;
+                    }
+
+                    await getSaved({
+                        cursor: activeFiles.length,
+                        limit: limit,
+                        dispatch,
+                        token: userInfo.token,
+                    });
                 } else if (liked) {
                     if (!userInfo.token) {
                         return;
@@ -124,7 +143,7 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
                 setLoading(false);
             });
         }
-    }, [activeFiles, loading, userInfo.token]);
+    }, [activeFiles, loading, userInfo.token, saved, liked]);
 
     useEffect(() => {
         if (
