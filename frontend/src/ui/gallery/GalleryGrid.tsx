@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -9,9 +9,7 @@ import GalleryInfoInsert from './GalleryInfoInsert';
 import { detectFileType } from '../../utils/detectFileType';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
-
-const cn =
-    'mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden xl:grid-cols-4 px-0.5 gap-0.5 sm:gap-2 mb-4';
+import Image from 'next/image';
 
 export interface GalleryGridProps {
     activeFiles?: FileInterface[] | null;
@@ -24,6 +22,10 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     liked = false,
     saved = false,
 }) => {
+    const cn = `mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden ${
+        !liked && !saved ? 'xl:grid-cols-4' : ''
+    } px-0.5 gap-0.5 sm:gap-2 mb-4`;
+
     const windowSize = useWindowSize();
     const router = useRouter();
 
@@ -71,7 +73,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
         );
     };
 
-    if (typeof infoInsert === 'number' && ittFiles) {
+    if (typeof infoInsert === 'number' && ittFiles && ittFiles.length > 0) {
         return (
             <div className={cn}>
                 {ittFiles
@@ -118,10 +120,10 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
         );
     }
 
-    return (
-        <div className={cn}>
-            {ittFiles &&
-                ittFiles.map((file, i) => (
+    if (ittFiles && ittFiles.length > 0) {
+        return (
+            <div className={cn}>
+                {ittFiles.map((file, i) => (
                     <GalleryFile
                         props={file}
                         index={i}
@@ -129,8 +131,28 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
                         key={i}
                     />
                 ))}
-        </div>
-    );
+            </div>
+        );
+    }
+
+    if (liked || saved) {
+        return (
+            <div className="w-full items-center justify-center p-4 rounded-lg border border-primary-700 bg-primary-800 flex flex-col">
+                <Image
+                    src="/images/kidala.png"
+                    width={200}
+                    height={220}
+                    objectFit="contain"
+                />
+
+                <p className="text-accent mt-2">
+                    You don't have any {liked ? 'liked' : 'favourite'} files :(
+                </p>
+            </div>
+        );
+    }
+
+    return null;
 };
 
 export default GalleryGrid;

@@ -6,10 +6,15 @@ import {
 } from '@heroicons/react/20/solid';
 import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import { likeFile, saveFile } from '../requests/fileRequests';
-import { selectUser, UserInfo } from '../redux/slices/userSlice';
+import {
+    removeFromSaved,
+    selectUser,
+    UserInfo,
+} from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../redux/slices/notificationSlice';
 import { getFileLikes, getFileUserLikes } from '../utils/getFileLikes';
+import { useRouter } from 'next/router';
 
 export interface FileControlsProps {
     file?: FileInterface;
@@ -18,6 +23,7 @@ export interface FileControlsProps {
 
 const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const userInfo: UserInfo = useSelector(selectUser);
 
@@ -76,11 +82,15 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             return;
         }
 
-        if (saved === null) {
+        if (saved === null || !file) {
             return;
         }
 
         const newSaved = !saved;
+
+        if (!newSaved && router.query.page === 'favourites') {
+            dispatch(removeFromSaved(file._id));
+        }
 
         setSaved(newSaved);
 
@@ -95,7 +105,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 token: userInfo.token,
             });
 
-            // console.log(timer)
+            if (!saved && router.query.page !== 'favourites') {
+                dispatch(removeFromSaved(file?._id));
+            }
         };
 
         const send = async () => {

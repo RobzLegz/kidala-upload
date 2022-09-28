@@ -277,6 +277,24 @@ export const userSlice = createSlice({
 
             return state;
         },
+        removeFromSaved: (state, action) => {
+            let savedFiles: FileInterface[] = [];
+
+            if (state.savedFiles) {
+                savedFiles = state.savedFiles;
+            }
+
+            savedFiles = [...savedFiles].filter(
+                (f) => f._id !== action.payload
+            );
+
+            state = {
+                ...state,
+                savedFiles: savedFiles,
+            };
+
+            return state;
+        },
     },
 });
 
@@ -289,6 +307,7 @@ export const {
     receiveLikedFiles,
     saveFileUserHandlerRdx,
     receiveSavedFiles,
+    removeFromSaved
 } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;
