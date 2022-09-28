@@ -29,6 +29,8 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     const windowSize = useWindowSize();
     const router = useRouter();
 
+    const { f } = router.query;
+
     const appInfo: AppInfo = useSelector(selectApp);
 
     const [infoInsert, setInfoInsert] = useState<number | null>(null);
@@ -63,17 +65,42 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
             setClickedFileInfo(clickedInfo);
         }
 
-        router.push(
-            {
-                pathname: '/new/gallery',
-                query: { f: hash },
-            },
-            undefined,
-            { shallow: true }
-        );
+        if (saved) {
+            router.push(
+                {
+                    pathname: '/new/profile',
+                    query: { page: 'favourites', f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        } else if (liked) {
+            router.push(
+                {
+                    pathname: '/new/profile',
+                    query: { page: 'liked', f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        } else {
+            router.push(
+                {
+                    pathname: '/new/gallery',
+                    query: { f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        }
     };
 
-    if (typeof infoInsert === 'number' && ittFiles && ittFiles.length > 0) {
+    if (
+        typeof infoInsert === 'number' &&
+        ittFiles &&
+        ittFiles.length > 0 &&
+        typeof f === 'string'
+    ) {
         return (
             <div className={cn}>
                 {ittFiles
