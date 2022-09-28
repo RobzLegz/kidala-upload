@@ -27,8 +27,10 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState(false);
     const [sent, setSent] = useState<boolean>(false);
-    const [savedSent, setSavedSent] = useState<boolean>(true);
-    const [prevSaved, setPrevSaved] = useState<boolean>(false);
+    const [savedSent, setSavedSent] = useState<boolean>(false);
+    const [prevSaved, setPrevSaved] = useState<boolean>(
+        userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
+    );
     const [prevSentSaved, setPrevSentSaved] = useState<boolean | null>(
         userInfo.info?.favourites?.some((f) => f === file?._id) ? true : false
     );
@@ -44,22 +46,27 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     }, [userInfo.info, file]);
 
     const handleSave = () => {
-        setSaved(!saved);
+        const newSaved = !saved;
+
+        setSaved(newSaved);
 
         setTimeout(() => {
-            setPrevSaved(!saved);
-            setSavedSent(prevSentSaved === saved);
-        }, 1000);
+            setPrevSaved(newSaved);
+            setSavedSent(false);
+        }, 3000);
     };
 
     useEffect(() => {
         const makeReq = async () => {
-            console.log(saved);
+            if (prevSentSaved !== saved && prevSaved === saved && !savedSent) {
+                setSavedSent(true);
+                setPrevSentSaved(saved);
+                console.log(saved);
+            }
         };
 
         const send = async () => {
-            if (prevSaved === saved && !savedSent && prevSentSaved !== saved) {
-                setSavedSent(true);
+            if (prevSaved === saved && prevSentSaved !== saved && !savedSent) {
                 await makeReq().then(() => {
                     setPrevSentSaved(saved);
                 });
