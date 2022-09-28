@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../Button';
 import { Input } from '../Input';
 import { useRouter } from 'next/router';
+import { loginUser, registerUser } from '../../requests/userRequests';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { invalidUsername, validateEmail } from '../../utils/valid';
 
 export interface AuthFormProps {
     register?: boolean;
@@ -9,12 +13,61 @@ export interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const userInfo: UserInfo = useSelector(selectUser);
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const handleLogin = async (e: React.MouseEvent) => {
         e.preventDefault();
 
+        let usernameErr = '',
+            emailErr = '',
+            passwordErr = '';
+
+        if (register) {
+            if (!email) {
+                emailErr = 'Enter your email';
+            } else {
+                if (!validateEmail(email)) {
+                    emailErr = 'Invalid email format';
+                }
+            }
+        }
+
+        usernameErr = invalidUsername(username);
+
+        if (!password) {
+            passwordErr = 'Enter your password';
+        } else if (password.length < 6) {
+            passwordErr = 'Password should be at least 6 characters long';
+        }
+
+        setUsernameError(usernameErr);
+        setEmailError(emailErr);
+        setPasswordError(passwordErr);
+
+        if (usernameErr || emailErr || passwordErr) {
+            return;
+        }
+
         if (!register) {
+            await loginUser(username, password, dispatch, router);
         } else {
+            await registerUser(
+                username,
+                password,
+                email,
+                dispatch,
+                userInfo.token,
+                router
+            );
         }
     };
 
@@ -46,6 +99,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                         name="email"
                         id="email"
                         required
+                        error={emailError}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
             )}
@@ -60,6 +116,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     name="username"
                     id="username"
                     required
+                    error={usernameError}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
             </div>
 
@@ -73,7 +132,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     name="password"
                     id="password"
                     type="password"
+                    error={passwordError}
                     required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
 

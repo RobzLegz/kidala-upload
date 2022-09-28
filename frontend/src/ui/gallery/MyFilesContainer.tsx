@@ -10,14 +10,18 @@ import MyFilesView from './MyFilesView';
 
 const user_token = !isServer ? localStorage.getItem('access_token') : null;
 
-const MyFilesContainer = () => {
+export interface MyFilesContainerProps {
+    isProfile?: boolean;
+}
+
+const MyFilesContainer: React.FC<MyFilesContainerProps> = ({ isProfile = false }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
+    const [limit, setLimit] = useState<number>(15); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
 
@@ -33,35 +37,33 @@ const MyFilesContainer = () => {
     };
 
     useEffect(() => {
-        if (windowSize.width) {
-            if (windowSize.width < windowSizes.xl) {
-                setLimit(9);
-            } else if (windowSize.width >= windowSizes.xl) {
-                setLimit(12);
+        if (userInfo.info && loading) {
+            if (!user_token) {
+                setLoading(false);
+                router.push('/new/login');
+                return;
             }
-        }
-    }, [windowSize.width]);
 
-    useEffect(() => {
-        if (userInfo.myFiles && loading) {
+            if (
+                userInfo.myFiles &&
+                userInfo.myFiles.length >= Number(userInfo.info?.files.length)
+            ) {
+                setLoading(false);
+                return;
+            }
+
             const fetchFiles = async () => {
-                if (!userInfo.myFiles || !limit) {
+                if (
+                    userInfo.myFiles &&
+                    userInfo.myFiles.length === prevCursor
+                ) {
                     return;
                 }
 
-                if (userInfo.myFiles.length === prevCursor) {
-                    return;
-                }
-
-                if (!user_token) {
-                    router.push('/new/login');
-                    return;
-                }
-
-                setPrevCursor(userInfo.myFiles.length);
+                userInfo.myFiles && setPrevCursor(userInfo.myFiles.length);
 
                 await getUserFiles({
-                    cursor: userInfo.myFiles.length,
+                    cursor: userInfo.myFiles ? userInfo.myFiles.length : 0,
                     limit: limit,
                     dispatch,
                     token: user_token,
@@ -70,9 +72,13 @@ const MyFilesContainer = () => {
 
             fetchFiles().then(() => {
                 setLoading(false);
+
+                if (limit === 10) {
+                    setLimit(8);
+                }
             });
         }
-    }, [userInfo.myFiles, loading]);
+    }, [loading, userInfo.info]);
 
     useEffect(() => {
         if (
@@ -89,54 +95,7 @@ const MyFilesContainer = () => {
         }
     }, [windowSize.height, userInfo.myFiles, limit, userInfo.info]);
 
-    useEffect(() => {
-        if (!user_token) {
-            router.push('/new/login');
-            return;
-        }
-
-        if (!userInfo.info) {
-            return;
-        }
-
-        const fetchFiles = async () => {
-            if (!userInfo.myFiles || !limit) {
-                await getUserFiles({
-                    cursor: 0,
-                    limit: 20,
-                    dispatch,
-                    token: user_token,
-                });
-
-                return;
-            }
-
-            if (userInfo.myFiles.length === prevCursor) {
-                return;
-            }
-
-            if (
-                userInfo.myFiles.length >= Number(userInfo.info?.files.length)
-            ) {
-                return;
-            }
-
-            setPrevCursor(userInfo.myFiles.length);
-
-            await getUserFiles({
-                cursor: userInfo.myFiles.length,
-                limit: limit,
-                dispatch,
-                token: user_token,
-            });
-        };
-
-        fetchFiles().then(() => {
-            setLoading(false);
-        });
-    }, [userInfo.info]);
-
-    return <MyFilesView />;
+    return <MyFilesView loading={loading} isProfile={isProfile} />;
 };
 
 export default MyFilesContainer;
