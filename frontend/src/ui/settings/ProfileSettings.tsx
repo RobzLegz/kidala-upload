@@ -100,9 +100,9 @@ const ProfileSettings = () => {
     };
 
     return (
-        <div className="flex flex-col flex-1 items-start justify-start mx-8">
-            <div className="w-11/12 max-w-[800px] flex flex-col items-center justify-start">
-                <div className="flex flex-col items-start justify-start rounded-lg w-full p-4 dreineris_konteineris">
+        <div className="flex flex-col flex-1 items-start justify-start md:ml-8">
+            <div className="w-full max-w-[800px] flex flex-col items-center justify-start">
+                <div className="flex flex-col items-start justify-start rounded-lg w-full p-2 sm:p-4 dreineris_konteineris">
                     <strong className="text-white text-lg">
                         Profile picture
                     </strong>
@@ -131,7 +131,8 @@ const ProfileSettings = () => {
                                     size="small"
                                     className=" h-8"
                                 >
-                                    Change profile picture
+                                    <p className='hidden sm:block'>Change profile picture</p>
+                                    <p className='block sm:hidden'>Change avatar</p>
                                 </Button>
 
                                 {userInfo.info?.avatar && (
@@ -159,7 +160,7 @@ const ProfileSettings = () => {
                     <div className="flex flex-col mt-2 rounded-lg bg-primary-900 w-full">
                         <ProfileBanner tempAvatar={bannerPreview} />
 
-                        <div className="flex w-full items-center justify-between p-4">
+                        <div className="flex w-full items-start justify-start flex-col sm:flex-row sm:items-center sm:justify-between p-2 sm:p-4">
                             <div className="flex">
                                 <input
                                     type="file"
@@ -203,8 +204,8 @@ const ProfileSettings = () => {
                     </strong>
 
                     <div className="flex flex-col mt-2 w-full">
-                        <div className="flex w-full">
-                            <div className="flex flex-col w-1/2 pr-2">
+                        <div className="flex w-full flex-col sm:flex-row">
+                            <div className="flex flex-col sm:w-1/2 sm:pr-2">
                                 <label
                                     htmlFor="edit_username"
                                     className="text-primary-300 mb-1"
@@ -225,7 +226,7 @@ const ProfileSettings = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col w-1/2 pl-2">
+                            <div className="flex flex-col sm:w-1/2 sm:pl-2 mt-2 sm:mt-0">
                                 <label
                                     htmlFor="edit_name"
                                     className="text-primary-300 mb-1"
