@@ -137,12 +137,13 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 
     if (liked || saved) {
         return (
-            <div className="w-full items-center justify-center p-4 rounded-lg border border-primary-700 bg-primary-800 flex flex-col">
+            <div className="w-full items-center justify-center p-4 rounded-lg border border-primary-700 bg-primary-800 flex flex-col no_select">
                 <Image
                     src="/images/kidala.png"
                     width={200}
                     height={220}
                     objectFit="contain"
+                    draggable={false}
                 />
 
                 <p className="text-accent mt-2">
