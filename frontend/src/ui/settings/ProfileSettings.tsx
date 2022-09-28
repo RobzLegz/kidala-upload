@@ -8,6 +8,7 @@ import {
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { detectFileType } from '../../utils/detectFileType';
 import Button from '../Button';
+import { Input } from '../Input';
 import ProfileBanner from '../profile/ProfileBanner';
 import ProfileUserIcon from '../profile/ProfileUserIcon';
 
@@ -16,7 +17,11 @@ const ProfileSettings = () => {
 
     const userInfo: UserInfo = useSelector(selectUser);
 
+    const [username, setUsername] = useState<string>('');
+    const [name, setName] = useState<string>('');
+    const [bio, setBio] = useState<string>('');
     const [file, setFile] = useState<File | null>(null);
+    const [bannerfile, setBannerFile] = useState<File | null>(null);
     const [avatarPreview, setAvatarPreview] = useState('');
     const [bannerPreview, setBannerPreview] = useState('');
 
@@ -67,7 +72,21 @@ const ProfileSettings = () => {
         }
 
         dispatch(clearNotification());
-        setFile(selectedFile);
+        if (isBanner) {
+            setBannerFile(selectedFile);
+        } else {
+            setFile(selectedFile);
+        }
+    };
+
+    const removeImg = (isBanner?: boolean) => {
+        if (isBanner) {
+            setBannerFile(null);
+            setBannerPreview('');
+        } else {
+            setFile(null);
+            setAvatarPreview('');
+        }
     };
 
     return (
@@ -91,6 +110,7 @@ const ProfileSettings = () => {
                                     name="change_profile_icon"
                                     id="change_profile_icon"
                                     className="hidden"
+                                    accept="image/*"
                                     onChange={handleFileSelect}
                                 />
 
@@ -109,6 +129,7 @@ const ProfileSettings = () => {
                                         color="primary-300"
                                         size="small"
                                         className="ml-2 h-8 w-8"
+                                        onClick={() => removeImg(false)}
                                     >
                                         <TrashIcon className="text-white h-4" />
                                     </Button>
@@ -135,6 +156,7 @@ const ProfileSettings = () => {
                                     name="change_profile_banner"
                                     id="change_profile_banner"
                                     className="hidden"
+                                    accept="image/*"
                                     onChange={(e) => handleFileSelect(e, true)}
                                 />
 
@@ -153,6 +175,7 @@ const ProfileSettings = () => {
                                         color="primary-300"
                                         size="small"
                                         className="ml-2 h-8 w-8"
+                                        onClick={() => removeImg(true)}
                                     >
                                         <TrashIcon className="text-white h-4" />
                                     </Button>
@@ -162,6 +185,74 @@ const ProfileSettings = () => {
                             <small className="text-primary-300 mt-2">
                                 Maximum file size 5MB.
                             </small>
+                        </div>
+                    </div>
+
+                    <strong className="text-white text-lg mt-4">
+                        Public profile
+                    </strong>
+
+                    <div className="flex flex-col mt-2 w-full">
+                        <div className="flex w-full">
+                            <div className="flex flex-col w-1/2 pr-2">
+                                <label
+                                    htmlFor="edit_username"
+                                    className="text-primary-300 mb-1"
+                                >
+                                    Username
+                                </label>
+
+                                <Input
+                                    type="text"
+                                    name="edit_username"
+                                    id="edit_username"
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
+                                    className="w-full"
+                                    placeholder="Enter username"
+                                />
+                            </div>
+
+                            <div className="flex flex-col w-1/2 pl-2">
+                                <label
+                                    htmlFor="edit_name"
+                                    className="text-primary-300 mb-1"
+                                >
+                                    Name
+                                </label>
+
+                                <Input
+                                    type="text"
+                                    name="edit_name"
+                                    id="edit_name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="w-full"
+                                    placeholder="Enter your name"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col w-full mt-2">
+                            <label
+                                htmlFor="edit_bio"
+                                className="text-primary-300 mb-1"
+                            >
+                                Bio
+                            </label>
+
+                            <Input
+                                type="text"
+                                name="edit_bio"
+                                id="edit_bio"
+                                value={bio}
+                                onChange={(e) => setBio(e.target.value)}
+                                className="w-full h-28"
+                                placeholder="Enter bio"
+                                textarea
+                            />
                         </div>
                     </div>
                 </div>

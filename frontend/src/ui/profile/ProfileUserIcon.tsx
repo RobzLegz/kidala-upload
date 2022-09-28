@@ -29,7 +29,8 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
                                 : ''
                         }
                         layout="fill"
-                        className='rounded-full'
+                        className="rounded-full"
+                        draggable={false}
                     />
                 </div>
             ) : (
