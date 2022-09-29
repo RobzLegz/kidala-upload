@@ -69,6 +69,7 @@ def all_files(cursor: int = 0, limit: int = 20):
     if cursor >= 0 and limit >= 0:
         returnlist = []
         db_cursor = db.files.find({'private': False}).sort("_id", -1).skip(cursor).limit(limit)
+
         for file in db_cursor:
             returnlist.append(File(**file))
 
@@ -205,7 +206,7 @@ async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
     else:
         return {'msg': 'invalid like count'}
 
-    return {'msg': 'success', 'likeobj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
+    return {'msg': 'success', 'likeObj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
 
 @router.post("/favourite")
 async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_current_user)):
@@ -214,8 +215,8 @@ async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_cu
     if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
         db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
         
-        return {'msg': 'added favourite'}
+        return {'msg': 'added favourite', 'saved': True, 'file_id': file_id}
     else:
         db.users.update_one({'_id': user.id}, {'$pull': {'favourites': PyObjectId(file_id)}})
 
-        return {'msg': 'removed favourite'}
+        return {'msg': 'removed favourite', 'saved': False, 'file_id': file_id}
