@@ -15,6 +15,7 @@ import {
     GET_USER_LIKED_FILES,
     FAVOURITE_FILE_ROUTE,
     GET_USER_FAVOURITED_FILES,
+    FILE_BASE,
 } from './routes';
 
 export interface ListFilesResponse {
@@ -243,6 +244,31 @@ export const getSaved = async ({
             const data: ListFilesResponse = res.data;
 
             dispatch(receiveSavedFiles(data.files));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const getFileFromHash = async (
+    hash: string,
+    dispatch: Dispatch,
+    setFile?: React.Dispatch<React.SetStateAction<FileInterface>>
+) => {
+    await axios
+        .get(`${FILE_BASE}/${hash}`)
+        .then((res) => {
+            setFile && setFile(res.data);
         })
         .catch((err) => {
             if (!err.response) {
