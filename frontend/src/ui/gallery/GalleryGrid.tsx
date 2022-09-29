@@ -10,6 +10,7 @@ import { detectFileType } from '../../utils/detectFileType';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
 import Image from 'next/image';
+import NoFiles from './NoFiles';
 
 export interface GalleryGridProps {
     activeFiles?: FileInterface[] | null;
@@ -28,6 +29,8 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 
     const windowSize = useWindowSize();
     const router = useRouter();
+
+    const { f } = router.query;
 
     const appInfo: AppInfo = useSelector(selectApp);
 
@@ -57,23 +60,48 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 
         setInfoInsert(nextRowFirst);
 
-        const clickedInfo = getFileFromHash(hash, appInfo.files);
+        const clickedInfo = getFileFromHash(hash, ittFiles);
 
         if (clickedInfo) {
             setClickedFileInfo(clickedInfo);
         }
 
-        router.push(
-            {
-                pathname: '/new/gallery',
-                query: { f: hash },
-            },
-            undefined,
-            { shallow: true }
-        );
+        if (saved) {
+            router.push(
+                {
+                    pathname: '/new/profile',
+                    query: { page: 'favourites', f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        } else if (liked) {
+            router.push(
+                {
+                    pathname: '/new/profile',
+                    query: { page: 'liked', f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        } else {
+            router.push(
+                {
+                    pathname: '/new/gallery',
+                    query: { f: hash },
+                },
+                undefined,
+                { shallow: true }
+            );
+        }
     };
 
-    if (typeof infoInsert === 'number' && ittFiles && ittFiles.length > 0) {
+    if (
+        typeof infoInsert === 'number' &&
+        ittFiles &&
+        ittFiles.length > 0 &&
+        typeof f === 'string'
+    ) {
         return (
             <div className={cn}>
                 {ittFiles
@@ -136,21 +164,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     }
 
     if (liked || saved) {
-        return (
-            <div className="w-full items-center justify-center p-4 rounded-lg border border-primary-700 bg-primary-800 flex flex-col no_select">
-                <Image
-                    src="/images/kidala.png"
-                    width={200}
-                    height={220}
-                    objectFit="contain"
-                    draggable={false}
-                />
-
-                <p className="text-accent mt-2">
-                    You don't have any {liked ? 'liked' : 'favourite'} files :(
-                </p>
-            </div>
-        );
+        return <NoFiles liked={liked} saved={saved} />;
     }
 
     return null;

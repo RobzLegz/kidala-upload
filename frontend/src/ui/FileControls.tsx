@@ -37,28 +37,24 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [timer, setTimer] = useState<number | null>(null);
 
     useEffect(() => {
-        if (totalLikes === null && file) {
+        if (file) {
             setTotalLikes(getFileLikes(file));
         }
 
-        if (givenLikes === null && userInfo.info && userInfo.info._id) {
-            setGivenLikes(getFileUserLikes(file, userInfo.info._id));
-        }
-
-        if (saved === null && userInfo.info) {
+        if (userInfo.info) {
             setSaved(
                 userInfo.info?.favourites?.some((f) => f === file?._id)
                     ? true
                     : false
             );
-        }
 
-        if (prevSaved === null && userInfo.info) {
             setPrevSaved(
                 userInfo.info?.favourites?.some((f) => f === file?._id)
                     ? true
                     : false
             );
+
+            setGivenLikes(getFileUserLikes(file, userInfo.info._id));
         }
     }, [userInfo.info, file]);
 
@@ -88,10 +84,6 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
         const newSaved = !saved;
 
-        if (!newSaved && router.query.page === 'favourites') {
-            dispatch(removeFromSaved(file._id));
-        }
-
         setSaved(newSaved);
 
         setTimer(5);
@@ -105,9 +97,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 token: userInfo.token,
             });
 
-            if (!saved && router.query.page !== 'favourites') {
-                dispatch(removeFromSaved(file?._id));
-            }
+            dispatch(removeFromSaved(file?._id));
         };
 
         const send = async () => {

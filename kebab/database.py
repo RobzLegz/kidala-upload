@@ -28,22 +28,29 @@ class Like(BaseModel):
     file_id: PyObjectId
     count: int
 
+class Settings(BaseModel):
+    anonymous: bool = False
+
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
-    ip: str | None = None
+    username: str | None = None
+    email: str | None = None
+    password: str | None = None
     name: str | None = None
     bio: str | None = None
-    email: str | None = None
-    username: str | None = None
-    password: str | None = None
+    ip: str | None = None
+    avatar: str | None = None
+    banner: str | None = None
     role: str | None = None
     avatar: str | None = None
+    banner: str | None = None
     favourites: list[PyObjectId] = []
     likes: list[Like] = []
     verified: bool = False
     followers: list[PyObjectId] = []
     following: list[PyObjectId] = []
     files: list[PyObjectId] = []
+    settings: Settings | None = None
 
     class Config:
         json_encoders = {ObjectId: str}

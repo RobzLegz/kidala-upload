@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import Spinner from '../Spinner';
 import MyFile from './MyFile';
+import NoFiles from './NoFiles';
 
 export interface MyFilesViewProps {
     loading?: boolean;
@@ -14,6 +15,10 @@ const MyFilesView: React.FC<MyFilesViewProps> = ({
     isProfile = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
+
+    if ((isProfile && !userInfo.myFiles) || userInfo.myFiles?.length === 0) {
+        return <NoFiles my />;
+    }
 
     return (
         <div
