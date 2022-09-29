@@ -51,22 +51,20 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
         user.id = str(insertobj.inserted_id)
 
         token = create_access_token(data={'user_id': user.id}, admin=False)
+
+        rtrn_user: User = user
     else:
         user = db.users.find_one({"_id": current_user.id})
-
         user["email"] = email
         user["password"] = hashed_pass
         user["username"] = username
         user["role"] = 'default'
 
-        user_id = str(current_user.id)
+        db.users.replace_one({'_id': current_user.id}, user)
 
-        db.users.find_one_and_replace({'_id': current_user.id}, user)
-
-        # rtrn_user: User = User(** user)
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    rtrn_user: User = User(**user)
+        rtrn_user: User = User(** user)
 
     return {'user': rtrn_user, 'token': token}
 
