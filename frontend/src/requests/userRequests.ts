@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NextRouter } from 'next/router';
 import { Dispatch } from 'redux';
+import { FileInterface } from '../interfaces/file';
 import { User } from '../interfaces/user';
 import { setNotification } from '../redux/slices/notificationSlice';
 import {
@@ -10,13 +11,17 @@ import {
     setToken,
     setUserInfo,
 } from '../redux/slices/userSlice';
+import { generateFileUrl } from '../utils/generateFileUrl';
+import { invalidUsername } from '../utils/valid';
 import { ListFilesResponse } from './fileRequests';
 import {
     GET_USER_INFO_ROUTE,
     GET_USER_ITEMS_ROUTE,
     LOGIN_ROUTE,
     REGISTER_ROUTE,
+    UPDATE_USER_INFO_ROUTE,
 } from './routes';
+import { uploadProfileFile } from './uploadRequests';
 
 export interface AuthResponse {
     token: string;
@@ -181,6 +186,151 @@ export const getUserFiles = async ({
             const data: ListFilesResponse = res.data;
 
             dispatch(receiveMyFiles(data.files));
+        })
+        .catch((err) => {
+            if (!err.response) {
+                return console.log(err);
+            }
+
+            const message: string = err.response.data.err;
+            dispatch(
+                setNotification({
+                    type: 'error',
+                    message: message,
+                })
+            );
+        });
+};
+
+export const updateSelf = async ({
+    avatar,
+    banner,
+    token,
+    username,
+    bio,
+    name,
+    dispatch,
+    avatarSrc,
+    bannerSrc,
+}: {
+    username: string;
+    name: string;
+    bio: string;
+    avatar: File | null;
+    avatarSrc: string;
+    banner: File | null;
+    bannerSrc: string;
+    token: string;
+    dispatch: Dispatch;
+}) => {
+    let usernameErr = invalidUsername(username);
+
+    if (usernameErr) {
+        dispatch(
+            setNotification({
+                type: 'error',
+                message: usernameErr,
+            })
+        );
+        return;
+    }
+
+    let newAvatar = '';
+
+    if (avatarSrc) {
+        newAvatar = avatarSrc;
+    }
+
+    if (avatar) {
+        const avatarDesc = `${username}'s avatar`;
+
+        await uploadProfileFile(avatar, avatarDesc, token)
+            .then((res) => {
+                if (res) {
+                    const data = res.data;
+
+                    const { file }: { file: FileInterface } = data;
+
+                    dispatch(receiveMyFiles([file]));
+
+                    newAvatar = generateFileUrl(file.hash, file.name);
+                }
+            })
+            .catch((err) => {
+                if (!err.response) {
+                    return console.log(err);
+                }
+
+                const message: string = err.response.data.err;
+                dispatch(
+                    setNotification({
+                        type: 'error',
+                        message: message,
+                    })
+                );
+            });
+    }
+
+    console.log(newAvatar);
+
+    let newBanner = '';
+
+    if (bannerSrc) {
+        newBanner = bannerSrc;
+    }
+
+    if (banner) {
+        const bannerDesc = `${username}'s banner`;
+
+        await uploadProfileFile(banner, bannerDesc, token)
+            .then((res) => {
+                if (res) {
+                    const data = res.data;
+
+                    const { file }: { file: FileInterface } = data;
+
+                    dispatch(receiveMyFiles([file]));
+
+                    newBanner = generateFileUrl(file.hash, file.name);
+                }
+            })
+            .catch((err) => {
+                if (!err.response) {
+                    return console.log(err);
+                }
+
+                const message: string = err.response.data.err;
+                dispatch(
+                    setNotification({
+                        type: 'error',
+                        message: message,
+                    })
+                );
+            });
+    }
+
+    console.log(newBanner);
+
+    const body = {
+        bio,
+        name,
+        username,
+        avatar: newAvatar,
+        banner: newBanner,
+    };
+
+    const headers = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    await axios
+        .put(UPDATE_USER_INFO_ROUTE, body, headers)
+        .then((res) => {
+            const data: User = res.data;
+
+            dispatch(setUserInfo(data));
         })
         .catch((err) => {
             if (!err.response) {

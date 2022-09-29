@@ -6,6 +6,7 @@ import {
     setNotification,
 } from '../../redux/slices/notificationSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { updateSelf } from '../../requests/userRequests';
 import { detectFileType } from '../../utils/detectFileType';
 import Button from '../Button';
 import { Input } from '../Input';
@@ -34,6 +35,8 @@ const ProfileSettings = () => {
     const [bannerPreview, setBannerPreview] = useState(
         userInfo.info?.banner ? userInfo.info?.banner : ''
     );
+    const [changed, setChanged] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleFileSelect = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -99,6 +102,20 @@ const ProfileSettings = () => {
         }
     };
 
+    const handleUpdate = async () => {
+        await updateSelf({
+            avatar: file,
+            banner: bannerfile,
+            avatarSrc: avatarPreview,
+            bannerSrc: bannerPreview,
+            username,
+            dispatch,
+            bio,
+            name,
+            token: userInfo.token,
+        });
+    };
+
     return (
         <div className="flex flex-col flex-1 items-start justify-start md:ml-8">
             <div className="w-full max-w-[800px] flex flex-col items-center justify-start">
@@ -131,8 +148,12 @@ const ProfileSettings = () => {
                                     size="small"
                                     className=" h-8"
                                 >
-                                    <p className='hidden sm:block'>Change profile picture</p>
-                                    <p className='block sm:hidden'>Change avatar</p>
+                                    <p className="hidden sm:block">
+                                        Change profile picture
+                                    </p>
+                                    <p className="block sm:hidden">
+                                        Change avatar
+                                    </p>
                                 </Button>
 
                                 {userInfo.info?.avatar && (
@@ -268,12 +289,20 @@ const ProfileSettings = () => {
                     </div>
 
                     <div className="flex mt-4">
-                        <Button size="small">Save changes</Button>
+                        <Button
+                            size="small"
+                            onClick={handleUpdate}
+                            disabled={!changed}
+                            loading={loading}
+                        >
+                            Save changes
+                        </Button>
 
                         <Button
                             size="small"
                             color="primary-300"
                             className="ml-4"
+                            disabled={!changed || loading}
                         >
                             Reset
                         </Button>

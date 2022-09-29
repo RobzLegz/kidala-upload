@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Dispatch } from 'redux';
+import { FileInterface } from '../interfaces/file';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
 import { receiveMyFiles, setToken } from '../redux/slices/userSlice';
@@ -78,4 +79,30 @@ export const uploadFile = async (
 
             console.log(err.response.data);
         });
+};
+
+export const uploadProfileFile = async (
+    file: File | null,
+    description: string,
+    token: string
+) => {
+    if (!file) {
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('file', file);
+    formData.append('description', description);
+    formData.append('private', 'true');
+
+    let headers: { headers: Record<string, any> } = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const res = await axios.post(UPLOAD_ROUTE, formData, headers);
+
+    return res;
 };

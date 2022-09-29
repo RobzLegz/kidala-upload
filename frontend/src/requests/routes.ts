@@ -23,3 +23,4 @@ export const GET_USER_INFO_ROUTE = `${USERS_BASE}/me`;
 export const GET_USER_ITEMS_ROUTE = `${GET_USER_INFO_ROUTE}/items`;
 export const GET_USER_FAVOURITED_FILES = `${GET_USER_INFO_ROUTE}/favourites`;
 export const GET_USER_LIKED_FILES = `${GET_USER_INFO_ROUTE}/likes`;
+export const UPDATE_USER_INFO_ROUTE = `${USERS_BASE}/update`;
