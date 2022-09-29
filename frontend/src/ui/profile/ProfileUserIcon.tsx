@@ -7,22 +7,54 @@ import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 export interface ProfileUserIconProps {
     className?: string;
     tempAvatar?: string;
+    avatar?: string;
+    showAvatar?: boolean;
+    isEdit?: boolean;
 }
 
 const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
     className,
     tempAvatar,
+    avatar,
+    showAvatar = false,
+    isEdit = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
 
+    if (showAvatar) {
+        return (
+            <div>
+                {avatar ? (
+                    <div className="h-10 w-10 relative">
+                        <Image
+                            objectFit="cover"
+                            src={avatar}
+                            layout="fill"
+                            className="rounded-full"
+                            draggable={false}
+                        />
+                    </div>
+                ) : (
+                    <div className="bg-primary-800 rounded-full h-10 w-10">
+                        <UserIcon className="w-full text-primary-200" />
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     return (
         <div className={`absolute ${className ? className : ''}`}>
-            {userInfo.info?.avatar || tempAvatar ? (
+            {(!isEdit && userInfo.info?.avatar) || tempAvatar ? (
                 <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-16 sm:h-20 w-16 sm:w-20 relative">
                     <Image
                         objectFit="cover"
                         src={
-                            userInfo.info?.avatar
+                            isEdit
+                                ? tempAvatar
+                                    ? tempAvatar
+                                    : ''
+                                : userInfo.info?.avatar
                                 ? userInfo.info?.avatar
                                 : tempAvatar
                                 ? tempAvatar

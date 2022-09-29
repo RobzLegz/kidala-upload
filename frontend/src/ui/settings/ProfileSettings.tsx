@@ -1,11 +1,12 @@
 import { TrashIcon } from '@heroicons/react/20/solid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     clearNotification,
     setNotification,
 } from '../../redux/slices/notificationSlice';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { updateSelf } from '../../requests/userRequests';
 import { detectFileType } from '../../utils/detectFileType';
 import Button from '../Button';
 import { Input } from '../Input';
@@ -34,6 +35,35 @@ const ProfileSettings = () => {
     const [bannerPreview, setBannerPreview] = useState(
         userInfo.info?.banner ? userInfo.info?.banner : ''
     );
+    const [changed, setChanged] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (userInfo.info) {
+            if (
+                name !== userInfo.info.name ||
+                username !== userInfo.info.username ||
+                bio !== userInfo.info.bio ||
+                (bannerPreview === '' && userInfo.info.banner) ||
+                (avatarPreview === '' && userInfo.info.avatar) ||
+                file ||
+                bannerfile
+            ) {
+                setChanged(true);
+            } else {
+                setChanged(false);
+            }
+        }
+    }, [
+        userInfo.info,
+        name,
+        username,
+        bio,
+        file,
+        bannerfile,
+        bannerPreview,
+        avatarPreview,
+    ]);
 
     const handleFileSelect = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -99,10 +129,50 @@ const ProfileSettings = () => {
         }
     };
 
+    const handleUpdate = async () => {
+        setLoading(true);
+
+        await updateSelf({
+            avatar: file,
+            banner: bannerfile,
+            avatarSrc: avatarPreview,
+            bannerSrc: bannerPreview,
+            username,
+            dispatch,
+            bio,
+            name,
+            token: userInfo.token,
+            setAvatarPreview,
+            setBannerPreview,
+        });
+
+        setFile(null);
+        setBannerFile(null);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        if (userInfo.info) {
+            setUsername(userInfo.info?.username ? userInfo.info?.username : '');
+            setName(userInfo.info?.name ? userInfo.info?.name : '');
+            setBio(userInfo.info?.bio ? userInfo.info?.bio : '');
+            setAvatarPreview(
+                userInfo.info?.avatar ? userInfo.info?.avatar : ''
+            );
+            setBannerPreview(
+                userInfo.info?.banner ? userInfo.info?.banner : ''
+            );
+        }
+    }, [userInfo.info]);
+
+    if (!userInfo.info) {
+        return null;
+    }
+
     return (
-        <div className="flex flex-col flex-1 items-start justify-start mx-8">
-            <div className="w-11/12 max-w-[800px] flex flex-col items-center justify-start">
-                <div className="flex flex-col items-start justify-start rounded-lg w-full p-4 dreineris_konteineris">
+        <div className="flex flex-col flex-1 items-start justify-start md:ml-8">
+            <div className="w-full max-w-[800px] flex flex-col items-center justify-start">
+                <div className="flex flex-col items-start justify-start rounded-lg w-full p-2 sm:p-4 dreineris_konteineris">
                     <strong className="text-white text-lg">
                         Profile picture
                     </strong>
@@ -111,6 +181,7 @@ const ProfileSettings = () => {
                         <ProfileUserIcon
                             className="relative"
                             tempAvatar={avatarPreview}
+                            isEdit
                         />
 
                         <div className="flex h-20 flex-col items-start justify-center ml-4">
@@ -131,10 +202,15 @@ const ProfileSettings = () => {
                                     size="small"
                                     className=" h-8"
                                 >
-                                    Change profile picture
+                                    <p className="hidden sm:block">
+                                        Change profile picture
+                                    </p>
+                                    <p className="block sm:hidden">
+                                        Change avatar
+                                    </p>
                                 </Button>
 
-                                {userInfo.info?.avatar && (
+                                {avatarPreview && (
                                     <Button
                                         color="primary-300"
                                         size="small"
@@ -157,9 +233,9 @@ const ProfileSettings = () => {
                     </strong>
 
                     <div className="flex flex-col mt-2 rounded-lg bg-primary-900 w-full">
-                        <ProfileBanner tempAvatar={bannerPreview} />
+                        <ProfileBanner tempAvatar={bannerPreview} isEdit />
 
-                        <div className="flex w-full items-center justify-between p-4">
+                        <div className="flex w-full items-start justify-start flex-col sm:flex-row sm:items-center sm:justify-between p-2 sm:p-4">
                             <div className="flex">
                                 <input
                                     type="file"
@@ -180,7 +256,7 @@ const ProfileSettings = () => {
                                     Change profile banner
                                 </Button>
 
-                                {(userInfo.info?.banner || bannerPreview) && (
+                                {bannerPreview && (
                                     <Button
                                         color="primary-300"
                                         size="small"
@@ -203,8 +279,8 @@ const ProfileSettings = () => {
                     </strong>
 
                     <div className="flex flex-col mt-2 w-full">
-                        <div className="flex w-full">
-                            <div className="flex flex-col w-1/2 pr-2">
+                        <div className="flex w-full flex-col sm:flex-row">
+                            <div className="flex flex-col sm:w-1/2 sm:pr-2">
                                 <label
                                     htmlFor="edit_username"
                                     className="text-primary-300 mb-1"
@@ -217,6 +293,7 @@ const ProfileSettings = () => {
                                     name="edit_username"
                                     id="edit_username"
                                     value={username}
+                                    maxLength={30}
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
@@ -225,7 +302,7 @@ const ProfileSettings = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col w-1/2 pl-2">
+                            <div className="flex flex-col sm:w-1/2 sm:pl-2 mt-2 sm:mt-0">
                                 <label
                                     htmlFor="edit_name"
                                     className="text-primary-300 mb-1"
@@ -241,6 +318,7 @@ const ProfileSettings = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     className="w-full"
                                     placeholder="Enter your name"
+                                    maxLength={30}
                                 />
                             </div>
                         </div>
@@ -259,20 +337,29 @@ const ProfileSettings = () => {
                                 id="edit_bio"
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
-                                className="w-full h-28"
+                                className="w-full min-h-[120px]"
                                 placeholder="Enter bio"
                                 textarea
+                                maxLength={200}
                             />
                         </div>
                     </div>
 
                     <div className="flex mt-4">
-                        <Button size="small">Save changes</Button>
+                        <Button
+                            size="small"
+                            onClick={handleUpdate}
+                            disabled={!changed}
+                            loading={loading}
+                        >
+                            Save changes
+                        </Button>
 
                         <Button
                             size="small"
                             color="primary-300"
                             className="ml-4"
+                            disabled={!changed || loading}
                         >
                             Reset
                         </Button>

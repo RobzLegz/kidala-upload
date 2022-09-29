@@ -50,7 +50,7 @@ module.exports = {
                 accent: {
                     DEFAULT: '#FD4D4D',
                     hover: '#FD6868',
-                    disabled: '#FD6868',
+                    disabled: '#FFDCDC',
                 },
                 transparent_dark: {
                     DEFAULT: 'rgba(0, 0, 0, 0.4)',

@@ -7,17 +7,22 @@ import { ProfileUserIconProps } from './ProfileUserIcon';
 const ProfileBanner: React.FC<ProfileUserIconProps> = ({
     className,
     tempAvatar,
+    isEdit = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
 
     return (
         <div>
-            {userInfo.info?.avatar || tempAvatar ? (
+            {(!isEdit && userInfo.info?.avatar) || tempAvatar ? (
                 <div className="h-24 sm:h-36 w-full rounded-t-lg relative">
                     <Image
                         objectFit="cover"
                         src={
-                            userInfo.info?.banner
+                            isEdit
+                                ? tempAvatar
+                                    ? tempAvatar
+                                    : ''
+                                : userInfo.info?.banner
                                 ? userInfo.info?.banner
                                 : tempAvatar
                                 ? tempAvatar
