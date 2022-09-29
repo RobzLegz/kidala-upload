@@ -18,7 +18,11 @@ const ProfileBanner: React.FC<ProfileUserIconProps> = ({
                     <Image
                         objectFit="cover"
                         src={
-                            userInfo.info?.banner
+                            isEdit
+                                ? tempAvatar
+                                    ? tempAvatar
+                                    : ''
+                                : userInfo.info?.banner
                                 ? userInfo.info?.banner
                                 : tempAvatar
                                 ? tempAvatar

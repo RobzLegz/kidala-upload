@@ -212,6 +212,8 @@ export const updateSelf = async ({
     dispatch,
     avatarSrc,
     bannerSrc,
+    setAvatarPreview,
+    setBannerPreview,
 }: {
     username: string;
     name: string;
@@ -222,6 +224,8 @@ export const updateSelf = async ({
     bannerSrc: string;
     token: string;
     dispatch: Dispatch;
+    setAvatarPreview?: React.Dispatch<React.SetStateAction<string>>;
+    setBannerPreview?: React.Dispatch<React.SetStateAction<string>>;
 }) => {
     let usernameErr = invalidUsername(username);
 
@@ -326,6 +330,8 @@ export const updateSelf = async ({
         .then((res) => {
             const data: User = res.data;
 
+            setAvatarPreview && setAvatarPreview(newAvatar);
+            setBannerPreview && setBannerPreview(newBanner);
             dispatch(setUserInfo(data));
         })
         .catch((err) => {

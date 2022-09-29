@@ -44,8 +44,8 @@ const ProfileSettings = () => {
                 name !== userInfo.info.name ||
                 username !== userInfo.info.username ||
                 bio !== userInfo.info.bio ||
-                bannerPreview !== userInfo.info.banner ||
-                avatarPreview !== userInfo.info.avatar ||
+                (bannerPreview === '' && userInfo.info.banner) ||
+                (avatarPreview === '' && userInfo.info.avatar) ||
                 file ||
                 bannerfile
             ) {
@@ -142,8 +142,12 @@ const ProfileSettings = () => {
             bio,
             name,
             token: userInfo.token,
+            setAvatarPreview,
+            setBannerPreview,
         });
 
+        setFile(null);
+        setBannerFile(null);
         setLoading(false);
     };
 
@@ -289,6 +293,7 @@ const ProfileSettings = () => {
                                     name="edit_username"
                                     id="edit_username"
                                     value={username}
+                                    maxLength={30}
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
@@ -313,6 +318,7 @@ const ProfileSettings = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     className="w-full"
                                     placeholder="Enter your name"
+                                    maxLength={30}
                                 />
                             </div>
                         </div>

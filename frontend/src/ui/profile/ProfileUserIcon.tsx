@@ -50,7 +50,11 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
                     <Image
                         objectFit="cover"
                         src={
-                            userInfo.info?.avatar
+                            isEdit
+                                ? tempAvatar
+                                    ? tempAvatar
+                                    : ''
+                                : userInfo.info?.avatar
                                 ? userInfo.info?.avatar
                                 : tempAvatar
                                 ? tempAvatar
