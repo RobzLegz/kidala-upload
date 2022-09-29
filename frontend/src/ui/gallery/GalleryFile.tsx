@@ -68,10 +68,10 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 onClick={handleImageClick}
             />
 
-            <FileControls
+            {/* <FileControls
                 className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0"
                 file={props}
-            />
+            /> */}
         </div>
     );
 };

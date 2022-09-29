@@ -6,7 +6,7 @@ from bson import ObjectId
 MONGO_DB_LINK = os.environ["MONGO_DB_LINK"]
 
 client = pymongo.MongoClient(MONGO_DB_LINK)
-db = client.kidala_roberts_majas
+db = client.roberts_kidala
 
 class PyObjectId(ObjectId):
     @classmethod

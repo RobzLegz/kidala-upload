@@ -61,16 +61,16 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 let nW = 600;
                 let w_c_p = ((nW - width) / width) * 100;
                 let f_w_c_p = Math.floor(w_c_p) / 100;
-                let hDiff = height * f_w_c_p;
+                let hDiff = height * f_w_c_p; //width
 
-                nH = height + hDiff;
+                nH = height + hDiff; //width
 
                 while (nH > Number(windowSize.width) - 400) {
                     nW -= 50;
 
-                    w_c_p = ((nW - width) / height) * 100;
+                    w_c_p = ((nW - width) / width) * 100; 
                     f_w_c_p = Math.floor(w_c_p) / 100;
-                    hDiff = height * f_w_c_p;
+                    hDiff = height * f_w_c_p; //width
 
                     nH = height + hDiff;
                 }

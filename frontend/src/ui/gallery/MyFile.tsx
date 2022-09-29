@@ -1,4 +1,8 @@
-import { ChevronDownIcon, HeartIcon } from '@heroicons/react/20/solid';
+import {
+    ChevronDownIcon,
+    HeartIcon,
+    LockClosedIcon,
+} from '@heroicons/react/20/solid';
 import { ArrowDownTrayIcon, LinkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -135,7 +139,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
 
             <div
                 className={`flex items-center justify-between h-20 ${
-                    file.description ? 'w-28' : 'w-20'
+                    file.description ? 'w-32' : 'w-20'
                 }`}
             >
                 {file.description && (
@@ -147,6 +151,12 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         />
                     </button>
                 )}
+
+                <div className="w-8 flex flex-col items-center justify-center">
+                    {file.private && (
+                        <LockClosedIcon className="h-6 text-notification" />
+                    )}
+                </div>
 
                 <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
