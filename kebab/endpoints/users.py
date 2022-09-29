@@ -33,14 +33,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 async def register_user(username: str = Form(), password: str = Form(), email: str = Form(), current_user: User = Depends(get_potential_user)):
     emailq = db.users.find_one({"email": email.lower()})
     if emailq != None:
-        return {"err": "User with this e-mail already exists."}
+        return HTTPException(status_code=400, detail="User with this e-mail already exists.")
 
     if not username.isalnum():
-        return {"err": "Username should only contain alphanumeric characters"}
+        return HTTPException(status_code=400, detail="Username should only contain alphanumeric characters")
 
     usernameq = db.users.find_one({"username": username})
     if usernameq != None:
-        return {"err": "User with this username already exists."}
+        return HTTPException(status_code=400, detail="User with this username already exists.")
 
     hashed_pass = get_password_hash(password)
 
@@ -146,7 +146,7 @@ async def update_user(user: User = Depends(get_current_user),
                 rtrn_user: User = User(**updated_user)
                 return rtrn_user
             else:
-                return {'msg': 'Username already taken.'}
-        return {'msg': 'Invalid username.'}
+                return HTTPException(status_code=400, detail='Username already taken.')
+        return HTTPException(status_code=400, detail='Invalid username.')
     else:
         raise HTTPException(404)

@@ -184,9 +184,9 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
 @router.post("/like")
 async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
     if user.username == None:
-        return {'msg': 'not logged in'}
+        return HTTPException(status_code=400, detail="not logged in")
     if likeobj.user_id != user.id:
-        return {'msg': 'incorrect user'}
+        return HTTPException(status_code=400, detail="incorrect user")
     if 0 < likeobj.count <= 20:
         if db.files.find_one({'_id': likeobj.file_id, 'likes.user_id': likeobj.user_id}) == None:
             db.files.update_one({'_id': likeobj.file_id}, {'$push': {'likes': likeobj.dict()}})
@@ -203,14 +203,14 @@ async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
         db.users.update_one({'_id': likeobj.user_id}, {'$pull': {'likes': {'file_id': likeobj.file_id}}})
 
     else:
-        return {'msg': 'invalid like count'}
+        return HTTPException(status_code=400, detail="invalid like count")
 
     return {'msg': 'success', 'likeObj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
 
 @router.post("/favourite")
 async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_current_user)):
     if user.username == None:
-        return {'msg': 'not logged in'}
+        return HTTPException(status_code=401, detail="not logged in")
     if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
         db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
         
