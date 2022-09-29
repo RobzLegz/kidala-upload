@@ -271,8 +271,6 @@ export const updateSelf = async ({
             });
     }
 
-    console.log(newAvatar);
-
     let newBanner = '';
 
     if (bannerSrc) {
@@ -308,8 +306,6 @@ export const updateSelf = async ({
                 );
             });
     }
-
-    console.log(newBanner);
 
     const body = {
         bio,

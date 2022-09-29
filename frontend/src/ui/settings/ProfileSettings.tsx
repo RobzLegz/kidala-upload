@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/20/solid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     clearNotification,
@@ -37,6 +37,22 @@ const ProfileSettings = () => {
     );
     const [changed, setChanged] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (userInfo.info) {
+            if (
+                name !== userInfo.info.name ||
+                username !== userInfo.info.username ||
+                bio !== userInfo.info.bio ||
+                file ||
+                bannerfile
+            ) {
+                setChanged(true);
+            } else {
+                setChanged(false);
+            }
+        }
+    }, [userInfo.info, name, username, bio, file, bannerfile]);
 
     const handleFileSelect = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -103,6 +119,8 @@ const ProfileSettings = () => {
     };
 
     const handleUpdate = async () => {
+        setLoading(true);
+
         await updateSelf({
             avatar: file,
             banner: bannerfile,
@@ -114,7 +132,27 @@ const ProfileSettings = () => {
             name,
             token: userInfo.token,
         });
+
+        setLoading(false);
     };
+
+    useEffect(() => {
+        if (userInfo.info) {
+            setUsername(userInfo.info?.username ? userInfo.info?.username : '');
+            setName(userInfo.info?.name ? userInfo.info?.name : '');
+            setBio(userInfo.info?.bio ? userInfo.info?.bio : '');
+            setAvatarPreview(
+                userInfo.info?.avatar ? userInfo.info?.avatar : ''
+            );
+            setBannerPreview(
+                userInfo.info?.banner ? userInfo.info?.banner : ''
+            );
+        }
+    }, [userInfo.info]);
+
+    if (!userInfo.info) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col flex-1 items-start justify-start md:ml-8">
@@ -284,6 +322,7 @@ const ProfileSettings = () => {
                                 className="w-full h-28"
                                 placeholder="Enter bio"
                                 textarea
+                                maxLength={200}
                             />
                         </div>
                     </div>
