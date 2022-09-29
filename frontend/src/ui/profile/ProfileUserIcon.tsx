@@ -1,6 +1,6 @@
 import { UserIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 
@@ -20,6 +20,28 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
     isEdit = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
+
+    const [cAvatar, setCAvatar] = useState('');
+
+    useEffect(() => {
+        if (isEdit) {
+            if (tempAvatar) {
+                setCAvatar(tempAvatar);
+            } else {
+                setCAvatar('');
+            }
+        } else {
+            if (userInfo.info) {
+                if (userInfo.info.avatar) {
+                    setCAvatar(userInfo.info.avatar);
+                } else if (tempAvatar) {
+                    setCAvatar(tempAvatar);
+                } else {
+                    setCAvatar('');
+                }
+            }
+        }
+    }, [isEdit, tempAvatar, userInfo.info]);
 
     if (showAvatar) {
         return (
@@ -45,21 +67,11 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
 
     return (
         <div className={`absolute ${className ? className : ''}`}>
-            {(!isEdit && userInfo.info?.avatar) || tempAvatar ? (
+            {cAvatar ? (
                 <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-16 sm:h-20 w-16 sm:w-20 relative">
                     <Image
                         objectFit="cover"
-                        src={
-                            isEdit
-                                ? tempAvatar
-                                    ? tempAvatar
-                                    : ''
-                                : userInfo.info?.avatar
-                                ? userInfo.info?.avatar
-                                : tempAvatar
-                                ? tempAvatar
-                                : ''
-                        }
+                        src={cAvatar}
                         layout="fill"
                         className="rounded-full"
                         draggable={false}

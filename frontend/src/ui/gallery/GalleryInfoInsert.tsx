@@ -92,7 +92,11 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
 
         if (user) {
             setFileUser(user);
-        } else if (fileInfo.author === userInfo.info?._id) {
+        } else if (
+            userInfo.info &&
+            userInfo.info.username &&
+            fileInfo.author === userInfo.info?._id
+        ) {
             setFileUser(userInfo.info);
         } else {
         }
@@ -129,22 +133,20 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                         />
 
                         <div
-                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10 ${
-                                fileUser ? 'flex' : 'hidden'
-                            }`}
+                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10`}
                         >
                             <button className="flex items-center justify-center cursor-pointer">
                                 <ProfileUserIcon
                                     avatar={
                                         fileUser?.avatar
-                                            ? fileUser?.avatar
+                                            ? fileUser.avatar
                                             : undefined
                                     }
                                     showAvatar
                                 />
 
                                 <strong className="ml-2 text-white text-lg">
-                                    {fileUser?.username}
+                                    {fileUser ? fileUser.username : 'Anonymous'}
                                 </strong>
                             </button>
                         </div>
