@@ -15,7 +15,7 @@ import {
     GET_USER_LIKED_FILES,
     FAVOURITE_FILE_ROUTE,
     GET_USER_FAVOURITED_FILES,
-    FILE_BASE,
+    SINGLE_FILE_ROUTE,
 } from './routes';
 
 export interface ListFilesResponse {
@@ -260,13 +260,13 @@ export const getSaved = async ({
         });
 };
 
-export const getFileFromHash = async (
+export const getFileFromHashReq = async (
     hash: string,
     dispatch: Dispatch,
-    setFile?: React.Dispatch<React.SetStateAction<FileInterface>>
+    setFile?: React.Dispatch<React.SetStateAction<FileInterface | null>>
 ) => {
     await axios
-        .get(`${FILE_BASE}/${hash}`)
+        .get(`${SINGLE_FILE_ROUTE}?file_hash=${hash}`)
         .then((res) => {
             setFile && setFile(res.data);
         })
