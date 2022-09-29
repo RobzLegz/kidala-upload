@@ -10,6 +10,7 @@ import { detectFileType } from '../../utils/detectFileType';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
 import Image from 'next/image';
+import NoFiles from './NoFiles';
 
 export interface GalleryGridProps {
     activeFiles?: FileInterface[] | null;
@@ -163,21 +164,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     }
 
     if (liked || saved) {
-        return (
-            <div className="w-full items-center justify-center p-4 rounded-lg border border-primary-700 bg-primary-800 flex flex-col no_select">
-                <Image
-                    src="/images/kidala.png"
-                    width={200}
-                    height={220}
-                    objectFit="contain"
-                    draggable={false}
-                />
-
-                <p className="text-accent mt-2">
-                    You don't have any {liked ? 'liked' : 'favourite'} files :(
-                </p>
-            </div>
-        );
+        return <NoFiles liked={liked} saved={saved} />;
     }
 
     return null;

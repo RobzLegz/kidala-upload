@@ -3,7 +3,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
-import { setToken } from '../redux/slices/userSlice';
+import { receiveMyFiles, setToken } from '../redux/slices/userSlice';
 import { UPLOAD_ROUTE } from './routes';
 
 export const uploadFile = async (
@@ -62,6 +62,7 @@ export const uploadFile = async (
                 dispatch(setToken(token));
             }
 
+            dispatch(receiveMyFiles([file]));
             setUrl(file.hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
