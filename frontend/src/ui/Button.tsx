@@ -13,16 +13,16 @@ const sizeClassnames = {
 
 const colorClassnames = {
     primary:
-        'text-button bg-accent transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover',
+        'text-button bg-accent transition duration-200 ease-in-out hover:bg-accent-hover disabled:text-accent-disabled disabled:bg-accent-hover disabled:cursor-default',
     secondary:
-        'text-button bg-primary-700 hover:bg-primary-600 disabled:text-primary-300',
+        'text-button bg-primary-700 hover:bg-primary-600 disabled:hover:bg-primary-700 disabled:text-primary-300 disabled:cursor-default',
     'secondary-800':
-        'text-button bg-primary-800 hover:bg-primary-600 disabled:text-primary-300',
+        'text-button bg-primary-800 hover:bg-primary-600 disabled:hover:bg-primary-800 disabled:text-primary-300 disabled:cursor-default',
     'primary-300':
-        'text-button bg-primary-700 hover:bg-primary-600 disabled:text-primary-300',
+        'text-button bg-primary-700 hover:bg-primary-600 disabled:hover:bg-primary-700 disabled:text-primary-300 disabled:cursor-default',
     transparent: 'text-button bg-transparent',
     'accent-secondary':
-        'text-button bg-secondary hover:bg-secondary-washed-out disabled:text-secondary-washed-out',
+        'text-button bg-secondary hover:bg-secondary-washed-out disabled:hover:bg-secondary disabled:text-secondary-washed-out disabled:cursor-default',
 };
 
 export type ButtonProps = DetailedHTMLProps<
@@ -75,9 +75,9 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <button
             disabled={disabled || loading}
-            className={`flex outline-none ${
-                sizeClassnames[size]
-            } ${transition ? `transition duration-200 ease-in-out` : ``} ${
+            className={`flex outline-none ${sizeClassnames[size]} ${
+                transition ? `transition duration-200 ease-in-out` : ``
+            } ${
                 colorClassnames[color]
             } font-bold flex items-center justify-center cursor-pointer ${className}`}
             data-testid="button"

@@ -19,6 +19,14 @@
         @apply text-3xl font-extrabold;
     }
 
+    h3 {
+        @apply text-2xl font-extrabold;
+    }
+
+    h4 {
+        @apply text-xl font-extrabold;
+    }
+
     strong {
         @apply font-bold text-base;
     }
@@ -49,6 +57,10 @@
 
     .dropbox_animation {
         @apply w-[150%] h-[150%] absolute bg-gradient-to-tr from-primary-900 z-0 to-accent -top-1/4 -left-1/4 animate-border-animate content-none rounded-lg;
+    }
+
+    .dreineris_konteineris{
+        @apply bg-primary-800 border border-primary-700;
     }
 }
 

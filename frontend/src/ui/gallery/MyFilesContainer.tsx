@@ -10,14 +10,18 @@ import MyFilesView from './MyFilesView';
 
 const user_token = !isServer ? localStorage.getItem('access_token') : null;
 
-const MyFilesContainer = () => {
+export interface MyFilesContainerProps {
+    isProfile?: boolean;
+}
+
+const MyFilesContainer: React.FC<MyFilesContainerProps> = ({ isProfile = false }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [limit, setLimit] = useState<number>(10); //amount of files to receive
+    const [limit, setLimit] = useState<number>(15); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
 
@@ -35,7 +39,16 @@ const MyFilesContainer = () => {
     useEffect(() => {
         if (userInfo.info && loading) {
             if (!user_token) {
+                setLoading(false);
                 router.push('/new/login');
+                return;
+            }
+
+            if (
+                userInfo.myFiles &&
+                userInfo.myFiles.length >= Number(userInfo.info?.files.length)
+            ) {
+                setLoading(false);
                 return;
             }
 
@@ -82,7 +95,7 @@ const MyFilesContainer = () => {
         }
     }, [windowSize.height, userInfo.myFiles, limit, userInfo.info]);
 
-    return <MyFilesView loading={loading} />;
+    return <MyFilesView loading={loading} isProfile={isProfile} />;
 };
 
 export default MyFilesContainer;

@@ -2,12 +2,17 @@ import { ArrowDownTrayIcon } from '@heroicons/react/20/solid';
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { default as OptImage } from 'next/image';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
+import { User } from '../../interfaces/user';
+import { AppInfo, selectApp } from '../../redux/slices/appSlice';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { detectFileType } from '../../utils/detectFileType';
 import Button from '../Button';
 import FileControls from '../FileControls';
 import FileInfoControls from '../FileInfoControls';
+import ProfileUserIcon from '../profile/ProfileUserIcon';
 import Spinner from '../Spinner';
 import { BASE_URL } from './../../requests/routes';
 import AudioPlayer from './AudioPlayer';
@@ -31,11 +36,15 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
 
     const windowSize = useWindowSize();
 
+    const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
+
     const [imageDimensions, setImageDimensions] = useState({
         width: 0,
         height: 0,
     });
     const [loading, setLoading] = useState(true);
+    const [fileUser, setFileUser] = useState<User | null>(null);
 
     const fileSource = `${BASE_URL}/files/${fileInfo.hash}/${fileInfo.name}`;
 
@@ -57,7 +66,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 nH = height + hDiff;
 
                 while (nH > Number(windowSize.height) - 400) {
-                    nW -= 20;
+                    nW -= 50;
 
                     w_c_p = ((nW - width) / height) * 100;
                     f_w_c_p = Math.floor(w_c_p) / 100;
@@ -73,6 +82,21 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
             };
         }
     }, [fileInfo]);
+
+    useEffect(() => {
+        setFileUser(null);
+
+        const user = appInfo.collectedUsers.find(
+            (u) => u._id === fileInfo.author
+        );
+
+        if (user) {
+            setFileUser(user);
+        } else if (fileInfo.author === userInfo.info?._id) {
+            setFileUser(userInfo.info);
+        } else {
+        }
+    }, [fileInfo, appInfo.collectedUsers]);
 
     if (detectFileType(fileInfo.name) === 'audio') {
         return (
@@ -92,7 +116,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
         <div className={cn} {...props}>
             <div className="flex flex-col rounded-lg items-center justify-start w-full max-w-[600px] bg-primary-800 border border-primary-700 p-2">
                 {detectFileType(fileInfo.name) === 'image' ? (
-                    <div className="relative">
+                    <div className="relative group overflow-hidden">
                         <OptImage
                             src={fileSource}
                             width={imageDimensions.width}
@@ -103,6 +127,27 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                             onLoad={() => setLoading(false)}
                             onLoadStart={() => setLoading(true)}
                         />
+
+                        <div
+                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10 ${
+                                fileUser ? 'flex' : 'hidden'
+                            }`}
+                        >
+                            <button className="flex items-center justify-center cursor-pointer">
+                                <ProfileUserIcon
+                                    avatar={
+                                        fileUser?.avatar
+                                            ? fileUser?.avatar
+                                            : undefined
+                                    }
+                                    showAvatar
+                                />
+
+                                <strong className="ml-2 text-white text-lg">
+                                    {fileUser?.username}
+                                </strong>
+                            </button>
+                        </div>
 
                         <div
                             className={`absolute left-0 -top-1 flex items-center justify-center bg-transparent_dark rounded-lg w-full h-full transition-opacity duration-300 ${

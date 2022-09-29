@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { isServer } from '../../lib/isServer';
 import {
@@ -8,20 +7,82 @@ import {
     selectApp,
     setSortOptions,
 } from '../../redux/slices/appSlice';
-import { getFilesV2 } from '../../requests/fileRequests';
+import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { getFilesV2, getLiked, getSaved } from '../../requests/fileRequests';
 import Checkbox from '../Checkbox';
 import GalleryGrid from './GalleryGrid';
 import GallerySpinner from './GallerySpinner';
 
-const Gallery = () => {
+export interface GalleryProps {
+    liked?: boolean;
+    saved?: boolean;
+}
+
+const limit = 12;
+
+const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
     const appInfo: AppInfo = useSelector(selectApp);
+    const userInfo: UserInfo = useSelector(selectUser);
 
-    const [limit, setLimit] = useState<number | null>(null); //amount of files to receive
     const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
     const [loading, setLoading] = useState(true); //start to receive from here
+    const [activeFiles, setActiveFiles] = useState(appInfo.files);
+    const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
+
+    useEffect(() => {
+        if (liked || saved) {
+            setLoading(true);
+        }
+    }, [liked, saved]);
+
+    useEffect(() => {
+        if (liked && userInfo.info) {
+            setActiveFiles(userInfo.likedFiles ? userInfo.likedFiles : []);
+            setActiveFileLen(
+                userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
+            );
+            setPrevCursor(
+                userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
+            );
+            dispatch(
+                setSortOptions({
+                    ...appInfo.sortOptions,
+                    showFiles: true,
+                })
+            );
+        } else if (saved && userInfo.info) {
+            setActiveFiles(userInfo.savedFiles ? userInfo.savedFiles : []);
+            setActiveFileLen(
+                userInfo.info?.favourites.length
+                    ? userInfo.info?.favourites.length
+                    : 0
+            );
+            setPrevCursor(
+                userInfo.info?.favourites.length
+                    ? userInfo.info?.favourites.length
+                    : 0
+            );
+            dispatch(
+                setSortOptions({
+                    ...appInfo.sortOptions,
+                    showFiles: true,
+                })
+            );
+        } else if (appInfo.files) {
+            setActiveFiles(appInfo.files);
+            setPrevCursor(appInfo.files ? appInfo.files.length : 0);
+        }
+    }, [
+        liked,
+        saved,
+        userInfo.info,
+        userInfo.likedFiles,
+        userInfo.savedFiles,
+        appInfo.files,
+    ]);
 
     const handleScroll = () => {
         if (windowSize.height) {
@@ -35,54 +96,68 @@ const Gallery = () => {
     };
 
     useEffect(() => {
-        if (windowSize.width) {
-            if (windowSize.width < windowSizes.xl) {
-                setLimit(9);
-            } else if (windowSize.width >= windowSizes.xl) {
-                setLimit(12);
-            }
-        }
-    }, [windowSize.width]);
-
-    useEffect(() => {
-        if (appInfo.files && loading) {
+        if (activeFiles && loading) {
             const fetchFiles = async () => {
-                if (!appInfo.files || !limit) {
+                if (!limit) {
                     return;
                 }
 
-                if (appInfo.files.length === prevCursor) {
+                if (activeFiles.length === prevCursor) {
                     return;
                 }
 
-                setPrevCursor(appInfo.files.length);
+                setPrevCursor(activeFiles.length);
 
-                await getFilesV2({
-                    cursor: appInfo.files.length,
-                    limit: limit,
-                    dispatch,
-                });
+                if (saved) {
+                    if (!userInfo.token) {
+                        return;
+                    }
+
+                    await getSaved({
+                        cursor: activeFiles.length,
+                        limit: limit,
+                        dispatch,
+                        token: userInfo.token,
+                    });
+                } else if (liked) {
+                    if (!userInfo.token) {
+                        return;
+                    }
+
+                    await getLiked({
+                        cursor: activeFiles.length,
+                        limit: limit,
+                        dispatch,
+                        token: userInfo.token,
+                    });
+                } else {
+                    await getFilesV2({
+                        cursor: activeFiles.length,
+                        limit: limit,
+                        dispatch,
+                    });
+                }
             };
 
             fetchFiles().then(() => {
                 setLoading(false);
             });
         }
-    }, [appInfo.files, loading]);
+    }, [activeFiles, loading, userInfo.token, saved, liked]);
 
     useEffect(() => {
         if (
             !isServer &&
             windowSize.height &&
-            appInfo.files &&
-            appInfo.files.length < appInfo.db_file_len &&
+            activeFiles &&
+            activeFiles.length < activeFileLen &&
             limit
         ) {
             window.addEventListener('scroll', handleScroll);
 
             return () => window.removeEventListener('scroll', handleScroll);
         }
-    }, [windowSize.height, appInfo.files, limit]);
+    }, [windowSize.height, activeFiles, limit, activeFileLen]);
 
     const changeCheckbox = () => {
         dispatch(
@@ -94,14 +169,24 @@ const Gallery = () => {
     };
 
     return (
-        <div className="w-full flex flex-col items-start justify-center sm:px-2 xl:px-16 2xl:px-52">
-            <Checkbox
-                text="Show all file types"
-                checked={appInfo.sortOptions.showFiles}
-                onClick={changeCheckbox}
-            />
+        <div
+            className={`w-full flex flex-col items-start justify-start ${
+                !saved && !liked && 'sm:px-2 xl:px-16 2xl:px-52'
+            }`}
+        >
+            {!liked && !saved && (
+                <Checkbox
+                    text="Show all file types"
+                    checked={appInfo.sortOptions.showFiles}
+                    onClick={changeCheckbox}
+                />
+            )}
 
-            <GalleryGrid />
+            <GalleryGrid
+                activeFiles={activeFiles}
+                liked={liked}
+                saved={saved}
+            />
 
             {loading && <GallerySpinner />}
         </div>
