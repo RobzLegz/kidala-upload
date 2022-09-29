@@ -13,8 +13,8 @@ import {
 } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { getFileLikes, getFileUserLikes } from '../utils/getFileLikes';
 import { useRouter } from 'next/router';
+import { getFileLikes, getFileUserLikes } from '../utils/getFileLikes';
 
 export interface FileControlsProps {
     file?: FileInterface;
@@ -59,7 +59,12 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     }, [userInfo.info, file]);
 
     const checkIfLogged = () => {
-        if (userInfo.info && userInfo.info.username && userInfo.loggedIn) {
+        if (
+            userInfo.info &&
+            userInfo.info.username &&
+            userInfo.loggedIn &&
+            userInfo.token
+        ) {
             return true;
         }
 
@@ -67,7 +72,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     };
 
     const handleSave = () => {
-        if (!checkIfLogged) {
+        const logged = checkIfLogged();
+
+        if (!logged) {
             dispatch(
                 setNotification({
                     type: 'error',
@@ -126,7 +133,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     }, [timer]);
 
     const handleLike = () => {
-        if (!checkIfLogged) {
+        const logged = checkIfLogged();
+
+        if (!logged) {
             dispatch(
                 setNotification({
                     type: 'error',
@@ -147,7 +156,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     };
 
     const handleDislike = () => {
-        if (!checkIfLogged) {
+        const logged = checkIfLogged();
+
+        if (!logged) {
             dispatch(
                 setNotification({
                     type: 'error',

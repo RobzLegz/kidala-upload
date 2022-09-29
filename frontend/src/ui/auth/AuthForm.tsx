@@ -150,12 +150,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     <button
                         className="text-primary-100"
                         onClick={handleReRoute}
+                        type="button"
                     >
                         {!register ? 'Register' : 'Login'}
                     </button>
                 </div>
 
-                <Button onClick={handleLogin}>
+                <Button onClick={handleLogin} type="submit">
                     {!register ? 'Login' : 'Register'}
                 </Button>
             </div>

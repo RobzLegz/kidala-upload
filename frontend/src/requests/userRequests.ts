@@ -50,7 +50,7 @@ export const loginUser = async (
         .then((res) => {
             dispatch(authHandler(res.data));
 
-            localStorage.setItem('access_token', res.data.token);
+            localStorage.setItem('access_token', res.data.token.access_token);
 
             router.push('/new/profile');
         })
@@ -127,7 +127,11 @@ export const registerUser = async (
         });
 };
 
-export const getUserInfo = async (token: string, dispatch: Dispatch) => {
+export const getUserInfo = async (
+    token: string,
+    dispatch: Dispatch,
+    router: NextRouter
+) => {
     const headers = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -145,6 +149,10 @@ export const getUserInfo = async (token: string, dispatch: Dispatch) => {
             }
         })
         .catch((err) => {
+            if (router.pathname === '/new/profile') {
+                router.replace('/new');
+            }
+
             if (!err.response) {
                 return console.log(err);
             }

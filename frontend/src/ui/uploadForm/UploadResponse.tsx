@@ -24,7 +24,7 @@ export const UploadResponse: React.FC<UploadResponseProps> = ({
 
         setSavedToClipboard && setSavedToClipboard(false);
 
-        window.open(`new/gallery?=${hash}`);
+        window.open(`new/gallery?f=${hash}`);
         dispatch(clearNotification());
     };
 
