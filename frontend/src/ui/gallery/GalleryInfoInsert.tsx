@@ -105,6 +105,27 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                         />
 
                         <div
+                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10 ${
+                                fileUser ? 'flex' : 'hidden'
+                            }`}
+                        >
+                            <button className="flex items-center justify-center cursor-pointer">
+                                <ProfileUserIcon
+                                    avatar={
+                                        fileUser?.avatar
+                                            ? fileUser?.avatar
+                                            : undefined
+                                    }
+                                    showAvatar
+                                />
+
+                                <strong className="ml-2 text-white text-lg">
+                                    {fileUser?.username}
+                                </strong>
+                            </button>
+                        </div>
+
+                        <div
                             className={`absolute left-0 -top-1 flex items-center justify-center bg-transparent_dark rounded-lg w-full h-full transition-opacity duration-300 ${
                                 loading ? 'opacity-100' : 'opacity-0'
                             }`}
