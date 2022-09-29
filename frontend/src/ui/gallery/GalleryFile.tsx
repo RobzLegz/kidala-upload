@@ -1,19 +1,13 @@
-import {
-    BookmarkIcon as BookmarkFullIcon,
-    HeartIcon as HeartIconFull,
-} from '@heroicons/react/20/solid';
-import { HeartIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 import { FileInterface } from '../../interfaces/file';
 import { BASE_URL } from '../../requests/routes';
-import { useRouter } from 'next/router';
 import { detectFileType } from '../../utils/detectFileType';
-import { selectUser, UserInfo } from '../../redux/slices/userSlice';
 import { AppInfo } from '../../redux/slices/appSlice';
 import { useSelector } from 'react-redux';
 import { selectApp } from './../../redux/slices/appSlice';
 import GalleryNonImage from './GalleryNonImage';
+import FileControls from '../FileControls';
 
 export interface GalleryFileProps {
     props: FileInterface;
@@ -36,32 +30,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
     index,
     handleFileClick,
 }) => {
-    const router = useRouter();
-
-    const userInfo: UserInfo = useSelector(selectUser);
     const appInfo: AppInfo = useSelector(selectApp);
-
-    const [totalLikes, setTotalLikes] = useState(testLikes ? testLikes : 0);
-    const [givenLikes, setGivenLikes] = useState(
-        testGivenLikes ? testGivenLikes : 0
-    );
-    const [saved, setSaved] = useState(testSaved ? true : false);
-
-    const handleSave = () => {
-        setSaved(!saved);
-    };
-
-    const handleLike = () => {
-        setGivenLikes(givenLikes + 1);
-        setTotalLikes(totalLikes + 1);
-    };
-
-    const handleDislike = () => {
-        if (givenLikes > 0) {
-            setGivenLikes(givenLikes - 1);
-            setTotalLikes(totalLikes - 1);
-        }
-    };
 
     const handleImageClick = () => {
         handleFileClick && handleFileClick(index, props.hash);
@@ -76,7 +45,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                     : 'flex'
             }`}
         >
-            <div className="flex items-center justify-center w-[200px] sm:w-[250px] md:w-[400px] h-[160px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative">
+            <div className="flex items-center justify-center w-[200px] sm:w-[250px] md:w-[400px] h-[160px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative overflow-hidden">
                 {detectFileType(props.name) === 'image' ? (
                     <Image
                         src={`${BASE_URL}/files/${props.hash}/${props.name}`}
@@ -99,41 +68,10 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 onClick={handleImageClick}
             />
 
-            <div className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0">
-                <div className="flex items-center">
-                    <div className="flex items-center mr-2">
-                        <button
-                            className="flex items-center justify-center text-notification no_select"
-                            onClick={handleLike}
-                        >
-                            <HeartIconFull className="text-notification h-6 mr-0.5" />
-
-                            {givenLikes}
-                        </button>
-
-                        <div className="h-7 w-[1.5px] bg-white mx-2" />
-
-                        <button
-                            className="flex items-center justify-center text-white no_select"
-                            onClick={handleDislike}
-                        >
-                            <HeartIcon className="text-white h-6 mr-0.5" />
-
-                            {totalLikes}
-                        </button>
-                    </div>
-                </div>
-
-                <div className="flex items-center justify-end">
-                    <button onClick={handleSave}>
-                        {saved ? (
-                            <BookmarkFullIcon className="text-notification-loading w-7" />
-                        ) : (
-                            <BookmarkIcon className="text-white w-7" />
-                        )}
-                    </button>
-                </div>
-            </div>
+            <FileControls
+                className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0"
+                file={props}
+            />
         </div>
     );
 };
