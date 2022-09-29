@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react';
 import { Dispatch } from 'redux';
-import { FileInterface } from '../interfaces/file';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
 import { receiveMyFiles, setToken } from '../redux/slices/userSlice';
