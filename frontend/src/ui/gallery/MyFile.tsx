@@ -8,6 +8,7 @@ import { FileInterface } from '../../interfaces/file';
 import { detectFileType } from '../../utils/detectFileType';
 import { formatFileSize } from '../../utils/formatFileSize';
 import { generateFileUrl } from '../../utils/generateFileUrl';
+import { getFileLikes } from '../../utils/getFileLikes';
 import { TagWrapper } from '../uploadForm/TagWrapper';
 import GalleryNonImage from './GalleryNonImage';
 
@@ -52,7 +53,9 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                             <div className="flex flex-col items-center justify-center">
                                 <HeartIcon className="h-5 text-notification" />
 
-                                <small className="text-primary-100">16</small>
+                                <small className="text-primary-100">
+                                    {getFileLikes(file)}
+                                </small>
                             </div>
 
                             <button className="flex flex-col items-center justify-center">
@@ -148,7 +151,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
-                    <p className="text-primary-100">{file.likes.length}</p>
+                    <p className="text-primary-100">{getFileLikes(file)}</p>
                 </div>
 
                 <button className="flex flex-col items-center justify-center">
