@@ -31,6 +31,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 @router.post("/register")
 async def register_user(username: str = Form(), password: str = Form(), email: str = Form(), current_user: User = Depends(get_potential_user)):
+    if current_user.email != None:
+        return HTTPException(400, detail="user already registered")
+
     emailq = db.users.find_one({"email": email.lower()})
     if emailq != None:
         return HTTPException(status_code=400, detail="User with this e-mail already exists.")
@@ -63,7 +66,7 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    rtrn_user: User = User(**user)
+    rtrn_user: User = User(**user.dict())
 
     return {'user': rtrn_user, 'token': token}
 

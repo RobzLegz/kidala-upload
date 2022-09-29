@@ -1,3 +1,4 @@
+from datetime import datetime
 import pymongo
 import os
 from pydantic import BaseModel, Field
@@ -31,6 +32,10 @@ class Like(BaseModel):
 class Settings(BaseModel):
     anonymous: bool = False
 
+class LikeLimit(BaseModel):
+    current_count: int = 0
+    reset_date: datetime | None = None
+
 class User(BaseModel):
     id: PyObjectId | None = Field(default_factory=None, alias="_id")
     username: str | None = None
@@ -44,11 +49,12 @@ class User(BaseModel):
     role: str | None = None
     favourites: list[PyObjectId] = []
     likes: list[Like] = []
+    like_limit: LikeLimit = LikeLimit()
     verified: bool = False
     followers: list[PyObjectId] = []
     following: list[PyObjectId] = []
     files: list[PyObjectId] = []
-    settings: Settings | None = None
+    settings: Settings = Settings()
 
     class Config:
         json_encoders = {ObjectId: str}
