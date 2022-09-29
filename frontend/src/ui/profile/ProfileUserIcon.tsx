@@ -9,6 +9,7 @@ export interface ProfileUserIconProps {
     tempAvatar?: string;
     avatar?: string;
     showAvatar?: boolean;
+    isEdit?: boolean;
 }
 
 const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
@@ -16,6 +17,7 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
     tempAvatar,
     avatar,
     showAvatar = false,
+    isEdit = false,
 }) => {
     const userInfo: UserInfo = useSelector(selectUser);
 
@@ -43,7 +45,7 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
 
     return (
         <div className={`absolute ${className ? className : ''}`}>
-            {userInfo.info?.avatar || tempAvatar ? (
+            {(!isEdit && userInfo.info?.avatar) || tempAvatar ? (
                 <div className="bg-primary-800 rounded-full border-2 border-primary-100 h-16 sm:h-20 w-16 sm:w-20 relative">
                     <Image
                         objectFit="cover"

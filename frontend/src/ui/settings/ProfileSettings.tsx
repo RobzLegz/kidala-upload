@@ -44,6 +44,8 @@ const ProfileSettings = () => {
                 name !== userInfo.info.name ||
                 username !== userInfo.info.username ||
                 bio !== userInfo.info.bio ||
+                bannerPreview !== userInfo.info.banner ||
+                avatarPreview !== userInfo.info.avatar ||
                 file ||
                 bannerfile
             ) {
@@ -52,7 +54,16 @@ const ProfileSettings = () => {
                 setChanged(false);
             }
         }
-    }, [userInfo.info, name, username, bio, file, bannerfile]);
+    }, [
+        userInfo.info,
+        name,
+        username,
+        bio,
+        file,
+        bannerfile,
+        bannerPreview,
+        avatarPreview,
+    ]);
 
     const handleFileSelect = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -166,6 +177,7 @@ const ProfileSettings = () => {
                         <ProfileUserIcon
                             className="relative"
                             tempAvatar={avatarPreview}
+                            isEdit
                         />
 
                         <div className="flex h-20 flex-col items-start justify-center ml-4">
@@ -194,7 +206,7 @@ const ProfileSettings = () => {
                                     </p>
                                 </Button>
 
-                                {userInfo.info?.avatar && (
+                                {avatarPreview && (
                                     <Button
                                         color="primary-300"
                                         size="small"
@@ -217,7 +229,7 @@ const ProfileSettings = () => {
                     </strong>
 
                     <div className="flex flex-col mt-2 rounded-lg bg-primary-900 w-full">
-                        <ProfileBanner tempAvatar={bannerPreview} />
+                        <ProfileBanner tempAvatar={bannerPreview} isEdit />
 
                         <div className="flex w-full items-start justify-start flex-col sm:flex-row sm:items-center sm:justify-between p-2 sm:p-4">
                             <div className="flex">
@@ -240,7 +252,7 @@ const ProfileSettings = () => {
                                     Change profile banner
                                 </Button>
 
-                                {(userInfo.info?.banner || bannerPreview) && (
+                                {bannerPreview && (
                                     <Button
                                         color="primary-300"
                                         size="small"
@@ -319,7 +331,7 @@ const ProfileSettings = () => {
                                 id="edit_bio"
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
-                                className="w-full h-28"
+                                className="w-full min-h-[120px]"
                                 placeholder="Enter bio"
                                 textarea
                                 maxLength={200}
