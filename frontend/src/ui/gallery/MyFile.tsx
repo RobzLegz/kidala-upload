@@ -13,6 +13,7 @@ import { detectFileType } from '../../utils/detectFileType';
 import { formatFileSize } from '../../utils/formatFileSize';
 import { generateFileUrl } from '../../utils/generateFileUrl';
 import { getFileLikes } from '../../utils/getFileLikes';
+import GetIconFromFileType from '../GetIconFromFileType';
 import { TagWrapper } from '../uploadForm/TagWrapper';
 import GalleryNonImage from './GalleryNonImage';
 
@@ -108,7 +109,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 opened ? 'h-auto' : 'h-24'
             }`}
         >
-            <div className="w-20 h-20 relative mr-2">
+            <div className="w-20 h-20 relative mr-2 flex items-center justify-center">
                 {detectFileType(file.name) === 'image' ? (
                     <Image
                         src={generateFileUrl(file.hash, file.name)}
@@ -117,7 +118,10 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         layout="fill"
                     />
                 ) : (
-                    <GalleryNonImage filename={file.name} />
+                    <GetIconFromFileType
+                        extension={detectFileType(file.name)}
+                        className="w-12"
+                    />
                 )}
             </div>
 
@@ -132,7 +136,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
 
                 <TagWrapper formTags={file.tag} />
 
-                {!opened && (
+                {!opened && file.description && (
                     <div className="from-transparent to-primary-900 bg-gradient-to-b h-full w-full absolute top-8 left-0 rounded-lg" />
                 )}
             </div>
