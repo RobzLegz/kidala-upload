@@ -34,7 +34,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 }`}
             >
                 <div className="flex w-full h-16 items-center justify-start">
-                    <div className="w-16 h-16 relative mr-2 rounded-l-lg overflow-hidden">
+                    <div className="w-16 h-16 relative mr-2">
                         {detectFileType(file.name) === 'image' ? (
                             <Image
                                 src={generateFileUrl(file.hash, file.name)}
