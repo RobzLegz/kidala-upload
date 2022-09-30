@@ -34,74 +34,19 @@ export const loginUser = async (
     await axios
         .post(LOGIN_ROUTE, data, headers)
         .then((res) => {
-            dispatch(authHandler(res.data));
+            const { access_token, info } = res.data;
 
-            localStorage.setItem('access_token', res.data.token);
+            dispatch(setUserInfo(info));
+            dispatch(setToken(access_token));
 
-            router.push('/new/profile');
+            localStorage.setItem('access_token', access_token);
+
+            dispatch(handleLogin(true));
         })
         .catch((err) => {
             if (!err.response) {
                 return console.log(err);
             }
-
-            // localStorage.removeItem('access_token');
-
-            const message: string = err.response.data.err;
-            dispatch(
-                setNotification({
-                    type: 'error',
-                    message: message,
-                })
-            );
-        });
-};
-
-export const registerUser = async (
-    username: string,
-    password: string,
-    email: string,
-    dispatch: Dispatch,
-    token: string,
-    router: NextRouter
-) => {
-    const data = new FormData();
-
-    data.append('username', username);
-    data.append('email', email);
-    data.append('password', password);
-
-    let headers: { headers: Record<string, any> } = {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    };
-
-    if (token) {
-        headers = {
-            ...headers,
-            headers: {
-                ...headers.headers,
-                Authorization: `Bearer ${token}`,
-            },
-        };
-    }
-
-    await axios
-        .post(REGISTER_ROUTE, data, headers)
-        .then((res) => {
-            dispatch(authHandler(res.data));
-
-            localStorage.setItem('access_token', res.data.token);
-
-            router.push('/new/profile');
-        })
-        .catch((err) => {
-            if (!err.response) {
-                return console.log(err);
-            }
-
-            // localStorage.removeItem('access_token');
 
             const message: string = err.response.data.err;
             dispatch(
