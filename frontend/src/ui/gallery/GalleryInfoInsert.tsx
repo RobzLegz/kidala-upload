@@ -57,22 +57,22 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
             img.onload = () => {
                 const { width, height } = img;
 
-                let nH = 0;
-                let nW = 600;
-                let w_c_p = ((nW - width) / width) * 100;
+                let nW = 0;
+                let nH = 400;
+                let w_c_p = ((nH - height) / height) * 100;
                 let f_w_c_p = Math.floor(w_c_p) / 100;
-                let hDiff = height * f_w_c_p; //width
+                let wDiff = width * f_w_c_p;
 
-                nH = height + hDiff; //width
+                nW = width + wDiff;
 
-                while (nH > Number(windowSize.width) - 400) {
-                    nW -= 50;
+                while (nW > Number(windowSize.width) - 40) {
+                    nH -= 50;
 
-                    w_c_p = ((nW - width) / width) * 100; 
+                    w_c_p = ((nH - height) / height) * 100; 
                     f_w_c_p = Math.floor(w_c_p) / 100;
-                    hDiff = height * f_w_c_p; //width
+                    wDiff = width * f_w_c_p;
 
-                    nH = height + hDiff;
+                    nW = width + wDiff;
                 }
 
                 setImageDimensions({

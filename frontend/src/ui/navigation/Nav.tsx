@@ -136,7 +136,13 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
 
                 {userInfo.loggedIn && (
                     <div className="ml-1">
-                        <UserDropDown />
+                        <UserDropDown
+                            avatar={
+                                userInfo.info?.avatar
+                                    ? userInfo.info.avatar
+                                    : undefined
+                            }
+                        />
                     </div>
                 )}
             </div>
