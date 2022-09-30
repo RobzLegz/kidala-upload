@@ -66,10 +66,9 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    rtrn_user: User = User(**user.dict())
+    rtrn_user = User(**user)
 
     return {'user': rtrn_user, 'token': token}
-
 
 @router.get("/me", response_model=User)
 async def get_own_user(current_user: User = Depends(get_current_user)):

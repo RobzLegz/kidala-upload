@@ -20,19 +20,13 @@ export const loginUser = async (
     password: string,
     dispatch: Dispatch
 ) => {
-    const data = new FormData();
-
-    data.append('username', username);
-    data.append('password', password);
-
-    let headers: { headers: Record<string, any> } = {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
+    const data = {
+        username,
+        password,
     };
 
     await axios
-        .post(LOGIN_ROUTE, data, headers)
+        .post(LOGIN_ROUTE, data)
         .then((res) => {
             const { access_token, info } = res.data;
 
