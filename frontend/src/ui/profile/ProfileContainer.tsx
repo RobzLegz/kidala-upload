@@ -8,13 +8,41 @@ import ProfileAboutContainer from './ProfileAboutContainer';
 import ProfileInfo from './ProfileInfo';
 import ProfileNavigation from './ProfileNavigation';
 
-const ProfileContainer = () => {
+export interface ProfileContainerProps {
+    other?: boolean;
+}
+
+const ProfileContainer: React.FC<ProfileContainerProps> = ({
+    other = false,
+}) => {
     const router = useRouter();
 
     const userInfo: UserInfo = useSelector(selectUser);
 
     if (!userInfo.info) {
         return null;
+    }
+
+    if(other){
+        return (
+            <div className="w-full flex flex-col items-center justify-start">
+                <div className="max-w-[800px] w-[96%]">
+                    <ProfileInfo />
+    
+                    <ProfileNavigation />
+    
+                    {router.query.page && router.query.page === 'my-files' ? (
+                        <MyFilesContainer isProfile />
+                    ) : router.query.page && router.query.page === 'favourites' ? (
+                        <Gallery saved />
+                    ) : router.query.page && router.query.page === 'liked' ? (
+                        <Gallery liked />
+                    ) : (
+                        <ProfileAboutContainer />
+                    )}
+                </div>
+            </div>
+        );
     }
 
     return (
