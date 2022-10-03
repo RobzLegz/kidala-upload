@@ -16,11 +16,16 @@ import GallerySpinner from './GallerySpinner';
 export interface GalleryProps {
     liked?: boolean;
     saved?: boolean;
+    user?: boolean;
 }
 
 const limit = 12;
 
-const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
+const Gallery: React.FC<GalleryProps> = ({
+    liked = false,
+    saved = false,
+    user = false,
+}) => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 

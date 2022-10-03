@@ -13,7 +13,7 @@ const UserProfile: NextPage = () => {
         >
             <Nav />
 
-            <ProfileContainer other={true} />
+            <ProfileContainer />
         </PageModule>
     );
 };
