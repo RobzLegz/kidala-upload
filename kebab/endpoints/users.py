@@ -66,7 +66,9 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-    rtrn_user = User(**user)
+        user = User(**user)
+
+    rtrn_user = User(**user.dict())
 
     return {'user': rtrn_user, 'token': token}
 
