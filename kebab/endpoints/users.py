@@ -109,14 +109,26 @@ async def get_own_favourites(current_user: User = Depends(get_current_user), cur
         raise HTTPException(400)
 
 @router.get("/user")
-async def get_user(user_id: str):
-    user = db.users.find_one({'_id': PyObjectId(user_id)})
+async def get_user(user_id: str | None, username: str | None):
+    if user_id:
+        user = db.users.find_one({'_id': PyObjectId(user_id)})
+        
+    elif username:
+        lwr_user = username.lower()
+        user = db.users.find_one({'username': PyObjectId(lwr_user)})
+
+    else:
+        raise HTTPException(404)
+            
     if user != None:
         rtrn_user = User(**user)
         rtrn_user.password = None
         return rtrn_user
+
     else:
         raise HTTPException(404)
+            
+    
 
 @router.put('/update')
 async def update_user(user: User = Depends(get_current_user),
