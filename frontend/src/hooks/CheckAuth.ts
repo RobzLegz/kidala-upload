@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';
 import { getUserInfo } from '../requests/userRequests';
 
-export const CheckAuth: React.FC = () => {
+export const CheckAuth = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const userInfo: UserInfo = useSelector(selectUser);
 
@@ -13,7 +15,11 @@ export const CheckAuth: React.FC = () => {
 
         if (access_token) {
             if (!userInfo.info) {
-                getUserInfo(access_token, dispatch);
+                getUserInfo(access_token, dispatch, router);
+            }
+        } else {
+            if (router.pathname === '/new/profile') {
+                router.replace('/new');
             }
         }
     }, []);

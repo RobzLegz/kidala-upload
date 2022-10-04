@@ -221,7 +221,6 @@ async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
 
     else:
         return HTTPException(status_code=400, detail="invalid like count")
-
     return {'msg': 'success', 'likeObj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
 
 @router.post("/favourite")
