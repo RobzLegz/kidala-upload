@@ -68,8 +68,7 @@ def secure_filename(filename: str) -> str:
 def all_files(cursor: int = 0, limit: int = 20):
     if cursor >= 0 and limit >= 0:
         returnlist = []
-        db_cursor = db.files.find({'private': False}).sort("_id", -1).skip(cursor).limit(limit)
-
+        db_cursor = db.files.find({'private': False}).sort("_id", 1).skip(cursor).limit(limit)
         for file in db_cursor:
             returnlist.append(File(**file))
 
@@ -185,33 +184,49 @@ async def upload_file(file: UploadFile, tag: str | None = Form(None), descriptio
 @router.post("/like")
 async def like_file(likeobj: Like, user: User = Depends(get_current_user)):
     if user.username == None:
-        return {'msg': 'not logged in'}
+        return HTTPException(status_code=400, detail="not logged in")
     if likeobj.user_id != user.id:
-        return {'msg': 'incorrect user'}
+        return HTTPException(status_code=400, detail="incorrect user")
     if 0 < likeobj.count <= 20:
+        userq = db.users.find_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id})
+
+        if userq == None:
+            try:
+                [prev_count] = [x.count for x in user.likes if x.file_id == likeobj.file_id]
+            except:
+                prev_count = 0
+            inc_var = likeobj.count - prev_count
+            if user.like_limit.current_count + inc_var > 20:
+                return HTTPException(400, detail="like limit exceeded")
+            db.users.update_one({'_id': likeobj.user_id}, {'$push': {'likes': likeobj.dict()}, '$inc': {'like_limit.current_count':  likeobj.count}})
+        else:
+            try:
+                [prev_count] = [x['count'] for x in userq['likes'] if x['file_id'] == likeobj.file_id]
+            except:
+                prev_count = 0
+            inc_var = likeobj.count - prev_count
+            if userq['like_limit']['current_count'] + inc_var > 20:
+                return HTTPException(400, detail="like limit exceeded")
+            db.users.update_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id},  {'$set': {'likes.$.count': likeobj.count}, '$inc': {'like_limit.current_count':  inc_var}})
+
+
         if db.files.find_one({'_id': likeobj.file_id, 'likes.user_id': likeobj.user_id}) == None:
             db.files.update_one({'_id': likeobj.file_id}, {'$push': {'likes': likeobj.dict()}})
         else:
             db.files.update_one({'_id': likeobj.file_id, 'likes.user_id': likeobj.user_id}, {'$set': {'likes.$.count': likeobj.count}})
-
-        if db.users.find_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id}) == None:
-            db.users.update_one({'_id': likeobj.user_id}, {'$push': {'likes': likeobj.dict()}})
-        else:
-            db.users.update_one({'_id': likeobj.user_id, 'likes.file_id': likeobj.file_id},  {'$set': {'likes.$.count': likeobj.count}})
 
     elif likeobj.count == 0:
         db.files.update_one({'_id': likeobj.file_id}, {'$pull': {'likes': {'user_id': likeobj.user_id}}})
         db.users.update_one({'_id': likeobj.user_id}, {'$pull': {'likes': {'file_id': likeobj.file_id}}})
 
     else:
-        return {'msg': 'invalid like count'}
-
+        return HTTPException(status_code=400, detail="invalid like count")
     return {'msg': 'success', 'likeObj': {'file_id': str(likeobj.file_id), 'user_id': str(likeobj.user_id), 'count': likeobj.count}}
 
 @router.post("/favourite")
 async def favourite(file_id: str = Body(embed=True), user: User = Depends(get_current_user)):
     if user.username == None:
-        return {'msg': 'not logged in'}
+        return HTTPException(status_code=401, detail="not logged in")
     if db.users.find_one({'_id': user.id, 'favourites': {'$in': [PyObjectId(file_id)]}}) == None:
         db.users.update_one({'_id': user.id}, {'$addToSet': {'favourites': PyObjectId(file_id)}})
         
