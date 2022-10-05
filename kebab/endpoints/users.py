@@ -132,13 +132,14 @@ async def get_user(user_id: str | None, username: str | None):
     
 
 @router.put('/update')
-async def update_user(user: User = Depends(get_current_user),
-                      bio: str | None = Body(),
-                      name: str | None = Body(),
-                      username: str | None = Body(),
-                      avatar: str | None = Body(),
-                      banner: str | None = Body()
-                    ):
+async def update_user(
+    user: User = Depends(get_current_user),
+    bio: str | None = Body(),
+    name: str | None = Body(),
+    username: str | None = Body(),
+    avatar: str | None = Body(),
+    banner: str | None = Body()
+):
 
     user = db.users.find_one({'_id': user.id})
 
