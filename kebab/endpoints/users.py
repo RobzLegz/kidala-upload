@@ -139,8 +139,6 @@ async def update_user(user: User = Depends(get_current_user),
                       avatar: str | None = Body(),
                       banner: str | None = Body()
                     ):
-    else:
-        raise HTTPException(404)
 
     user = db.users.find_one({'_id': user.id})
 
