@@ -147,13 +147,15 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             return;
         }
 
-        setGivenLikes(Number(givenLikes) + 1);
-        setTotalLikes(Number(totalLikes) + 1);
+        if (Number(givenLikes) < 20) {
+            setGivenLikes(Number(givenLikes) + 1);
+            setTotalLikes(Number(totalLikes) + 1);
 
-        setTimeout(() => {
-            setPrevGivenLikes(Number(givenLikes) + 1);
-            setSent(false);
-        }, 1000);
+            setTimeout(() => {
+                setPrevGivenLikes(Number(givenLikes) + 1);
+                setSent(false);
+            }, 1000);
+        }
     };
 
     const handleDislike = () => {
