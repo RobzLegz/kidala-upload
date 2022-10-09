@@ -153,7 +153,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         setTimeout(() => {
             setPrevGivenLikes(Number(givenLikes) + 1);
             setSent(false);
-        }, 3000);
+        }, 1000);
     };
 
     const handleDislike = () => {
@@ -177,7 +177,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             setTimeout(() => {
                 setPrevGivenLikes(Number(givenLikes) - 1);
                 setSent(false);
-            }, 3000);
+            }, 1000);
         }
     };
 
@@ -208,7 +208,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         const timeoutEffect = () => {
             setTimeout(() => {
                 send();
-            }, 3000);
+            }, 2000);
         };
 
         timeoutEffect();
