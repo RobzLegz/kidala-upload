@@ -35,6 +35,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [sent, setSent] = useState<boolean>(false);
     const [prevSaved, setPrevSaved] = useState<boolean | null>(null);
     const [timer, setTimer] = useState<number | null>(null);
+    const [liketimer, setLikeTimer] = useState<number | null>(null);
 
     useEffect(() => {
         if (file) {

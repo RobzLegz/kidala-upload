@@ -19,32 +19,38 @@ const ProfileContainer: React.FC = () => {
     const [other, setOther] = useState<boolean | null>(null);
     const [profileInfo, setProfileInfo] = useState<User | null>(null);
 
+    // useEffect(() => {
+    //     if (userInfo.info && username && userInfo.info.username === username) {
+    //         setOther(false);
+    //         setProfileInfo(userInfo.info);
+    //     } else {
+    //         setOther(true);
+    //     }
+    // }, [userInfo.info, username]);
+
     useEffect(() => {
-        if (userInfo.info && username && userInfo.info.username === username) {
-            setOther(false);
-            setProfileInfo(userInfo.info);
-        } else {
-            setOther(true);
+        if(!profileInfo && userInfo.info){
+            setProfileInfo(userInfo.info)
         }
-    }, [userInfo.info, username]);
+    }, [userInfo.info])
 
-    if (other === null) {
-        return null;
-    }
+    // if (other === null) {
+    //     return null;
+    // }
 
-    if (other) {
-        return (
-            <div className="w-full flex flex-col items-center justify-start">
-                <div className="max-w-[800px] w-[96%]">
-                    <ProfileInfo other user={profileInfo} />
+    // if (other) {
+    //     return (
+    //         <div className="w-full flex flex-col items-center justify-start">
+    //             <div className="max-w-[800px] w-[96%]">
+    //                 <ProfileInfo other user={profileInfo} />
 
-                    <ProfileAboutContainer other user={profileInfo} />
+    //                 <ProfileAboutContainer other user={profileInfo} />
 
-                    <Gallery user />
-                </div>
-            </div>
-        );
-    }
+    //                 <Gallery user />
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     if (!profileInfo) {
         return null;
