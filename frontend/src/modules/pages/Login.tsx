@@ -1,6 +1,7 @@
 import React from 'react'
 import AuthForm from '../../ui/auth/AuthForm';
 import Nav from '../../ui/navigation/Nav';
+import MainNotification from '../../ui/notifications/MainNotification';
 import PageModule from '../PageModule';
 
 const Login = () => {
@@ -11,6 +12,8 @@ const Login = () => {
             className="justify-center h-screen"
         >
             <Nav />
+
+            <MainNotification />
 
             <AuthForm />
         </PageModule>

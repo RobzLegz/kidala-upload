@@ -5,7 +5,7 @@ import { ListFilesResponse } from '../../requests/fileRequests';
 import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
 import { default as GalleryComponent } from '../../ui/gallery/Gallery';
-import GalleryNotification from '../../ui/gallery/MainNotification';
+import GalleryNotification from '../../ui/notifications/MainNotification';
 import Nav from '../../ui/navigation/Nav';
 import PageModule from '../PageModule';
 
