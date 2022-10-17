@@ -12,7 +12,7 @@ const GalleryNotification = () => {
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
 
     const [disapearCountdown, setDisapearCountdown] =
-        useState<number | null>(4);
+        useState<number | null>(null);
 
     const clearNotif = () => {
         dispatch(clearNotification());
@@ -30,6 +30,12 @@ const GalleryNotification = () => {
             }, 1000);
         }
     }, [disapearCountdown]);
+
+    useEffect(() => {
+        if(notificationInfo.message){
+            setDisapearCountdown(4);
+        }
+    }, [notificationInfo.message]);
 
     if (!notificationInfo.message) {
         return null;
