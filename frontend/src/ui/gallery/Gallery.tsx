@@ -176,7 +176,7 @@ const Gallery: React.FC<GalleryProps> = ({
     return (
         <div
             className={`w-full flex flex-col items-start justify-start ${
-                !saved && !liked && 'sm:px-2 xl:px-16 2xl:px-52'
+                !saved && !liked && 'px-2 sm:px-2 xl:px-16 2xl:px-52'
             }`}
         >
             {!liked && !saved && (

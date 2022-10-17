@@ -30,7 +30,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
 }) => {
     const cn = `${
         colspan === 3 ? 'col-span-3' : 'col-span-4'
-    } rounded-lg flex flex-col items-center justify-center p-2 ${
+    } rounded-lg flex flex-col items-center justify-center my-2 sm:my-0 sm:p-2 ${
         props.className ? props.className : ''
     }`;
 
@@ -49,7 +49,11 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
     const fileSource = `${BASE_URL}/files/${fileInfo.hash}/${fileInfo.name}`;
 
     useEffect(() => {
-        if (fileInfo && detectFileType(fileInfo.name) === 'image' && windowSize.width) {
+        if (
+            fileInfo &&
+            detectFileType(fileInfo.name) === 'image' &&
+            windowSize.width
+        ) {
             setLoading(true);
 
             const img = new Image();
@@ -68,7 +72,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 while (nW > Number(windowSize.width) - 40) {
                     nH -= 50;
 
-                    w_c_p = ((nH - height) / height) * 100; 
+                    w_c_p = ((nH - height) / height) * 100;
                     f_w_c_p = Math.floor(w_c_p) / 100;
                     wDiff = width * f_w_c_p;
 

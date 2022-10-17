@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
+import { BASE_URL } from '../../requests/routes';
 import { detectFileType } from '../../utils/detectFileType';
 import { formatFileSize } from '../../utils/formatFileSize';
 import { generateFileUrl } from '../../utils/generateFileUrl';
@@ -25,6 +26,14 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
     const windowSize = useWindowSize();
 
     const [opened, setOpened] = useState(false);
+
+    const download = (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        if (typeof file.hash === 'string') {
+            window.open(`${BASE_URL}/${file.hash}`);
+        }
+    };
 
     if (windowSize.width && windowSize.width <= windowSizes.sm) {
         return (
@@ -168,7 +177,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                     <p className="text-primary-100">{getFileLikes(file)}</p>
                 </div>
 
-                <button className="flex flex-col items-center justify-center">
+                <button className="flex flex-col items-center justify-center" onClick={download}>
                     <ArrowDownTrayIcon className="h-6 text-notification mb-1" />
 
                     <small className="text-primary-300">

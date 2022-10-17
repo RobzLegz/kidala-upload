@@ -132,7 +132,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     </>
                 )}
 
-                <LanguageSelector />
+                {/* <LanguageSelector /> */}
 
                 {userInfo.loggedIn && (
                     <div className="ml-1">

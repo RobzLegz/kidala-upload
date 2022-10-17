@@ -7,7 +7,6 @@ import { AppInfo } from '../../redux/slices/appSlice';
 import { useSelector } from 'react-redux';
 import { selectApp } from './../../redux/slices/appSlice';
 import GalleryNonImage from './GalleryNonImage';
-import FileControls from '../FileControls';
 
 export interface GalleryFileProps {
     props: FileInterface;
@@ -63,7 +62,7 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
                 )}
             </div>
 
-            <div
+            <button
                 className="absolute rounded-t-lg w-full top-0 left-0 h-full cursor-pointer"
                 onClick={handleImageClick}
             />

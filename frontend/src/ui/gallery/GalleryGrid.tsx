@@ -26,7 +26,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 }) => {
     const cn = `mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden ${
         !liked && !saved ? 'xl:grid-cols-4' : ''
-    } px-0.5 gap-0.5 sm:gap-2 mb-4`;
+    } sm:px-4 gap-0.5 sm:gap-2 mb-4`;
 
     const windowSize = useWindowSize();
     const router = useRouter();

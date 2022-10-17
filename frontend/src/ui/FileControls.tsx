@@ -56,6 +56,8 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             );
 
             setGivenLikes(getFileUserLikes(file, userInfo.info._id));
+        }else{
+            setGivenLikes(0);
         }
     }, [userInfo.info, file]);
 
