@@ -6,7 +6,7 @@ import {
     selectNotification,
 } from '../../redux/slices/notificationSlice';
 
-const GalleryNotification = () => {
+const MainNotification = () => {
     const dispatch = useDispatch();
 
     const notificationInfo: NotificationInfo = useSelector(selectNotification);
@@ -53,4 +53,4 @@ const GalleryNotification = () => {
     );
 };
 
-export default GalleryNotification;
+export default MainNotification;
