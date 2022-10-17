@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FileInterface } from '../interfaces/file';
 import {
+    ArrowDownIcon,
     BookmarkIcon as BookmarkFullIcon,
     HeartIcon as HeartIconFull,
 } from '@heroicons/react/20/solid';
@@ -35,7 +36,24 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [sent, setSent] = useState<boolean>(false);
     const [prevSaved, setPrevSaved] = useState<boolean | null>(null);
     const [timer, setTimer] = useState<number | null>(null);
+    const [tutorialDone, setTutorialDone] = useState<boolean>(true);
+    const [tutorialStep, setTutorialStep] = useState<number>(1);
     const [liketimer, setLikeTimer] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (!localStorage.getItem('tutorial_done')) {
+            setTutorialDone(false);
+        }
+    }, []);
+
+    const skipTutorial = () => {
+        if (tutorialStep === 1) {
+            setTutorialStep(2);
+        } else {
+            localStorage.setItem('tutorial_done', 'true');
+            setTutorialDone(true);
+        }
+    };
 
     useEffect(() => {
         if (file) {
@@ -56,7 +74,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             );
 
             setGivenLikes(getFileUserLikes(file, userInfo.info._id));
-        }else{
+        } else {
             setGivenLikes(0);
         }
     }, [userInfo.info, file]);
@@ -222,10 +240,29 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
     return (
         <div
-            className={`flex h-10 w-full items-center justify-between px-2 mt-1 ${
+            className={`flex h-10 w-full items-center justify-between px-2 mt-1 relative ${
                 className ? className : ''
             }`}
         >
+            {!tutorialDone && (
+                <div
+                    className="absolute -top-10 w-full left-0 bg-transparent_dark text-white h-12 flex items-center justify-start px-2 cursor-pointer"
+                    onClick={skipTutorial}
+                >
+                    {tutorialStep === 2 && (
+                        <div className="w-14"></div>
+                    )}
+
+                    <ArrowDownIcon className="h-6 text-white" />
+
+                    {tutorialStep === 1 ? (
+                        <p>Amount of likes you have given</p>
+                    ) : (
+                        <p>Total likes</p>
+                    )}
+                </div>
+            )}
+
             <div className="flex items-center w-full">
                 <div className="flex items-center mr-2 w-28">
                     {userInfo.info?._id !== file?.author && (
