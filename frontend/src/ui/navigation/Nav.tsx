@@ -75,7 +75,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                 <Logo />
             </button>
 
-            {gallery && <GallerySearch />}
+            {/* {gallery && <GallerySearch />} */}
 
             <div className="flex items-center justify-center relative">
                 <Button
