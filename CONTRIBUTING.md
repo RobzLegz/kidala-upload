@@ -43,7 +43,7 @@ commit messages are standardized:
 
 ### UI _(react + next.js)_:
 
-Navigate to `/fronend`
+Navigate to `/frontend`
 
 -   Run `yarn`
 -   Run `yarn staging` (this tells React to connect to a hosted version of the backend for development purposes).
