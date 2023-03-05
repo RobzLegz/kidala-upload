@@ -66,8 +66,6 @@ async def favicon():
                 )
     return 'success'
 
-    
-
 @app.get("/favicon.ico")
 async def favicon():
     return FileResponse(APP_ROOT / 'favicon.ico')
@@ -86,9 +84,6 @@ async def redirectFile(filehash: str):
         return "File not found"
     else:
         return RedirectResponse(f"{SERVER_URL}/files/{query['hash']}/{query['name']}")
-
-
-
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host='127.0.0.1', port=8000, log_level="info", reload=True)
