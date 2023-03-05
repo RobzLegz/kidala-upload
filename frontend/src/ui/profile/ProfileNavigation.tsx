@@ -8,7 +8,9 @@ const ProfileNavigation = () => {
     const router = useRouter();
     const windowSize = useWindowSize();
 
-    const { page } = router.query;
+    const { query, pathname } = router;
+
+    const { page, username } = query;
 
     useEffect(() => {
         if (
@@ -20,8 +22,8 @@ const ProfileNavigation = () => {
         ) {
             router.push(
                 {
-                    pathname: '/new/profile',
-                    query: { page: 'my-files' },
+                    pathname: pathname,
+                    query: { ...query, page: 'my-files' },
                 },
                 undefined,
                 { shallow: true }
@@ -36,7 +38,8 @@ const ProfileNavigation = () => {
                 onClick={() =>
                     router.push(
                         {
-                            pathname: '/new/profile',
+                            pathname: pathname,
+                            query: { username: username },
                         },
                         undefined,
                         { shallow: true }
@@ -59,8 +62,8 @@ const ProfileNavigation = () => {
                 onClick={() =>
                     router.push(
                         {
-                            pathname: '/new/profile',
-                            query: { page: 'my-files' },
+                            pathname: pathname,
+                            query: { ...query, page: 'my-files' },
                         },
                         undefined,
                         { shallow: true }
@@ -89,8 +92,8 @@ const ProfileNavigation = () => {
                 onClick={() =>
                     router.push(
                         {
-                            pathname: '/new/profile',
-                            query: { page: 'liked' },
+                            pathname: pathname,
+                            query: { ...query, page: 'liked' },
                         },
                         undefined,
                         { shallow: true }
@@ -119,8 +122,8 @@ const ProfileNavigation = () => {
                 onClick={() =>
                     router.push(
                         {
-                            pathname: '/new/profile',
-                            query: { page: 'favourites' },
+                            pathname: pathname,
+                            query: { ...query, page: 'favourites' },
                         },
                         undefined,
                         { shallow: true }

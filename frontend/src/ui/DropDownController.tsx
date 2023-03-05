@@ -31,7 +31,7 @@ const DropDownController: React.FC<DropDownControllerProps> = ({
                         src={avatar}
                         objectFit="cover"
                         layout="fill"
-                        className="rounded-full"
+                        className="rounded-md"
                         quality={80}
                     />
                 ) : icon ? (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
@@ -11,6 +11,7 @@ import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
 import Image from 'next/image';
 import NoFiles from './NoFiles';
+import { getFileFromHashReq } from '../../requests/fileRequests';
 
 export interface GalleryGridProps {
     activeFiles?: FileInterface[] | null;
@@ -25,10 +26,11 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 }) => {
     const cn = `mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden ${
         !liked && !saved ? 'xl:grid-cols-4' : ''
-    } px-0.5 gap-0.5 sm:gap-2 mb-4`;
+    } sm:px-4 gap-0.5 sm:gap-2 mb-4`;
 
     const windowSize = useWindowSize();
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const { f } = router.query;
 
@@ -102,8 +104,9 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
 
             if (clickedInfo) {
                 setClickedFileInfo(clickedInfo);
+            } else {
+                getFileFromHashReq(f, dispatch, setClickedFileInfo);
             }
-
 
             setInfoInsert(0);
         }

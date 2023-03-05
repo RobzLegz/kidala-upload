@@ -30,7 +30,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
 }) => {
     const cn = `${
         colspan === 3 ? 'col-span-3' : 'col-span-4'
-    } rounded-lg flex flex-col items-center justify-center p-2 ${
+    } rounded-lg flex flex-col items-center justify-center my-2 sm:my-0 sm:p-2 ${
         props.className ? props.className : ''
     }`;
 
@@ -49,7 +49,11 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
     const fileSource = `${BASE_URL}/files/${fileInfo.hash}/${fileInfo.name}`;
 
     useEffect(() => {
-        if (fileInfo && detectFileType(fileInfo.name) === 'image') {
+        if (
+            fileInfo &&
+            detectFileType(fileInfo.name) === 'image' &&
+            windowSize.width
+        ) {
             setLoading(true);
 
             const img = new Image();
@@ -57,22 +61,22 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
             img.onload = () => {
                 const { width, height } = img;
 
-                let nH = 0;
-                let nW = 600;
-                let w_c_p = ((nW - width) / width) * 100;
+                let nW = 0;
+                let nH = 400;
+                let w_c_p = ((nH - height) / height) * 100;
                 let f_w_c_p = Math.floor(w_c_p) / 100;
-                let hDiff = height * f_w_c_p;
+                let wDiff = width * f_w_c_p;
 
-                nH = height + hDiff;
+                nW = width + wDiff;
 
-                while (nH > Number(windowSize.height) - 400) {
-                    nW -= 50;
+                while (nW > Number(windowSize.width) - 40) {
+                    nH -= 50;
 
-                    w_c_p = ((nW - width) / height) * 100;
+                    w_c_p = ((nH - height) / height) * 100;
                     f_w_c_p = Math.floor(w_c_p) / 100;
-                    hDiff = height * f_w_c_p;
+                    wDiff = width * f_w_c_p;
 
-                    nH = height + hDiff;
+                    nW = width + wDiff;
                 }
 
                 setImageDimensions({
@@ -81,7 +85,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                 });
             };
         }
-    }, [fileInfo]);
+    }, [fileInfo, windowSize.width]);
 
     useEffect(() => {
         setFileUser(null);
@@ -133,7 +137,9 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                         />
 
                         <div
-                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10`}
+                            className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10 ${
+                                fileUser ? 'flex' : 'hidden'
+                            }`}
                         >
                             <button className="flex items-center justify-center cursor-pointer">
                                 <ProfileUserIcon

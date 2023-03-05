@@ -1,18 +1,23 @@
 import { PencilIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectUser, UserInfo } from '../../redux/slices/userSlice';
+import { User } from '../../interfaces/user';
 import Button from '../Button';
 import ProfileBanner from './ProfileBanner';
 import ProfileUserIcon from './ProfileUserIcon';
 
-const ProfileInfo = () => {
+export interface ProfileInfoProps {
+    other?: boolean;
+    user?: User | null;
+}
+
+const ProfileInfo: React.FC<ProfileInfoProps> = ({
+    user = null,
+    other = false,
+}) => {
     const router = useRouter();
 
-    const userInfo: UserInfo = useSelector(selectUser);
-
-    if (!userInfo.info) {
+    if (!user) {
         return null;
     }
 
@@ -28,13 +33,11 @@ const ProfileInfo = () => {
 
                     <div className="flex flex-col pl-4 sm:pl-24">
                         <h3 className="text-white">
-                            {userInfo.info.name
-                                ? userInfo.info.name
-                                : userInfo.info.username}
+                            {user.name ? user.name : user.username}
                         </h3>
 
                         <small className="text-primary-300">
-                            @{userInfo.info.username}
+                            @{user.username}
                         </small>
                     </div>
                 </div>
@@ -69,22 +72,22 @@ const ProfileInfo = () => {
                 <div className="flex my-2">
                     <div className="flex">
                         <strong className="text-primary-100">
-                            {userInfo.info.followers.length}
+                            {user.followers.length}
                         </strong>{' '}
                         <p className="text-primary-300 ml-1.5">Followers</p>
                     </div>
 
                     <div className="flex ml-6">
                         <strong className="text-primary-100">
-                            {userInfo.info.following.length}
+                            {user.following.length}
                         </strong>{' '}
                         <p className="text-primary-300 ml-1.5">Following</p>
                     </div>
                 </div>
 
-                {userInfo.info.bio && (
+                {user.bio && (
                     <div className="w-full">
-                        <p className="text-white">{userInfo.info.bio}</p>
+                        <p className="text-white">{user.bio}</p>
                     </div>
                 )}
             </div>

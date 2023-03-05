@@ -75,7 +75,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                 <Logo />
             </button>
 
-            {gallery && <GallerySearch />}
+            {/* {gallery && <GallerySearch />} */}
 
             <div className="flex items-center justify-center relative">
                 <Button
@@ -132,11 +132,17 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     </>
                 )}
 
-                <LanguageSelector />
+                {/* <LanguageSelector /> */}
 
                 {userInfo.loggedIn && (
                     <div className="ml-1">
-                        <UserDropDown />
+                        <UserDropDown
+                            avatar={
+                                userInfo.info?.avatar
+                                    ? userInfo.info.avatar
+                                    : undefined
+                            }
+                        />
                     </div>
                 )}
             </div>

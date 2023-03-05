@@ -1,14 +1,20 @@
-import { ChevronDownIcon, HeartIcon } from '@heroicons/react/20/solid';
+import {
+    ChevronDownIcon,
+    HeartIcon,
+    LockClosedIcon,
+} from '@heroicons/react/20/solid';
 import { ArrowDownTrayIcon, LinkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
 import { FileInterface } from '../../interfaces/file';
+import { BASE_URL } from '../../requests/routes';
 import { detectFileType } from '../../utils/detectFileType';
 import { formatFileSize } from '../../utils/formatFileSize';
 import { generateFileUrl } from '../../utils/generateFileUrl';
 import { getFileLikes } from '../../utils/getFileLikes';
+import GetIconFromFileType from '../GetIconFromFileType';
 import { TagWrapper } from '../uploadForm/TagWrapper';
 import GalleryNonImage from './GalleryNonImage';
 
@@ -20,6 +26,14 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
     const windowSize = useWindowSize();
 
     const [opened, setOpened] = useState(false);
+
+    const download = (e: React.MouseEvent) => {
+        e.preventDefault();
+
+        if (typeof file.hash === 'string') {
+            window.open(`${BASE_URL}/${file.hash}`);
+        }
+    };
 
     if (windowSize.width && windowSize.width <= windowSizes.sm) {
         return (
@@ -104,7 +118,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                 opened ? 'h-auto' : 'h-24'
             }`}
         >
-            <div className="w-20 h-20 relative mr-2">
+            <div className="w-20 h-20 relative mr-2 flex items-center justify-center">
                 {detectFileType(file.name) === 'image' ? (
                     <Image
                         src={generateFileUrl(file.hash, file.name)}
@@ -113,7 +127,10 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         layout="fill"
                     />
                 ) : (
-                    <GalleryNonImage filename={file.name} />
+                    <GetIconFromFileType
+                        extension={detectFileType(file.name)}
+                        className="w-12"
+                    />
                 )}
             </div>
 
@@ -128,14 +145,14 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
 
                 <TagWrapper formTags={file.tag} />
 
-                {!opened && (
+                {!opened && file.description && (
                     <div className="from-transparent to-primary-900 bg-gradient-to-b h-full w-full absolute top-8 left-0 rounded-lg" />
                 )}
             </div>
 
             <div
                 className={`flex items-center justify-between h-20 ${
-                    file.description ? 'w-28' : 'w-20'
+                    file.description ? 'w-32' : 'w-20'
                 }`}
             >
                 {file.description && (
@@ -148,13 +165,19 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                     </button>
                 )}
 
+                <div className="w-8 flex flex-col items-center justify-center">
+                    {file.private && (
+                        <LockClosedIcon className="h-6 text-notification" />
+                    )}
+                </div>
+
                 <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
                     <p className="text-primary-100">{getFileLikes(file)}</p>
                 </div>
 
-                <button className="flex flex-col items-center justify-center">
+                <button className="flex flex-col items-center justify-center" onClick={download}>
                     <ArrowDownTrayIcon className="h-6 text-notification mb-1" />
 
                     <small className="text-primary-300">

@@ -31,16 +31,19 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 @router.post("/register")
 async def register_user(username: str = Form(), password: str = Form(), email: str = Form(), current_user: User = Depends(get_potential_user)):
+    if current_user.email != None:
+        return HTTPException(400, detail="user already registered")
+
     emailq = db.users.find_one({"email": email.lower()})
     if emailq != None:
-        return {"err": "User with this e-mail already exists."}
+        return HTTPException(status_code=400, detail="User with this e-mail already exists.")
 
     if not username.isalnum():
-        return {"err": "Username should only contain alphanumeric characters"}
+        return HTTPException(status_code=400, detail="Username should only contain alphanumeric characters")
 
     usernameq = db.users.find_one({"username": username})
     if usernameq != None:
-        return {"err": "User with this username already exists."}
+        return HTTPException(status_code=400, detail="User with this username already exists.")
 
     hashed_pass = get_password_hash(password)
 
@@ -52,7 +55,6 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         token = create_access_token(data={'user_id': user.id}, admin=False)
 
-        rtrn_user: User = user
     else:
         user = db.users.find_one({"_id": current_user.id})
         user["email"] = email
@@ -64,10 +66,11 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
 
         token = create_access_token(data={'user_id': str(user['_id'])}, admin=False)
 
-        rtrn_user: User = User(** user)
+        user = User(**user)
+
+    rtrn_user = User(**user.dict())
 
     return {'user': rtrn_user, 'token': token}
-
 
 @router.get("/me", response_model=User)
 async def get_own_user(current_user: User = Depends(get_current_user)):
@@ -107,24 +110,36 @@ async def get_own_favourites(current_user: User = Depends(get_current_user), cur
         raise HTTPException(400)
 
 @router.get("/user")
-async def get_user(user_id: str):
-    user = db.users.find_one({'_id': PyObjectId(user_id)})
+async def get_user(user_id: str | None, username: str | None):
+    if user_id:
+        user = db.users.find_one({'_id': PyObjectId(user_id)})
+        
+    elif username:
+        lwr_user = username.lower()
+        user = db.users.find_one({'username': PyObjectId(lwr_user)})
+
+    else:
+        raise HTTPException(404)
+            
     if user != None:
         rtrn_user = User(**user)
         rtrn_user.password = None
         return rtrn_user
+
     else:
         raise HTTPException(404)
+            
+    
 
 @router.put('/update')
-async def update_user( 
-        user: User = Depends(get_current_user),
-        bio: str | None = Body(),
-        name: str | None = Body(),
-        username: str | None = Body(),
-        avatar: str | None = Body(),
-        banner: str | None = Body()
-    ):
+async def update_user(
+    user: User = Depends(get_current_user),
+    bio: str | None = Body(),
+    name: str | None = Body(),
+    username: str | None = Body(),
+    avatar: str | None = Body(),
+    banner: str | None = Body()
+):
 
     user = db.users.find_one({'_id': user.id})
 
@@ -149,7 +164,7 @@ async def update_user(
                 rtrn_user: User = User(**updated_user)
                 return rtrn_user
             else:
-                return {'msg': 'Username already taken.'}
-        return {'msg': 'Invalid username.'}
+                return HTTPException(status_code=400, detail='Username already taken.')
+        return HTTPException(status_code=400, detail='Invalid username.')
     else:
         raise HTTPException(404)

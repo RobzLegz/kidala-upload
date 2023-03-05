@@ -16,11 +16,16 @@ import GallerySpinner from './GallerySpinner';
 export interface GalleryProps {
     liked?: boolean;
     saved?: boolean;
+    user?: boolean;
 }
 
 const limit = 12;
 
-const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
+const Gallery: React.FC<GalleryProps> = ({
+    liked = false,
+    saved = false,
+    user = false,
+}) => {
     const dispatch = useDispatch();
     const windowSize = useWindowSize();
 
@@ -171,7 +176,7 @@ const Gallery: React.FC<GalleryProps> = ({ liked = false, saved = false }) => {
     return (
         <div
             className={`w-full flex flex-col items-start justify-start ${
-                !saved && !liked && 'sm:px-2 xl:px-16 2xl:px-52'
+                !saved && !liked && 'px-2 sm:px-2 xl:px-16 2xl:px-52'
             }`}
         >
             {!liked && !saved && (

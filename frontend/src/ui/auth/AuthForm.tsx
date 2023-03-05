@@ -144,16 +144,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
                     <p className="text-accent mr-2">
                         {!register
                             ? "Don't have an account?"
-                            : 'Already have an account?'}
+                            : 'Already have an account?'}{' '}
+                        <span
+                            className="text-primary-100 cursor-pointer"
+                            onClick={handleReRoute}
+                        >
+                            {!register ? 'Register' : 'Login'}
+                        </span>
                     </p>
-
-                    <button
-                        className="text-primary-100"
-                        onClick={handleReRoute}
-                        type="button"
-                    >
-                        {!register ? 'Register' : 'Login'}
-                    </button>
                 </div>
 
                 <Button onClick={handleLogin} type="submit">
