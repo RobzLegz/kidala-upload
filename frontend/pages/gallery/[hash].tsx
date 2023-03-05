@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CheckAuth from '../../src/hooks/CheckAuth';
 import { FileInterface } from '../../src/interfaces/file';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
-import { BASE_URL, LIST_FILES } from '../../src/requests/routes';
+import { BASE_URL, LIST_FILES_ROUTE } from '../../src/requests/routes';
 import { isImage } from '../../src/utils/isImage';
 import dynamic from 'next/dynamic';
 import { PageComponent } from '../../src/types/PageComponent';
@@ -158,7 +158,7 @@ GalleryImagePage.getInitialProps = async ({ query }) => {
                 },
             };
 
-            const res = await fetch(LIST_FILES, requestOptions);
+            const res = await fetch(LIST_FILES_ROUTE, requestOptions);
             const resJson: FileInterface[] = await res.json();
 
             const file = resJson.find((f) => f.hash === hash);

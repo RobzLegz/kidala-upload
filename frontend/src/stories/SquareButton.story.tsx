@@ -3,7 +3,7 @@ import { Story } from '@storybook/react';
 import { ButtonProps } from '../ui/Button';
 import { toEnum } from './utils/toEnum';
 import { toBoolean } from './utils/toBoolean';
-import { SearchIcon } from '@heroicons/react/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import SquareButton from '../ui/SquareButton';
 
 export default {
@@ -22,7 +22,7 @@ export const Main: Story<ButtonProps & { exampleIcon?: boolean }> = ({
             {...props}
             icon={
                 exampleIcon ? (
-                    <SearchIcon className="text-white h-5" />
+                    <MagnifyingGlassIcon className="text-white h-5" />
                 ) : undefined
             }
         >

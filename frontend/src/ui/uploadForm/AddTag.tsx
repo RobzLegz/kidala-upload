@@ -1,4 +1,4 @@
-import { HashtagIcon } from '@heroicons/react/solid';
+import { HashtagIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {

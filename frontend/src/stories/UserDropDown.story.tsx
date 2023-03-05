@@ -3,11 +3,20 @@ import { Story } from '@storybook/react';
 import UserDropDown, { UserDropDownProps } from '../ui/UserDropDown';
 import { toStr } from './utils/toStr';
 import { BASE_URL } from '../requests/routes';
-import { ChatIcon } from '@heroicons/react/solid';
+import { ChatBubbleLeftIcon } from '@heroicons/react/20/solid';
+import { Provider } from 'react-redux';
+import store from '../redux/app/store';
 
 export default {
     title: 'UserDropDown',
     comoponent: UserDropDown,
+    decorators: [
+        (Story: Story) => (
+            <Provider store={store}>
+                <Story />
+            </Provider>
+        ),
+    ],
 };
 
 export const Main: Story<UserDropDownProps> = () => {
@@ -28,7 +37,7 @@ export const Avatar: Story<UserDropDownProps> = ({ ...props }) => {
 export const Icon: Story<UserDropDownProps> = ({ ...props }) => {
     return (
         <UserDropDown
-            icon={<ChatIcon className="text-white h-8" />}
+            icon={<ChatBubbleLeftIcon className="text-white h-8" />}
             {...props}
         />
     );

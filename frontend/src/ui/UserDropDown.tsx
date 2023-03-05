@@ -1,13 +1,11 @@
 import {
-    BanIcon,
+    BugAntIcon,
     BookmarkIcon,
-    ChevronRightIcon,
     CogIcon,
     DocumentIcon,
-    GlobeAltIcon,
-    GlobeIcon,
+    LanguageIcon,
     UserIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, UserInfo } from '../redux/slices/userSlice';
@@ -24,19 +22,13 @@ export interface UserDropDownProps {
 
 const dropdownOptions: DropdownOptionProps[] = [
     {
-        icon: <DocumentIcon className="text-primary-200 h-5" />,
-        text: 'My files',
+        icon: <UserIcon className="text-primary-200 h-5" />,
+        text: 'Profile',
         isLanguage: false,
-        url: '/my-files',
+        url: '/new/profile',
     },
     {
-        icon: <BookmarkIcon className="text-primary-200 h-5" />,
-        text: 'Saved',
-        isLanguage: false,
-        url: '/saved',
-    },
-    {
-        icon: <GlobeAltIcon className="text-primary-200 h-5" />,
+        icon: <LanguageIcon className="text-primary-200 h-5" />,
         text: 'Language',
         isLanguage: true,
         url: '',
@@ -45,10 +37,10 @@ const dropdownOptions: DropdownOptionProps[] = [
         icon: <CogIcon className="text-primary-200 h-5" />,
         text: 'Settings',
         isLanguage: false,
-        url: '/settings',
+        url: '/new/settings',
     },
     {
-        icon: <BanIcon className="text-primary-200 h-5" />,
+        icon: <BugAntIcon className="text-primary-200 h-5" />,
         text: 'Report a bug',
         isLanguage: false,
         url: 'https://github.com/RobzLegz/kidala-upload/issues/new',

@@ -1,4 +1,4 @@
-import { SearchIcon } from '@heroicons/react/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 import { Input } from '../Input';
 
@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <div
             className={`items-center flex w-full bg-primary-700 text-primary-300 transition duration-200 ease-in-out focus-within:text-primary-100 rounded-lg px-4 ${props.className}`}
         >
-            <SearchIcon className="text-white h-7" />
+            <MagnifyingGlassIcon className="text-white h-7" />
 
             <Input
                 placeholder={props.placeholder}

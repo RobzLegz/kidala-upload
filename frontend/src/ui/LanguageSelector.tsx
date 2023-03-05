@@ -1,4 +1,4 @@
-import { GlobeAltIcon } from '@heroicons/react/solid';
+import { GlobeAltIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { supportedLanguages } from '../languages/text';

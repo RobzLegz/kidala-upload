@@ -3,7 +3,7 @@ import CheckAuth from '../../src/hooks/CheckAuth';
 import dynamic from 'next/dynamic';
 import { PageComponent } from '../../src/types/PageComponent';
 import { FileInterface } from '../../src/interfaces/file';
-import { LIST_FILES } from '../../src/requests/routes';
+import { LIST_FILES_ROUTE } from '../../src/requests/routes';
 import { useEffect } from 'react';
 import { AppInfo, selectApp, setFiles } from '../../src/redux/slices/appSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -57,7 +57,7 @@ Gallery.getInitialProps = async () => {
         },
     };
 
-    const res = await fetch(LIST_FILES, requestOptions);
+    const res = await fetch(LIST_FILES_ROUTE, requestOptions);
     const resJson: FileInterface[] = await res.json();
 
     return {

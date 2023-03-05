@@ -2,7 +2,7 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import { toEnum } from '../utils/toEnum';
 import { toBoolean } from '../utils/toBoolean';
-import { SearchIcon } from '@heroicons/react/solid';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import SelectFileButton, {
     SelectFileButtonProps,
 } from '../../ui/uploadForm/SelectFileButton';
@@ -24,7 +24,7 @@ export const Main: Story<SelectFileButtonProps & { exampleIcon?: boolean }> = ({
             {...props}
             icon={
                 exampleIcon ? (
-                    <SearchIcon className="text-white h-5" />
+                    <MagnifyingGlassIcon className="text-white h-5" />
                 ) : undefined
             }
         >

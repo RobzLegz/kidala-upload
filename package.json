@@ -7,7 +7,8 @@
         "f": "cd frontend && yarn dev",
         "s": "cd socket && mix phx.server",
         "dev": "cd frontend && yarn dev",
-        "socket": "cd socket && mix phx.server"
+        "socket": "cd socket && mix phx.server",
+        "b": "uvicorn kebab.main:app --host localhost --port 8000 --reload"
     },
     "repository": {
         "type": "git",
@@ -24,5 +25,6 @@
         "url": "https://github.com/RobzLegz/kidala-upload/issues"
     },
     "homepage": "https://github.com/RobzLegz/kidala-upload#readme",
-    "devDependencies": {}
+    "devDependencies": {},
+    "dependencies": {}
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ClipboardCopyIcon, DocumentIcon } from '@heroicons/react/solid';
+import { ClipboardIcon, DocumentIcon } from '@heroicons/react/20/solid';
 import { uploadFile } from '../../requests/uploadRequests';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -246,7 +246,7 @@ function UploadForm() {
                         </p>
 
                         <div className="h-10 flex items-center justify-center w-11 border-blue-300 bg-black">
-                            <ClipboardCopyIcon className="text-white h-6" />
+                            <ClipboardIcon className="text-white h-6" />
                         </div>
                     </button>
 

@@ -4,7 +4,7 @@
 
 @layer components {
     * {
-        @apply p-0 m-0 box-border;
+        @apply p-0 m-0 box-border font-poppins;
     }
 
     body {
@@ -13,6 +13,18 @@
 
     h1 {
         @apply text-4xl font-extrabold;
+    }
+
+    h2 {
+        @apply text-3xl font-extrabold;
+    }
+
+    h3 {
+        @apply text-2xl font-extrabold;
+    }
+
+    h4 {
+        @apply text-xl font-extrabold;
     }
 
     strong {
@@ -28,11 +40,11 @@
     }
 
     .track {
-        @apply w-full h-3 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1.5 relative overflow-hidden rounded-lg bg-accent;
     }
 
     .vol_track {
-        @apply w-full h-2 relative overflow-hidden rounded-lg bg-gradient-to-r from-sky-400 to-sky-600;
+        @apply w-full h-1 relative overflow-hidden rounded-lg bg-accent-hover;
     }
 
     .animate-track {
@@ -46,9 +58,14 @@
     .dropbox_animation {
         @apply w-[150%] h-[150%] absolute bg-gradient-to-tr from-primary-900 z-0 to-accent -top-1/4 -left-1/4 animate-border-animate content-none rounded-lg;
     }
+
+    .dreineris_konteineris{
+        @apply bg-primary-800 border border-primary-700;
+    }
 }
 
-label {
+label,
+.no_select {
     user-select: none;
     -webkit-user-select: none;
 }

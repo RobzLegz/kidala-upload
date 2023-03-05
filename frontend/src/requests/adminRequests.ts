@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { deleteFileRdx } from '../redux/slices/appSlice';
 import { setNotification } from '../redux/slices/notificationSlice';
-import { ADMIN_DELETE } from './routes';
+import { ADMIN_DELETE_ROUTE } from './routes';
 
 export const deleteFile = async (id: string, dispatch: Dispatch) => {
     const data = {
@@ -21,12 +21,12 @@ export const deleteFile = async (id: string, dispatch: Dispatch) => {
 
     const headers = {
         headers: {
-            Authorization: access_token,
+            Authorization: `Bearer ${access_token}`,
         },
     };
 
     await axios
-        .post(ADMIN_DELETE, data, headers)
+        .post(ADMIN_DELETE_ROUTE, data, headers)
         .then((res) => {
             dispatch(deleteFileRdx(id));
         })

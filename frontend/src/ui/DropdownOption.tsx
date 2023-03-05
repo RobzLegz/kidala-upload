@@ -1,9 +1,7 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { windowSizes } from '../constants/windowSizes';
 import useWindowSize from '../hooks/useWindowSize';
-import DropdownLanguageSelector from './DropdownLanguageSelector';
 
 export interface DropdownOptionProps {
     icon: React.ReactNode;

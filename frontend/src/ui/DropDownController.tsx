@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/solid';
+import { UserIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import React from 'react';
 
@@ -31,7 +31,7 @@ const DropDownController: React.FC<DropDownControllerProps> = ({
                         src={avatar}
                         objectFit="cover"
                         layout="fill"
-                        className="rounded-full"
+                        className="rounded-md"
                         quality={80}
                     />
                 ) : icon ? (
