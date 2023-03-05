@@ -24,3 +24,5 @@ Main.argTypes = {
     placeholder: toStr(),
     isLoading: toBoolean(),
 };
+
+Main.bind({})

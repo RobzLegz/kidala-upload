@@ -1,41 +1,40 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Story } from '@storybook/react';
+import Button, { ButtonProps } from '../ui/Button';
+import { toEnum } from './utils/toEnum';
+import { toBoolean } from './utils/toBoolean';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
-import { Button } from './Button';
-
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Button',
-  component: Button,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-} as ComponentMeta<typeof Button>;
-
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
-  primary: true,
-  label: 'Button',
+    title: 'Button',
+    argTypes: { onClick: { action: 'clicked' } },
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: 'Button',
+export const Main: Story<ButtonProps & { exampleIcon?: boolean }> = ({
+    children,
+    exampleIcon,
+    ...props
+}) => {
+    return (
+        <Button
+            {...props}
+            icon={
+                exampleIcon ? (
+                    <MagnifyingGlassIcon className="text-white h-5" />
+                ) : undefined
+            }
+        >
+            {children || `Select file`}
+        </Button>
+    );
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  size: 'large',
-  label: 'Button',
+Main.argTypes = {
+    color: toEnum(['primary', 'secondary']),
+    size: toEnum(['big', 'small']),
+    disabled: toBoolean(),
+    loading: toBoolean(),
+    exampleIcon: toBoolean(),
 };
 
-export const Small = Template.bind({});
-Small.args = {
-  size: 'small',
-  label: 'Button',
-};
+Main.bind;
