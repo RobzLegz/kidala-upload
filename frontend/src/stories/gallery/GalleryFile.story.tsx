@@ -11,6 +11,8 @@ export default {
 };
 
 const testFile = {
+    _id: "123213",
+    likes: [],
     name: 'Insane.mp4',
     hash: 'da7c4174d96171cf35ea8f1d3d6567d9',
     size: 1229201,
@@ -19,7 +21,7 @@ const testFile = {
     phoneNumber: '',
     private: false,
     is_ad: false,
-    tag: 'crazy',
+    tag: [],
     description: 'sasgdbasd sauhdusva uogdvas vodsauvd uasd',
 } as FileInterface;
 
