@@ -3,7 +3,6 @@ import { FileInterface } from '../../interfaces/file';
 import { Like } from '../../interfaces/like';
 import { User } from '../../interfaces/user';
 import { LikeFileResponse } from '../../requests/fileRequests';
-import { sortFiles } from '../../utils/sortFiles';
 
 export interface SortOptions {
     myFiles: boolean;
@@ -44,11 +43,9 @@ export const appSlice = createSlice({
                 return state;
             }
 
-            const sortedFiles = sortFiles(files);
-
             state = {
                 ...state,
-                files: sortedFiles,
+                files,
             };
 
             return state;
@@ -180,8 +177,6 @@ export const appSlice = createSlice({
                 state.files.length === 0 ||
                 state.files === null
             ) {
-                // const sortedFiles = sortFiles(files);
-
                 state = {
                     ...state,
                     files: files,

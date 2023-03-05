@@ -7,7 +7,6 @@ import {
     SaveFileResponse,
 } from '../../requests/fileRequests';
 import { AuthResponse } from '../../requests/userRequests';
-import { sortFiles } from '../../utils/sortFiles';
 
 export interface UserInfo {
     myFiles: FileInterface[] | null;
@@ -307,7 +306,7 @@ export const {
     receiveLikedFiles,
     saveFileUserHandlerRdx,
     receiveSavedFiles,
-    removeFromSaved
+    removeFromSaved,
 } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user;
