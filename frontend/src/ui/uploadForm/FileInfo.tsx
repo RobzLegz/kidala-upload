@@ -70,7 +70,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
     };
 
     return (
-        <div className="flex bg-primary-800 w-full p-2 sm:p-4 mt-2 rounded-lg border border-primary-700">
+        <form className="flex bg-primary-800 w-full p-2 sm:p-4 mt-2 rounded-lg border border-primary-700">
             <input
                 type="file"
                 name="drop_box_reselect_file"
@@ -198,7 +198,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                     </Button>
                 </div>
             </div>
-        </div>
+        </form>
     );
 };
 

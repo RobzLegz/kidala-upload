@@ -254,7 +254,7 @@ const UploadForm: React.FC = () => {
     };
 
     return (
-        <form
+        <div
             className={`w-11/12 max-w-[600px] rounded-lg flex flex-col items-center justify-center`}
             ref={formRef}
         >
@@ -290,7 +290,7 @@ const UploadForm: React.FC = () => {
             ) : (
                 <DropBox selectFile={selectFile} />
             )}
-        </form>
+        </div>
     );
 };
 
