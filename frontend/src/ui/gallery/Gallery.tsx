@@ -19,7 +19,7 @@ export interface GalleryProps {
     user?: boolean;
 }
 
-const limit = 12;
+const limit = 24;
 
 const Gallery: React.FC<GalleryProps> = ({
     liked = false,
@@ -42,6 +42,12 @@ const Gallery: React.FC<GalleryProps> = ({
             setLoading(true);
         }
     }, [liked, saved]);
+
+    useEffect(() => {
+        if (appInfo.db_file_len) {
+            setActiveFileLen(appInfo.db_file_len);
+        }
+    }, [appInfo.db_file_len]);
 
     useEffect(() => {
         if (liked && userInfo.info) {
@@ -90,12 +96,20 @@ const Gallery: React.FC<GalleryProps> = ({
     ]);
 
     const handleScroll = () => {
-        if (windowSize.height) {
-            const docHeight = document.documentElement.scrollHeight;
-            const scrollTop = document.documentElement.scrollTop;
+        if (
+            !isServer &&
+            windowSize.height &&
+            activeFiles &&
+            activeFiles.length < activeFileLen &&
+            limit
+        ) {
+            if (windowSize.height) {
+                const docHeight = document.documentElement.scrollHeight;
+                const scrollTop = document.documentElement.scrollTop;
 
-            if (windowSize.height + scrollTop + 1 >= docHeight) {
-                setLoading(true);
+                if (windowSize.height + scrollTop + 1 >= docHeight) {
+                    setLoading(true);
+                }
             }
         }
     };
@@ -151,17 +165,9 @@ const Gallery: React.FC<GalleryProps> = ({
     }, [activeFiles, loading, userInfo.token, saved, liked]);
 
     useEffect(() => {
-        if (
-            !isServer &&
-            windowSize.height &&
-            activeFiles &&
-            activeFiles.length < activeFileLen &&
-            limit
-        ) {
-            window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll);
 
-            return () => window.removeEventListener('scroll', handleScroll);
-        }
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [windowSize.height, activeFiles, limit, activeFileLen]);
 
     const changeCheckbox = () => {

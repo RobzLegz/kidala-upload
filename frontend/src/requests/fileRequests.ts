@@ -242,7 +242,6 @@ export const getSaved = async ({
         .get(route, headers)
         .then((res) => {
             const data: ListFilesResponse = res.data;
-
             dispatch(receiveSavedFiles(data.files));
         })
         .catch((err) => {
