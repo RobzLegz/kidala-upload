@@ -73,8 +73,6 @@ export const getFilesV2 = async ({
         .then((res) => {
             const data: ListFilesResponse = res.data;
 
-            console.log(data.files)
-
             dispatch(receiveFiles(data.files));
         })
         .catch((err) => {
