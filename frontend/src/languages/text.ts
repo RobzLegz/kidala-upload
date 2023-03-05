@@ -1,5 +1,5 @@
 export interface SupportedLang {
-    lang: 'EN' | 'LV' | 'RU' | 'DE';
+    lang: 'EN' | 'LV' | 'RU' | 'DE' | 'NO';
     language: string;
     short: string;
     flag: string;
@@ -122,6 +122,35 @@ export const translatedText: Record<SupportedLang['lang'], Translation> = {
             private: 'Частный',
         },
     },
+    NO: {
+        home: {
+            selectFile: 'velg fil',
+            changeFile: 'endre fil',
+            ready: 'er klar for opplasting',
+            upload: 'last opp',
+            maxSize: '(maks filstørrelse er 1mb)',
+            copied: 'kopier til utklipstavle',
+            addTag: 'Legg til emneknagg',
+            enterTag: 'Legg til emneknagg',
+        },
+        navigation: {
+            gallery: 'Galleri',
+            myFiles: 'Mine filer',
+            home: 'Hjem',
+        },
+        gallery: {
+            contact: 'Kontakt annonsør:',
+            download: 'Last ned',
+            copyLink: 'Kopier adresse',
+            showNonImageFiles: 'Vis filer (ikke bilder)',
+            seen: 'Sett:',
+        },
+        global: {
+            open: 'Åpne',
+            close: 'Lukk',
+            private: 'Privat',
+        },
+    },
 };
 
 export const supportedLanguages: SupportedLang[] = [
@@ -154,6 +183,12 @@ export const supportedLanguages: SupportedLang[] = [
         short: 'DE',
         flag: 'https://www.worldometers.info/img/flags/small/tn_gm-flag.gif',
         lang: 'DE',
+    },
+    {
+        language: 'NOrwegian',
+        short: 'NO',
+        flag: 'https://www.worldometers.info/img/flags/small/tn_no-flag.gif',
+        lang: 'NO',
     },
 ];
 
