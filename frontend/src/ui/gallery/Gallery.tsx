@@ -38,28 +38,14 @@ const Gallery: React.FC<GalleryProps> = ({
     const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
 
     useEffect(() => {
-        if (liked && userInfo.info) {
-            setActiveFiles(userInfo.likedFiles ? userInfo.likedFiles : []);
-            setActiveFileLen(
-                userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
-            );
-            setPrevCursor(userInfo.likedFiles ? userInfo.likedFiles.length : 0);
-            dispatch(
-                setSortOptions({
-                    ...appInfo.sortOptions,
-                    showFiles: true,
-                })
-            );
-        } else if (saved && userInfo.info) {
+        if (saved && userInfo.info) {
             setActiveFiles(userInfo.savedFiles ? userInfo.savedFiles : []);
             setActiveFileLen(
                 userInfo.info?.favourites.length
                     ? userInfo.info?.favourites.length
                     : 0
             );
-            setPrevCursor(
-                userInfo?.savedFiles ? userInfo?.savedFiles.length : 0
-            );
+            setPrevCursor(userInfo.savedFiles ? userInfo.savedFiles.length : 0);
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
@@ -71,14 +57,7 @@ const Gallery: React.FC<GalleryProps> = ({
             setPrevCursor(0);
             setActiveFileLen(appInfo.db_file_len);
         }
-    }, [
-        liked,
-        saved,
-        userInfo.info,
-        userInfo.likedFiles,
-        userInfo.savedFiles,
-        appInfo.files,
-    ]);
+    }, [liked, saved, userInfo.info, userInfo.savedFiles, appInfo.files]);
 
     const handleScroll = () => {
         if (
@@ -87,7 +66,8 @@ const Gallery: React.FC<GalleryProps> = ({
             activeFiles &&
             activeFiles.length < activeFileLen - 1 &&
             limit &&
-            activeFiles.length !== prevCursor
+            activeFiles.length !== prevCursor &&
+            prevCursor !== 0
         ) {
             if (windowSize.height) {
                 const docHeight = document.documentElement.scrollHeight;
