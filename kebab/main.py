@@ -85,7 +85,8 @@ async def redirectFile(filehash: str):
     if (query := db.files.find_one({'hash': filehash})) == None:
         return "File not found"
     else:
-        return RedirectResponse(f"{SERVER_URL}files/{query['hash']}/{query['name']}")
+        return RedirectResponse(f"{SERVER_URL}/files/{query['hash']}/{query['name']}")
+
 
 
 

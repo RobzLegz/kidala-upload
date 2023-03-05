@@ -8,7 +8,7 @@ dnspython==2.2.1
 ecdsa==0.18.0
 fastapi==0.81.0
 h11==0.13.0
-#httptools==0.4.0
+httptools==0.4.0
 idna==3.3
 ipaddress==1.0.23
 passlib==1.7.4
@@ -27,5 +27,6 @@ sniffio==1.2.0
 starlette==0.19.1
 typing_extensions==4.3.0
 uvicorn==0.18.3
+uvloop==0.16.0
 watchfiles==0.16.1
 websockets==10.3

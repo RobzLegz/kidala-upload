@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Form, Body
-from fastapi.security import OAuth2PasswordRequestForm 
+from fastapi.security import OAuth2PasswordRequestForm
+import re 
 
 from ..database import PyObjectId, User, File, db, Token, User
 from ..auth import get_current_user, authenticate_user, create_access_token, get_password_hash, get_potential_user
@@ -38,8 +39,8 @@ async def register_user(username: str = Form(), password: str = Form(), email: s
     if emailq != None:
         return HTTPException(status_code=400, detail="User with this e-mail already exists.")
 
-    if not username.isalnum():
-        return HTTPException(status_code=400, detail="Username should only contain alphanumeric characters")
+    if re.search('^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$', username) == None:
+        return HTTPException(status_code=400, detail="Invalid username")
 
     usernameq = db.users.find_one({"username": username})
     if usernameq != None:
@@ -140,7 +141,6 @@ async def update_user(
     avatar: str | None = Body(),
     banner: str | None = Body()
 ):
-
     user = db.users.find_one({'_id': user.id})
 
     if avatar == "":
@@ -168,3 +168,4 @@ async def update_user(
         return HTTPException(status_code=400, detail='Invalid username.')
     else:
         raise HTTPException(404)
+
