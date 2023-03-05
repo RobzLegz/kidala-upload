@@ -13,7 +13,7 @@ const FileInfoControls: React.FC<FileInfoControlsProps> = ({ file }) => {
         e.preventDefault();
 
         navigator.clipboard.writeText(
-            `http://localhost:3000/gallery?f=${file.hash}`
+            `https://kidala.life/gallery?f=${file.hash}`
         );
     };
 
