@@ -4,7 +4,7 @@ import UploadForm from './UploadForm'
 
 function HomePage() {
     return (
-        <div className="w-full min-h-screen flex items-center justify-between flex-col bg-sky-900">
+        <div className="w-full min-h-screen flex items-center justify-between flex-col">
             <div className=""></div>
 
             <div className="flex flex-col items-center justify-center w-full pt-20">

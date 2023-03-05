@@ -3,25 +3,34 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { addNewFile } from '../redux/slices/appSlice';
 import { clearNotification } from '../redux/slices/notificationSlice';
-import { setToken } from '../redux/slices/userSlice';
-import { UPLOAD_BASE } from './routes';
+import { receiveMyFiles, setToken } from '../redux/slices/userSlice';
+import { UPLOAD_ROUTE } from './routes';
 
 export const uploadFile = async (
     setUrl: React.Dispatch<React.SetStateAction<string>>,
     dispatch: Dispatch,
-    setFile: React.Dispatch<React.SetStateAction<File | null>>,
     file: File | null,
-    tag: string,
+    tags: string[],
     description: string,
-    isPrivate: boolean,
+    isPrivate: boolean
 ) => {
     if (!file) {
         return;
     }
 
+    let file_tags = '';
+
+    tags.forEach((tag) => {
+        if (file_tags === '') {
+            file_tags = tag;
+        } else {
+            file_tags = `${file_tags};${tag}`;
+        }
+    });
+
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('tag', tag);
+    formData.append('tag', file_tags);
     formData.append('description', description);
     formData.append('private', isPrivate.toString());
 
@@ -37,26 +46,26 @@ export const uploadFile = async (
             ...headers,
             headers: {
                 ...headers.headers,
-                Authorization: access_token,
+                Authorization: `Bearer ${access_token}`,
             },
         };
     }
 
     await axios
-        .post(UPLOAD_BASE, formData, headers)
+        .post(UPLOAD_ROUTE, formData, headers)
         .then((res) => {
-            const { access_token, hash, url, file } = res.data;
+            const { token, hash, url, file } = res.data;
 
-            if (access_token) {
-                localStorage.setItem('access_token', access_token);
+            if (token) {
+                localStorage.setItem('access_token', token);
 
-                dispatch(setToken(access_token));
+                dispatch(setToken(token));
             }
 
-            setUrl(hash);
+            dispatch(receiveMyFiles([file]));
+            setUrl(file.hash);
             dispatch(addNewFile(file));
             dispatch(clearNotification());
-            setFile(null);
         })
         .catch((err) => {
             if (!err.response) {
@@ -69,4 +78,30 @@ export const uploadFile = async (
 
             console.log(err.response.data);
         });
+};
+
+export const uploadProfileFile = async (
+    file: File | null,
+    description: string,
+    token: string
+) => {
+    if (!file) {
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('file', file);
+    formData.append('description', description);
+    formData.append('private', 'true');
+
+    let headers: { headers: Record<string, any> } = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const res = await axios.post(UPLOAD_ROUTE, formData, headers);
+
+    return res;
 };

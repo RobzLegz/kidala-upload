@@ -7,7 +7,7 @@ from bson import ObjectId
 MONGO_DB_LINK = os.environ["MONGO_DB_LINK"]
 
 client = pymongo.MongoClient(MONGO_DB_LINK)
-db = client.kidala_janka
+db = client.kidala_new
 
 class PyObjectId(ObjectId):
     @classmethod

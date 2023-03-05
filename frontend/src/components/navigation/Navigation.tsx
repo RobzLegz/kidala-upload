@@ -15,19 +15,25 @@ function Navigation() {
         <nav className="w-full py-2 flex items-center justify-start">
             {router.asPath !== '/' ? (
                 <Link href="/">
-                    <p className="link mx-2">{languageInfo.text.navigation.home}</p>
+                    <p className="link mx-2">
+                        {languageInfo.text.navigation.home}
+                    </p>
                 </Link>
             ) : null}
 
             {!router.pathname.includes('gallery') ? (
                 <Link href="/gallery">
-                    <p className="link mx-2">{languageInfo.text.navigation.gallery}</p>
+                    <p className="link mx-2">
+                        {languageInfo.text.navigation.gallery}
+                    </p>
                 </Link>
             ) : null}
 
             {userInfo.info && !router.pathname.includes('my-files') ? (
                 <Link href="/my-files">
-                    <p className="link mx-2">{languageInfo.text.navigation.myFiles}</p>
+                    <p className="link mx-2">
+                        {languageInfo.text.navigation.myFiles}
+                    </p>
                 </Link>
             ) : null}
         </nav>
