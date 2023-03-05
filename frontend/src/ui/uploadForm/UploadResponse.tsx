@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { clearNotification } from '../../redux/slices/notificationSlice';
@@ -17,6 +18,7 @@ export const UploadResponse: React.FC<UploadResponseProps> = ({
     savedToClipboard,
     setSavedToClipboard,
 }) => {
+    const router = useRouter();
     const dispatch = useDispatch();
 
     const openUrl = (e: React.MouseEvent) => {
@@ -24,7 +26,7 @@ export const UploadResponse: React.FC<UploadResponseProps> = ({
 
         setSavedToClipboard && setSavedToClipboard(false);
 
-        window.open(`new/gallery?f=${hash}`);
+        router.push(`gallery?f=${hash}`);
         dispatch(clearNotification());
     };
 
@@ -43,7 +45,11 @@ export const UploadResponse: React.FC<UploadResponseProps> = ({
                     Upload more
                 </Button>
 
-                <Button className="my-2 w-full sm:w-auto sm:mr-2" onClick={openUrl} color="secondary">
+                <Button
+                    className="my-2 w-full sm:w-auto sm:mr-2"
+                    onClick={openUrl}
+                    color="secondary"
+                >
                     Open
                 </Button>
 
