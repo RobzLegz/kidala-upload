@@ -38,20 +38,12 @@ const Gallery: React.FC<GalleryProps> = ({
     const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
 
     useEffect(() => {
-        if (liked || saved) {
-            setLoading(true);
-        }
-    }, [liked, saved]);
-
-    useEffect(() => {
         if (liked && userInfo.info) {
             setActiveFiles(userInfo.likedFiles ? userInfo.likedFiles : []);
             setActiveFileLen(
                 userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
             );
-            setPrevCursor(
-                userInfo.info?.likes.length ? userInfo.info?.likes.length : 0
-            );
+            setPrevCursor(userInfo.likedFiles ? userInfo.likedFiles.length : 0);
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
@@ -66,9 +58,7 @@ const Gallery: React.FC<GalleryProps> = ({
                     : 0
             );
             setPrevCursor(
-                userInfo.info?.favourites.length
-                    ? userInfo.info?.favourites.length
-                    : 0
+                userInfo?.savedFiles ? userInfo?.savedFiles.length : 0
             );
             dispatch(
                 setSortOptions({
