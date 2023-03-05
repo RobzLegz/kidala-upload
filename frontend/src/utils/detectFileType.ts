@@ -1,4 +1,5 @@
 import { getFileExtension } from './getFileExtension';
+import { isImage } from './isImage';
 
 export type FileType = string | null;
 
@@ -9,16 +10,7 @@ export const detectFileType: (name: string | undefined) => FileType = (
         return null;
     }
 
-    if (
-        name.includes('.png') ||
-        name.includes('.jpg') ||
-        name.includes('.gif') ||
-        name.includes('.jpeg') ||
-        name.includes('.svg') ||
-        name.includes('.jfif') ||
-        name.includes('.ico') ||
-        name.includes('.webp')
-    ) {
+    if (isImage(name)) {
         return 'image';
     } else if (name.includes('.mp3') || name.includes('.wav')) {
         return 'audio';
