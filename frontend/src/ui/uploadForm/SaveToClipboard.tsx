@@ -18,9 +18,10 @@ const SaveToClipboard: React.FC<UploadResponseProps> = ({
 
     return (
         <Button
+            className="sm:mr-2 w-full sm:w-40"
             onClick={saveToClipboard}
+            color="primary"
             icon={<LinkIcon className="text-white h-5" />}
-            className={`w-full sm:w-40 ${savedToClipboard ? 'ring-2' : ''}`}
         >
             Copy link
         </Button>
