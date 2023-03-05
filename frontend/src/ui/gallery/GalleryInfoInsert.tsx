@@ -136,7 +136,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                             onLoadStart={() => setLoading(true)}
                         />
 
-                        <div
+                        {/* <div
                             className={`w-full absolute bottom-0 left-0 bg-transparent_dark transition-transform duration-300 items-center justify-start px-4 py-1 translate-y-full group-hover:-translate-y-1.5 rounded-b-lg z-10 ${
                                 fileUser ? 'flex' : 'hidden'
                             }`}
@@ -155,7 +155,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                                     {fileUser ? fileUser.username : 'Anonymous'}
                                 </strong>
                             </button>
-                        </div>
+                        </div> */}
 
                         <div
                             className={`absolute left-0 -top-1 flex items-center justify-center bg-transparent_dark rounded-lg w-full h-full transition-opacity duration-300 ${
