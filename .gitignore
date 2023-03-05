@@ -3,6 +3,11 @@
 **/.pnp
 **.pnp.js
 /backend/kidalaenv
+**/.next
+/frontend/node_modules
+/frontend/.pnp
+/frontend.pnp.js
+/borsch/kidalaenv
 /kebab/env
 /kebab/venv
 /socket/assets/node_modules/
@@ -48,8 +53,9 @@ yarn-error.log*
 **/__pycache__
 
 #files
-/backend/files
 /kebab/files
+/borsch/files
+/backend/files
 
 # socket
 

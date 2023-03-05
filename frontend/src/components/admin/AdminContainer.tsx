@@ -2,7 +2,7 @@ import {
     DocumentIcon,
     FolderOpenIcon,
     TrashIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -136,7 +136,7 @@ function AdminContainer() {
                                     <button
                                         className="bg-red-500 h-8 w-10 flex items-center justify-center"
                                         onClick={() =>
-                                            deleteFile(file._id.$oid, dispatch)
+                                            deleteFile(file._id, dispatch)
                                         }
                                     >
                                         <TrashIcon className="text-white h-5" />
