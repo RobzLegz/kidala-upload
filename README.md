@@ -4,14 +4,14 @@ KEEP CALM AND BE KIDALA
 
 ## Tech stack
 
-### **NVFM** stack (Next, Vercel, Flask, MongoDB)
+### **NVFM** stack (Next, Vercel, FastAPI, MongoDB)
 
-🌐 Frontend |  ⚙ Backend |  🚀 Socket     |  🚚 Deploy
------------ | ----------- | --------------- |-------------
-**next.js** | **flask**   |  **elixir**     | **raspberrypi**
-**redux**   | **mongodb** |   phoenix       | **vercel**
-tailwindcss | gunicorn    |                 |
-typescript  | nginx       |                 |
+🌐 Frontend |  ⚙ Backend | 🚚 Deploy
+----------- | ----------- | -------------
+**next.js** | **fastapi** | **raspberrypi**
+**redux**   | **mongodb** | **vercel**
+tailwindcss | uvicorn     | 
+typescript  | nginx       | 
 
 ## Branches
 
