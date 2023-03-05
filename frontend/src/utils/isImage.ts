@@ -1,5 +1,5 @@
 export const isImage = (filename: string) => {
-    const re = /\.(jpg|jpeg|png|webp|avif|gif|svg|jfif|JPG|JPEG)$/;
+    const re = /\.(jpg|jpeg|png|webp|avif|gif|svg|jfif)$/;
 
-    return re.test(filename);
+    return re.test(filename.toLowerCase());
 };
