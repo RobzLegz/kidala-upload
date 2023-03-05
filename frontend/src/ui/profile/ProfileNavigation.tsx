@@ -32,7 +32,7 @@ const ProfileNavigation = () => {
     }, [page, windowSize.width]);
 
     return (
-        <div className="w-full flex items-center justify-center h-14">
+        <div className="w-full flex items-center justify-start h-14">
             <button
                 className="w-1/3 sm:w-1/4 h-full hidden sm:flex items-center justify-center"
                 onClick={() =>
@@ -87,7 +87,7 @@ const ProfileNavigation = () => {
                 />
             </button>
 
-            <button
+            {/* <button
                 className="w-1/3 sm:w-1/4 h-full flex items-center justify-center"
                 onClick={() =>
                     router.push(
@@ -115,7 +115,7 @@ const ProfileNavigation = () => {
                         page === 'liked' ? 'text-notification' : 'text-white'
                     }`}
                 />
-            </button>
+            </button> */}
 
             <button
                 className="w-1/3 sm:w-1/4 h-full flex items-center justify-center"

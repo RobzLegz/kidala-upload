@@ -11,7 +11,7 @@ const SaveToClipboard: React.FC<UploadResponseProps> = ({
     const saveToClipboard = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        navigator.clipboard.writeText(`https://kidala.life/gallery/${hash}`);
+        navigator.clipboard.writeText(`https://kidala.life/gallery?f=${hash}`);
 
         setSavedToClipboard && setSavedToClipboard(true);
     };

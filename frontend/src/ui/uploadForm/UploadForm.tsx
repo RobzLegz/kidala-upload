@@ -184,7 +184,7 @@ const UploadForm: React.FC = () => {
 
         const selectedFile = files[0];
 
-        if (selectedFile.size > 1024 * 1024) {
+        if (selectedFile.size > 1024 * 1024 * 10) {
             dispatch(
                 setNotification({
                     type: 'error',

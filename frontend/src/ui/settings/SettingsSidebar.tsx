@@ -1,9 +1,4 @@
-import {
-    Bars3BottomLeftIcon,
-    Bars3Icon,
-    CogIcon,
-    XMarkIcon,
-} from '@heroicons/react/20/solid';
+import { Bars3BottomLeftIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { windowSizes } from '../../constants/windowSizes';
@@ -101,7 +96,7 @@ const SettingsSidebar = () => {
                         Profile
                     </button>
                 </li>
-
+                {/* 
                 <li className="w-full mt-2">
                     <button
                         className={`w-full h-8 flex items-center justify-start text-primary-100 rounded-lg px-4 ${
@@ -120,9 +115,9 @@ const SettingsSidebar = () => {
                     >
                         Account
                     </button>
-                </li>
+                </li> */}
 
-                <li className="w-full mt-2">
+                {/* <li className="w-full mt-2">
                     <button
                         className={`w-full h-8 flex items-center justify-start text-primary-100 rounded-lg px-4 ${
                             page === 'security-and-privacy'
@@ -166,7 +161,7 @@ const SettingsSidebar = () => {
                     >
                         Keybinds
                     </button>
-                </li>
+                </li> */}
             </ul>
         </div>
     );

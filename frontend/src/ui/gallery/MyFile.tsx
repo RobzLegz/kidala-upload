@@ -35,6 +35,12 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
         }
     };
 
+    const copyUrl = () => {
+        navigator.clipboard.writeText(
+            `https://kidala.life/gallery?f=${file.hash}`
+        );
+    };
+
     if (windowSize.width && windowSize.width <= windowSizes.sm) {
         return (
             <div
@@ -64,13 +70,13 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         <small className="text-white">{file.name}</small>
 
                         <div className="w-28 flex items-center justify-between h-20">
-                            <div className="flex flex-col items-center justify-center">
+                            {/* <div className="flex flex-col items-center justify-center">
                                 <HeartIcon className="h-5 text-notification" />
 
                                 <small className="text-primary-100">
                                     {getFileLikes(file)}
                                 </small>
-                            </div>
+                            </div> */}
 
                             <button className="flex flex-col items-center justify-center">
                                 <ArrowDownTrayIcon className="h-5 text-notification mb-1" />
@@ -151,7 +157,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
             </div>
 
             <div
-                className={`flex items-center justify-between h-20 ${
+                className={`flex items-center justify-between h-20 gap-2 ${
                     file.description ? 'w-32' : 'w-20'
                 }`}
             >
@@ -171,13 +177,22 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                     )}
                 </div>
 
-                <div className="flex flex-col items-center justify-center w-8">
+                {/* <div className="flex flex-col items-center justify-center w-8">
                     <HeartIcon className="h-6 text-notification" />
 
                     <p className="text-primary-100">{getFileLikes(file)}</p>
+                </div> */}
+
+                <div className="flex flex-col items-center justify-center">
+                    <button onClick={copyUrl}>
+                        <LinkIcon className="h-5 text-notification" />
+                    </button>
                 </div>
 
-                <button className="flex flex-col items-center justify-center" onClick={download}>
+                <button
+                    className="flex flex-col items-center justify-center"
+                    onClick={download}
+                >
                     <ArrowDownTrayIcon className="h-6 text-notification mb-1" />
 
                     <small className="text-primary-300">

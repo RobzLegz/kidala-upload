@@ -28,9 +28,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
 
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [totalLikes, setTotalLikes] = useState<number | null>(null);
     const [givenLikes, setGivenLikes] = useState<number | null>(null);
-    const [prevGivenLikes, setPrevGivenLikes] = useState<number | null>(null);
     const [prevSentLikes, setPrevSentLikes] = useState<number | null>(null);
     const [saved, setSaved] = useState<boolean | null>(null);
     const [sent, setSent] = useState<boolean>(false);
@@ -38,28 +36,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
     const [timer, setTimer] = useState<number | null>(null);
     const [tutorialDone, setTutorialDone] = useState<boolean>(true);
     const [tutorialStep, setTutorialStep] = useState<number>(1);
-    const [liketimer, setLikeTimer] = useState<number | null>(null);
+    const [limiter, setLimiter] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        if (!localStorage.getItem('tutorial_done')) {
-            setTutorialDone(false);
-        }
-    }, []);
-
-    const skipTutorial = () => {
-        if (tutorialStep === 1) {
-            setTutorialStep(2);
-        } else {
-            localStorage.setItem('tutorial_done', 'true');
-            setTutorialDone(true);
-        }
-    };
-
-    useEffect(() => {
-        if (file) {
-            setTotalLikes(getFileLikes(file));
-        }
-
         if (userInfo.info) {
             setSaved(
                 userInfo.info?.favourites?.some((f) => f === file?._id)
@@ -92,7 +71,7 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
         return false;
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const logged = checkIfLogged();
 
         if (!logged) {
@@ -110,15 +89,9 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             return;
         }
 
-        const newSaved = !saved;
+        setSaved(!saved);
 
-        setSaved(newSaved);
-
-        setTimer(5);
-    };
-
-    useEffect(() => {
-        const makeReq = async () => {
+        const makeIt = async () => {
             await saveFile({
                 file_id: file?._id,
                 dispatch,
@@ -128,115 +101,14 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
             dispatch(removeFromSaved(file?._id));
         };
 
-        const send = async () => {
-            if (prevSaved !== saved) {
-                await makeReq().then(() => {
-                    setPrevSaved(saved);
-                });
-            }
-        };
-
-        const timeoutEffect = () => {
-            if (typeof timer === 'number') {
-                setTimeout(() => {
-                    if (timer > 0) {
-                        setTimer(timer - 1);
-                    } else {
-                        send();
-                    }
-                }, 1000);
-            }
-        };
-
-        timeoutEffect();
-
-        return () => undefined;
-    }, [timer]);
-
-    const handleLike = () => {
-        const logged = checkIfLogged();
-
-        if (!logged) {
-            dispatch(
-                setNotification({
-                    type: 'error',
-                    message: 'You must be logged in to like files',
-                })
-            );
-
-            return;
+        if (limiter) {
+            clearTimeout(limiter);
+            setLimiter(null);
         }
 
-        if (Number(givenLikes) < 20) {
-            setGivenLikes(Number(givenLikes) + 1);
-            setTotalLikes(Number(totalLikes) + 1);
-
-            setTimeout(() => {
-                setPrevGivenLikes(Number(givenLikes) + 1);
-                setSent(false);
-            }, 1000);
-        }
+        const timeout = setTimeout(makeIt, 3000);
+        setLimiter(timeout);
     };
-
-    const handleDislike = () => {
-        const logged = checkIfLogged();
-
-        if (!logged) {
-            dispatch(
-                setNotification({
-                    type: 'error',
-                    message: 'You must be logged in to dislike files',
-                })
-            );
-
-            return;
-        }
-
-        if (Number(givenLikes) > 0) {
-            setGivenLikes(Number(givenLikes) - 1);
-            setTotalLikes(Number(totalLikes) - 1);
-
-            setTimeout(() => {
-                setPrevGivenLikes(Number(givenLikes) - 1);
-                setSent(false);
-            }, 1000);
-        }
-    };
-
-    useEffect(() => {
-        const makeReq = async () => {
-            await likeFile({
-                user_id: userInfo.info?._id,
-                file_id: file?._id,
-                count: Number(givenLikes),
-                dispatch,
-                token: userInfo.token,
-            });
-        };
-
-        const send = async () => {
-            if (
-                prevGivenLikes === givenLikes &&
-                !sent &&
-                prevSentLikes !== givenLikes
-            ) {
-                setSent(true);
-                await makeReq().then(() => {
-                    setPrevSentLikes(givenLikes);
-                });
-            }
-        };
-
-        const timeoutEffect = () => {
-            setTimeout(() => {
-                send();
-            }, 2000);
-        };
-
-        timeoutEffect();
-
-        return () => undefined;
-    }, [prevGivenLikes]);
 
     return (
         <div
@@ -244,56 +116,8 @@ const FileControls: React.FC<FileControlsProps> = ({ file, className }) => {
                 className ? className : ''
             }`}
         >
-            {!tutorialDone && (
-                <div
-                    className="absolute -top-10 w-full left-0 bg-transparent_dark text-white h-12 flex items-center justify-start px-2 cursor-pointer"
-                    onClick={skipTutorial}
-                >
-                    {tutorialStep === 2 && (
-                        <div className="w-14"></div>
-                    )}
-
-                    <ArrowDownIcon className="h-6 text-white" />
-
-                    {tutorialStep === 1 ? (
-                        <p>Amount of likes you have given</p>
-                    ) : (
-                        <p>Total likes</p>
-                    )}
-                </div>
-            )}
-
-            <div className="flex items-center w-full">
-                <div className="flex items-center mr-2 w-28">
-                    {userInfo.info?._id !== file?.author && (
-                        <>
-                            <button
-                                className="flex items-center justify-center text-notification no_select"
-                                onClick={handleLike}
-                            >
-                                <HeartIconFull className="text-notification h-6 mr-0.5" />
-
-                                {givenLikes}
-                            </button>
-
-                            <div className="h-7 w-[1.5px] bg-white mx-2" />
-                        </>
-                    )}
-
-                    <button
-                        className="flex items-center justify-center text-white no_select"
-                        onClick={handleDislike}
-                        disabled={userInfo.info?._id === file?.author}
-                    >
-                        <HeartIcon className="text-white h-6 mr-0.5" />
-
-                        {totalLikes}
-                    </button>
-                </div>
-            </div>
-
             {userInfo.info?._id !== file?.author && (
-                <div className="flex items-center justify-end w-28">
+                <div className="flex items-center justify-end w-full">
                     <button onClick={handleSave}>
                         {saved ? (
                             <BookmarkFullIcon className="text-notification-loading w-7" />
