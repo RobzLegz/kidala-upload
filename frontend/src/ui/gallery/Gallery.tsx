@@ -32,8 +32,8 @@ const Gallery: React.FC<GalleryProps> = ({
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
 
-    const [prevCursor, setPrevCursor] = useState(0); //amount of files previously received
-    const [loading, setLoading] = useState(true); //start to receive from here
+    const [prevCursor, setPrevCursor] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [activeFiles, setActiveFiles] = useState(appInfo.files);
     const [activeFileLen, setActiveFileLen] = useState(appInfo.db_file_len);
 
@@ -42,12 +42,6 @@ const Gallery: React.FC<GalleryProps> = ({
             setLoading(true);
         }
     }, [liked, saved]);
-
-    useEffect(() => {
-        if (appInfo.db_file_len) {
-            setActiveFileLen(appInfo.db_file_len);
-        }
-    }, [appInfo.db_file_len]);
 
     useEffect(() => {
         if (liked && userInfo.info) {
@@ -84,7 +78,8 @@ const Gallery: React.FC<GalleryProps> = ({
             );
         } else if (appInfo.files) {
             setActiveFiles(appInfo.files);
-            setPrevCursor(appInfo.files ? appInfo.files.length : 0);
+            setPrevCursor(0);
+            setActiveFileLen(appInfo.db_file_len);
         }
     }, [
         liked,
@@ -100,8 +95,9 @@ const Gallery: React.FC<GalleryProps> = ({
             !isServer &&
             windowSize.height &&
             activeFiles &&
-            activeFiles.length < activeFileLen &&
-            limit
+            activeFiles.length < activeFileLen - 1 &&
+            limit &&
+            activeFiles.length !== prevCursor
         ) {
             if (windowSize.height) {
                 const docHeight = document.documentElement.scrollHeight;
@@ -109,60 +105,47 @@ const Gallery: React.FC<GalleryProps> = ({
 
                 if (windowSize.height + scrollTop + 1 >= docHeight) {
                     setLoading(true);
+                    const fetchFiles = async () => {
+                        setPrevCursor(activeFiles.length - 1);
+
+                        if (saved) {
+                            if (!userInfo.token) {
+                                return;
+                            }
+
+                            await getSaved({
+                                cursor: activeFiles.length,
+                                limit: limit,
+                                dispatch,
+                                token: userInfo.token,
+                            });
+                        } else if (liked) {
+                            if (!userInfo.token) {
+                                return;
+                            }
+
+                            await getLiked({
+                                cursor: activeFiles.length,
+                                limit: limit,
+                                dispatch,
+                                token: userInfo.token,
+                            });
+                        } else {
+                            await getFilesV2({
+                                cursor: activeFiles.length,
+                                limit: limit,
+                                dispatch,
+                            });
+                        }
+                    };
+
+                    fetchFiles().then(() => {
+                        setLoading(false);
+                    });
                 }
             }
         }
     };
-
-    useEffect(() => {
-        if (activeFiles && loading) {
-            const fetchFiles = async () => {
-                if (!limit) {
-                    return;
-                }
-
-                if (activeFiles.length === prevCursor) {
-                    return;
-                }
-
-                setPrevCursor(activeFiles.length);
-
-                if (saved) {
-                    if (!userInfo.token) {
-                        return;
-                    }
-
-                    await getSaved({
-                        cursor: activeFiles.length,
-                        limit: limit,
-                        dispatch,
-                        token: userInfo.token,
-                    });
-                } else if (liked) {
-                    if (!userInfo.token) {
-                        return;
-                    }
-
-                    await getLiked({
-                        cursor: activeFiles.length,
-                        limit: limit,
-                        dispatch,
-                        token: userInfo.token,
-                    });
-                } else {
-                    await getFilesV2({
-                        cursor: activeFiles.length,
-                        limit: limit,
-                        dispatch,
-                    });
-                }
-            };
-
-            fetchFiles().then(() => {
-                setLoading(false);
-            });
-        }
-    }, [activeFiles, loading, userInfo.token, saved, liked]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);

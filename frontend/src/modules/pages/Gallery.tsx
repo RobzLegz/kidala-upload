@@ -50,7 +50,7 @@ Gallery.getInitialProps = async () => {
     const route = `${LIST_FILES_ROUTE}?cursor=0&limit=15`;
 
     const res = await fetch(route, requestOptions);
-    const resJson: ListFilesResponse = await res.json();console.log(resJson)
+    const resJson: ListFilesResponse = await res.json();
 
     return {
         ...resJson,
