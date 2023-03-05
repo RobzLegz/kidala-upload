@@ -71,7 +71,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
         if (saved) {
             router.push(
                 {
-                    pathname: '/new/profile',
+                    pathname: '/profile',
                     query: { page: 'favourites', f: hash },
                 },
                 undefined,
@@ -80,7 +80,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
         } else if (liked) {
             router.push(
                 {
-                    pathname: '/new/profile',
+                    pathname: '/profile',
                     query: { page: 'liked', f: hash },
                 },
                 undefined,
@@ -89,7 +89,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
         } else {
             router.push(
                 {
-                    pathname: '/new/gallery',
+                    pathname: '/gallery',
                     query: { f: hash },
                 },
                 undefined,

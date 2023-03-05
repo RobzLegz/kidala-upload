@@ -52,7 +52,7 @@ export const loginUser = async (
 
             localStorage.setItem('access_token', res.data.token.access_token);
 
-            router.push('/new/profile');
+            router.push('/profile');
         })
         .catch((err) => {
             if (!err.response) {
@@ -108,7 +108,7 @@ export const registerUser = async (
 
             localStorage.setItem('access_token', res.data.token);
 
-            router.push('/new/profile');
+            router.push('/profile');
         })
         .catch((err) => {
             if (!err.response) {
@@ -149,8 +149,8 @@ export const getUserInfo = async (
             }
         })
         .catch((err) => {
-            if (router.pathname === '/new/profile') {
-                router.replace('/new');
+            if (router.pathname === '/profile') {
+                router.replace('/');
             }
 
             if (!err.response) {

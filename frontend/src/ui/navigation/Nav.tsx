@@ -40,7 +40,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                         className="bg-transparent z-10 ml-1"
                         size="small"
                         color="secondary"
-                        onClick={() => router.push('/new')}
+                        onClick={() => router.push('/')}
                     >
                         Home
                     </Button>
@@ -49,7 +49,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                         className="bg-transparent z-10"
                         size="small"
                         color="secondary"
-                        onClick={() => router.push('/new/gallery')}
+                        onClick={() => router.push('/gallery')}
                     >
                         Gallery
                     </Button>
@@ -59,7 +59,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                             className="bg-transparent z-10 ml-1"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/new/login')}
+                            onClick={() => router.push('/login')}
                         >
                             Login
                         </Button>
@@ -71,7 +71,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
 
     return (
         <nav className="w-full px-6 lg:px-12 h-16 flex items-center justify-between fixed top-0 left-0 bg-primary-800 border-b border-primary-700 z-30">
-            <button onClick={() => router.push('/new')}>
+            <button onClick={() => router.push('/')}>
                 <Logo />
             </button>
 
@@ -82,7 +82,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/new')}
+                    onClick={() => router.push('/')}
                 >
                     Home
                 </Button>
@@ -91,7 +91,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     className="bg-transparent z-10"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/new/gallery')}
+                    onClick={() => router.push('/gallery')}
                 >
                     Gallery
                 </Button>
@@ -103,7 +103,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/new/my-files')}
+                            onClick={() => router.push('/my-files')}
                         >
                             My files
                         </Button>
@@ -113,7 +113,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                     className="bg-transparent z-10 ml-1"
                     size="small"
                     color="secondary"
-                    onClick={() => router.push('/new/dropbox')}
+                    onClick={() => router.push('/dropbox')}
                     icon={<ArchiveBoxIcon className="text-white h-6" />}
                 >
                     Dropbox
@@ -125,7 +125,7 @@ const Nav: React.FC<NavProps> = ({ gallery = false, myFiles = false }) => {
                             className="bg-transparent z-10"
                             size="small"
                             color="secondary"
-                            onClick={() => router.push('/new/login')}
+                            onClick={() => router.push('/login')}
                         >
                             Login
                         </Button>

@@ -18,8 +18,8 @@ export const CheckAuth = () => {
                 getUserInfo(access_token, dispatch, router);
             }
         } else {
-            if (router.pathname === '/new/profile') {
-                router.replace('/new');
+            if (router.pathname === '/profile') {
+                router.replace('/');
             }
         }
     }, []);

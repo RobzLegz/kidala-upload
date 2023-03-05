@@ -31,7 +31,7 @@ const NoFiles: React.FC<NoFilesProps> = ({ liked, saved, my }) => {
             </p>
 
             {my && (
-                <Button className="mt-4" onClick={() => router.push('/new')}>
+                <Button className="mt-4" onClick={() => router.push('/')}>
                     Upload
                 </Button>
             )}

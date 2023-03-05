@@ -25,7 +25,7 @@ const dropdownOptions: DropdownOptionProps[] = [
         icon: <UserIcon className="text-primary-200 h-5" />,
         text: 'Profile',
         isLanguage: false,
-        url: '/new/profile',
+        url: '/profile',
     },
     {
         icon: <LanguageIcon className="text-primary-200 h-5" />,
@@ -37,13 +37,13 @@ const dropdownOptions: DropdownOptionProps[] = [
         icon: <CogIcon className="text-primary-200 h-5" />,
         text: 'Settings',
         isLanguage: false,
-        url: '/new/settings',
+        url: '/settings',
     },
     {
         icon: <BugAntIcon className="text-primary-200 h-5" />,
         text: 'Report a bug',
         isLanguage: false,
-        url: 'https://github.com/RobzLegz/kidala-upload/issues/new',
+        url: 'https://github.com/RobzLegz/kidala-upload/issues/',
     },
 ];
 

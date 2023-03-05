@@ -48,7 +48,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                         size="small"
                         icon={<PencilIcon className="h-4 text-primary-100" />}
                         onClick={() =>
-                            router.push('/new/settings?page=profile')
+                            router.push('/settings?page=profile')
                         }
                     >
                         Edit profile
@@ -61,7 +61,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                     color="primary-300"
                     size="small"
                     icon={<PencilIcon className="h-4 text-primary-100" />}
-                    onClick={() => router.push('/new/settings?page=profile')}
+                    onClick={() => router.push('/settings?page=profile')}
                     className="w-full max-w-[200px]"
                 >
                     Edit profile

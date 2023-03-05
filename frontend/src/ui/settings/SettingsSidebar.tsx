@@ -17,7 +17,7 @@ const SettingsSidebar = () => {
         if (!page) {
             router.push(
                 {
-                    pathname: '/new/settings',
+                    pathname: '/settings',
                     query: { page: 'profile' },
                 },
                 undefined,
@@ -85,7 +85,7 @@ const SettingsSidebar = () => {
                         onClick={() =>
                             router.push(
                                 {
-                                    pathname: '/new/settings',
+                                    pathname: '/settings',
                                     query: { page: 'profile' },
                                 },
                                 undefined,
@@ -105,7 +105,7 @@ const SettingsSidebar = () => {
                         onClick={() =>
                             router.push(
                                 {
-                                    pathname: '/new/settings',
+                                    pathname: '/settings',
                                     query: { page: 'account' },
                                 },
                                 undefined,
@@ -127,7 +127,7 @@ const SettingsSidebar = () => {
                         onClick={() =>
                             router.push(
                                 {
-                                    pathname: '/new/settings',
+                                    pathname: '/settings',
                                     query: { page: 'security-and-privacy' },
                                 },
                                 undefined,
@@ -151,7 +151,7 @@ const SettingsSidebar = () => {
                         onClick={() =>
                             router.push(
                                 {
-                                    pathname: '/new/settings',
+                                    pathname: '/settings',
                                     query: { page: 'keybinds' },
                                 },
                                 undefined,

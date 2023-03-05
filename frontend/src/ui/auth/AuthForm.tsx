@@ -75,9 +75,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ register = false }) => {
         e.preventDefault();
 
         if (!register) {
-            router.push('/new/register');
+            router.push('/register');
         } else {
-            router.push('/new/login');
+            router.push('/login');
         }
     };
 

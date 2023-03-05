@@ -40,7 +40,7 @@ const MyFilesContainer: React.FC<MyFilesContainerProps> = ({ isProfile = false }
         if (userInfo.info && loading) {
             if (!user_token) {
                 setLoading(false);
-                router.push('/new/login');
+                router.push('/login');
                 return;
             }
 
