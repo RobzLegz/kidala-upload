@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import AdminContainer from '../src/components/admin/AdminContainer';
+import AdminContainer from '../src/ui/admin/AdminContainer';
 import CheckAuth from '../src/hooks/CheckAuth';
-import Footer from '../src/components/navigation/Footer';
 
 export default function Home() {
     return (
@@ -26,8 +25,6 @@ export default function Home() {
             </Head>
 
             <AdminContainer />
-
-            <Footer />
 
             <CheckAuth />
         </div>

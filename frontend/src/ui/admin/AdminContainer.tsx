@@ -16,6 +16,7 @@ import { loginUser } from '../../requests/userRequests';
 
 function AdminContainer() {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const appInfo: AppInfo = useSelector(selectApp);
     const userInfo: UserInfo = useSelector(selectUser);
@@ -34,7 +35,7 @@ function AdminContainer() {
     ) => {
         e.preventDefault();
 
-        await loginUser(username, password, dispatch);
+        await loginUser(username, password, dispatch, router);
     };
 
     if (!userInfo.loggedIn) {

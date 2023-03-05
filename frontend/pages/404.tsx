@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import FourOhFourContainer from '../src/components/fourohfour/FourOhFourContainer';
+import FourOhFourContainer from '../src/ui/FourOhFourContainer';
 
 export default function FourOhFour() {
     return (
