@@ -18,9 +18,9 @@ const ProfileAboutContainer: React.FC<ProfileAboutContainerProps> = ({
 
     return (
         <div className="w-full hidden sm:flex flex-col bg-primary-800 rounded-lg border border-primary-700 p-4">
-            <h4 className="text-white">About {user.username}</h4>
+            <h4 className="text-white mb-2">About {user.username}</h4>
 
-            <div className="flex mt-6 mb-3">
+            {/* <div className="flex mt-6 mb-3">
                 <div className="flex">
                     <strong className="text-primary-100">
                         {user.followers.length}
@@ -34,10 +34,10 @@ const ProfileAboutContainer: React.FC<ProfileAboutContainerProps> = ({
                     </strong>{' '}
                     <p className="text-primary-300 ml-1.5">Following</p>
                 </div>
-            </div>
+            </div> */}
 
             {user.bio && (
-                <p className="text-white">{user.bio}</p>
+                <p className="text-gray-200">{user.bio}</p>
             )}
         </div>
     );
