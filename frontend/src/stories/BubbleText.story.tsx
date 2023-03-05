@@ -2,7 +2,6 @@ import React from 'react';
 import { Story } from '@storybook/react';
 import BubbleText, { BubbleTextProps } from '../ui/BubbleText';
 import { toBoolean } from './utils/toBoolean';
-import { toStr } from './utils/toStr';
 
 export default {
     title: 'bubble/BubbleText',
@@ -17,7 +16,7 @@ export const Main: Story<BubbleTextProps> = ({ ...props }) => {
 };
 
 Main.argTypes = {
-    live: toBoolean(),
+    filled: toBoolean(),
 };
 
 Main.bind({});

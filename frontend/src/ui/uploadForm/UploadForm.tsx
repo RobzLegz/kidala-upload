@@ -163,7 +163,7 @@ const UploadForm: React.FC = () => {
             setHash,
             dispatch,
             file,
-            tag.toLowerCase(),
+            tags,
             description,
             isPrivate
         );

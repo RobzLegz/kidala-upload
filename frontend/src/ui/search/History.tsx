@@ -7,9 +7,10 @@ export type HistoryItem = {
 
 export interface HistoryProps {
     history: HistoryItem[];
+    setTerm?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const History: React.FC<HistoryProps> = ({ history }) => {
+const History: React.FC<HistoryProps> = ({ history, setTerm }) => {
     const historyDeleteClickHandler = (id: string) => {
         return id;
     };
@@ -23,6 +24,7 @@ const History: React.FC<HistoryProps> = ({ history }) => {
                     }
                     key={h.id}
                     searchText={h.term}
+                    setTerm={setTerm}
                 />
             ))}
         </div>

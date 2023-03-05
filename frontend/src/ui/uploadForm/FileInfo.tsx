@@ -109,21 +109,21 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         </div>
 
                         <div className="flex items-center flex-col justify-start flex-1 sm:w-full overflow-hidden">
-                            {detectFileType(fileName) !== 'image' ? (
-                                <GetIconFromFileType
-                                    extension={detectFileType(fileName)}
-                                    source={source}
-                                    className="w-6 mr-1 hidden sm:flex"
-                                />
-                            ) : null}
-
                             <div className="flex items-center justify-start w-full">
+                                {detectFileType(fileName) !== 'image' ? (
+                                    <GetIconFromFileType
+                                        extension={detectFileType(fileName)}
+                                        source={source}
+                                        className="w-6 mr-1 hidden sm:flex"
+                                    />
+                                ) : null}
+
                                 <strong className="text-white text-left truncate text-sm sm:text-base flex-1">
                                     {fileName}
                                 </strong>
 
                                 <div className="ml-2">
-                                    <BubbleText live>
+                                    <BubbleText filled>
                                         <span className="text-white text-sm font-normal">
                                             {getFileExtension(fileName)}
                                         </span>
@@ -131,7 +131,7 @@ const FileInfo: React.FC<FileInfoProps> = ({
                                 </div>
                             </div>
 
-                            <div className="flex w-full items-start mt-1">
+                            <div className="flex w-full items-start mt-2">
                                 <AddTag
                                     tag={tag}
                                     setTag={setTag}
@@ -188,7 +188,12 @@ const FileInfo: React.FC<FileInfoProps> = ({
                         Change file
                     </Button>
 
-                    <Button size="small" onClick={handleUpload} type="submit">
+                    <Button
+                        size="small"
+                        onClick={handleUpload}
+                        type="submit"
+                        autoFocus
+                    >
                         Upload
                     </Button>
                 </div>
