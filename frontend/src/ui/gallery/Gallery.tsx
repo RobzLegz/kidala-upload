@@ -39,13 +39,13 @@ const Gallery: React.FC<GalleryProps> = ({
 
     useEffect(() => {
         if (saved && userInfo.info) {
-            setActiveFiles(userInfo.savedFiles ? userInfo.savedFiles : []);
+            setActiveFiles([]);
             setActiveFileLen(
                 userInfo.info?.favourites.length
                     ? userInfo.info?.favourites.length
                     : 0
             );
-            setPrevCursor(userInfo.savedFiles ? userInfo.savedFiles.length : 0);
+            setPrevCursor(0);
             dispatch(
                 setSortOptions({
                     ...appInfo.sortOptions,
@@ -53,11 +53,11 @@ const Gallery: React.FC<GalleryProps> = ({
                 })
             );
         } else if (appInfo.files) {
-            setActiveFiles(appInfo.files);
+            setActiveFiles(appInfo.files ? appInfo.files : []);
             setPrevCursor(0);
             setActiveFileLen(appInfo.db_file_len);
         }
-    }, [liked, saved, userInfo.info, userInfo.savedFiles, appInfo.files]);
+    }, [liked, saved, userInfo.info, appInfo.files]);
 
     const handleScroll = () => {
         if (
@@ -66,8 +66,9 @@ const Gallery: React.FC<GalleryProps> = ({
             activeFiles &&
             activeFiles.length < activeFileLen - 1 &&
             limit &&
-            activeFiles.length !== prevCursor &&
             prevCursor !== 0
+                ? activeFiles.length !== prevCursor
+                : true
         ) {
             if (windowSize.height) {
                 const docHeight = document.documentElement.scrollHeight;
@@ -76,7 +77,7 @@ const Gallery: React.FC<GalleryProps> = ({
                 if (windowSize.height + scrollTop + 1 >= docHeight) {
                     setLoading(true);
                     const fetchFiles = async () => {
-                        setPrevCursor(activeFiles.length - 1);
+                        setPrevCursor(Number(activeFiles?.length));
 
                         if (saved) {
                             if (!userInfo.token) {
@@ -84,7 +85,7 @@ const Gallery: React.FC<GalleryProps> = ({
                             }
 
                             await getSaved({
-                                cursor: activeFiles.length,
+                                cursor: Number(activeFiles?.length),
                                 limit: limit,
                                 dispatch,
                                 token: userInfo.token,
@@ -95,14 +96,14 @@ const Gallery: React.FC<GalleryProps> = ({
                             }
 
                             await getLiked({
-                                cursor: activeFiles.length,
+                                cursor: Number(activeFiles?.length),
                                 limit: limit,
                                 dispatch,
                                 token: userInfo.token,
                             });
                         } else {
                             await getFilesV2({
-                                cursor: activeFiles.length,
+                                cursor: Number(activeFiles?.length),
                                 limit: limit,
                                 dispatch,
                             });
