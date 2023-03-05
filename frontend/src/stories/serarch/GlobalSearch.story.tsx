@@ -19,15 +19,17 @@ const history: HistoryItem[] = [
 
 const searchResults: FileInterface[] = [
     {
+        _id: "123213",
+        likes: [],
         name: 'Insane.mp4',
-        hash: 'r21r58152d5891279125d129',
+        hash: 'da7c4174d96171cf35ea8f1d3d6567d9',
         size: 1229201,
         author: '',
         email: '',
         phoneNumber: '',
         private: false,
         is_ad: false,
-        tag: 'crazy',
+        tag: [],
         description: 'sasgdbasd sauhdusva uogdvas vodsauvd uasd',
     } as FileInterface,
 ];
