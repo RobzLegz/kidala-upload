@@ -56,6 +56,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                                 draggable={false}
                                 objectFit="cover"
                                 layout="fill"
+                                alt="Kidala"
                             />
                         ) : (
                             <GalleryNonImage filename={file.name} />
@@ -131,6 +132,7 @@ const MyFile: React.FC<MyFileProps> = ({ file }) => {
                         draggable={false}
                         objectFit="cover"
                         layout="fill"
+                        alt="Kidala"
                     />
                 ) : (
                     <GetIconFromFileType

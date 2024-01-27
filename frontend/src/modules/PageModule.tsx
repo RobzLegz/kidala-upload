@@ -4,6 +4,7 @@ import HeadParser, { HeadParserProps } from './HeadParser';
 
 interface PageModuleProps extends HeadParserProps {
     className?: string;
+    children?: React.ReactNode;
 }
 
 const PageModule: React.FC<PageModuleProps> = ({

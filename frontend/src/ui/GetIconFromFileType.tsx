@@ -56,6 +56,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         src={source}
                         objectFit="cover"
                         draggable={false}
+                        alt="Kidala"
                         width={
                             imageDimensions
                                 ? imageDimensions.width
@@ -117,6 +118,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -132,6 +134,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -147,6 +150,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -162,6 +166,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -177,6 +182,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -192,6 +198,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );
@@ -207,6 +214,7 @@ const GetIconFromFileType: React.FC<GetIconFromFileTypeProps> = ({
                         objectFit="contain"
                         draggable={false}
                         layout="fill"
+                        alt="Kidala"
                     />
                 </div>
             );

@@ -54,6 +54,7 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
                             layout="fill"
                             className="rounded-full"
                             draggable={false}
+                            alt="Kidala"
                         />
                     </div>
                 ) : (
@@ -75,6 +76,7 @@ const ProfileUserIcon: React.FC<ProfileUserIconProps> = ({
                         layout="fill"
                         className="rounded-full"
                         draggable={false}
+                        alt="Kidala"
                     />
                 </div>
             ) : (

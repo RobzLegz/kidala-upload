@@ -12,7 +12,7 @@ import { windowSizes } from '../constants/windowSizes';
 import { useKeyPress } from '../hooks/useKeyPress';
 import useWindowSize from '../hooks/useWindowSize';
 import { FileInterface } from '../interfaces/file';
-import { AppInfo } from '../redux/slices/appSlice';
+import { AppInfo, setAudioVolume } from '../redux/slices/appSlice';
 import { selectApp } from './../redux/slices/appSlice';
 import Spinner from './Spinner';
 
@@ -41,7 +41,6 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
     playerRef,
     playedTime,
     duration,
-    setAudioVolume,
     setPlayedPercentage,
     playedPercentage,
     setLooping,

@@ -43,6 +43,7 @@ const ProfileBanner: React.FC<ProfileUserIconProps> = ({
                         layout="fill"
                         className="rounded-t-lg"
                         draggable={false}
+                        alt="Kidala"
                     />
                 </div>
             ) : (

@@ -29,6 +29,7 @@ const DropDownController: React.FC<DropDownControllerProps> = ({
                 {avatar ? (
                     <Image
                         src={avatar}
+                        alt='Kidala'
                         objectFit="cover"
                         layout="fill"
                         className="rounded-md"

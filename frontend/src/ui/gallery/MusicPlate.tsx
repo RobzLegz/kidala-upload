@@ -14,6 +14,7 @@ const MusicPlate: React.FC<MusicPlateProps> = ({ image }) => {
                     draggable={false}
                     layout="fill"
                     className="rounded-full"
+                    alt="Kidala"
                 />
             </div>
 
@@ -28,6 +29,7 @@ const MusicPlate: React.FC<MusicPlateProps> = ({ image }) => {
                             objectFit="cover"
                             blurDataURL={image}
                             placeholder="blur"
+                            alt="Kidala"
                         />
                     </div>
                 </div>

@@ -14,6 +14,7 @@ const Logo: React.FC<LogoProps> = ({ className, divider = 3.6 }) => {
             height={Math.floor(132 / divider)}
             objectFit="cover"
             className={`${className ? className : ''}`}
+            alt="Kidala"
         />
     );
 };

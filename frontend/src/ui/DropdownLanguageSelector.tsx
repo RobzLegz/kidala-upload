@@ -30,6 +30,7 @@ const DropdownLanguageSelector = () => {
                                 width={20}
                                 height={15}
                                 objectFit="cover"
+                                alt="Kidala"
                             />
 
                             <p className="ml-2 text-primary-200 hidden lg:block">

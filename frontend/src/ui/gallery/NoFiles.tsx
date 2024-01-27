@@ -20,6 +20,7 @@ const NoFiles: React.FC<NoFilesProps> = ({ liked, saved, my }) => {
                 height={220}
                 objectFit="contain"
                 draggable={false}
+                alt="Kidala"
             />
 
             <p className="text-accent mt-2">

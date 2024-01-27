@@ -134,6 +134,7 @@ const GalleryInfoInsert: React.FC<GalleryInfoInsertProps> = ({
                             className="rounded-lg"
                             onLoad={() => setLoading(false)}
                             onLoadStart={() => setLoading(true)}
+                            alt="Kidala"
                         />
 
                         {/* <div
