@@ -4,12 +4,15 @@ export default function Document() {
     return (
         <Html lang="en">
             <Head>
-                <meta name="google-adsense-account" content="ca-pub-3564006936877547" />
+                <meta
+                    name="google-adsense-account"
+                    content="ca-pub-3564006936877547"
+                />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
                     rel="preconnect"
                     href="https://fonts.gstatic.com"
-                    crossOrigin=''
+                    crossOrigin=""
                 />
                 <link
                     href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
@@ -20,7 +23,7 @@ export default function Document() {
 
             <body>
                 <Main />
-                
+
                 <NextScript />
             </body>
         </Html>
