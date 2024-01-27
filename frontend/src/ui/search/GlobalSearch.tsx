@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileInterface } from '../../interfaces/file';
 import SearchBar from './SearchBar';
-import SearchOverlay from './SearchOverlay';
+// import SearchOverlay from './SearchOverlay';
 import History, { HistoryItem } from './History';
 import Result from './Result';
 
@@ -37,7 +37,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                     value={term}
                 />
             </div>
-            {focused && (
+            {/* {focused && (
                 <SearchOverlay className="absolute z-0">
                     <div className="flex flex-col w-full">
                         {!term && history && <History history={history} setTerm={setTerm} />}
@@ -46,7 +46,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                         )}
                     </div>
                 </SearchOverlay>
-            )}
+            )} */}
         </div>
     );
 };

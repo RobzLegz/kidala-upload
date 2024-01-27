@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { HistoryItem } from '../search/History';
-import GlobalSearch from '../search/GlobalSearch';
+// import GlobalSearch from '../search/GlobalSearch';
 
 const history: HistoryItem[] = [
     { id: '1', term: 'javascript' },
@@ -19,7 +19,7 @@ const GallerySearch = () => {
 
     return (
         <div className="flex-1 pl-4 2xl:pl-16 pr-2">
-            <GlobalSearch
+            {/* <GlobalSearch
                 term={term}
                 setTerm={setTerm}
                 history={history}
@@ -34,7 +34,7 @@ const GallerySearch = () => {
                           )
                         : []
                 }
-            />
+            /> */}
         </div>
     );
 };
