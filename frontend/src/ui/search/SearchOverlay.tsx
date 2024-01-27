@@ -30,4 +30,6 @@ const SearchOverlay = forwardRef<
     );
 });
 
+SearchOverlay.displayName = 'SearchOverlay';
+
 export default SearchOverlay;
