@@ -15,13 +15,15 @@ const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (files) {
-            dispatch(receiveFiles(files));
-        }
+        try {
+            if (files) {
+                dispatch(receiveFiles(files));
+            }
 
-        if (total_db) {
-            dispatch(setDbFileLen(total_db));
-        }
+            if (total_db) {
+                dispatch(setDbFileLen(total_db));
+            }
+        } catch (err) {}
     }, []);
 
     return (

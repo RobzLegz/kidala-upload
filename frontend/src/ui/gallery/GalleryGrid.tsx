@@ -99,17 +99,19 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     };
 
     useEffect(() => {
-        if (typeof f === 'string' && infoInsert === null && ittFiles) {
-            const clickedInfo = getFileFromHash(f, ittFiles);
+        try {
+            if (typeof f === 'string' && infoInsert === null && ittFiles) {
+                const clickedInfo = getFileFromHash(f, ittFiles);
 
-            if (clickedInfo) {
-                setClickedFileInfo(clickedInfo);
-            } else {
-                getFileFromHashReq(f, dispatch, setClickedFileInfo);
+                if (clickedInfo) {
+                    setClickedFileInfo(clickedInfo);
+                } else {
+                    getFileFromHashReq(f, dispatch, setClickedFileInfo);
+                }
+
+                setInfoInsert(0);
             }
-
-            setInfoInsert(0);
-        }
+        } catch (err) {}
     }, [f, ittFiles]);
 
     if (
