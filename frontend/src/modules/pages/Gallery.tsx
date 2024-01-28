@@ -40,21 +40,25 @@ const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
 };
 
 Gallery.getInitialProps = async () => {
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+    try {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
 
-    const route = `${LIST_FILES_ROUTE}?cursor=0&limit=15`;
+        const route = `${LIST_FILES_ROUTE}?cursor=0&limit=15`;
 
-    const res = await fetch(route, requestOptions);
-    const resJson: ListFilesResponse = await res.json();
+        const res = await fetch(route, requestOptions);
+        const resJson: ListFilesResponse = await res.json();
 
-    return {
-        ...resJson,
-    };
+        return {
+            ...resJson,
+        };
+    } catch (err) {
+        return {};
+    }
 };
 
 export default Gallery;

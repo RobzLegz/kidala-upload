@@ -43,7 +43,7 @@ const MainNotification = () => {
 
     return (
         <div
-            className="w-full flex items-center justify-center fixed top-20 left-0 bg-transparent_dark"
+            className="w-full flex items-center justify-center fixed top-20 left-0 bg-transparent_dark z-50"
             onClick={clearNotif}
         >
             <div className="w-[96%] max-w-[800px] p-2 rounded-lg bg-notification-red transition-all duration-300 hover:opacity-90 cursor-pointer">
