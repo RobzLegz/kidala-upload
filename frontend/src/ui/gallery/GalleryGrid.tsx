@@ -9,7 +9,6 @@ import GalleryInfoInsert from './GalleryInfoInsert';
 import { detectFileType } from '../../utils/detectFileType';
 import { getFileFromHash } from '../../utils/getFileFromHash';
 import { FileInterface } from '../../interfaces/file';
-import Image from 'next/image';
 import NoFiles from './NoFiles';
 import { getFileFromHashReq } from '../../requests/fileRequests';
 

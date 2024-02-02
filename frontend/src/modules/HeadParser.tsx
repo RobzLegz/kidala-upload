@@ -48,15 +48,21 @@ const HeadParser: React.FC<HeadParserProps> = ({
 
     return (
         <Head>
-            <title>Kidala upload | {title}</title>
-            <meta name="twitter:title" content={`Kidala upload | ${title}`} />
-            <meta property="og:title" content={`Kidala upload | ${title}`} />
+            <title>Kidala upload | {file.name}</title>
+            <meta
+                name="twitter:title"
+                content={`Kidala upload | ${file.name}`}
+            />
+            <meta
+                property="og:title"
+                content={`Kidala upload | ${file.name}`}
+            />
             <meta name="twitter:site" content="kidala.life" />
             <meta
                 property="og:image"
                 content={
-                    file.hash && detectFileType(file.name)
-                        ? `${BASE_URL}/${file.hash}`
+                    file.hash && detectFileType(file.name) === 'image'
+                        ? `${BASE_URL}/files/${file.hash}/${file.name}`
                         : '/images/janisbataragsuzliso.png'
                 }
             />
@@ -67,7 +73,7 @@ const HeadParser: React.FC<HeadParserProps> = ({
                 name="twitter:image"
                 content={
                     file.hash && detectFileType(file.name)
-                        ? `${BASE_URL}/${file.hash}`
+                        ? `${BASE_URL}/files/${file.hash}/${file.name}`
                         : '/images/janisbataragsuzliso.png'
                 }
             />

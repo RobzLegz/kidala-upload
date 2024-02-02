@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { receiveFiles, setDbFileLen } from '../../redux/slices/appSlice';
-import { ListFilesResponse } from '../../requests/fileRequests';
+import { ListFilesResponse, getFromHash } from '../../requests/fileRequests';
 import { LIST_FILES_ROUTE } from '../../requests/routes';
 import { PageComponent } from '../../types/PageComponent';
 import { default as GalleryComponent } from '../../ui/gallery/Gallery';
 import GalleryNotification from '../../ui/notifications/MainNotification';
 import Nav from '../../ui/navigation/Nav';
 import PageModule from '../PageModule';
+import { FileInterface } from '../../interfaces/file';
 
-interface GalleryProps extends ListFilesResponse {}
+interface GalleryProps extends ListFilesResponse {
+    og_file?: FileInterface;
+}
 
-const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
+const Gallery: PageComponent<GalleryProps> = ({ files, total_db, og_file }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -31,6 +34,7 @@ const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
             title="Gallery"
             description="Kidala life - combining social media with file upload"
             className="pt-24"
+            file={og_file}
         >
             <Nav gallery />
 
@@ -41,8 +45,15 @@ const Gallery: PageComponent<GalleryProps> = ({ files, total_db }) => {
     );
 };
 
-Gallery.getInitialProps = async () => {
+Gallery.getInitialProps = async ({ pathname, query, asPath }) => {
     try {
+        let file: FileInterface | undefined = undefined;
+
+        if (typeof query?.f === 'string') {
+            file = await getFromHash(query.f);
+            console.log(file);
+        }
+
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -54,6 +65,13 @@ Gallery.getInitialProps = async () => {
 
         const res = await fetch(route, requestOptions);
         const resJson: ListFilesResponse = await res.json();
+
+        if (file) {
+            return {
+                ...resJson,
+                og_file: file,
+            };
+        }
 
         return {
             ...resJson,

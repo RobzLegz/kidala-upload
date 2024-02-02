@@ -283,3 +283,17 @@ export const getFileFromHashReq = async (
             );
         });
 };
+
+export const getFromHash = async (hash: string) => {
+    let stafs: FileInterface | undefined = undefined;
+
+    await axios
+        .get(`${SINGLE_FILE_ROUTE}?file_hash=${hash}`)
+        .then((res) => {
+            const g: FileInterface = res.data;
+            stafs = g;
+        })
+        .catch((err) => {});
+
+    return stafs as FileInterface | undefined;
+};
