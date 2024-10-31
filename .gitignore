@@ -74,3 +74,5 @@ yarn-error.log*
 /socket/priv/static/assets/
 
 /socket/priv/static/cache_manifest.json
+
+.env
