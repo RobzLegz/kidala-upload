@@ -26,11 +26,11 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     // Base grid styling with aspect ratio container
     const cn = `mt-2 grid w-full overflow-hidden mb-4 ${
         !liked && !saved ? 'xl:grid-cols-4' : ''
-    } grid-cols-3 sm:px-4 gap-0.5 sm:gap-2`;
+    } grid-cols-3 sm:px-4 gap-0.5 sm:gap-2 lg:gap-4`;
 
     // Container style to enforce aspect ratio
     const containerStyle = `
-        relative w-full pb-[100%] bg-gray-100 overflow-hidden
+        relative w-full pb-[100%] overflow-hidden
     `;
 
     // Content style to maintain proportions

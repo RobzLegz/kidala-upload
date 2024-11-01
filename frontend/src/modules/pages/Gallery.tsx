@@ -47,6 +47,8 @@ const Gallery: PageComponent<GalleryProps> = ({ files, total_db, og_file }) => {
 
 Gallery.getInitialProps = async ({ pathname, query, asPath }) => {
     try {
+
+        console.log(process.env.NEXT_PUBLIC_BASE_URL);
         let file: FileInterface | undefined = undefined;
 
         if (typeof query?.f === 'string') {
@@ -73,10 +75,13 @@ Gallery.getInitialProps = async ({ pathname, query, asPath }) => {
             };
         }
 
+        
+
         return {
             ...resJson,
         };
     } catch (err) {
+        console.log(err);
         return {};
     }
 };
