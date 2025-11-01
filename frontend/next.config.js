@@ -7,6 +7,7 @@ module.exports = {
             'api.kidala.life',
             'localhost',
             '78-84-242-254.nip.io',
+            'unlike-anderson-speech-eval.trycloudflare.com'
         ],
     },
 };
