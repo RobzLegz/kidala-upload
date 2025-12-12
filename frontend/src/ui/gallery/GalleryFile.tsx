@@ -10,26 +10,17 @@ import GalleryNonImage from './GalleryNonImage';
 
 export interface GalleryFileProps {
     props: FileInterface;
-    testLikes?: number;
-    testShares?: number;
-    testSaves?: number;
-    testSaved?: boolean;
-    testGivenLikes?: number;
     index?: number;
     handleFileClick?: (index?: number, hash?: string) => void;
 }
 
 const GalleryFile: React.FC<GalleryFileProps> = ({
     props,
-    testSaves,
-    testLikes,
-    testShares,
-    testSaved,
-    testGivenLikes,
     index,
     handleFileClick,
 }) => {
     const appInfo: AppInfo = useSelector(selectApp);
+    const isImage = detectFileType(props.name) === 'image';
 
     const handleImageClick = () => {
         handleFileClick && handleFileClick(index, props.hash);
@@ -37,22 +28,20 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
 
     return (
         <div
-            className={`bg-primary-800 w-full h-full items-center justify-center group relative rounded-lg overflow-hidden border border-primary-700 no_select ${
-                !appInfo.sortOptions.showFiles &&
-                detectFileType(props.name) !== 'image'
-                    ? 'hidden'
-                    : 'flex'
-            }`}
+            className={`bg-primary-800 w-full h-full ${
+                !appInfo.sortOptions.showFiles && !isImage ? 'hidden' : 'flex'
+            } items-center justify-center group relative rounded-xl overflow-hidden border border-primary-700 no_select`}
         >
-            <div className="flex items-center justify-center w-[200px] sm:w-[250px] md:w-[400px] h-[160px] sm:h-[200px] md:h-[250px] lg:h-[300px] max-w-full max-h-full relative overflow-hidden">
-                {detectFileType(props.name) === 'image' ? (
+            <div className="flex items-center justify-center w-full h-full relative overflow-hidden">
+                {isImage ? (
                     <Image
                         src={`${BASE_URL}/files/${props.hash}/${props.name}`}
                         alt={props.name}
                         draggable={false}
                         objectFit="cover"
                         layout="fill"
-                        quality={65}
+                        quality={75}
+                        sizes="33vw"
                         blurDataURL={`${BASE_URL}/files/${props.hash}/${props.name}`}
                         placeholder="blur"
                         className="rounded-lg"
@@ -63,14 +52,9 @@ const GalleryFile: React.FC<GalleryFileProps> = ({
             </div>
 
             <button
-                className="absolute rounded-t-lg w-full top-0 left-0 h-full cursor-pointer"
+                className="absolute inset-0 w-full h-full cursor-pointer rounded-lg"
                 onClick={handleImageClick}
             />
-
-            {/* <FileControls
-                className="hidden sm:flex h-10 w-full items-center justify-between absolute bottom-0 rounded-b-lg z-10 transition-all duration-300 px-2 bg-transparent_dark translate-y-full group-hover:translate-y-0"
-                file={props}
-            /> */}
         </div>
     );
 };

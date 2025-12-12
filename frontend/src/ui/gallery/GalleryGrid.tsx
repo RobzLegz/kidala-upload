@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import { windowSizes } from '../../constants/windowSizes';
 import useWindowSize from '../../hooks/useWindowSize';
-import { AppInfo, selectApp } from '../../redux/slices/appSlice';
 import GalleryFile from './GalleryFile';
-import { useRouter } from 'next/router';
 import GalleryInfoInsert from './GalleryInfoInsert';
 import { detectFileType } from '../../utils/detectFileType';
 import { getFileFromHash } from '../../utils/getFileFromHash';
@@ -23,21 +23,29 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     liked = false,
     saved = false,
 }) => {
-    const cn = `mt-2 grid grid-cols-3 place-content-center w-full overflow-hidden ${
+    // Base grid styling with aspect ratio container
+    const cn = `mt-2 grid w-full overflow-hidden mb-4 ${
         !liked && !saved ? 'xl:grid-cols-4' : ''
-    } sm:px-4 gap-0.5 sm:gap-2 mb-4`;
+    } grid-cols-3 sm:px-4 gap-0.5 sm:gap-2 lg:gap-4`;
+
+    // Container style to enforce aspect ratio
+    const containerStyle = `
+        relative w-full pb-[100%] overflow-hidden
+    `;
+
+    // Content style to maintain proportions
+    const contentStyle = `
+        absolute inset-0 flex items-center justify-center
+    `;
 
     const windowSize = useWindowSize();
     const router = useRouter();
     const dispatch = useDispatch();
 
     const { f } = router.query;
-
     const appInfo: AppInfo = useSelector(selectApp);
-
     const [infoInsert, setInfoInsert] = useState<number | null>(null);
-    const [clickedFileInfo, setClickedFileInfo] =
-        useState<FileInterface | null>(null);
+    const [clickedFileInfo, setClickedFileInfo] = useState<FileInterface | null>(null);
     const [ittFiles, setIttFiles] = useState(appInfo.files);
 
     useEffect(() => {
@@ -49,142 +57,103 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
     }, [activeFiles]);
 
     const handleFileClick = (index?: number, hash?: string) => {
-        if (typeof index !== 'number') {
-            return;
-        }
+        if (typeof index !== 'number') return;
 
         const fileRow = Number(windowSize.width) >= windowSizes.xl ? 4 : 3;
-        const rowIndexStr = `${index / fileRow}`;
-        const rowIndexDivided = rowIndexStr.split('.')[0];
-        const rowIndex = Number(rowIndexDivided);
+        const rowIndex = Math.floor(index / fileRow);
         const nextRowFirst = rowIndex * fileRow + fileRow;
 
         setInfoInsert(nextRowFirst);
 
         const clickedInfo = getFileFromHash(hash, ittFiles);
+        if (clickedInfo) setClickedFileInfo(clickedInfo);
 
-        if (clickedInfo) {
-            setClickedFileInfo(clickedInfo);
-        }
+        const query = saved
+            ? { page: 'favourites', f: hash }
+            : liked
+                ? { page: 'liked', f: hash }
+                : { f: hash };
 
-        if (saved) {
-            router.push(
-                {
-                    pathname: '/profile',
-                    query: { page: 'favourites', f: hash },
-                },
-                undefined,
-                { shallow: true }
-            );
-        } else if (liked) {
-            router.push(
-                {
-                    pathname: '/profile',
-                    query: { page: 'liked', f: hash },
-                },
-                undefined,
-                { shallow: true }
-            );
-        } else {
-            router.push(
-                {
-                    pathname: '/gallery',
-                    query: { f: hash },
-                },
-                undefined,
-                { shallow: true }
-            );
-        }
+        const pathname = saved || liked ? '/profile' : '/gallery';
+
+        router.push({ pathname, query }, undefined, { shallow: true });
     };
 
     useEffect(() => {
-        try {
-            if (typeof f === 'string' && infoInsert === null && ittFiles) {
-                const clickedInfo = getFileFromHash(f, ittFiles);
-
-                if (clickedInfo) {
-                    setClickedFileInfo(clickedInfo);
-                } else {
-                    getFileFromHashReq(f, dispatch, setClickedFileInfo);
-                }
-
-                setInfoInsert(0);
+        if (typeof f === 'string' && infoInsert === null && ittFiles) {
+            const clickedInfo = getFileFromHash(f, ittFiles);
+            if (clickedInfo) {
+                setClickedFileInfo(clickedInfo);
+            } else {
+                getFileFromHashReq(f, dispatch, setClickedFileInfo);
             }
-        } catch (err) {}
+            setInfoInsert(0);
+        }
     }, [f, ittFiles]);
 
-    if (
-        typeof infoInsert === 'number' &&
-        ittFiles &&
-        ittFiles.length > 0 &&
-        typeof f === 'string'
-    ) {
+    if (!ittFiles?.length) {
+        return liked || saved ? <NoFiles liked={liked} saved={saved} /> : null;
+    }
+
+    const filteredFiles = ittFiles.filter(file =>
+        appInfo.sortOptions.showFiles ? true : detectFileType(file.name) === 'image'
+    );
+
+    if (typeof infoInsert === 'number' && typeof f === 'string') {
+        const beforeInsert = filteredFiles.slice(0, infoInsert);
+        const afterInsert = filteredFiles.slice(infoInsert);
+
         return (
             <div className={cn}>
-                {ittFiles
-                    .filter((file) =>
-                        appInfo.sortOptions.showFiles
-                            ? true
-                            : detectFileType(file.name) === 'image'
-                    )
-                    .slice(0, infoInsert)
-                    .map((file, i) => (
-                        <GalleryFile
-                            props={file}
-                            index={i}
-                            handleFileClick={handleFileClick}
-                            key={i}
-                        />
-                    ))}
+                {beforeInsert.map((file, i) => (
+                    <div key={i} className={containerStyle}>
+                        <div className={contentStyle}>
+                            <GalleryFile
+                                props={file}
+                                index={i}
+                                handleFileClick={handleFileClick}
+                            />
+                        </div>
+                    </div>
+                ))}
 
                 {clickedFileInfo && (
                     <GalleryInfoInsert
                         fileInfo={clickedFileInfo}
-                        colspan={
-                            Number(windowSize.width) >= windowSizes.xl ? 4 : 3
-                        }
+                        colspan={Number(windowSize.width) >= windowSizes.xl ? 4 : 3}
                     />
                 )}
 
-                {ittFiles
-                    .filter((file) =>
-                        appInfo.sortOptions.showFiles
-                            ? true
-                            : detectFileType(file.name) === 'image'
-                    )
-                    .slice(infoInsert, ittFiles.length)
-                    .map((file, i) => (
-                        <GalleryFile
-                            props={file}
-                            index={infoInsert + i}
-                            handleFileClick={handleFileClick}
-                            key={i}
-                        />
-                    ))}
-            </div>
-        );
-    }
-
-    if (ittFiles && ittFiles.length > 0) {
-        return (
-            <div className={cn}>
-                {ittFiles.map((file, i) => (
-                    <GalleryFile
-                        props={file}
-                        index={i}
-                        handleFileClick={handleFileClick}
-                        key={i}
-                    />
+                {afterInsert.map((file, i) => (
+                    <div key={i} className={containerStyle}>
+                        <div className={contentStyle}>
+                            <GalleryFile
+                                props={file}
+                                index={infoInsert + i}
+                                handleFileClick={handleFileClick}
+                            />
+                        </div>
+                    </div>
                 ))}
             </div>
         );
     }
 
-    if (liked || saved) {
-        return <NoFiles liked={liked} saved={saved} />;
-    }
-
-    return null;
+    return (
+        <div className={cn}>
+            {filteredFiles.map((file, i) => (
+                <div key={i} className={containerStyle}>
+                    <div className={contentStyle}>
+                        <GalleryFile
+                            props={file}
+                            index={i}
+                            handleFileClick={handleFileClick}
+                        />
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 };
 
 export default GalleryGrid;

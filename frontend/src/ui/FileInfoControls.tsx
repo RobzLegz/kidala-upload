@@ -21,6 +21,7 @@ const FileInfoControls: React.FC<FileInfoControlsProps> = ({ file }) => {
         e.preventDefault();
 
         if (typeof file.hash === 'string') {
+            console.log(`${BASE_URL}/${file.hash}`);
             window.open(`${BASE_URL}/${file.hash}`);
         }
     };
